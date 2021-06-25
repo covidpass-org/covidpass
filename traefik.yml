@@ -1,0 +1,38 @@
+# Configuration for Traefik v2.
+
+global:
+  checkNewVersion: true
+  sendAnonymousUsage: false
+
+entryPoints:
+  web:
+    address: :80
+    http:
+      redirections:
+        entryPoint:
+          to: websecure
+          scheme: https
+
+  websecure:
+    address: :443
+
+log:
+  level: DEBUG
+  filePath: log/traefik.log
+
+api:
+  dashboard: true
+
+providers:
+  docker:
+
+certificatesResolvers:
+  myresolver:
+    acme:
+      email: "marvin.sextro@gmail.com"
+      storage: "acme.json"
+      # Staging: "https://acme-staging-v02.api.letsencrypt.org/directory"
+      caServer: "https://acme-v02.api.letsencrypt.org/directory"
+      tlsChallenge:
+        httpChallenge:
+          entryPoint: web

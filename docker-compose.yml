@@ -1,0 +1,37 @@
+version: "3.3"
+
+services:
+
+  traefik:
+    image: "traefik:v2.4"
+    command:
+      #- "--log.level=DEBUG"
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.websecure.address=:443"
+      - "--certificatesresolvers.myresolver.acme.tlschallenge=true"
+      #- "--certificatesresolvers.myresolver.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory"
+      - "--certificatesresolvers.myresolver.acme.email=marvin.sextro@gmail.com"
+      - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
+    ports:
+      - "443:443"
+      - "8080:8080"
+    volumes:
+      - "./letsencrypt:/letsencrypt"
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+
+  covidpass-api:
+    container_name: covidpass-api
+    image: "marvinsxtr/covidpass-api"
+    restart: "unless-stopped"
+    environment:
+      - NODE_ENV=production
+    ports:
+      - "8000:8000"    
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.covidpass-api.rule=Host(`api.covidpass.marvinsextro.de`)"
+      - "traefik.http.routers.covidpass-api.entrypoints=websecure"
+      - "traefik.http.routers.covidpass-api.tls.certresolver=myresolver"
+

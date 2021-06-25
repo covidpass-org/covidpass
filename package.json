@@ -1,0 +1,30 @@
+{
+  "name": "covidpass",
+  "version": "0.1.0",
+  "author": "Marvin Sextro <marvin.sextro@gmail.com>",
+  "private": true,
+  "scripts": {
+    "dev": "node server.js",
+    "build": "next build",
+    "start": "NODE_ENV=production node server.js"
+  },
+  "dependencies": {
+    "@walletpass/pass-js": "^6.9.1",
+    "base45-js": "^1.0.1",
+    "cbor-js": "^0.1.0",
+    "file-saver": "^2.0.5",
+    "jsqr": "^1.4.0",
+    "next": "latest",
+    "pdfjs-dist": "^2.5.207",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "worker-loader": "^3.0.7",
+    "webpack": "^5.0.0"
+  },
+  "devDependencies": {
+    "@svgr/webpack": "^5.5.0",
+    "autoprefixer": "^10.0.4",
+    "postcss": "^8.1.10",
+    "tailwindcss": "^2.1.1"
+  }
+}
