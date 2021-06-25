@@ -12,7 +12,7 @@ export default function Home() {
 
           <Card content={
             <p>
-              Convert any EU Digital Covid Certificate into a pass in your wallet app. On iOS, please use the Safari Browser.
+              Add your EU Digital Covid Certificate to your favorite wallet app. On iOS, please use the Safari Browser.
             </p>
           } />
 
@@ -22,6 +22,7 @@ export default function Home() {
             <nav className="nav flex space-x-5 m-6 flex-row-reverse space-x-reverse text-md font-bold">
               <a href="/privacy" className="hover:underline" >Privacy Policy</a>
               <a href="/imprint" className="hover:underline" >Imprint</a>
+              <a href="https://github.com/" className="hover:underline" >GitHub</a>
             </nav>
           </footer>
         </main>

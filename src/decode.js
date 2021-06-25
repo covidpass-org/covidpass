@@ -29,8 +29,6 @@ export function toBuffer(ab) {
 }
 
 export function decodeData(data) {
-  console.log(data)
-
   data = data.toString('ASCII')
 
   if (data.startsWith('HC1')) {
@@ -50,7 +48,7 @@ export function decodeData(data) {
     data = zlib.inflate(data)
   }
 
-  data = cbor.decode(typedArrayToBuffer(data));
+  data = cbor.decode(typedArrayToBuffer(data))
 
   if (!Array.isArray(data)) {
     throw new Error('Expecting Array')
