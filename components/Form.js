@@ -91,7 +91,7 @@ function Form() {
                 I have read the <a href="/privacy">Privacy Policy</a>
               </p>
             </label>
-            <form id="hidden" action="http://localhost:8000/covid.pkpass" method="POST">
+            <form id="hidden" action="https://api.covidpass.marvinsextro.de/covid.pkpass" method="POST">
               <input type="hidden" id="payload" name="payload" />
               <button id="download" type="download" disabled className="shadow-inner focus:outline-none bg-green-600 py-1 px-2 text-white font-semibold rounded-md disabled:bg-gray-400">
                 Add to Wallet

@@ -63,7 +63,5 @@ export function decodeData(data) {
   let plaintext = data[2]
   let decoded = cbor.decode(typedArrayToBufferSliced(plaintext))
 
-  console.log(JSON.stringify(decoded, null, 4))
-
   return decoded
 }

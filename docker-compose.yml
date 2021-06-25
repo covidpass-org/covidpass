@@ -6,11 +6,13 @@ services:
     image: "traefik:v2.4"
     command:
       #- "--log.level=DEBUG"
-      - "--api.insecure=true"
+      - "--api.insecure=false"
       - "--providers.docker=true"
       - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
       - "--entrypoints.websecure.address=:443"
       - "--certificatesresolvers.myresolver.acme.tlschallenge=true"
+      - "--certificatesresolvers.myresolver.acme.httpchallenge.entrypoint=web"
       #- "--certificatesresolvers.myresolver.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory"
       - "--certificatesresolvers.myresolver.acme.email=marvin.sextro@gmail.com"
       - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
@@ -22,16 +24,44 @@ services:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
 
   covidpass-api:
-    container_name: covidpass-api
-    image: "marvinsxtr/covidpass-api"
+    image: "marvinsxtr/covidpass-api:latest"
     restart: "unless-stopped"
     environment:
       - NODE_ENV=production
+      - API_URL=https://api.covidpass.marvinsextro.de/covid.pkpass
     ports:
-      - "8000:8000"    
+      - "8000:8000" 
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.covidpass-api.rule=Host(`api.covidpass.marvinsextro.de`)"
       - "traefik.http.routers.covidpass-api.entrypoints=websecure"
       - "traefik.http.routers.covidpass-api.tls.certresolver=myresolver"
+      - "traefik.http.routers.covidpass-api.middlewares=covidpass-api-https-only"
+      - "traefik.http.middlewares.covidpass-api-https-only.redirectscheme.scheme=https"
+      - "traefik.http.middlewares.covidpass-api-https-only.redirectscheme.permanent=true"
+      - "traefik.http.middlewares.covidpass-api-https-only.redirectscheme.port=443"
+    secrets:
+      - env
 
+  covidpass:
+    image: "marvinsxtr/covidpass:latest"
+    restart: "unless-stopped"
+    environment:
+      - NODE_ENV=production
+    ports:
+      - "3000:3000"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.covidpass.rule=Host(`covidpass.marvinsextro.de`)"
+      - "traefik.http.routers.covidpass.entrypoints=websecure"
+      - "traefik.http.routers.covidpass.tls.certresolver=myresolver"
+      - "traefik.http.routers.covidpass.middlewares=covidpass-https-only"
+      - "traefik.http.middlewares.covidpass-https-only.redirectscheme.scheme=https"
+      - "traefik.http.middlewares.covidpass-https-only.redirectscheme.permanent=true"
+      - "traefik.http.middlewares.covidpass-https-only.redirectscheme.port=443"
+    depends_on:
+      - covidpass-api
+
+secrets:
+  env:
+    file: ./.env
