@@ -16,19 +16,22 @@ services:
       #- "--certificatesresolvers.myresolver.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory"
       - "--certificatesresolvers.myresolver.acme.email=marvin.sextro@gmail.com"
       - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
+      - "--entrypoints.web.http.redirections.entryPoint.to=websecure"
+      - "--entrypoints.web.http.redirections.entryPoint.scheme=https"
+      - "--entrypoints.web.http.redirections.entrypoint.permanent=true"
     ports:
+      - "80:80"
       - "443:443"
       - "8080:8080"
     volumes:
       - "./letsencrypt:/letsencrypt"
-      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+      - "/var/run/docker.sock:/var/run/docker.sock:ro" 
 
   covidpass-api:
     image: "marvinsxtr/covidpass-api:latest"
     restart: "unless-stopped"
     environment:
       - NODE_ENV=production
-      - API_URL=https://api.covidpass.marvinsextro.de/covid.pkpass
     ports:
       - "8000:8000" 
     labels:
@@ -36,10 +39,6 @@ services:
       - "traefik.http.routers.covidpass-api.rule=Host(`api.covidpass.marvinsextro.de`)"
       - "traefik.http.routers.covidpass-api.entrypoints=websecure"
       - "traefik.http.routers.covidpass-api.tls.certresolver=myresolver"
-      - "traefik.http.routers.covidpass-api.middlewares=covidpass-api-https-only"
-      - "traefik.http.middlewares.covidpass-api-https-only.redirectscheme.scheme=https"
-      - "traefik.http.middlewares.covidpass-api-https-only.redirectscheme.permanent=true"
-      - "traefik.http.middlewares.covidpass-api-https-only.redirectscheme.port=443"
     secrets:
       - env
 
@@ -55,10 +54,6 @@ services:
       - "traefik.http.routers.covidpass.rule=Host(`covidpass.marvinsextro.de`)"
       - "traefik.http.routers.covidpass.entrypoints=websecure"
       - "traefik.http.routers.covidpass.tls.certresolver=myresolver"
-      - "traefik.http.routers.covidpass.middlewares=covidpass-https-only"
-      - "traefik.http.middlewares.covidpass-https-only.redirectscheme.scheme=https"
-      - "traefik.http.middlewares.covidpass-https-only.redirectscheme.permanent=true"
-      - "traefik.http.middlewares.covidpass-https-only.redirectscheme.port=443"
     depends_on:
       - covidpass-api
 
