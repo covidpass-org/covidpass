@@ -1,7 +1,18 @@
 import 'tailwindcss/tailwind.css'
 
-function MyApp({ Component, pageProps }) {
-  return <Component {...pageProps} />
-}
+import App from 'next/app';
+import { DefaultSeo } from 'next-seo';
 
-export default MyApp
+import SEO from '../next-seo.config';
+
+export default class MyApp extends App {
+  render() {
+    const { Component, pageProps } = this.props;
+    return (
+      <>
+        <DefaultSeo {...SEO} />
+        <Component {...pageProps} />
+      </>
+    );
+  }
+}

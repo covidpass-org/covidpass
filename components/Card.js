@@ -2,7 +2,7 @@ export default Card
 
 function Card({heading, content, step}) {
   return (
-    <div className="rounded-3xl shadow-xl p-2 m-4">
+    <div className="rounded-3xl shadow-lg p-2 m-4">
       { step ? 
         <div className="flex flex-row items-center p-2">
           <div className="rounded-full p-4 bg-green-600 h-5 w-5 flex items-center justify-center">

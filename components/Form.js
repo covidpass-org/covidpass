@@ -19,9 +19,17 @@ function Form() {
     document.getElementById('message').innerHTML = message
   }
 
-  const processPdf = async function(input) {
-    const file = input.target.files[0]
-    var fileReader = new FileReader(); 
+  const processPdf = async function() {
+    if (!document.getElementById('privacy').checked) {
+      document.getElementById('download').disabled = true
+      return
+    }
+
+    document.getElementById('spin').style.display = 'block'
+
+    const file = document.getElementById('pdf').files[0]
+
+    var fileReader = new FileReader()
 
     fileReader.onload = async function() {
       var typedarray = new Uint8Array(this.result)
@@ -61,14 +69,13 @@ function Form() {
 
         const result = JSON.stringify({ decoded: decoded, raw: rawData })
 
-        const payload = document.getElementById('payload')
-        payload.setAttribute('value', result)
-
-        const download = document.getElementById('download')
-        download.disabled = false
+        document.getElementById('payload').setAttribute('value', result)
+        document.getElementById('download').disabled = false
       } else {
         error('No QR code found', 'Try scanning the PDF again')
       }
+
+      document.getElementById('spin').style.display = 'none'
     }
 
 	  fileReader.readAsArrayBuffer(file)
@@ -76,7 +83,6 @@ function Form() {
 
   return (
     <div>
-      <Alert message="" heading="" />
       <form id="form">
         <Card step={1} heading="Select Certificate" content={
           <div className="space-y-5">
@@ -88,7 +94,6 @@ function Form() {
               id="pdf"
               accept="application/pdf"
               required
-              onChange={(input) => { processPdf(input) }}
               style={{
                 "whiteSpace": "nowrap",
                 "overflow": "hidden",
@@ -115,19 +120,32 @@ function Form() {
         }/>
         <Card step={3} heading="Add to Wallet" content={
           <div className="space-y-5">
+            <p>
+              Data privacy is of special importance when processing health-related data.
+              In order for you to make an informed decision, please read the <a href="/privacy">Privacy Policy</a>.
+            </p>
             <label htmlFor="privacy" className="flex flex-row space-x-4 items-center">
-              <input type="checkbox" id="privacy" value="privacy" required />
+              <input type="checkbox" id="privacy" value="privacy" required onChange={processPdf} />
               <p>
-                I have read the <a href="/privacy" className="underline">Privacy Policy</a>
+                I accept the <a href="/privacy" className="underline">Privacy Policy</a>
               </p>
             </label>
             <input type="hidden" id="payload" name="payload" />
-            <button id="download" type="download" disabled className="shadow-inner focus:outline-none bg-green-600 py-1 px-2 text-white font-semibold rounded-md disabled:bg-gray-400">
-              Add to Wallet
-            </button>
+            <div className="flex flex-row items-center justify-start">
+              <button id="download" type="download" disabled className="shadow-inner focus:outline-none bg-green-600 py-2 px-3 text-white font-semibold rounded-md disabled:bg-gray-400">
+                Add to Wallet
+              </button>
+              <div id="spin" style={{"display": "none"}}>
+                <svg className="animate-spin h-5 w-5 ml-2" viewBox="0 0 24 24">
+                  <circle className="opacity-0" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+              </div>
+            </div>
           </div>
         }/>
       </form>
+      <Alert />
       <canvas id="canvas" style={{display: "none"}} />
     </div>
   )
