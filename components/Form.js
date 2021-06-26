@@ -1,7 +1,8 @@
 const PDFJS = require('pdfjs-dist')
 PDFJS.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${PDFJS.version}/pdf.worker.js`
 
-import jsQR from "jsqr";
+import jsQR from "jsqr"
+import { saveAs } from 'file-saver'
 
 import { decodeData } from "../src/decode"
 import Card from "../components/Card"
@@ -11,79 +12,125 @@ export default Form
 
 function Form() {
 
+  function readFileAsync(file) {
+    return new Promise((resolve, reject) => {
+      let reader = new FileReader();
+  
+      reader.onload = () => {
+        resolve(reader.result);
+      };
+  
+      reader.onerror = reject;
+  
+      reader.readAsArrayBuffer(file);
+    })
+  }
+
   const error = function(heading, message) {
     const alert = document.getElementById('alert')
     alert.setAttribute('style', null)
     
     document.getElementById('heading').innerHTML = heading
     document.getElementById('message').innerHTML = message
+
+    document.getElementById('spin').style.display = 'none'
   }
 
   const processPdf = async function() {
-    if (!document.getElementById('privacy').checked) {
-      document.getElementById('download').disabled = true
-      return
-    }
-
     document.getElementById('spin').style.display = 'block'
 
     const file = document.getElementById('pdf').files[0]
 
-    var fileReader = new FileReader()
+    const result = await readFileAsync(file)
+    var typedarray = new Uint8Array(result)
 
-    fileReader.onload = async function() {
-      var typedarray = new Uint8Array(this.result)
+    const canvas = document.getElementById('canvas')
+    const ctx = canvas.getContext('2d')
+
+    var loadingTask = PDFJS.getDocument(typedarray)
+    await loadingTask.promise.then(async function (pdfDocument) {
+      const pdfPage = await pdfDocument.getPage(1)
+      const viewport = pdfPage.getViewport({ scale: 1 })
+      canvas.width = viewport.width
+      canvas.height = viewport.height
+
+      const renderTask = pdfPage.render({
+        canvasContext: ctx,
+        viewport,
+      })
       
-      const canvas = document.getElementById('canvas')
-      const ctx = canvas.getContext('2d')
+      return await renderTask.promise
+    })
 
-      var loadingTask = PDFJS.getDocument(typedarray)
-      await loadingTask.promise.then(async function (pdfDocument) {
-        const pdfPage = await pdfDocument.getPage(1)
-        const viewport = pdfPage.getViewport({ scale: 1 })
-        canvas.width = viewport.width
-        canvas.height = viewport.height
+    var imageData = ctx.getImageData(0, 0, canvas.width, canvas.height)
+    var code = jsQR(imageData.data, imageData.width, imageData.height, {
+      inversionAttempts: 'dontInvert',
+    })
 
-        const renderTask = pdfPage.render({
-          canvasContext: ctx,
-          viewport,
-        })
-        
-        return await renderTask.promise
-      })
+    if (code) {
+      const rawData = code.data
+      let decoded
 
-      var imageData = ctx.getImageData(0, 0, canvas.width, canvas.height)
-      var code = jsQR(imageData.data, imageData.width, imageData.height, {
-        inversionAttempts: 'dontInvert',
-      })
-
-      if (code) {
-        const rawData = code.data
-        let decoded
-
-        try {
-          decoded = decodeData(rawData) 
-        } catch (error) {
-          error('Invalid QR code found', 'Make sure that you picked the correct PDF')
-        }
-
-        const result = JSON.stringify({ decoded: decoded, raw: rawData })
-
-        document.getElementById('payload').setAttribute('value', result)
-        document.getElementById('download').disabled = false
-      } else {
-        error('No QR code found', 'Try scanning the PDF again')
+      try {
+        decoded = decodeData(rawData) 
+      } catch (error) {
+        error('Invalid QR code found', 'Make sure that you picked the correct PDF')
       }
 
-      document.getElementById('spin').style.display = 'none'
+      const result = { decoded: decoded, raw: rawData }
+      
+      return result
+    } else {
+      error('No QR code found', 'Try scanning the PDF again')
+    }
+  }
+
+  const addToWallet = async function(event) {
+    event.preventDefault()
+    
+    let result
+
+    try {
+      result = await processPdf()
+    } catch {
+      error('Error:', 'Could not extract QR code data from PDF')
     }
 
-	  fileReader.readAsArrayBuffer(file)
+    if (typeof result === 'undefined') {
+      return
+    }
+
+    const color = document.getElementById('color').value
+
+    fetch(event.target.action, {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/vnd.apple.pkpass',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          decoded: result.decoded, 
+          raw: result.raw, 
+          color: color
+        })
+    }).then( async (resp) => {
+      if (!resp.ok) {
+        error('Error:', await resp.text())
+        return
+      }
+
+      const pass = await resp.blob()
+      saveAs(pass, 'covid.pkpass')
+    }).catch((error) => {
+      error('Error:', error.message)
+    }).finally(() => {
+      document.getElementById('spin').style.display = 'none'
+    })
   }
 
   return (
     <div>
-      <form id="form">
+      <form id="form"  action="https://api.covidpass.marvinsextro.de/covid.pkpass" method="POST" onSubmit={(e) => addToWallet(e)}>
         <Card step={1} heading="Select Certificate" content={
           <div className="space-y-5">
             <p>
@@ -102,8 +149,6 @@ function Form() {
             />
           </div>
         }/>
-      </form>
-      <form id="hidden" action="https://api.covidpass.marvinsextro.de/covid.pkpass" method="POST">
         <Card step={2} heading="Pick a Color" content={
           <div className="space-y-5">
             <select name="color" id="color">
@@ -125,14 +170,13 @@ function Form() {
               In order for you to make an informed decision, please read the <a href="/privacy">Privacy Policy</a>.
             </p>
             <label htmlFor="privacy" className="flex flex-row space-x-4 items-center">
-              <input type="checkbox" id="privacy" value="privacy" required onChange={processPdf} />
+              <input type="checkbox" id="privacy" value="privacy" required />
               <p>
                 I accept the <a href="/privacy" className="underline">Privacy Policy</a>
               </p>
             </label>
-            <input type="hidden" id="payload" name="payload" />
             <div className="flex flex-row items-center justify-start">
-              <button id="download" type="download" disabled className="shadow-inner focus:outline-none bg-green-600 py-2 px-3 text-white font-semibold rounded-md disabled:bg-gray-400">
+              <button id="download" type="download" className="shadow-inner focus:outline-none bg-green-600 py-2 px-3 text-white font-semibold rounded-md disabled:bg-gray-400">
                 Add to Wallet
               </button>
               <div id="spin" style={{"display": "none"}}>
