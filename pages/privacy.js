@@ -19,6 +19,9 @@ export default function Privacy() {
                 Your data is not stored beyond the active browser session and the site does not use cookies.
               </li>
               <li>
+                No data is sent to third parties.
+              </li>
+              <li>
                 We transmit your data securely over https.
               </li>
               <li>
@@ -44,6 +47,70 @@ export default function Privacy() {
             Email: marvin.sextro@gmail.com<br />
             Website: <a href="https://marvinsextro.de" className="underline">https://marvinsextro.de</a><br />
           </p>
+          <p className="font-bold">Processed data</p>
+          <p>
+            The following data is processed on the server to generate the pass file.
+          </p>
+          <p>
+            Processed personal data contained in the QR code:
+          </p>
+          <div className="px-4">
+            <ul className="list-disc">
+              <li>Your first and last name</li>
+              <li>Your date of birth</li>
+            </ul>
+          </div>
+          <p>
+            For each vaccination certificate contained in the QR code, the following data is processed:
+          </p>
+          <div className="px-4">
+            <ul className="list-disc">
+              <li>Targeted disease</li>
+              <li>Vaccine medical product</li>
+              <li>Manufacturer/Marketing Authorization Holder</li>
+              <li>Dose number</li>
+              <li>Total series of doses</li>
+              <li>Date of vaccination</li>
+              <li>Country of vaccination</li>
+              <li>Certificate issuer</li>
+              <li>Unique certificate identifier (UVCI)</li>
+            </ul>
+          </div>
+          <p>
+            For each test certificate contained in the QR code, the following data is processed:
+          </p>
+          <div className="px-4">
+            <ul className="list-disc">
+              <li>Targeted disease</li>
+              <li>Test type</li>
+              <li>NAA Test name</li>
+              <li>RAT Test name and manufacturer</li>
+              <li>Date/Time of Sample Collection</li>
+              <li>Test Result</li>
+              <li>Testing Centre</li>
+              <li>Country of test</li>
+              <li>Certificate Issuer</li>
+              <li>Unique Certificate Identifier (UVCI)</li>
+            </ul>
+          </div>
+          <p>
+            For each recovery certificate contained in the QR code, the following data is processed:
+          </p>
+          <div className="px-4">
+            <ul className="list-disc">
+              <li>Targeted disease</li>
+              <li>Date of first positive NAA test result</li>
+              <li>Country of test</li>
+              <li>Certificate Issuer</li>
+              <li>Certificate valid from</li>
+              <li>Certificate valid until</li>
+              <li>Certificate Issuer</li>
+              <li>Unique Certificate Identifier (UVCI)</li>
+            </ul>
+          </div>
+          <p>
+            The <a href="https://github.com/ehn-dcc-development/ehn-dcc-schema" className="underline">Digital Covid Certificate Schema</a> contains a detailed specification of which data can be contained in the QR code. 
+          </p>
           <p className="font-bold">Server provider</p>
           <p>
             Our server provider is <a href="https://www.hetzner.com/" className="underline">Hetzner Online GmbH</a>.
@@ -59,7 +126,7 @@ export default function Privacy() {
             </ul>
           </div>
           <p className="font-bold">Your rights</p>
-          In accordance with the GDPR you have the following rights:
+            In accordance with the GDPR you have the following rights:
           <div className="px-4">
             <ul className="list-disc">
               <li>
