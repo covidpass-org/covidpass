@@ -4,7 +4,7 @@ import Card from '../components/Card'
 export default function Privacy() {
   return(
     <Page content={
-      <Card step=" " heading="Privacy Policy" content={
+      <Card step="i" heading="Privacy Policy" content={
         <div className="space-y-2">
           <p>
             Our privacy policy is based on the terms used by the European legislator for the adoption of the General Data Protection Regulation (GDPR).

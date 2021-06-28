@@ -4,7 +4,7 @@ import Card from '../components/Card'
 export default function Imprint() {
   return(
     <Page content={
-      <Card step=" " heading="Impressum" content={
+      <Card step="§" heading="Imprint" content={
         <div className="space-y-2">
           <p className="font-bold">Information according to § 5 TMG</p>
           <p>

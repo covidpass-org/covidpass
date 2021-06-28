@@ -32,27 +32,14 @@ export default function Home() {
         }}
       />
       <Page content={
-        <div>
-          <main className="flex flex-col">
-            <Logo />
+        <div className="space-y-5">
+          <Card content={
+            <p>
+              Add your EU Digital Covid Vaccination Certificates to your favorite wallet app. On iOS, please use the Safari Browser.
+            </p>
+          } />
 
-            <Card content={
-              <p>
-                Add your EU Digital Covid Vaccination Certificates to your favorite wallet app. On iOS, please use the Safari Browser.
-              </p>
-            } />
-
-            <Form className="flex-grow" />
-            
-            <footer>
-              <nav className="nav flex space-x-4 m-6 flex-row-reverse space-x-reverse text-md font-bold">
-                <a href="/privacy" className="hover:underline" >Privacy Policy</a>
-                <a href="/imprint" className="hover:underline" >Imprint</a>
-                <a href="https://www.paypal.com/paypalme/msextro" className="hover:underline" >Donate</a>
-                <a href="https://github.com/marvinsxtr/covidpass" className="hover:underline" >GitHub</a>
-              </nav>
-            </footer>
-          </main>
+          <Form className="flex-grow" />
         </div>
       } />
     </>
