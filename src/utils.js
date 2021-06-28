@@ -1,15 +1,15 @@
-const { VALUE_TYPES, BASE_URL } = require("./constants")
+const { VALUE_TYPES, VALUE_SET_BASE_URL } = require("./constants")
 const fetch = require("node-fetch")
 
 exports.getValueSets = async function() {
-  async function getJSONfromURL(url) {
+  async function getJSONFromURL(url) {
     return await (await fetch(url)).json()
   }
 
-  var valueSets = {}
+  let valueSets = {}
   
   for (const [key, value] of Object.entries(VALUE_TYPES)) {
-    valueSets[key] = await getJSONfromURL(BASE_URL + value)
+    valueSets[key] = await getJSONFromURL(VALUE_SET_BASE_URL + value)
   }
   
   return valueSets

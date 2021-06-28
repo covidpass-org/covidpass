@@ -1,18 +1,13 @@
 'use strict';
 
-const consts = require('./constants')
+const constants = require('./constants')
 const utils = require('./utils')
-const img = require('./img')
 
 const { Payload } = require('./payload')
 const { toBuffer } = require('do-not-zip')
 const crypto = require('crypto')
 
 exports.createPass = async function(data) {
-  async function getJSONfromURL(url) {
-    return await (await fetch(url)).json()
-  }
-  
   function getBufferHash(buffer) {
     // creating hash
     const sha = crypto.createHash('sha1');
@@ -30,6 +25,7 @@ exports.createPass = async function(data) {
     // Adding required files
     // Create pass.json
     zip.push({ path: 'pass.json', data: Buffer.from(JSON.stringify(pass)) })
+    const passHash = getBufferHash(Buffer.from(JSON.stringify(pass)))
   
     zip.push({ path: 'icon.png', data: payload.img1x })
     zip.push({ path: 'icon@2x.png', data: payload.img2x })
@@ -49,18 +45,18 @@ exports.createPass = async function(data) {
     );
     zip.push({ path: 'manifest.json', data: manifestJson });
     
-    const response = await fetch(consts.API_BASE_URL + 'sign_manifest', {
+    const response = await fetch(`${constants.API_BASE_URL}/sign`, {
         method: 'POST',
         headers: {
           'Accept': 'application/octet-stream',
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          manifest: manifestJson
+          PassJsonHash: passHash,
         })
     })
     
-    if (response.status != 200) {
+    if (response.status !== 200) {
       return undefined
     }
     
@@ -87,8 +83,6 @@ exports.createPass = async function(data) {
   } catch (e) {
     return undefined
   }
-  
-  let signingIdentity = await getJSONfromURL(consts.API_BASE_URL + 'signing_identity')
 
   const qrCode = {
     message: payload.raw,
@@ -97,14 +91,14 @@ exports.createPass = async function(data) {
   }
 
   const pass = {
-    passTypeIdentifier: signingIdentity['pass_identifier'],
-    teamIdentifier: signingIdentity['pass_team_id'],
+    passTypeIdentifier: constants.PASS_IDENTIFIER,
+    teamIdentifier: constants.TEAM_IDENTIFIER,
     sharingProhibited: true,
     voided: false,
     formatVersion: 1,
-    logoText: consts.NAME,
-    organizationName: consts.NAME,
-    description: consts.NAME,
+    logoText: constants.NAME,
+    organizationName: constants.NAME,
+    description: constants.NAME,
     labelColor: payload.labelColor,
     foregroundColor: payload.foregroundColor,
     backgroundColor: payload.backgroundColor,
@@ -182,6 +176,5 @@ exports.createPass = async function(data) {
     }
   };
 
-  let buf = await signPassWithRemote(pass, payload)
-  return buf
+  return await signPassWithRemote(pass, payload)
 }
