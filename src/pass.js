@@ -57,7 +57,7 @@ exports.createPass = async function(data) {
         },
         body: JSON.stringify({
           PassJsonHash: passHash,
-          useBlackVersion: payload.dark
+          useBlackVersion: !payload.dark
         })
     })
 
