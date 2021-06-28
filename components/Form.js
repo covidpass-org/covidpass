@@ -2,10 +2,10 @@ const PDFJS = require('pdfjs-dist')
 PDFJS.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${PDFJS.version}/pdf.worker.js`
 
 import jsQR from "jsqr"
-import { saveAs } from 'file-saver'
+import {saveAs} from 'file-saver'
 
-import { decodeData } from "../src/decode"
-import { createPass } from "../src/pass"
+import {decodeData} from "../src/decode"
+import {createPass} from "../src/pass"
 import Card from "../components/Card"
 import Alert from "../components/Alert"
 
@@ -43,12 +43,12 @@ function Form() {
     const file = document.getElementById('pdf').files[0]
 
     const result = await readFileAsync(file)
-    var typedarray = new Uint8Array(result)
+    let typedArray = new Uint8Array(result)
 
     const canvas = document.getElementById('canvas')
     const ctx = canvas.getContext('2d')
 
-    var loadingTask = PDFJS.getDocument(typedarray)
+    let loadingTask = PDFJS.getDocument(typedArray)
     await loadingTask.promise.then(async function (pdfDocument) {
       const pdfPage = await pdfDocument.getPage(1)
       const viewport = pdfPage.getViewport({ scale: 1 })
@@ -63,8 +63,8 @@ function Form() {
       return await renderTask.promise
     })
 
-    var imageData = ctx.getImageData(0, 0, canvas.width, canvas.height)
-    var code = jsQR(imageData.data, imageData.width, imageData.height, {
+    let imageData = ctx.getImageData(0, 0, canvas.width, canvas.height)
+    let code = jsQR(imageData.data, imageData.width, imageData.height, {
       inversionAttempts: 'dontInvert',
     })
 
@@ -78,9 +78,7 @@ function Form() {
         error('Invalid QR code found', 'Make sure that you picked the correct PDF')
       }
 
-      const result = { decoded: decoded, raw: rawData }
-      
-      return result
+      return {decoded: decoded, raw: rawData}
     } else {
       error('No QR code found', 'Try scanning the PDF again')
     }
@@ -119,7 +117,7 @@ function Form() {
         saveAs(passBlob, 'covid.pkpass')  
       }
     } catch (e) {
-      error('Error:', error.message)
+      error('Error:', e.message)
     } finally {
       document.getElementById('spin').style.display = 'none'
     }
@@ -155,7 +153,7 @@ function Form() {
               <option value="teal">teal</option>
             </select>
             <div className="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
-              <svg className="w-5 h-5 fill-current" viewBox="0 0 20 20"><path d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" fillRule="evenodd"></path></svg>
+              <svg className="w-5 h-5 fill-current" viewBox="0 0 20 20"><path d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" fillRule="evenodd"/></svg>
             </div>
           </div>
         } />
@@ -177,8 +175,8 @@ function Form() {
               </button>
               <div id="spin" style={{ "display": "none" }}>
                 <svg className="animate-spin h-5 w-5 ml-2" viewBox="0 0 24 24">
-                  <circle className="opacity-0" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  <circle className="opacity-0" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/>
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"/>
                 </svg>
               </div>
             </div>
