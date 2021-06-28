@@ -5,6 +5,7 @@ import jsQR from "jsqr"
 import {saveAs} from 'file-saver'
 
 import {decodeData} from "../src/decode"
+import { processJpeg, processPng, processPdf } from "../src/process"
 import {createPass} from "../src/pass"
 import Card from "../components/Card"
 import Alert from "../components/Alert"
@@ -37,34 +38,33 @@ function Form() {
     document.getElementById('spin').style.display = 'none'
   }
 
-  const processPdf = async function() {
+  const processFile = async function() {
     document.getElementById('spin').style.display = 'block'
 
-    const file = document.getElementById('pdf').files[0]
+    const file = document.getElementById('file').files[0]
+    const fileBuffer = await readFileAsync(file)
 
-    const result = await readFileAsync(file)
-    let typedArray = new Uint8Array(result)
+    let imageData
 
-    const canvas = document.getElementById('canvas')
-    const ctx = canvas.getContext('2d')
+    switch (file.type) {
+      case 'application/pdf':
+        console.log('pdf')
+        imageData = await processPdf(fileBuffer)
+        break
+      case 'image/jpeg':
+        console.log('jpeg')
+        imageData = await processJpeg(fileBuffer)
+        break
+      case 'image/png':
+        console.log('png')
+        imageData = await processPng(fileBuffer)
+        break
+      default:
+        error('Error', 'Invalid file type')
+        return
+    }
 
-    let loadingTask = PDFJS.getDocument(typedArray)
-    await loadingTask.promise.then(async function (pdfDocument) {
-      const pdfPage = await pdfDocument.getPage(1)
-      const viewport = pdfPage.getViewport({ scale: 1 })
-      canvas.width = viewport.width
-      canvas.height = viewport.height
-
-      const renderTask = pdfPage.render({
-        canvasContext: ctx,
-        viewport,
-      })
-      
-      return await renderTask.promise
-    })
-
-    let imageData = ctx.getImageData(0, 0, canvas.width, canvas.height)
-    let code = jsQR(imageData.data, imageData.width, imageData.height, {
+    var code = jsQR(imageData.data, imageData.width, imageData.height, {
       inversionAttempts: 'dontInvert',
     })
 
@@ -90,7 +90,7 @@ function Form() {
     let result
 
     try {
-      result = await processPdf()
+      result = await processFile()
     } catch {
       error('Error:', 'Could not extract QR code data from PDF')
     }
@@ -125,7 +125,7 @@ function Form() {
 
   return (
     <div>
-      <form className="space-y-5" id="form" action="https://api.covidpass.marvinsextro.de/covid.pkpass" method="POST" onSubmit={(e) => addToWallet(e)}>
+      <form className="space-y-5" id="form" onSubmit={(e) => addToWallet(e)}>
         <Card step={1} heading="Select Certificate" content={
           <div className="space-y-5">
             <p>
@@ -134,8 +134,8 @@ function Form() {
             <input
               className="w-full"
               type="file"
-              id="pdf"
-              accept="application/pdf"
+              id="file"
+              accept="application/pdf,image/jpeg,image/png"
               required
             />
           </div>
