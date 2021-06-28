@@ -5,6 +5,7 @@ import jsQR from "jsqr"
 import { saveAs } from 'file-saver'
 
 import { decodeData } from "../src/decode"
+import { createPass } from "../src/pass"
 import Card from "../components/Card"
 import Alert from "../components/Alert"
 
@@ -101,31 +102,27 @@ function Form() {
     }
 
     const color = document.getElementById('color').value
-
-    fetch(event.target.action, {
-        method: 'POST',
-        headers: {
-          'Accept': 'application/vnd.apple.pkpass',
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
+    
+    try {
+      const pass = await createPass(
+        {
           decoded: result.decoded, 
           raw: result.raw, 
           color: color
-        })
-    }).then( async (resp) => {
-      if (!resp.ok) {
-        error('Error:', await resp.text())
-        return
+        }
+      )
+      
+      if (!pass) {
+        error('Error:', "Something went wrong.")
+      } else {
+        const passBlob = new Blob([pass], {type: "application/vnd.apple.pkpass"});
+        saveAs(passBlob, 'covid.pkpass')  
       }
-
-      const pass = await resp.blob()
-      saveAs(pass, 'covid.pkpass')
-    }).catch((error) => {
+    } catch (e) {
       error('Error:', error.message)
-    }).finally(() => {
+    } finally {
       document.getElementById('spin').style.display = 'none'
-    })
+    }
   }
 
   return (
