@@ -98,7 +98,7 @@ exports.createPass = async function(data) {
   const pass = {
     passTypeIdentifier: constants.PASS_IDENTIFIER,
     teamIdentifier: constants.TEAM_IDENTIFIER,
-    sharingProhibited: true,
+    sharingProhibited: false,
     voided: false,
     formatVersion: 1,
     logoText: constants.NAME,
