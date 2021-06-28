@@ -1,5 +1,3 @@
-exports.API_BASE_URL = 'https://api.covidpass.marvinsextro.de/'
-
 exports.VALUE_SET_BASE_URL = 'https://raw.githubusercontent.com/ehn-dcc-development/ehn-dcc-valuesets/main/'
 exports.VALUE_TYPES = {
     medicalProducts: 'vaccine-medicinal-product.json',
