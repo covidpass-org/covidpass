@@ -9,11 +9,11 @@ export default function Privacy() {
           <p>
             Our privacy policy is based on the terms used by the European legislator for the adoption of the General Data Protection Regulation (GDPR).
           </p>
-          <p className="font-bold">General Information</p>
+          <p className="font-bold">General information</p>
           <div className="px-4">
             <ul className="list-disc">
               <li>
-                The necessary data to generate a certificate is extracted from the QR code in your browser. Only the extracted data is sent to our server, where we generate and sign the pass file.
+                The whole process of generating the pass file happens locally in your browser. For the signing step, ony a hashed representation of your data is sent to the server.
               </li>
               <li>
                 Your data is not stored beyond the active browser session and the site does not use cookies.
@@ -47,9 +47,44 @@ export default function Privacy() {
             Email: marvin.sextro@gmail.com<br />
             Website: <a href="https://marvinsextro.de" className="underline">https://marvinsextro.de</a><br />
           </p>
-          <p className="font-bold">Processed data</p>
+          <p className="font-bold">Simplified explanation of the process</p>
           <p>
-            The following data is processed on the server to generate the pass file.
+            This process is only started after accepting this policy and clicking on the Add to Wallet button.
+          </p>
+          <p>
+            First, the following steps happen locally in your browser:
+          </p>
+          <div className="px-4">
+            <ul className="list-disc">
+              <li>Recognizing and extracting the QR code data from your selected certificate</li>
+              <li>Decoding your personal and health-related data from the QR code payload</li>
+              <li>Assembling an incomplete pass file out of your data</li>
+              <li>Generating a file containing hashes of the data stored in the pass file</li>
+              <li>Sending only the file containing the hashes to our server</li>
+            </ul>
+          </div>
+          <p>
+            Second, the following steps happen on our server:
+          </p>
+          <div className="px-4">
+            <ul className="list-disc">
+              <li>Receiving and checking the hashes which were generated locally</li>
+              <li>Signing the file containing the hashes</li>
+              <li>Sending the signature back</li>
+            </ul>
+          </div>
+          <p>
+            Finally, the following steps happen locally in your browser:
+          </p>
+          <div className="px-4">
+            <ul className="list-disc">
+              <li>Assembling the signed pass file out of the inclomplete file generated locally and the signature</li>
+              <li>Saving the file on your device</li>
+            </ul>
+          </div>
+          <p className="font-bold">Locally processed data</p>
+          <p>
+            The following data is processed on in your browser to generate the pass file.
           </p>
           <p>
             Processed personal data contained in the QR code:
@@ -104,7 +139,6 @@ export default function Privacy() {
               <li>Certificate Issuer</li>
               <li>Certificate valid from</li>
               <li>Certificate valid until</li>
-              <li>Certificate Issuer</li>
               <li>Unique Certificate Identifier (UVCI)</li>
             </ul>
           </div>
