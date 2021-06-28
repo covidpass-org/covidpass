@@ -33,11 +33,11 @@ export function decodeData(data) {
 
   if (data.startsWith('HC1')) {
     data = data.substring(3)
-  if (data.startsWith(':')) {
-    data = data.substring(1)
-  } else {
-    console.log("Warning: unsafe HC1: header - update to v0.0.4")
-  }
+    if (data.startsWith(':')) {
+      data = data.substring(1)
+    } else {
+      console.log("Warning: unsafe HC1: header - update to v0.0.4")
+    }
   } else {
     console.log("Warning: no HC1: header - update to v0.0.4")
   }
