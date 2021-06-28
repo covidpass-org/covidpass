@@ -83,6 +83,7 @@ exports.Payload = class {
     this.img2x = img2x
 
     this.raw = rawData
+    this.dark = dark
 
     this.name = name
     this.dose = dose

@@ -1,7 +1,6 @@
 import { NextSeo } from 'next-seo';
 
 import Form from '../components/Form'
-import Logo from '../components/Logo'
 import Card from '../components/Card'
 import Page from '../components/Page'
 
