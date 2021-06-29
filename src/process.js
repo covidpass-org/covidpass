@@ -35,11 +35,6 @@ export async function processJpeg(file) {
 }
 
 export async function processPng(file) {
-  const png = await readPngAsync(file)
-  return png
-}
-
-export async function readPngAsync(file) {
   return new Promise(async (resolve, reject) => {
     let png = new PNG({ filterType: 4 })
     
