@@ -4,8 +4,6 @@
 
 Web app for adding EU COVID-19 Vaccination Certificates to your wallets
 
-The API can be found [here](https://github.com/marvinsxtr/covidpass-api).
-
 ## Setup
 
 ```sh

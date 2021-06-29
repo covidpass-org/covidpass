@@ -13,7 +13,7 @@ export default function Privacy() {
           <div className="px-4">
             <ul className="list-disc">
               <li>
-                The whole process of generating the pass file happens locally in your browser. For the signing step, ony a hashed representation of your data is sent to the server.
+                The whole process of generating the pass file happens locally in your browser. For the signing step, only a hashed representation of your data is sent to the server.
               </li>
               <li>
                 Your data is not stored beyond the active browser session and the site does not use cookies.
@@ -34,7 +34,7 @@ export default function Privacy() {
                 By default, Apple Wallet passes are accessible from the lock screen. This can be changed in the <a href="https://support.apple.com/de-de/guide/iphone/iph9a2a69136/ios" className="underline">settings</a>.
               </li>
               <li>
-                The server provider processes data to provide this site. In order to better understand what measures they take to protect your data, please also read their <a href="https://www.hetzner.com/de/rechtliches/datenschutz/" className="underline">privacy policy</a> and the <a href="https://docs.hetzner.com/general/general-terms-and-conditions/data-privacy-faq/" className="underline">data privacy FAQ</a>
+                The server provider processes data to provide this site. In order to better understand what measures they take to protect your data, please also read their <a href="https://www.hetzner.com/de/rechtliches/datenschutz/" className="underline">privacy policy</a> and the <a href="https://docs.hetzner.com/general/general-terms-and-conditions/data-privacy-faq/" className="underline">data privacy FAQ</a>.
               </li>
             </ul>
           </div>
@@ -78,7 +78,7 @@ export default function Privacy() {
           </p>
           <div className="px-4">
             <ul className="list-disc">
-              <li>Assembling the signed pass file out of the inclomplete file generated locally and the signature</li>
+              <li>Assembling the signed pass file out of the incomplete file generated locally and the signature</li>
               <li>Saving the file on your device</li>
             </ul>
           </div>
