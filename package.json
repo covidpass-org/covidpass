@@ -4,9 +4,9 @@
   "author": "Marvin Sextro <marvin.sextro@gmail.com>",
   "private": true,
   "scripts": {
-    "dev": "node server.js",
+    "dev": "next dev",
     "build": "next build",
-    "start": "NODE_ENV=production node server.js"
+    "start": "next start"
   },
   "dependencies": {
     "base45-js": "^1.0.1",
@@ -26,7 +26,6 @@
     "worker-loader": "^3.0.7"
   },
   "devDependencies": {
-    "@svgr/webpack": "^5.5.0",
     "autoprefixer": "^10.0.4",
     "postcss": "^8.1.10",
     "tailwindcss": "^2.1.1"

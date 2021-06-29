@@ -1,6 +1,3 @@
-const PDFJS = require('pdfjs-dist')
-PDFJS.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${PDFJS.version}/pdf.worker.js`
-
 import jsQR from "jsqr"
 import {saveAs} from 'file-saver'
 
@@ -64,7 +61,7 @@ function Form() {
         return
     }
 
-    var code = jsQR(imageData.data, imageData.width, imageData.height, {
+    let code = jsQR(imageData.data, imageData.width, imageData.height, {
       inversionAttempts: 'dontInvert',
     })
 
