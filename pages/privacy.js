@@ -13,7 +13,7 @@ export default function Privacy() {
           <div className="px-4">
             <ul className="list-disc">
               <li>
-                The whole process of generating the pass file happens locally in your browser. For the signing step, ony a hashed representation of your data is sent to the server.
+                The whole process of generating the pass file happens locally in your browser. For the signing step, only a hashed representation of your data is sent to the server.
               </li>
               <li>
                 Your data is not stored beyond the active browser session and the site does not use cookies.
@@ -78,7 +78,7 @@ export default function Privacy() {
           </p>
           <div className="px-4">
             <ul className="list-disc">
-              <li>Assembling the signed pass file out of the inclomplete file generated locally and the signature</li>
+              <li>Assembling the signed pass file out of the incomplete file generated locally and the signature</li>
               <li>Saving the file on your device</li>
             </ul>
           </div>
