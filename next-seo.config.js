@@ -15,12 +15,12 @@ export default {
   additionalLinkTags: [
     {
       rel: 'icon',
-      href: 'https://covidpass.marvinsextro.de/favicon.png',
+      href: 'https://covidpass.marvinsextro.de/favicon.ico',
     },
     {
       rel: 'apple-touch-icon',
-      href: 'https://covidpass.marvinsextro.de/favicon.png',
-      sizes: '96x96'
+      href: 'https://covidpass.marvinsextro.de/apple-touch-icon.png',
+      sizes: '180x180'
     },
   ]
 }

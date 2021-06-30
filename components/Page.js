@@ -9,7 +9,7 @@ function Page({ content }) {
     <div className="md:w-2/3 xl:w-2/5 md:mx-auto flex flex-col min-h-screen justify-center px-5 py-12">
       <Head>
         <title>CovidPass</title>
-        <link rel="icon" href="/favicon.png" />
+        <link rel="icon" href="/favicon.ico" />
       </Head>
       <div>
         <main className="flex flex-col space-y-5">
