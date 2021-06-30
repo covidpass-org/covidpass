@@ -1,4 +1,3 @@
-import jpeg from 'jpeg-js'
 import {PNG} from 'pngjs'
 import * as PdfJS from 'pdfjs-dist'
 
@@ -40,11 +39,6 @@ export async function processPdf(file) {
 
     // Return PDF Image Data
     return ctx.getImageData(0, 0, canvas.width, canvas.height)
-}
-
-// Processes a JPEG File and returns it as ImageData
-export async function processJpeg(file) {
-    return jpeg.decode(file)
 }
 
 // Processes a PNG File and returns it as ImageData
