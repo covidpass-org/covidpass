@@ -1,7 +1,7 @@
 import {Constants} from "./constants";
 import {Payload, PayloadBody} from "./payload";
 import {ValueSets} from "./value_sets";
-import {toBuffer} from "./decode";
+import {toBuffer as createZip} from 'do-not-zip';
 
 const crypto = require('crypto')
 
@@ -34,11 +34,6 @@ interface GenericFields {
     backFields: Array<Field>;
 }
 
-interface ZipData {
-    path: string;
-    data: Buffer;
-}
-
 interface SignData {
     PassJsonHash: string;
     useBlackVersion: boolean;
@@ -62,7 +57,7 @@ export class PassData {
     generic: GenericFields;
 
     // Generates a sha1 hash from a given buffer
-    private static getBufferHash(buffer: Buffer): string {
+    private static getBufferHash(buffer: Buffer | string): string {
         const sha = crypto.createHash('sha1');
         sha.update(buffer);
         return sha.digest('hex');
@@ -107,7 +102,7 @@ export class PassData {
         const pass: PassData = new PassData(payload, qrCode);
 
         // Create new zip
-        const zip: Array<ZipData> = [];
+        const zip = [] as { path: string; data: Buffer | string }[];
 
         // Adding required fields
 
@@ -150,7 +145,7 @@ export class PassData {
         // Add signature to zip
         zip.push({path: 'signature', data: Buffer.from(manifestSignature)});
 
-        return toBuffer(zip);
+        return createZip(zip);
     }
 
     private constructor(payload: Payload, qrCode: QrCode) {

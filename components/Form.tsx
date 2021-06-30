@@ -21,6 +21,7 @@ function Form(): JSX.Element {
     const [file, setFile] = useState<File>(undefined);
 
     const [errorMessage, setErrorMessage] = useState<string>(undefined);
+    const [loading, setLoading] = useState<boolean>(false);
 
     // File Input ref
     const inputFile = useRef<HTMLInputElement>(undefined)
@@ -88,9 +89,11 @@ function Form(): JSX.Element {
     // Add Pass to wallet
     async function addToWallet(event: FormEvent<HTMLFormElement>) {
         event.preventDefault();
+        setLoading(true);
 
         if (!file && !qrCode) {
             setErrorMessage("Please scan a QR Code, or select a file to scan")
+            setLoading(false);
             return;
         }
 
@@ -108,8 +111,10 @@ function Form(): JSX.Element {
 
             const passBlob = new Blob([pass], {type: "application/vnd.apple.pkpass"});
             saveAs(passBlob, 'covid.pkpass');
+            setLoading(false);
         } catch (e) {
             setErrorMessage(e.toString());
+            setLoading(false);
         }
     }
 
@@ -210,7 +215,7 @@ function Form(): JSX.Element {
                                     className="focus:outline-none bg-green-600 py-2 px-3 text-white font-semibold rounded-md disabled:bg-gray-400">
                                 Add to Wallet
                             </button>
-                            <div id="spin" style={{"display": "none"}}>
+                            <div id="spin" className={loading ? undefined : "hidden"}>
                                 <svg className="animate-spin h-5 w-5 ml-2" viewBox="0 0 24 24">
                                     <circle className="opacity-0" cx="12" cy="12" r="10" stroke="currentColor"
                                             strokeWidth="4"/>

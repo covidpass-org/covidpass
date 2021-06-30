@@ -6,60 +6,50 @@ const zlib = require('pako')
 const cbor = require('cbor-js')
 
 export function typedArrayToBufferSliced(array) {
-  return array.buffer.slice(array.byteOffset, array.byteLength + array.byteOffset)
+    return array.buffer.slice(array.byteOffset, array.byteLength + array.byteOffset)
 }
 
 export function typedArrayToBuffer(array) {
-  var buffer = new ArrayBuffer(array.length)
+    var buffer = new ArrayBuffer(array.length)
 
-  array.map(function(value, i) {
-    buffer[i] = value
-  })
-  return array.buffer
-}
-
-export function toBuffer(ab) {
-  var buf = Buffer.alloc(ab.byteLength)
-  var view = new Uint8Array(ab)
-
-  for (var i = 0; i < buf.length; ++i) {
-      buf[i] = view[i]
-  }
-  return buf
+    array.map(function (value, i) {
+        buffer[i] = value
+    })
+    return array.buffer
 }
 
 export function decodeData(data) {
-  data = data.toString('ASCII')
+    data = data.toString('ASCII')
 
-  if (data.startsWith('HC1')) {
-    data = data.substring(3)
-    if (data.startsWith(':')) {
-      data = data.substring(1)
+    if (data.startsWith('HC1')) {
+        data = data.substring(3)
+        if (data.startsWith(':')) {
+            data = data.substring(1)
+        } else {
+            console.log("Warning: unsafe HC1: header - update to v0.0.4")
+        }
     } else {
-      console.log("Warning: unsafe HC1: header - update to v0.0.4")
+        console.log("Warning: no HC1: header - update to v0.0.4")
     }
-  } else {
-    console.log("Warning: no HC1: header - update to v0.0.4")
-  }
 
-  data = base45.decode(data)
+    data = base45.decode(data)
 
-  if (data[0] == 0x78) {
-    data = zlib.inflate(data)
-  }
+    if (data[0] == 0x78) {
+        data = zlib.inflate(data)
+    }
 
-  data = cbor.decode(typedArrayToBuffer(data))
+    data = cbor.decode(typedArrayToBuffer(data))
 
-  if (!Array.isArray(data)) {
-    throw new Error('Expecting Array')
-  }
+    if (!Array.isArray(data)) {
+        throw new Error('Expecting Array')
+    }
 
-  if (data.length !== 4) {
-    throw new Error('Expecting Array of length 4')
-  }
+    if (data.length !== 4) {
+        throw new Error('Expecting Array of length 4')
+    }
 
-  let plaintext = data[2]
-  let decoded = cbor.decode(typedArrayToBufferSliced(plaintext))
+    let plaintext = data[2]
+    let decoded = cbor.decode(typedArrayToBufferSliced(plaintext))
 
-  return decoded
+    return decoded
 }
