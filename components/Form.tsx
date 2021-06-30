@@ -1,143 +1,31 @@
+import Card from "./Card";
 import {saveAs} from 'file-saver'
-import {BrowserQRCodeReader} from '@zxing/browser'
-import React, {useEffect, useRef, useState} from "react"
-import {decodeData} from "../src/decode"
-import {processPdf, processPng} from "../src/process"
-import {createPass} from "../src/pass"
-import Card from "../components/Card"
-import Alert from "../components/Alert"
-import jsQR from "jsqr";
+import React, {FormEvent, useEffect, useRef, useState} from "react";
+import {BrowserQRCodeReader} from "@zxing/browser";
+import {Result} from "@zxing/library";
+import {PayloadBody} from "../src/payload";
+import {getPayloadBodyFromFile, getPayloadBodyFromQR} from "../src/process";
+import {PassData} from "../src/pass";
+import Alert from "./Alert";
 
-export default Form
+function Form(): JSX.Element {
 
-function Form() {
+    // Whether camera is open or not
+    const [isCameraOpen, setIsCameraOpen] = useState<boolean>(false);
 
-    function readFileAsync(file) {
-        return new Promise((resolve, reject) => {
-            let reader = new FileReader();
-
-            reader.onload = () => {
-                resolve(reader.result);
-            };
-
-            reader.onerror = reject;
-
-            reader.readAsArrayBuffer(file);
-        })
-    }
-
-    const error = function (heading, message) {
-        const alert = document.getElementById('alert')
-        alert.setAttribute('style', null)
-
-        document.getElementById('heading').innerHTML = heading
-        document.getElementById('message').innerHTML = message
-
-        document.getElementById('spin').style.display = 'none'
-    }
-
-    const processFile = async function () {
-        console.log(qrCode)
-        console.log(file)
-        if (!qrCode && !file) {
-            error("Error", "Please capture a QR Code or select a file to scan");
-            return;
-        }
-
-        document.getElementById('spin').style.display = 'block'
-
-        let rawData;
-
-        if (file) {
-            let imageData
-            const fileBuffer = await readFileAsync(file)
-
-            switch (file.type) {
-                case 'application/pdf':
-                    console.log('pdf')
-                    imageData = await processPdf(fileBuffer)
-                    break
-                case 'image/png':
-                    console.log('png')
-                    imageData = await processPng(fileBuffer)
-                    break
-                default:
-                    error('Error', 'Invalid file type')
-                    return
-            }
-
-            let code = jsQR(imageData.data, imageData.width, imageData.height, {
-                inversionAttempts: 'dontInvert',
-            })
-
-            rawData = code.data;
-
-        } else {
-            rawData = qrCode.getText()
-        }
-
-        if (rawData) {
-            let decoded
-
-            try {
-                decoded = decodeData(rawData)
-            } catch (e) {
-                error('Invalid QR code found', 'Try another method to select your certificate')
-                return;
-            }
-
-            return {decoded: decoded, raw: rawData}
-        } else {
-            error('No QR code found', 'Try another method to select your certificate')
-        }
-    }
-
-    const addToWallet = async function (event) {
-        event.preventDefault()
-
-        let result
-
-        try {
-            result = await processFile()
-        } catch (e) {
-            error('Error:', 'Could not extract QR code data from certificate')
-        }
-
-        if (typeof result === 'undefined') {
-            return
-        }
-
-        const color = document.getElementById('color').value
-
-        try {
-            const pass = await createPass(
-                {
-                    decoded: result.decoded,
-                    raw: result.raw,
-                    color: color
-                }
-            )
-
-            if (!pass) {
-                error('Error:', "Something went wrong.")
-            } else {
-                const passBlob = new Blob([pass], {type: "application/vnd.apple.pkpass"});
-                saveAs(passBlob, 'covid.pkpass')
-            }
-        } catch (e) {
-            error('Error:', e.message)
-        } finally {
-            document.getElementById('spin').style.display = 'none'
-        }
-    }
-
-    const [isCameraOpen, setIsCameraOpen] = useState(false);
+    // Global camera controls
     const [globalControls, setGlobalControls] = useState(undefined);
-    const [qrCode, setQrCode] = useState(undefined);
-    const [file, setFile] = useState(undefined);
 
-    const inputFile = useRef(undefined)
+    // Currently selected QR Code / File. Only one of them is set.
+    const [qrCode, setQrCode] = useState<Result>(undefined);
+    const [file, setFile] = useState<File>(undefined);
 
+    const [errorMessage, setErrorMessage] = useState<string>(undefined);
+
+    // File Input ref
+    const inputFile = useRef<HTMLInputElement>(undefined)
+
+    // Add event listener to listen for file change events
     useEffect(() => {
         if (inputFile && inputFile.current) {
             inputFile.current.addEventListener('input', () => {
@@ -150,12 +38,12 @@ function Form() {
         }
     }, [inputFile])
 
+    // Show file Dialog
     async function showFileDialog() {
         inputFile.current.click();
-
     }
 
-
+    // Hide camera view
     async function hideCameraView() {
         if (globalControls !== undefined) {
             globalControls.stop();
@@ -163,36 +51,72 @@ function Form() {
         setIsCameraOpen(false);
     }
 
+    // Show camera view
     async function showCameraView() {
+        // Create new QR Code Reader
         const codeReader = new BrowserQRCodeReader();
 
         // Needs to be called before any camera can be accessed
         await BrowserQRCodeReader.listVideoInputDevices();
 
         // Get preview Element to show camera stream
-        const previewElem = document.querySelector('#cameraPreview');
+        const previewElem: HTMLVideoElement = document.querySelector('#cameraPreview');
 
-        setGlobalControls(await codeReader.decodeFromVideoDevice(undefined, previewElem, (result, error, controls) => {
+        // Set Global controls
+        setGlobalControls(
+            // Start decoding from video device
+            await codeReader.decodeFromVideoDevice(undefined,
+                previewElem,
+                (result, error, controls) => {
+                    if (result !== undefined) {
+                        setQrCode(result);
+                        setFile(undefined);
 
-            if (result !== undefined) {
-                setQrCode(result);
-                setFile(undefined);
+                        controls.stop();
 
-                controls.stop();
-
-                // Reset
-                setGlobalControls(undefined);
-                setIsCameraOpen(false);
-            }
-        }));
+                        // Reset
+                        setGlobalControls(undefined);
+                        setIsCameraOpen(false);
+                    }
+                }
+            )
+        );
 
         setIsCameraOpen(true);
     }
 
+    // Add Pass to wallet
+    async function addToWallet(event: FormEvent<HTMLFormElement>) {
+        event.preventDefault();
+
+        if (!file && !qrCode) {
+            setErrorMessage("Please scan a QR Code, or select a file to scan")
+            return;
+        }
+
+        const color = (document.getElementById('color') as HTMLSelectElement).value;
+        let payloadBody: PayloadBody;
+
+        try {
+            if (file) {
+                payloadBody = await getPayloadBodyFromFile(file, color);
+            } else {
+                payloadBody = await getPayloadBodyFromQR(qrCode, color);
+            }
+
+            let pass = await PassData.generatePass(payloadBody);
+
+            const passBlob = new Blob([pass], {type: "application/vnd.apple.pkpass"});
+            saveAs(passBlob, 'covid.pkpass');
+        } catch (e) {
+            setErrorMessage(e.toString());
+        }
+    }
+
     return (
         <div>
-            <form className="space-y-5" id="form" onSubmit={(e) => addToWallet(e)}>
-                <Card step={1} heading="Select Certificate" content={
+            <form className="space-y-5" id="form" onSubmit={addToWallet}>
+                <Card step="1" heading="Select Certificate" content={
                     <div className="space-y-5">
                         <p>
                             Please select the certificate screenshot or (scanned) PDF page, which you received from your
@@ -214,7 +138,8 @@ function Form() {
                             </button>
                         </div>
 
-                        <video id="cameraPreview" className={`${isCameraOpen ? undefined : "hidden"} rounded-md w-full`}/>
+                        <video id="cameraPreview"
+                               className={`${isCameraOpen ? undefined : "hidden"} rounded-md w-full`}/>
                         <input type='file'
                                id='file'
                                accept="application/pdf,image/png"
@@ -228,7 +153,7 @@ function Form() {
                                  stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"/>
                             </svg>
-                            <span className="w-full">
+                            <span className="w-full truncate">
                                 {
                                     qrCode && 'Found QR Code!'
                                 }
@@ -236,11 +161,11 @@ function Form() {
                                     file && file.name
                                 }
                             </span>
-                        </div>}
-
+                        </div>
+                        }
                     </div>
                 }/>
-                <Card step={2} heading="Pick a Color" content={
+                <Card step="2" heading="Pick a Color" content={
                     <div className="space-y-5">
                         <p>
                             Pick a background color for your pass.
@@ -267,7 +192,7 @@ function Form() {
                         </div>
                     </div>
                 }/>
-                <Card step={3} heading="Add to Wallet" content={
+                <Card step="3" heading="Add to Wallet" content={
                     <div className="space-y-5">
                         <p>
                             Data privacy is of special importance when processing health-related data.
@@ -281,7 +206,7 @@ function Form() {
                             </p>
                         </label>
                         <div className="flex flex-row items-center justify-start">
-                            <button id="download" type="download"
+                            <button id="download" type="submit"
                                     className="focus:outline-none bg-green-600 py-2 px-3 text-white font-semibold rounded-md disabled:bg-gray-400">
                                 Add to Wallet
                             </button>
@@ -297,8 +222,12 @@ function Form() {
                     </div>
                 }/>
             </form>
-            <Alert/>
             <canvas id="canvas" style={{display: "none"}}/>
+            {
+                errorMessage && <Alert errorMessage={errorMessage} onClose={() => setErrorMessage(undefined)}/>
+            }
         </div>
     )
 }
+
+export default Form;

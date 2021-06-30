@@ -1,7 +1,7 @@
 import Document, {Html, Head, Main, NextScript} from 'next/document'
 
-class CustomDocument extends Document {
-    render() {
+class MyDocument extends Document {
+    render(): JSX.Element {
         return (
             <Html lang="en">
                 <Head/>
@@ -14,4 +14,4 @@ class CustomDocument extends Document {
     }
 }
 
-export default CustomDocument
+export default MyDocument;
