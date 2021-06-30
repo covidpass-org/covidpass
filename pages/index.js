@@ -20,13 +20,7 @@ export default function Home() {
               width: 1000,
               height: 500,
               alt: 'CovidPass: Add your EU Digital Covid Vaccination Certificates to your favorite wallet app.',
-            },
-            {
-              url: 'https://covidpass.marvinsextro.de/favicon.png',
-              width: 500,
-              height: 500,
-              alt: 'CovidPass',
-            },
+            }
           ],
           site_name: 'CovidPass',
         }}
