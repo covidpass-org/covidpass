@@ -126,7 +126,7 @@ function Form() {
         <Card step={1} heading="Select Certificate" content={
           <div className="space-y-5">
             <p>
-              Please select the certificate, which you received from your doctor, pharmacy, vaccination centre or online. Note that taking a picture does not work on most devices yet.
+              Please select the certificate screenshot or (scanned) PDF page, which you received from your doctor, pharmacy, vaccination centre or online. Note that taking a picture does not work on most devices yet.
             </p>
             <input
               className="w-full"
