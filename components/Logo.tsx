@@ -1,8 +1,6 @@
 import Link from 'next/link'
 
-export default Logo
-
-function Logo() {
+function Logo(): JSX.Element {
     return (
         <Link href="/">
             <a className="flex flex-row items-center p-3 justify-center space-x-1">
@@ -24,3 +22,5 @@ function Logo() {
         </Link>
     )
 }
+
+export default Logo
