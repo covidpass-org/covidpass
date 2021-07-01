@@ -2,6 +2,7 @@ import {Constants} from "./constants";
 import {Payload, PayloadBody} from "./payload";
 import {ValueSets} from "./value_sets";
 import {toBuffer as createZip} from 'do-not-zip';
+import {v4 as uuid4} from 'uuid';
 
 const crypto = require('crypto')
 
@@ -26,7 +27,7 @@ interface Field {
     textAlignment?: string;
 }
 
-interface GenericFields {
+interface PassStructureDictionary {
     headerFields: Array<Field>;
     primaryFields: Array<Field>;
     secondaryFields: Array<Field>;
@@ -54,7 +55,7 @@ export class PassData {
     serialNumber: string;
     barcodes: Array<QrCode>;
     barcode: QrCode;
-    generic: GenericFields;
+    generic: PassStructureDictionary;
 
     // Generates a sha1 hash from a given buffer
     private static getBufferHash(buffer: Buffer | string): string {
@@ -152,7 +153,7 @@ export class PassData {
         this.labelColor = payload.labelColor;
         this.foregroundColor = payload.foregroundColor;
         this.backgroundColor = payload.backgroundColor;
-        this.serialNumber = payload.uvci;
+        this.serialNumber = uuid4(); // Generate random UUID v4
         this.barcodes = [qrCode];
         this.barcode = qrCode;
         this.generic = {
