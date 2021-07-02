@@ -1,6 +1,10 @@
+import {useTranslation} from 'next-i18next';
+
 import Link from 'next/link'
 
 function Logo(): JSX.Element {
+    const { t } = useTranslation('common');
+
     return (
         <Link href="/">
             <a className="flex flex-row items-center p-3 justify-center space-x-1">
@@ -16,7 +20,7 @@ function Logo(): JSX.Element {
                     </g>
                 </svg>
                 <h1 className="text-3xl font-bold">
-                    CovidPass
+                    {t('common:title')}
                 </h1>
             </a>
         </Link>

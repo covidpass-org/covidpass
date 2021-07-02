@@ -1,8 +1,9 @@
+import {toBuffer as createZip} from 'do-not-zip';
+import {v4 as uuid4} from 'uuid';
+
 import {Constants} from "./constants";
 import {Payload, PayloadBody} from "./payload";
 import {ValueSets} from "./value_sets";
-import {toBuffer as createZip} from 'do-not-zip';
-import {v4 as uuid4} from 'uuid';
 
 const crypto = require('crypto')
 
@@ -79,7 +80,7 @@ export class PassData {
         })
 
         if (response.status !== 200) {
-            throw Error("Error while singing Pass on server")
+            throw Error('signatureFailed')
         }
 
         return await response.arrayBuffer()

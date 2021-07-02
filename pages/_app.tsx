@@ -1,8 +1,9 @@
-import 'tailwindcss/tailwind.css'
+import 'tailwindcss/tailwind.css';
 
 import {DefaultSeo} from 'next-seo';
 import SEO from '../next-seo.config';
-import type {AppProps} from 'next/app'
+import type {AppProps} from 'next/app';
+import { appWithTranslation } from 'next-i18next';
 
 function MyApp({Component, pageProps}: AppProps): JSX.Element {
     return (
@@ -13,4 +14,4 @@ function MyApp({Component, pageProps}: AppProps): JSX.Element {
     )
 }
 
-export default MyApp;
+export default appWithTranslation(MyApp);

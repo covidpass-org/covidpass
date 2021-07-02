@@ -23,7 +23,7 @@ export async function getPayloadBodyFromFile(file: File, color: string): Promise
             imageData = await getImageDataFromPng(fileBuffer)
             break
         default:
-            throw Error('Invalid File Type')
+            throw Error('invalidFileType')
     }
 
     let code: QRCode;
@@ -33,11 +33,11 @@ export async function getPayloadBodyFromFile(file: File, color: string): Promise
             inversionAttempts: "dontInvert",
         });
     } catch (e) {
-        throw Error("Could not decode QR Code from File");
+        throw Error('couldNotDecode');
     }
 
     if (code == undefined) {
-        throw Error("Could not find QR Code in provided File")
+        throw Error('couldNotFindQrCode')
     }
 
     // Get raw data
@@ -49,7 +49,7 @@ export async function getPayloadBodyFromFile(file: File, color: string): Promise
     try {
         decodedData = decodeData(rawData);
     } catch (e) {
-        throw Error("Invalid QR Code")
+        throw Error('invalidQrCode')
     }
 
     return {
@@ -70,7 +70,7 @@ export async function getPayloadBodyFromQR(qrCodeResult: Result, color: string):
     try {
         decodedData = decodeData(rawData);
     } catch (e) {
-        throw Error("Invalid QR Code")
+        throw Error("invalidQrCode")
     }
 
     return {
