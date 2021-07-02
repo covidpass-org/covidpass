@@ -166,7 +166,7 @@ function Privacy(): JSX.Element {
     )
 }
 
-export async function getStaticProps({ locale }) {
+export async function getServerSideProps({ locale }) {
     return {
         props: {
             ...(await serverSideTranslations(locale, ['index', 'privacy', 'common'])),
