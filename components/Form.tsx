@@ -3,6 +3,7 @@ import React, {FormEvent, useEffect, useRef, useState} from "react";
 import {BrowserQRCodeReader} from "@zxing/browser";
 import {Result} from "@zxing/library";
 import {useTranslation} from 'next-i18next';
+import Link from 'next/link';
 
 import Card from "./Card";
 import Alert from "./Alert";
@@ -203,18 +204,22 @@ function Form(): JSX.Element {
                 <Card step="3" heading={t('index:addToWallet')} content={
                     <div className="space-y-5">
                         <p>
-                            {t('index:dataPrivacyDescription')}&nbsp;
-                            <a href="/privacy">
-                                {t('index:privacyPolicy')}
-                            </a>.
+                            {t('index:dataPrivacyDescription')}
+                            <Link href="/privacy">
+                                <a>
+                                    {t('index:privacyPolicy')}
+                                </a>
+                            </Link>.
                         </p>
                         <label htmlFor="privacy" className="flex flex-row space-x-4 items-center">
                             <input type="checkbox" id="privacy" value="privacy" required className="h-4 w-4"/>
                             <p>
                                 {t('index:iAcceptThe')}&nbsp;
-                                <a href="/privacy" className="underline">
-                                    {t('index:privacyPolicy')}
-                                </a>
+                                <Link href="/privacy">
+                                    <a className="underline">
+                                        {t('index:privacyPolicy')}
+                                    </a>
+                                </Link>.
                             </p>
                         </label>
                         <div className="flex flex-row items-center justify-start">
