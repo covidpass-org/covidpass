@@ -1,0 +1,26 @@
+iosHint: Bitte verwende unter iOS den Safari Browser.
+errorClose: Schließen
+selectCertificate: Zertifikat auswählen
+selectCertificateDescription: |
+  Scanne den QR-Code auf Deinem Zertifikat oder wähle einen Screenshot oder eine PDF-Datei mit dem QR-Code. 
+  Bitte beachte, dass die Auswahl einer Datei direkt von der Kamera nicht unterstützt wird. 
+stopCamera: Kamera stoppen
+startCamera: Kamera starten
+openFile: Datei auswählen (PDF, PNG)
+foundQrCode: QR-Code gefunden!
+pickColor: Farbe auswählen
+pickColorDescription: Wähle eine Hintergrundfarbe für Deine Karte.
+colorWhite: weiß
+colorBlack: schwarz
+colorGrey: grau
+colorGreen: grün
+colorIndigo: indigo
+colorBlue: blau
+colorPurple: lila
+colorTeal: blaugrün
+addToWallet: Zu Wallet hinzufügen
+dataPrivacyDescription: |
+  Datenschutz hat einen besonders hohen Stellenwert, wenn es um die Verarbeitung von gesundheitsbezogenen Daten geht. 
+  Damit Du eine fundierte Entscheidung triffst, lies bitte die
+iAcceptThe: Ich akzeptiere die
+privacyPolicy: Datenschutzerklärung
