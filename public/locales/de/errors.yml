@@ -1,0 +1,14 @@
+noFileOrQrCode: Bitte scannen Sie einen QR-Code, oder wählen Sie eine Datei aus
+signatureFailed: Fehler beim Signieren der Karte auf dem Server
+decodingFailed: Dekodierung der QR-Code-Daten fehlgeschlagen
+invalidColor: Ungültige Farbe
+vaccinationInfo: Impfinformationen konnten nicht gelesen werden
+nameMissing: Name konnte nicht gelesen werden
+dobMissing: Geburtsdatum konnte nicht gelesen werden
+invalidMedicalProduct: Ungültiges Medizinprodukt
+invalidCountryCode: Ungültiger Ländercode
+invalidManufacturer: Ungültiger Hersteller
+invalidFileType: Ungültiger Dateityp
+couldNotDecode: Dekodierung aus QR-Code fehlgeschlagen
+couldNotFindQrCode: QR-Code konnte in der ausgewählten Datei nicht gefunden werden
+invalidQrCode: Ungültiger QR-Code
