@@ -18,6 +18,7 @@
     "jpeg-js": "^0.4.3",
     "jsqr": "^1.4.0",
     "next": "latest",
+    "next-i18next": "^8.5.1",
     "next-seo": "^4.26.0",
     "node-fetch": "^2.6.1",
     "pdfjs-dist": "^2.5.207",

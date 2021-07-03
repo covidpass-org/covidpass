@@ -1,14 +1,18 @@
-import Card from "./Card";
-import {saveAs} from 'file-saver'
+import {saveAs} from 'file-saver';
 import React, {FormEvent, useEffect, useRef, useState} from "react";
 import {BrowserQRCodeReader} from "@zxing/browser";
 import {Result} from "@zxing/library";
+import {useTranslation} from 'next-i18next';
+import Link from 'next/link';
+
+import Card from "./Card";
+import Alert from "./Alert";
 import {PayloadBody} from "../src/payload";
 import {getPayloadBodyFromFile, getPayloadBodyFromQR} from "../src/process";
 import {PassData} from "../src/pass";
-import Alert from "./Alert";
 
 function Form(): JSX.Element {
+    const { t } = useTranslation(['index', 'errors', 'common']);
 
     // Whether camera is open or not
     const [isCameraOpen, setIsCameraOpen] = useState<boolean>(false);
@@ -20,8 +24,14 @@ function Form(): JSX.Element {
     const [qrCode, setQrCode] = useState<Result>(undefined);
     const [file, setFile] = useState<File>(undefined);
 
-    const [errorMessage, setErrorMessage] = useState<string>(undefined);
+    const [errorMessage, _setErrorMessage] = useState<string>(undefined);
     const [loading, setLoading] = useState<boolean>(false);
+
+    // Check if there is a translation and replace message accordingly
+    const setErrorMessage = (message: string) => {
+        const translation = t('errors:'.concat(message));
+        _setErrorMessage(translation !== message ? translation : message);
+    };
 
     // File Input ref
     const inputFile = useRef<HTMLInputElement>(undefined)
@@ -92,7 +102,7 @@ function Form(): JSX.Element {
         setLoading(true);
 
         if (!file && !qrCode) {
-            setErrorMessage("Please scan a QR Code, or select a file to scan")
+            setErrorMessage('noFileOrQrCode')
             setLoading(false);
             return;
         }
@@ -113,7 +123,7 @@ function Form(): JSX.Element {
             saveAs(passBlob, 'covid.pkpass');
             setLoading(false);
         } catch (e) {
-            setErrorMessage(e.toString());
+            setErrorMessage(e.message);
             setLoading(false);
         }
     }
@@ -121,25 +131,21 @@ function Form(): JSX.Element {
     return (
         <div>
             <form className="space-y-5" id="form" onSubmit={addToWallet}>
-                <Card step="1" heading="Select Certificate" content={
+                <Card step="1" heading={t('index:selectCertificate')} content={
                     <div className="space-y-5">
-                        <p>
-                            Please select the certificate screenshot or (scanned) PDF page, which you received from your
-                            doctor, pharmacy, vaccination centre or online. Note that taking a picture does not work on
-                            most devices yet.
-                        </p>
+                        <p>{t('index:selectCertificateDescription')}</p>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                             <button
                                 type="button"
                                 onClick={isCameraOpen ? hideCameraView : showCameraView}
                                 className="focus:outline-none h-20 bg-gray-500 hover:bg-gray-700 text-white font-semibold rounded-md">
-                                {isCameraOpen ? "Stop Camera" : "Start Camera"}
+                                {isCameraOpen ? t('index:stopCamera') : t('index:startCamera')}
                             </button>
                             <button
                                 type="button"
                                 onClick={showFileDialog}
                                 className="focus:outline-none h-20 bg-gray-500 hover:bg-gray-700 text-white font-semibold rounded-md">
-                                Open File (PDF, PNG)
+                                {t('index:openFile')}
                             </button>
                         </div>
 
@@ -160,7 +166,7 @@ function Form(): JSX.Element {
                             </svg>
                             <span className="w-full truncate">
                                 {
-                                    qrCode && 'Found QR Code!'
+                                    qrCode && t('index:foundQrCode')
                                 }
                                 {
                                     file && file.name
@@ -170,22 +176,20 @@ function Form(): JSX.Element {
                         }
                     </div>
                 }/>
-                <Card step="2" heading="Pick a Color" content={
+                <Card step="2" heading={t('index:pickColor')} content={
                     <div className="space-y-5">
-                        <p>
-                            Pick a background color for your pass.
-                        </p>
+                        <p>{t('index:pickColorDescription')}</p>
                         <div className="relative inline-block w-full">
                             <select name="color" id="color"
                                     className="bg-gray-200 dark:bg-gray-900 focus:outline-none w-full h-10 pl-3 pr-6 text-base rounded-md appearance-none cursor-pointer">
-                                <option value="white">white</option>
-                                <option value="black">black</option>
-                                <option value="grey">grey</option>
-                                <option value="green">green</option>
-                                <option value="indigo">indigo</option>
-                                <option value="blue">blue</option>
-                                <option value="purple">purple</option>
-                                <option value="teal">teal</option>
+                                <option value="white">{t('index:colorWhite')}</option>
+                                <option value="black">{t('index:colorBlack')}</option>
+                                <option value="grey">{t('index:colorGrey')}</option>
+                                <option value="green">{t('index:colorGreen')}</option>
+                                <option value="indigo">{t('index:colorIndigo')}</option>
+                                <option value="blue">{t('index:colorBlue')}</option>
+                                <option value="purple">{t('index:colorPurple')}</option>
+                                <option value="teal">{t('index:colorTeal')}</option>
                             </select>
                             <div className="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
                                 <svg className="w-5 h-5 fill-current" viewBox="0 0 20 20">
@@ -197,23 +201,31 @@ function Form(): JSX.Element {
                         </div>
                     </div>
                 }/>
-                <Card step="3" heading="Add to Wallet" content={
+                <Card step="3" heading={t('index:addToWallet')} content={
                     <div className="space-y-5">
                         <p>
-                            Data privacy is of special importance when processing health-related data.
-                            In order for you to make an informed decision, please read the <a href="/privacy">Privacy
-                            Policy</a>.
+                            {t('index:dataPrivacyDescription')}
+                            <Link href="/privacy">
+                                <a>
+                                    {t('index:privacyPolicy')}
+                                </a>
+                            </Link>.
                         </p>
                         <label htmlFor="privacy" className="flex flex-row space-x-4 items-center">
                             <input type="checkbox" id="privacy" value="privacy" required className="h-4 w-4"/>
                             <p>
-                                I accept the <a href="/privacy" className="underline">Privacy Policy</a>
+                                {t('index:iAcceptThe')}&nbsp;
+                                <Link href="/privacy">
+                                    <a className="underline">
+                                        {t('index:privacyPolicy')}
+                                    </a>
+                                </Link>.
                             </p>
                         </label>
                         <div className="flex flex-row items-center justify-start">
                             <button id="download" type="submit"
                                     className="focus:outline-none bg-green-600 py-2 px-3 text-white font-semibold rounded-md disabled:bg-gray-400">
-                                Add to Wallet
+                                {t('index:addToWallet')}
                             </button>
                             <div id="spin" className={loading ? undefined : "hidden"}>
                                 <svg className="animate-spin h-5 w-5 ml-2" viewBox="0 0 24 24">

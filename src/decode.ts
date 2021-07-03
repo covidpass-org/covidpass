@@ -26,11 +26,7 @@ export function decodeData(data: string): Object {
 
         if (data.startsWith(':')) {
             data = data.substring(1);
-        } else {
-            console.log("Warning: unsafe HC1: header");
         }
-    } else {
-        console.log("Warning: no HC1: header");
     }
 
     var arrayBuffer: Uint8Array = base45.decode(data);
@@ -41,12 +37,8 @@ export function decodeData(data: string): Object {
 
     var payloadArray: Array<Uint8Array> = cbor.decode(typedArrayToBuffer(arrayBuffer));
 
-    if (!Array.isArray(payloadArray)) {
-        throw new Error('Expecting Array');
-    }
-
-    if (payloadArray.length !== 4) {
-        throw new Error('Expecting Array of length 4');
+    if (!Array.isArray(payloadArray) || payloadArray.length !== 4) {
+        throw new Error('decodingFailed');
     }
 
     var plaintext: Uint8Array = payloadArray[2];

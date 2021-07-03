@@ -1,0 +1,56 @@
+gdprNotice: |
+  Unsere Datenschutzerklärung orientiert sich an den Vorgaben des europäischen Gesetzgebers für die Umsetzung der Datenschutz-Grundverordnung (DSGVO).
+generalInfo: Generelle Informationen
+generalInfoProcess: |
+  Der gesamte Prozess der Erstellung der Karte findet lokal im Browser statt.
+  Für den Schritt des Signierens wird nur eine gehashte Repräsentation der Daten an den Server geschickt.
+generalInfoStoring: Ihre Daten werden nicht über die aktive Browsersitzung hinaus gespeichert und es werden keine Cookies verwendet.
+generalInfoThirdParties: Keine Daten werden an Dritte weitergeleitet.
+generalInfoHttps: Wir übertragen Ihre Daten sicher über https.
+generalInfoLocation: Unser Server befindet sich in Nürnberg.
+generalInfoGitHub: Der Quellcode dieser Seite ist öffentlich verfügbar auf
+generalInfoLockScreen: Standardmäßig sind Apple Wallet Karten vom Sperrbildschirm erreichbar. Um dies zu ändern, gehen Sie in die 
+settings: Einstellungen
+generalInfoProvider: |
+  Der Server-Anbieter verarbeitet Daten, um diese Seite bereitzustellen.
+  Um besser zu verstehen, welche Maßnahmen der Anbieter ergreift, um ihre Daten zu schützen, lesen Sie bitte auch die
+privacyPolicy: Datenschutzerklärung
+andThe: und das
+dataPrivacyFaq: Datenschutz FAQ
+contact: Kontakt
+email: E-Mail
+website: Webseite
+process: Vereinfachte Erklärung des Prozesses
+processFirst: Die folgenden Schritte werden zunächst in Ihrem Browser durchgeführt
+processSecond: Dann werden die folgenden Schritte auf unserem Server abgearbeitet
+processThird: Zuletzt werden die folgenden Schritte in Ihrem Browser durchgeführt
+processRecognizing: Erkennung und Extraktion der QR-Code Daten aus dem von Ihnen gewählten Zertifikat
+processDecoding: Dekodierung Ihrer persönlichen und gesundheitsbezogenen Daten aus den QR-Code Daten
+processAssembling: Erstellung einer unvollständigen Karten-Datei aus Ihren Daten
+processGenerating: Generierung einer Datei, welche Hashes der Daten aus der Karten-Datei beinhaltet
+processSending: Senden der Datei mit den Hashes an unseren Server
+processReceiving: Empfangen und kontrollieren der lokal generierten Hashes
+processSigning: Signieren der Datei, welche die Hashes beinhaltet
+processSendingBack: Zurücksenden der Signatur
+processCompleting: Erstellung der signierten Karten-Datei aus der unvollständigen lokal generierten Datei und der Signatur
+processSaving: Speichern der Datei auf dem Endgerät
+locallyProcessedData: Lokal verarbeitete Daten
+the: Das
+schema: Digital Covid Certificate Schema
+specification: enthält eine detaillierte Spezifikation darüber, welche Daten in dem QR-Code enthalten sind und lokal verarbeitet werden können.
+serverProvider: Server-Anbieter
+serverProviderIs: Unser Server-Anbieter ist
+logFiles: Die folgenden Daten können gesammelt und in den Server Log-Dateien gespeichert werden
+logFilesBrowser: Browser Typ und Version
+logFilesOs: Verwendetes Betriebssystem
+logFilesReferrer: Die Website von der unsere Seite erreicht wird (sog. Referrer)
+logFilesTime: Das Datum und die Uhrzeit des Zugriffs
+logFilesIpAddress: Die pseudonymisierten IP-Adressen
+rights: Ihre Rechte
+rightsGranted: In Übereinstimmung mit der DSGVO haben Sie die folgenden Rechte
+rightsAccess: Das Recht auf Zugriff auf Ihre Daten; Sie haben das Recht, zu erfahren welche Daten über Sie gesammelt wurden und wie diese verarbeitet wurden.
+rightsErasure:  Das Recht, vergessen zu werden; Löschung Ihrer persönlichen Daten.
+rightsRectification: Recht der Richtigstellung; Sie haben das Recht, inkorrekte Daten zu korrigieren.
+rightsPortability:  Recht auf Portabilität; Sie haben das Recht, Ihre Daten von einem informationsverarbeitenden System in ein anderes zu übertragen.
+thirdParties: Verlinkte Dritte
+appleSync: Apple kann Ihre Apple Wallet Karten über iCloud synchronisieren

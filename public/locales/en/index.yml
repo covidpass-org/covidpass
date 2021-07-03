@@ -1,0 +1,26 @@
+iosHint: On iOS, please use the Safari Browser.
+errorClose: Close
+selectCertificate: Select Certificate
+selectCertificateDescription: |
+  Please scan the QR code on your certificate or select a screenshot or PDF page with the QR code. 
+  Note that selecting a file directly from camera is not supported.
+stopCamera: Stop Camera
+startCamera: Start Camera
+openFile: Select File (PDF, PNG)
+foundQrCode: Found QR Code!
+pickColor: Pick a Color
+pickColorDescription: Pick a background color for your pass.
+colorWhite: white
+colorBlack: black
+colorGrey: grey
+colorGreen: green
+colorIndigo: indigo
+colorBlue: blue
+colorPurple: purple
+colorTeal: teal
+addToWallet: Add to Wallet
+dataPrivacyDescription: |
+  Data privacy is of special importance when processing health-related data. 
+  In order for you to make an informed decision, please read the
+iAcceptThe: I accept the
+privacyPolicy: Privacy Policy

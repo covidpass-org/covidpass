@@ -36,7 +36,7 @@ export class Payload {
         let colors = Constants.COLORS;
 
         if (!(body.color in colors)) {
-            throw new Error('Invalid color');
+            throw new Error('invalidColor');
         }
 
         const dark = body.color != 'white'
@@ -48,15 +48,15 @@ export class Payload {
         const dateOfBirthInformation = body.decodedData['-260']['1']['dob'];
 
         if (vaccinationInformation == undefined) {
-            throw new Error('Failed to read vaccination information');
+            throw new Error('vaccinationInfo');
         }
 
         if (nameInformation == undefined) {
-            throw new Error('Failed to read name');
+            throw new Error('nameMissing');
         }
 
         if (dateOfBirthInformation == undefined) {
-            throw new Error('Failed to read date of birth');
+            throw new Error('dobMissing');
         }
 
         // Get Medical, country and manufacturer information
@@ -65,13 +65,13 @@ export class Payload {
         const manufacturerKey = vaccinationInformation['ma'];
 
         if (!(medialProductKey in valueSets.medicalProducts)) {
-            throw new Error('Invalid medical product key');
+            throw new Error('invalidMedicalProduct');
         }
         if (!(countryCode in valueSets.countryCodes)) {
-            throw new Error('Invalid country code')
+            throw new Error('invalidCountryCode')
         }
         if (!(manufacturerKey in valueSets.manufacturers)) {
-            throw new Error('Invalid manufacturer')
+            throw new Error('invalidManufacturer')
         }
 
 
@@ -91,7 +91,6 @@ export class Payload {
         this.dateOfBirth = dateOfBirthInformation;
         this.uvci = vaccinationInformation['ci'];
         this.certificateIssuer = vaccinationInformation['is'];
-        this.medicalProductKey = medialProductKey; // TODO is this needed?
 
         this.countryOfVaccination = valueSets.countryCodes[countryCode].display;
         this.vaccineName = valueSets.medicalProducts[medialProductKey].display;
