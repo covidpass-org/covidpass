@@ -1,4 +1,4 @@
-noFileOrQrCode: Bitte scannen Sie einen QR-Code, oder wählen Sie eine Datei aus
+noFileOrQrCode: Bitte scanne einen QR-Code oder wähle eine Datei aus
 signatureFailed: Fehler beim Signieren der Karte auf dem Server
 decodingFailed: Dekodierung der QR-Code-Daten fehlgeschlagen
 invalidColor: Ungültige Farbe

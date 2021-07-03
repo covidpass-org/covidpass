@@ -1,27 +1,31 @@
-heading: Information according to § 5 TMG
-contact: Contact
-euDisputeResolution: EU Dispute Resolution
+heading: Angaben gemäß § 5 TMG
+contact: Kontakt
+euDisputeResolution: EU-Streitschlichtung
 euDisputeResolutionParagraph: |
-  The European Commission provides a platform for online dispute resolution (OS) https://ec.europa.eu/consumers/odr.
-  You can find our e-mail address in the imprint above.
-consumerDisputeResolution: Consumer dispute resolution / universal arbitration board
-consumerDisputeResolutionParagraph: We are not willing or obliged to participate in dispute resolution proceedings before a consumer arbitration board.
-liabilityForContents: Liability for contents
+  Die Europäische Kommission stellt eine Plattform zur Online-Streitbeilegung (OS) bereit: https://ec.europa.eu/consumers/odr.
+  Unsere E-Mail-Adresse finden Sie oben im Impressum.
+consumerDisputeResolution: Verbraucherstreitbeilegung / Universalschlichtungsstelle
+consumerDisputeResolutionParagraph: Wir sind nicht bereit oder verpflichtet, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen.
+liabilityForContents: Haftung für Inhalte
 liabilityForContentsParagraph: |
-  As a service provider, we are responsible for our own content on these pages in accordance with § 7 paragraph 1 TMG under the general laws. 
-  According to §§ 8 to 10 TMG, we are not obligated to monitor transmitted or stored information or to investigate circumstances that indicate illegal activity. 
-  Obligations to remove or block the use of information under the general laws remain unaffected. 
-  However, liability in this regard is only possible from the point in time at which a concrete infringement of the law becomes known. 
-  If we become aware of any such infringements, we will remove the relevant content immediately.
-liabilityForLinks: Liability for links
+  Als Diensteanbieter sind wir gemäß § 7 Abs.1 TMG für eigene Inhalte auf diesen Seiten nach den
+  allgemeinen Gesetzen verantwortlich. Nach §§ 8 bis 10 TMG sind wir als Diensteanbieter jedoch nicht
+  verpflichtet, übermittelte oder gespeicherte fremde Informationen zu überwachen oder nach Umständen zu
+  forschen, die auf eine rechtswidrige Tätigkeit hinweisen.
+  Verpflichtungen zur Entfernung oder Sperrung der Nutzung von Informationen nach den allgemeinen
+  Gesetzen bleiben hiervon unberührt. Eine diesbezügliche Haftung ist jedoch erst ab dem Zeitpunkt der
+  Kenntnis einer konkreten Rechtsverletzung möglich. Bei Bekanntwerden von entsprechenden
+  Rechtsverletzungen werden wir diese Inhalte umgehend entfernen.
+liabilityForLinks: Haftung für Links
 liabilityForLinksParagraph: |
-  Our offer contains links to external websites of third parties, on whose contents we have no influence. 
-  Therefore, we cannot assume any liability for these external contents.
-  The respective provider or operator of the sites is always responsible for the content of the linked sites. 
-  The linked pages were checked for possible legal violations at the time of linking.
-  Illegal contents were not recognizable at the time of linking. 
-  However, a permanent control of the contents of the linked pages is not reasonable without concrete evidence of a violation of the law. 
-  If we become aware of any infringements, we will remove such links immediately.
-credits: Credits
-creditsSource: With excerpts from https://www.e-recht24.de/impressum-generator.html
-creditsTranslation: Translated with https://www.DeepL.com/Translator (free version)
+  Unser Angebot enthält Links zu externen Websites Dritter, auf deren Inhalte wir keinen Einfluss haben.
+  Deshalb können wir für diese fremden Inhalte auch keine Gewähr übernehmen. Für die Inhalte der
+  verlinkten Seiten ist stets der jeweilige Anbieter oder Betreiber der Seiten verantwortlich. Die verlinkten
+  Seiten wurden zum Zeitpunkt der Verlinkung auf mögliche Rechtsverstöße überprüft. Rechtswidrige Inhalte
+  waren zum Zeitpunkt der Verlinkung nicht erkennbar.
+  Eine permanente inhaltliche Kontrolle der verlinkten Seiten ist jedoch ohne konkrete Anhaltspunkte einer
+  Rechtsverletzung nicht zumutbar. Bei Bekanntwerden von Rechtsverletzungen werden wir derartige Links
+  umgehend entfernen.
+credits: Quellen
+creditsSource: Mit Auszügen aus https://www.e-recht24.de/impressum-generator.html
+creditsTranslation: Übersetzt mit https://www.DeepL.com/Translator (kostenlose Version)
