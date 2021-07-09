@@ -2,7 +2,7 @@ noFileOrQrCode: Please scan a QR Code, or select a file
 signatureFailed: Error while signing pass on server
 decodingFailed: Failed to decode QR code payload
 invalidColor: Invalid color
-vaccinationInfo: Failed to read vaccination information
+certificateData: Failed to read certificate data
 nameMissing: Failed to read name
 dobMissing: Failed to read date of birth
 invalidMedicalProduct: Invalid medical product
@@ -12,3 +12,6 @@ invalidFileType: Invalid file type
 couldNotDecode: Could not decode QR code from file
 couldNotFindQrCode: Could not find QR Code in provided file
 invalidQrCode: Invalid QR code
+certificateType: No valid certificate type found
+invalidTestResult: Invalid test result
+invalidTestType: Invalid test type

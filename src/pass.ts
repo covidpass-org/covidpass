@@ -2,7 +2,7 @@ import {toBuffer as createZip} from 'do-not-zip';
 import {v4 as uuid4} from 'uuid';
 
 import {Constants} from "./constants";
-import {Payload, PayloadBody} from "./payload";
+import {Payload, PayloadBody, PassDictionary} from "./payload";
 import {ValueSets} from "./value_sets";
 
 const crypto = require('crypto')
@@ -19,21 +19,6 @@ interface QrCode {
     message: string;
     format: QrFormat;
     messageEncoding: Encoding;
-}
-
-interface Field {
-    key: string;
-    label: string;
-    value: string;
-    textAlignment?: string;
-}
-
-interface PassStructureDictionary {
-    headerFields: Array<Field>;
-    primaryFields: Array<Field>;
-    secondaryFields: Array<Field>;
-    auxiliaryFields: Array<Field>;
-    backFields: Array<Field>;
 }
 
 interface SignData {
@@ -56,7 +41,7 @@ export class PassData {
     serialNumber: string;
     barcodes: Array<QrCode>;
     barcode: QrCode;
-    generic: PassStructureDictionary;
+    generic: PassDictionary;
 
     // Generates a sha1 hash from a given buffer
     private static getBufferHash(buffer: Buffer | string): string {
@@ -157,74 +142,6 @@ export class PassData {
         this.serialNumber = uuid4(); // Generate random UUID v4
         this.barcodes = [qrCode];
         this.barcode = qrCode;
-        this.generic = {
-            headerFields: [
-                {
-                    key: "type",
-                    label: "Certificate Type",
-                    value: payload.certificateType
-                }
-            ],
-            primaryFields: [
-                {
-                    key: "name",
-                    label: "Name",
-                    value: payload.name
-                }
-            ],
-            secondaryFields: [
-                {
-                    key: "dose",
-                    label: "Dose",
-                    value: payload.dose
-                },
-                {
-                    key: "dov",
-                    label: "Date of Vaccination",
-                    value: payload.dateOfVaccination,
-                    textAlignment: "PKTextAlignmentRight"
-                }
-            ],
-            auxiliaryFields: [
-                {
-                    key: "vaccine",
-                    label: "Vaccine",
-                    value: payload.vaccineName
-                },
-                {
-                    key: "dob",
-                    label: "Date of Birth",
-                    value: payload.dateOfBirth,
-                    textAlignment: "PKTextAlignmentRight"
-                }
-            ],
-            backFields: [
-                {
-                    key: "uvci",
-                    label: "Unique Certificate Identifier (UVCI)",
-                    value: payload.uvci
-                },
-                {
-                    key: "issuer",
-                    label: "Certificate Issuer",
-                    value: payload.certificateIssuer
-                },
-                {
-                    key: "country",
-                    label: "Country of Vaccination",
-                    value: payload.countryOfVaccination
-                },
-                {
-                    key: "manufacturer",
-                    label: "Manufacturer",
-                    value: payload.manufacturer
-                },
-                {
-                    key: "disclaimer",
-                    label: "Disclaimer",
-                    value: "This certificate is only valid in combination with the ID card of the certificate holder and expires one year + 14 days after the last dose. The validity of this certificate was not checked by CovidPass."
-                }
-            ]
-        };
+        this.generic = payload.generic;
     }
 }
