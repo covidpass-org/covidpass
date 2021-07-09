@@ -8,16 +8,18 @@ import Page from '../components/Page';
 
 function Index(): JSX.Element {
     const { t } = useTranslation(['common', 'index', 'errors']);
-    const description = "Add your EU Digital COVID Certificates to your favorite wallet app.";
+
+    const title = 'CovidPass';
+    const description = 'Add your EU Digital COVID Certificates to your favorite wallet app.';
 
     return (
         <>
             <NextSeo
-                title="Covidpass"
+                title={title}
                 description={description}
                 openGraph={{
                     url: 'https://covidpass.marvinsextro.de/',
-                    title: 'CovidPass',
+                    title: title,
                     description: description,
                     images: [
                         {
@@ -27,7 +29,7 @@ function Index(): JSX.Element {
                             alt: description,
                         }
                     ],
-                    site_name: 'CovidPass',
+                    site_name: title,
                 }}
                 twitter={{
                     handle: '@marvinsxtr',
