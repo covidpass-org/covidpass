@@ -2,7 +2,7 @@ noFileOrQrCode: Bitte scanne einen QR-Code oder wähle eine Datei aus
 signatureFailed: Fehler beim Signieren der Karte auf dem Server
 decodingFailed: Dekodierung der QR-Code-Daten fehlgeschlagen
 invalidColor: Ungültige Farbe
-vaccinationInfo: Impfinformationen konnten nicht gelesen werden
+certificateData: Zertifikats-Daten konnten nicht gelesen werden
 nameMissing: Name konnte nicht gelesen werden
 dobMissing: Geburtsdatum konnte nicht gelesen werden
 invalidMedicalProduct: Ungültiges Medizinprodukt
@@ -12,3 +12,6 @@ invalidFileType: Ungültiger Dateityp
 couldNotDecode: Dekodierung aus QR-Code fehlgeschlagen
 couldNotFindQrCode: QR-Code konnte in der ausgewählten Datei nicht gefunden werden
 invalidQrCode: Ungültiger QR-Code
+certificateType: Kein gültiger Zertifikatstyp gefunden
+invalidTestResult: Ungültiges Testergebnis
+invalidTestType: Ungültiger Testtyp
