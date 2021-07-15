@@ -33,14 +33,14 @@ processSending: Envoyer uniquement le fichier contenant les hashs à notre serve
 processReceiving: Réception et vérification des hashs qui ont été générés localement
 processSigning: Signature du fichier contenant les hashs
 processSendingBack: Renvoi de la signature
-processCompleting: Assemblage du fpasse signé à partir du fichier incomplet généré localement et de la signature
+processCompleting: Assemblage du passe signé à partir du fichier incomplet généré localement et de la signature
 processSaving: Sauvegarde du fichier sur votre appareil
 locallyProcessedData: Données traitées localement
 the: Le
 schema: Schéma du certificat numérique Covid
 specification: contient une spécification détaillée des données qui peuvent être contenues dans le QR Code et qui seront traitées dans votre navigateur.
 serverProvider: Server provider
-serverProvider : Fournisseur du serveur
+serverProvider: Fournisseur du serveur
 serverProviderIs : Notre fournisseur de serveur est
 logFiles : Les données suivantes peuvent être collectées et stockées dans les fichiers journaux du serveur.
 logFilesBrowser : Les types et versions de navigateur utilisés
