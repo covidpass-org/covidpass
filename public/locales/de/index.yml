@@ -6,7 +6,7 @@ selectCertificateDescription: |
   Bitte beachte, dass die Auswahl einer Datei direkt von der Kamera nicht unterstützt wird. 
 stopCamera: Kamera stoppen
 startCamera: Kamera starten
-openFile: Datei auswählen (PDF, PNG)
+openFile: Datei auswählen
 foundQrCode: QR-Code gefunden!
 pickColor: Farbe auswählen
 pickColorDescription: Wähle eine Hintergrundfarbe für Deine Karte.

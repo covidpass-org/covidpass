@@ -6,7 +6,7 @@ selectCertificateDescription: |
   Note that selecting a file directly from camera is not supported.
 stopCamera: Stop Camera
 startCamera: Start Camera
-openFile: Select File (PDF, PNG)
+openFile: Select File
 foundQrCode: Found QR Code!
 pickColor: Pick a Color
 pickColorDescription: Pick a background color for your pass.
