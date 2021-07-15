@@ -1,0 +1,26 @@
+iosHint: Sur iOS, veuillez utiliser le navigateur Safari.
+errorClose: Fermez
+selectCertificate: Sélectionner le certificat
+selectCertificateDescription: |
+  Veuillez scanner le QR Code de votre certificat ou sélectionner une capture d'écran ou une page PDF avec le QR Code. 
+  Notez que la sélection d'un fichier directement à partir de l'appareil photo n'est pas prise en charge.
+stopCamera: Arrêter l'appareil photo
+startCamera: Démarrer l'appareil photo
+openFile: Sélectionner un fichier (PDF, PNG)
+foundQrCode: Code QR trouvé !
+pickColor: Choisissez une couleur
+pickColorDescription: Choisissez une couleur de fond pour votre passe.
+colorWhite: blanc
+colorBlack: noir
+colorGrey: gris
+colorGreen: vert
+colorIndigo: indigo
+colorBlue: bleu
+colorPurple: violet
+colorTeal: bleu canard
+addToWallet: Ajouter à Cartes
+dataPrivacyDescription: |
+  La confidentialité des données revêt une importance particulière lors du traitement des données relatives à la santé. 
+  Afin que vous puissiez prendre une décision en connaissance de cause, veuillez lire l'avis de confidentialité.
+iAcceptThe: J'accepte la
+privacyPolicy: Politique de confidentialité
