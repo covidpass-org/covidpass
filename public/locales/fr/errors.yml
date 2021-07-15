@@ -1,11 +1,11 @@
-noFileOrQrCode : Veuillez scanner un QR Code ou sélectionner un fichier.
-signatureFailed : Erreur lors de la signature du laissez-passer sur le serveur
+noFileOrQrCode : Veuillez scanner un QR Code ou sélectionner un fichier
+signatureFailed : Erreur lors de la signature du pass sur le serveur
 decodingFailed : Échec du décodage du QR Code
 invalidColor : Couleur non valide
 vaccinationInfo : Échec de la lecture des informations de vaccination
 nameMissing : Échec de la lecture du nom
-dobMissing : Echec de la lecture de la date de naissance
-invalidMedicalProduct : Produit vaccinale non valide
+dobMissing : Échec de la lecture de la date de naissance
+invalidMedicalProduct : Produit vaccinal non valide
 invalidCountryCode : Code pays non valide
 invalidManufacturer : Fabricant non valide
 invalidFileType : Type de fichier non valide
