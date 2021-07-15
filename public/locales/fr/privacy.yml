@@ -39,7 +39,6 @@ locallyProcessedData: Données traitées localement
 the: Le
 schema: Schéma du certificat numérique Covid
 specification: contient une spécification détaillée des données qui peuvent être contenues dans le QR Code et qui seront traitées dans votre navigateur.
-serverProvider: Server provider
 serverProvider: Fournisseur du serveur
 serverProviderIs: Notre fournisseur de serveur est
 logFiles: Les données suivantes peuvent être collectées et stockées dans les fichiers journaux du serveur.
