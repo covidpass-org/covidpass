@@ -9,8 +9,8 @@ import Page from '../components/Page';
 function Index(): JSX.Element {
     const { t } = useTranslation(['common', 'index', 'errors']);
 
-    const title = 'CovidPass';
-    const description = 'Add your EU Digital COVID Certificates to your favorite wallet app.';
+    const title = 'Koronapassi';
+    const description = 'Lisää KELA:n digitaaliset COVID-sertifikaatit suosikkilompakkosovellukseesi.';
 
     return (
         <>
@@ -18,12 +18,12 @@ function Index(): JSX.Element {
                 title={title}
                 description={description}
                 openGraph={{
-                    url: 'https://covidpass.marvinsextro.de/',
+                    url: 'https://covidpassi.fi',
                     title: title,
                     description: description,
                     images: [
                         {
-                            url: 'https://covidpass.marvinsextro.de/thumbnail.png',
+                            url: 'https://covidpassi.fi/thumbnail.png',
                             width: 1000,
                             height: 500,
                             alt: description,
@@ -32,7 +32,7 @@ function Index(): JSX.Element {
                     site_name: title,
                 }}
                 twitter={{
-                    handle: '@marvinsxtr',
+                    handle: '@jantsop',
                     site: '@marvinsxtr',
                     cardType: 'summary_large_image',
                 }}
