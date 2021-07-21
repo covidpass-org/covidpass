@@ -1,7 +1,7 @@
 export class Constants {
     public static NAME = 'CovidPass'
-    public static PASS_IDENTIFIER = 'pass.de.marvinsextro.covidpass'
-    public static TEAM_IDENTIFIER = 'X8Q7Q2RLTD'
+    public static PASS_IDENTIFIER = 'pass.covidpass.fi'
+    public static TEAM_IDENTIFIER = '76Y7FC5429'
 
     public static COLORS = {
         white: 'rgb(255, 255, 255)',
