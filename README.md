@@ -63,7 +63,7 @@ We are in an early development stage and actively working on improving support f
 
 # Using your own Apple Developer Certificate
 
-## Get your certificate
+## Get your certificate (Whole process must be done on macOS machine)
 
 * Sign into your [Apple Developer Account](https://developer.apple.com/account/)
 * Go to Certificates, Identifiers and Profiles
