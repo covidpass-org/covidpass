@@ -15,7 +15,7 @@ Note that the latter option requires you to have an [Apple Developer Account](ht
 
 ## Using our service
 
-* Go to [https://covidpass.marvinsextro.de](https://covidpass.marvinsextro.de)
+* Go to [https://covidpassi.fi](https://covidpassi.fi)
 * Select or scan the screenshot/PDF with the QR code
 * Pick a background color
 * Add your certificate to the wallet
