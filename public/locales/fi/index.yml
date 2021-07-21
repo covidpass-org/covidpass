@@ -10,7 +10,7 @@ openFile: Valitse Tiedosto
 foundQrCode: QR koodi löytyi!
 pickColor: Valitse väri
 pickColorDescription: Valitse passisi taustaväri.
-colorWhite: Valkoinen
+colorWhite: white
 colorBlack: Musta
 colorGrey: Harmaa
 colorGreen: Vihreä
