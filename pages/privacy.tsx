@@ -55,7 +55,7 @@ function Privacy(): JSX.Element {
                         96960 Rovaniemi<br/>
                         {t('privacy:email')}:
                         &nbsp;
-                        <a href="mailto:marvin.sextro@gmail.com">marvin.sextro@gmail.com</a>
+                        <a href="mailto:jantso.porali@gmail.com">jantso.porali@gmail.com</a>
                         <br/>
                     </p>
                     <p className="font-bold">{t('privacy:process')}</p>
@@ -86,8 +86,6 @@ function Privacy(): JSX.Element {
                     </div>
                     <p className="font-bold">{t('privacy:locallyProcessedData')}</p>
                     <p>
-                        {t('privacy:the')}
-                        &nbsp;
                         <a href="https://github.com/ehn-dcc-development/ehn-dcc-schema" className="underline">
                             {t('privacy:schema')}
                         </a>
