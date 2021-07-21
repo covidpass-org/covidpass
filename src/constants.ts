@@ -1,6 +1,6 @@
 export class Constants {
     public static NAME = 'CovidPass'
-    public static PASS_IDENTIFIER = 'pass.covidpass.fi'
+    public static PASS_IDENTIFIER = 'pass.covidpassi.fi'
     public static TEAM_IDENTIFIER = '76Y7FC5429'
 
     public static COLORS = {
