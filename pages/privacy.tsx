@@ -135,14 +135,14 @@ function Privacy(): JSX.Element {
                             <li>
                                 Gmail/Google:
                                 &nbsp;
-                                <a href="https://policies.google.com/privacy?hl=en-US" className="underline">
+                                <a href="https://policies.google.com/privacy?hl=fi-FI" className="underline">
                                     {t('common:privacyPolicy')}
                                 </a>
                             </li>
                             <li>
                                 {t('privacy:appleSync')}:
                                 &nbsp;
-                                <a href="https://www.apple.com/legal/privacy/en-ww/privacy.tsx" className="underline">
+                                <a href="https://www.apple.com/fi/legal/privacy/fi/" className="underline">
                                     {t('common:privacyPolicy')}
                                 </a>
                             </li>
