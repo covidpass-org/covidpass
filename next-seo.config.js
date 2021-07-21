@@ -1,11 +1,11 @@
 export default {
-  titleTemplate: 'Korona Passi | %s',
-  defaultTitle: 'Korona Passi',
+  titleTemplate: 'Koronapassi | %s',
+  defaultTitle: 'Koronapassi',
   openGraph: {
     type: 'website',
     locale: 'fi_FI',
     url: 'https://covidpassi.fi',
-    site_name: 'Korona Passi',
+    site_name: 'Koronapassi',
   },
   twitter: {
     handle: '@jantsop',
