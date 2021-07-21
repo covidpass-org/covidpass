@@ -41,7 +41,7 @@ specification: sisältää yksityiskohtaisen määrittelyn siitä, mitä tietoja
 serverProvider: Palveluntarjoaja
 serverProviderIs: Meidän palveluntarjoaja on
 logFiles: Palvelimen lokitiedostoihin voidaan kerätä ja tallentaa seuraavia tietoja
-logFilesBrowser: Käytetyt selaintyypit ja -versiot
+logFilesBrowser: Käytetty selaintyyppi ja -versio
 logFilesOs: Käyttöjärjestelmä
 logFilesReferrer: Verkkosivusto, josta käyttäjä saapuu verkkosivustollemme (ns. viittaajat).
 logFilesTime: Päivämäärä ja kellonaika
