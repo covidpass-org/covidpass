@@ -6,7 +6,7 @@ This web app offers the ability to add your EU Digital Covid Vaccination Certifi
 
 If you want to add your vaccination certificate into your wallet with CovidPass, there are two main options.
 
-* Use the [CovidPass web app](https://covidpass.marvinsextro.de) hosted by us
+* Use the [CovidPass web app](https://covidpassi.fi) hosted by us
 * Use your own Apple Developer Certificate to generate a pass
 
 Note that the latter option requires you to have an [Apple Developer Account](https://developer.apple.com) and is a more complicated process.
