@@ -1,21 +1,21 @@
 export default {
-  titleTemplate: 'CovidPass | %s',
-  defaultTitle: 'CovidPass',
+  titleTemplate: 'Korona Passi | %s',
+  defaultTitle: 'Korona Passi',
   openGraph: {
     type: 'website',
-    locale: 'en_IE',
-    url: 'https://covidpass.marvinsextro.de/',
-    site_name: 'CovidPass',
+    locale: 'fi_FI',
+    url: 'https://covidpassi.fi',
+    site_name: 'Korona Passi',
   },
   twitter: {
-    handle: '@marvinsxtr',
-    site: '@marvinsxtr',
+    handle: '@jantsop',
+    site: '@jantsop',
     cardType: 'summary_large_image',
   },
   additionalLinkTags: [
     {
       rel: 'apple-touch-icon',
-      href: 'https://covidpass.marvinsextro.de/apple-touch-icon.png',
+      href: 'https://covidpassi.fi/apple-touch-icon.png',
       sizes: '180x180'
     },
   ]

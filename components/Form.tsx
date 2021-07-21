@@ -182,14 +182,14 @@ function Form(): JSX.Element {
                         <div className="relative inline-block w-full">
                             <select name="color" id="color"
                                     className="bg-gray-200 dark:bg-gray-900 focus:outline-none w-full h-10 pl-3 pr-6 text-base rounded-md appearance-none cursor-pointer">
-                                <option value="white">{t('index:colorWhite')}</option>
-                                <option value="black">{t('index:colorBlack')}</option>
-                                <option value="grey">{t('index:colorGrey')}</option>
-                                <option value="green">{t('index:colorGreen')}</option>
-                                <option value="indigo">{t('index:colorIndigo')}</option>
-                                <option value="blue">{t('index:colorBlue')}</option>
-                                <option value="purple">{t('index:colorPurple')}</option>
-                                <option value="teal">{t('index:colorTeal')}</option>
+                                <option value="Valkoinen">{t('index:colorWhite')}</option>
+                                <option value="Musta">{t('index:colorBlack')}</option>
+                                <option value="Harmaa">{t('index:colorGrey')}</option>
+                                <option value="Vihreä">{t('index:colorGreen')}</option>
+                                <option value="Indigonsininen">{t('index:colorIndigo')}</option>
+                                <option value="Sininen">{t('index:colorBlue')}</option>
+                                <option value="Purppura">{t('index:colorPurple')}</option>
+                                <option value="Sinivihreä">{t('index:colorTeal')}</option>
                             </select>
                             <div className="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
                                 <svg className="w-5 h-5 fill-current" viewBox="0 0 20 20">

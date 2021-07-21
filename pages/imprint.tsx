@@ -13,13 +13,13 @@ function Imprint(): JSX.Element {
                 <div className="space-y-2">
                     <p className="font-bold">{t('imprint:heading')}</p>
                     <p>
-                        Marvin Sextro<br />
-                        Wilhelm-Busch-Str. 8A<br />
-                        30167 Hannover<br />
+                        Jantso Porali<br />
+                        Rakentajanpolku 3H<br />
+                        96960 Rovaniemir<br />
                     </p>
                     <p className="font-bold">{t('imprint:contact')}</p>
                     <p>
-                        <a href="mailto:marvin.sextro@gmail.com" className="underline">marvin.sextro@gmail.com</a>
+                        <a href="mailto:jantso.porali@gmail.com" className="underline">jantso.porali@gmail.com</a>
                     </p>
                     <p className="font-bold">{t('imprint:euDisputeResolution')}</p>
                     <p>{t('imprint:euDisputeResolutionParagraph')}</p>
@@ -34,6 +34,8 @@ function Imprint(): JSX.Element {
                         {t('imprint:creditsSource')}
                         <br />
                         {t('imprint:creditsTranslation')}
+                        <br />
+                        {t('imprint:creditsOriginalCode')}
                     </p>
                 </div>
             }/>
