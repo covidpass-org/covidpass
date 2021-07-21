@@ -49,8 +49,8 @@ logFilesIpAddress: Pseudonymisoidut IP-osoitteet
 rights: Sinun oikeutesi
 rightsGranted: Yleisen tietosuoja-asetuksen mukaisesti sinulla on seuraavat oikeudet
 rightsAccess: Oikeus tutustua tietoihin; Sinulla on oikeus tietää, mitä tietoja sinusta on kerätty ja miten niitä on käsitelty.
-rightsErasure:  Right to be forgotten; Erasure of your personal data.
-rightsRectification: Oikeus tulla unohdetuksi; henkilötietojesi poistaminen.
+rightsErasure:  Oikeus tulla unohdetuksi; henkilötietojesi poistaminen.
+rightsRectification: Oikaisuoikeus; Sinulla on oikeus korjata virheelliset tiedot.
 rightsPortability:  Oikeus tietojen siirrettävyyteen; Sinulla on oikeus siirtää tietosi käsittelyjärjestelmästä toiseen.
 thirdParties: Kolmannet osapuolet
 appleSync: Apple saattaa synkronoida koronapassisi iCloudin kautta
