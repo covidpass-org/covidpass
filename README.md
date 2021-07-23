@@ -6,7 +6,7 @@ This web app offers the ability to add your EU Digital Covid Vaccination Certifi
 
 If you want to add your vaccination certificate into your wallet with CovidPass, there are two main options.
 
-* Use the [CovidPass web app](https://covidpass.marvinsextro.de) hosted by us
+* Use the [CovidPass web app](https://covidpassi.fi) hosted by us
 * Use your own Apple Developer Certificate to generate a pass
 
 Note that the latter option requires you to have an [Apple Developer Account](https://developer.apple.com) and is a more complicated process.
@@ -15,7 +15,7 @@ Note that the latter option requires you to have an [Apple Developer Account](ht
 
 ## Using our service
 
-* Go to [https://covidpass.marvinsextro.de](https://covidpass.marvinsextro.de)
+* Go to [https://covidpassi.fi](https://covidpassi.fi)
 * Select or scan the screenshot/PDF with the QR code
 * Pick a background color
 * Add your certificate to the wallet
@@ -76,6 +76,7 @@ We are in an early development stage and actively working on improving support f
 
 * Install node.js and download the [passkit-keys](https://github.com/walletpass/pass-js/blob/master/bin/passkit-keys) script
 * Create a `keys` folder and put the .p12 file inside
+* Download [Apple Worldwide Developer Relations CA](https://developer.apple.com/certificationauthority/AppleWWDRCA.cer) file and add it to your Keychain
 * Run ./passkit-keys `<path to your keys folder>`
 * You may have to type in the passphrase you defined during the export step
 * Base64 encode the contents of the newly generated .pem file inside the keys folder
