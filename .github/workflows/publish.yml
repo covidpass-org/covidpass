@@ -20,17 +20,9 @@ jobs:
         uses: docker/metadata-action@v3
         with:
           # list of Docker images to use as base name for tags
-          images: ghcr.io/covidpass-org/covidpass
+          images: ghcr.io/jantsop/covidpass
           # generate Docker tags based on the following events/attributes
-          tags: |
-            type=schedule
-            type=edge,branch=dev
-            type=ref,event=branch
-            type=ref,event=pr
-            type=semver,pattern={{version}}
-            type=semver,pattern={{major}}.{{minor}}
-            type=semver,pattern={{major}}
-            type=sha
+          tags: latest
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
       - name: Login to GitHub Container Registry
