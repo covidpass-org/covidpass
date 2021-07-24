@@ -29,6 +29,11 @@ function Form(): JSX.Element {
 
     // Check if there is a translation and replace message accordingly
     const setErrorMessage = (message: string) => {
+        if (message == undefined) {
+            _setErrorMessage(undefined);
+            return;
+        }
+
         const translation = t('errors:'.concat(message));
         _setErrorMessage(translation !== message ? translation : message);
     };
@@ -68,7 +73,13 @@ function Form(): JSX.Element {
         const codeReader = new BrowserQRCodeReader();
 
         // Needs to be called before any camera can be accessed
-        await BrowserQRCodeReader.listVideoInputDevices();
+        const deviceList = await BrowserQRCodeReader.listVideoInputDevices();
+        
+        // Check access to camera device
+        if (deviceList.length == 0) {
+            setErrorMessage("noCameraAccess");
+            return;
+        }
 
         // Get preview Element to show camera stream
         const previewElem: HTMLVideoElement = document.querySelector('#cameraPreview');
