@@ -239,7 +239,7 @@ function Form(): JSX.Element {
                                 {t('index:addToWallet')}
                             </button>
                             <div id="spin" className={loading ? undefined : "hidden"}>
-                                <svg className="animate-spin h-5 w-5 ml-2" viewBox="0 0 24 24">
+                                <svg className="animate-spin h-5 w-5 ml-3" viewBox="0 0 24 24">
                                     <circle className="opacity-0" cx="12" cy="12" r="10" stroke="currentColor"
                                             strokeWidth="4"/>
                                     <path className="opacity-75" fill="currentColor"
