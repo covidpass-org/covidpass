@@ -35,11 +35,10 @@ function Privacy(): JSX.Element {
                             </li>
                             <li>
                                 {t('privacy:generalInfoProvider')}
-                                &nbsp;
                                 <a href="https://www.hetzner.com/de/rechtliches/datenschutz/" className="underline">
                                     {t('privacy:privacyPolicy')}
                                 </a>
-                                &nbsp; 
+                                &nbsp;
                                 {t('privacy:andThe')} 
                                 &nbsp;
                                 <a href="https://docs.hetzner.com/general/general-terms-and-conditions/data-privacy-faq/privacy.tsx" className="underline">

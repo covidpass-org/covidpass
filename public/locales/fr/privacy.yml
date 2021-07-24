@@ -21,7 +21,7 @@ dataPrivacyFaq: FAQ sur la confidentialité des données
 contact: Contact
 email: Email
 website: Site web
-process: Simplification du processus
+process: Explication simplifiée du processus
 processFirst: Premièrement, les étapes suivantes se déroulent localement dans votre navigateur. 
 processSecond: Ensuite, les étapes suivantes se déroulent sur notre serveur
 processThird: Enfin, les étapes suivantes se déroulent localement dans votre navigateur
@@ -49,9 +49,9 @@ logFilesTime: La date et l'heure de l'accès.
 logFilesIpAddress: Les adresses IP pseudonymisées
 rights: Vos droits
 rightsGranted: Conformément au RGPD, vous disposez des droits suivants
-rightsAccess: Droit d'accès à vos données; Vous avez le droit de savoir quelles données ont été collectées à votre sujet et comment elles ont été traitées.
-rightsErasure:  Droit à l'oubli; Effacement de vos données personnelles.
-rightsRectification: Droit de rectification; Vous avez le droit de corriger des données inexactes.
-rightsPortability:  Droit à la portabilité des données; Vous avez le droit de transférer vos données d'un système de traitement à un autre.
+rightsAccess: Droit d'accès à vos données ; Vous avez le droit de savoir quelles données ont été collectées à votre sujet et comment elles ont été traitées.
+rightsErasure:  Droit à l'oubli ; Effacement de vos données personnelles.
+rightsRectification: Droit de rectification ; Vous avez le droit de corriger des données inexactes.
+rightsPortability:  Droit à la portabilité des données ; Vous avez le droit de transférer vos données d'un système de traitement à un autre.
 thirdParties: Tiers liés
 appleSync: Apple peut synchroniser vos passes via iCloud.
