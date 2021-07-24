@@ -81,14 +81,6 @@ function Form(): JSX.Element {
             return;
         }
 
-        // Check permissions to camera device
-        try {
-            navigator.mediaDevices.getUserMedia({video: true});
-        } catch (e) {
-            setErrorMessage("noCameraAccess");
-            return;
-        }
-
         // Get preview Element to show camera stream
         const previewElem: HTMLVideoElement = document.querySelector('#cameraPreview');
 
@@ -107,6 +99,9 @@ function Form(): JSX.Element {
                         // Reset
                         setGlobalControls(undefined);
                         setIsCameraOpen(false);
+                    }
+                    if (error !== undefined) {
+                        setErrorMessage("noCameraAccess");
                     }
                 }
             )
