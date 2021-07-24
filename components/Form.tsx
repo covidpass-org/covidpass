@@ -77,6 +77,14 @@ function Form(): JSX.Element {
         
         // Check access to camera device
         if (deviceList.length == 0) {
+            setErrorMessage("noCameraFound");
+            return;
+        }
+
+        // Check permissions to camera device
+        try {
+            navigator.mediaDevices.getUserMedia({video: true});
+        } catch (e) {
             setErrorMessage("noCameraAccess");
             return;
         }

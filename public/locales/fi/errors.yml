@@ -16,3 +16,4 @@ certificateType: Kelvollista varmennetyyppiä ei löytynyt
 invalidTestResult: Virheellinen testitulos
 invalidTestType: Virheellinen testityyppi
 noCameraAccess: Kameraan ei päässyt käsiksi. Tarkista käyttöoikeudet kohdasta Asetukset > Safari > Kamera.
+noCameraFound: En löytänyt kameraa.
