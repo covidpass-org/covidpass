@@ -1,7 +1,7 @@
 {
   "name": "covidpass",
   "version": "0.1.0",
-  "author": "Marvin Sextro <marvin.sextro@gmail.com>",
+  "author": "Jantso Porali <jantso.porali@gmail.com>",
   "private": true,
   "scripts": {
     "dev": "next dev",
