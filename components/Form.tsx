@@ -70,14 +70,7 @@ function Form(): JSX.Element {
     // Show camera view
     async function showCameraView() {
         // Create new QR Code Reader
-        let codeReader: BrowserQRCodeReader;
-
-        try {
-            codeReader = new BrowserQRCodeReader();
-        } catch (e) {
-            setErrorMessage('noCameraAccess');
-            return;
-        }
+        const codeReader = new BrowserQRCodeReader();
 
         // Needs to be called before any camera can be accessed
         let deviceList: MediaDeviceInfo[];
@@ -89,7 +82,7 @@ function Form(): JSX.Element {
             return;
         }
         
-        // Check access to camera device
+        // Check if camera device is present
         if (deviceList.length == 0) {
             setErrorMessage("noCameraFound");
             return;
