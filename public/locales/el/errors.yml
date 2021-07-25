@@ -15,3 +15,6 @@ invalidQrCode: Μη έγκυρος κωδικός QR
 certificateType: Δεν βρέθηκε έγκυρος τύπος πιστοποιητικού
 invalidTestResult: Μη έγκυρο αποτέλεσμα εξέτασης
 invalidTestType: Μη έγκυρος τύπος εξέτασης
+noCameraAccess: Δεν ήταν δυνατή η πρόσβαση στην κάμερα. Ελέγξτε τα δικαιώματα στις Ρυθμίσεις > Safari > Κάμερα.
+noCameraFound: Δεν μπόρεσε να βρει τη φωτογραφική μηχανή.
+safariSupportOnly: Στο iOS, χρησιμοποιήστε το πρόγραμμα περιήγησης Safari.
