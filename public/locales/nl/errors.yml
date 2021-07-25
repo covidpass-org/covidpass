@@ -1,0 +1,20 @@
+noFileOrQrCode: Scan een QR-code of selecteer een bestand
+signatureFailed: Fout bij het ondertekenen van de pass op de server
+decodingFailed: Kan de payload van de QR-code niet decoderen
+invalidColor: Ongeldige kleur
+certificateData: Kan certificaatgegevens niet lezen
+nameMissing: Kan naam niet lezen
+dobMissing: Kan geboortedatum niet lezen
+invalidMedicalProduct: Ongeldig medisch product
+invalidCountryCode: Ongeldige landcode
+invalidManufacturer: Ongeldige fabrikant
+invalidFileType: Ongeldig bestandstype
+couldNotDecode: Kon QR-code niet uit bestand decoderen
+couldNotFindQrCode: Kon de QR-code niet vinden in het verstrekte bestand
+invalidQrCode: Ongeldige QR-code
+certificateType: Geen geldig certificaattype gevonden
+invalidTestResult: Ongeldig testresultaat
+invalidTestType: Ongeldig testtype
+noCameraAccess: Kon geen toegang krijgen tot de camera. Controleer de machtigingen onder Instellingen > Safari > Camera.
+noCameraFound: Ik kon de camera niet vinden.
+safariSupportOnly: Gebruik op iOS de Safari-browser.
