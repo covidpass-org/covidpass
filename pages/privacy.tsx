@@ -22,7 +22,7 @@ function Privacy(): JSX.Element {
                             <li>
                                 {t('privacy:generalInfoGitHub')}
                                 &nbsp;
-                                <a href="https://github.com/marvinsxtr/covidpass" className="underline">
+                                <a href="https://github.com/jantsop/covidpass" className="underline">
                                     GitHub
                                 </a>.
                             </li>
@@ -35,13 +35,13 @@ function Privacy(): JSX.Element {
                             </li>
                             <li>
                                 {t('privacy:generalInfoProvider')}
-                                <a href="https://www.hetzner.com/de/rechtliches/datenschutz/" className="underline">
+                                <a href="https://www.hetzner.com/rechtliches/datenschutz/" className="underline">
                                     {t('privacy:privacyPolicy')}
                                 </a>
                                 &nbsp;
                                 {t('privacy:andThe')} 
                                 &nbsp;
-                                <a href="https://docs.hetzner.com/general/general-terms-and-conditions/data-privacy-faq/privacy.tsx" className="underline">
+                                <a href="https://docs.hetzner.com/general/general-terms-and-conditions/data-privacy-faq" className="underline">
                                     {t('privacy:dataPrivacyFaq')}
                                 </a>.
                             </li>
@@ -49,16 +49,13 @@ function Privacy(): JSX.Element {
                     </div>
                     <p className="font-bold">{t('privacy:contact')}</p>
                     <p>
-                        Marvin Sextro<br/>
-                        Wilhelm-Busch-Str. 8A<br/>
-                        30167 Hannover<br/>
+                        Jantso Porali<br/>
+                        Rakentajanpolku 3H<br/>
+                        96960 Rovaniemi<br/>
                         {t('privacy:email')}:
                         &nbsp;
-                        <a href="mailto:marvin.sextro@gmail.com">marvin.sextro@gmail.com</a>
+                        <a href="mailto:jantso.porali@gmail.com">jantso.porali@gmail.com</a>
                         <br/>
-                        {t('privacy:website')}:
-                        &nbsp;
-                        <a href="https://marvinsextro.de" className="underline">https://marvinsextro.de</a>
                     </p>
                     <p className="font-bold">{t('privacy:process')}</p>
                     <p>{t('privacy:processFirst')}:</p>
@@ -88,8 +85,6 @@ function Privacy(): JSX.Element {
                     </div>
                     <p className="font-bold">{t('privacy:locallyProcessedData')}</p>
                     <p>
-                        {t('privacy:the')}
-                        &nbsp;
                         <a href="https://github.com/ehn-dcc-development/ehn-dcc-schema" className="underline">
                             {t('privacy:schema')}
                         </a>
@@ -100,11 +95,11 @@ function Privacy(): JSX.Element {
                     <p>{t('privacy:serverProviderIs')}</p>
                     <p>
                         <a href="https://www.hetzner.com/" className="underline">
-                            Hetzner Online GmbH
+                            Hetzner Finland Oy
                         </a>
                         <br />
-                        Industriestr. 25<br />
-                        91710 Gunzenhausen<br />
+                        Huurrekuja 10<br />
+                        04360 Tuusula<br />
                     </p>
                     <p>{t('privacy:logFiles')}:</p>
                     <div className="px-4">
@@ -137,23 +132,16 @@ function Privacy(): JSX.Element {
                                 </a>
                             </li>
                             <li>
-                                PayPal:
-                                &nbsp;
-                                <a href="https://www.paypal.com/de/webapps/mpp/ua/privacy-full?locale.x=en_EN" className="underline">
-                                    {t('common:privacyPolicy')}
-                                </a>
-                            </li>
-                            <li>
                                 Gmail/Google:
                                 &nbsp;
-                                <a href="https://policies.google.com/privacy?hl=en-US" className="underline">
+                                <a href="https://policies.google.com/privacy?hl=fi-FI" className="underline">
                                     {t('common:privacyPolicy')}
                                 </a>
                             </li>
                             <li>
                                 {t('privacy:appleSync')}:
                                 &nbsp;
-                                <a href="https://www.apple.com/legal/privacy/en-ww/privacy.tsx" className="underline">
+                                <a href="https://www.apple.com/fi/legal/privacy/fi/" className="underline">
                                     {t('common:privacyPolicy')}
                                 </a>
                             </li>
