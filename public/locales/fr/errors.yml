@@ -15,3 +15,6 @@ invalidQrCode: QR Code non valide
 certificateType: Aucun type de certificat valide n'a été trouvé
 invalidTestResult: Résultat du test non valide
 invalidTestType: Type de test non valide
+noCameraAccess: Impossible d'accéder à la caméra. Vérifiez les autorisations sous Paramètres > Safari > Appareil photo.
+noCameraFound: Impossible de trouver la caméra.
+safariSupportOnly: Sur iOS, veuillez utiliser le navigateur Safari.
