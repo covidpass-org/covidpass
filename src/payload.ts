@@ -73,11 +73,11 @@ export class Payload {
         const firstName = nameInformation['gn'];
         const lastName = nameInformation['fn'];
         
-        const transliteratedFirstName = nameInformation['gnt'];
-        const transliteratedLastName = nameInformation['fnt'];
+        const transliteratedFirstName = nameInformation['gnt'].replaceAll('<', ' ');
+        const transliteratedLastName = nameInformation['fnt'].replaceAll('<', ' ');
 
         // Check if name contains non-latin characters
-        const nameRegex = new RegExp('^(\\p{Script=Latin}|[ -\'`´])+$', 'u');
+        const nameRegex = new RegExp('^[\\p{Script=Latin}\\p{P}\\p{M}\\p{Z}]+$', 'u');
         
         let name: string;
 
