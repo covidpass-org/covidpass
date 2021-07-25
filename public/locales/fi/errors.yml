@@ -1,0 +1,20 @@
+noFileOrQrCode: Skannaa QR koodi tai valitse tiedosto
+signatureFailed: Virhe allekirjoitettaessa passia palvelimella
+decodingFailed: QR-koodin hyötykuorman purkaminen epäonnistui
+invalidColor: Väärä väri
+certificateData: Varmenteen tietojen lukeminen epäonnistui
+nameMissing: Nimen lukeminen epäonnistui
+dobMissing: Syntymäaikaa ei onnistuttu lukemaan
+invalidMedicalProduct: Virheellinen lääkevalmiste
+invalidCountryCode: Virheellinen maakoodi
+invalidManufacturer: Virheellinen valmistaja
+invalidFileType: Virheellinen tiedostotyyppi
+couldNotDecode: QR-koodia ei voitu purkaa tiedostosta
+couldNotFindQrCode: QR-koodia ei löytynyt annetusta tiedostosta
+invalidQrCode: Virheellinen QR-koodi
+certificateType: Kelvollista varmennetyyppiä ei löytynyt
+invalidTestResult: Virheellinen testitulos
+invalidTestType: Virheellinen testityyppi
+noCameraAccess: Kameraan ei päässyt käsiksi. Tarkista käyttöoikeudet kohdasta Asetukset > Safari > Kamera.
+noCameraFound: En löytänyt kameraa.
+safariSupportOnly: Käytä iOS:ssä Safari-selainta.

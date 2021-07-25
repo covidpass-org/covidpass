@@ -1,0 +1,26 @@
+iosHint: Gebruik op iOS de Safari-browser.
+errorClose: Sluiten
+selectCertificate: Selecteer Certificaat
+selectCertificateDescription: |
+  Scan de QR-code op uw certificaat of selecteer een screenshot of pdf-pagina met de QR-code.
+  Merk op dat het rechtstreeks vanaf de camera selecteren van een bestand niet wordt ondersteund.
+stopCamera: Stop Camera
+startCamera: Start Camera
+openFile: Selecteer Bestand
+foundQrCode: QR-code gevonden!
+pickColor: Kies een kleur
+pickColorDescription: Kies een achtergrondkleur voor je pas.
+colorWhite: wit
+colorBlack: zwart
+colorGrey: grijs
+colorGreen: groen
+colorIndigo: indigo
+colorBlue: blauw
+colorPurple: paars
+colorTeal: groenblauw
+addToWallet: Toevoegen aan Wallet
+dataPrivacyDescription: |
+  Gegevensprivacy is van bijzonder belang bij de verwerking van gezondheidsgerelateerde gegevens.
+  Om een weloverwogen beslissing te kunnen nemen, lees a.u.b. de
+iAcceptThe: Ik accepteer het
+privacyPolicy: Privacybeleid

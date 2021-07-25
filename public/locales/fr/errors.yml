@@ -2,7 +2,7 @@ noFileOrQrCode: Veuillez scanner un QR Code ou sélectionner un fichier
 signatureFailed: Erreur lors de la signature du pass sur le serveur
 decodingFailed: Échec du décodage du QR Code
 invalidColor: Couleur non valide
-vaccinationInfo: Échec de la lecture des informations de vaccination
+certificateData: Échec de la lecture des données du certificat
 nameMissing: Échec de la lecture du nom
 dobMissing: Échec de la lecture de la date de naissance
 invalidMedicalProduct: Produit vaccinal non valide
@@ -12,3 +12,9 @@ invalidFileType: Type de fichier non valide
 couldNotDecode: Impossible de décoder le QR Code du fichier
 couldNotFindQrCode: Impossible de trouver le QR Code dans le fichier fourni
 invalidQrCode: QR Code non valide
+certificateType: Aucun type de certificat valide n'a été trouvé
+invalidTestResult: Résultat du test non valide
+invalidTestType: Type de test non valide
+noCameraAccess: Impossible d'accéder à la caméra. Vérifiez les autorisations sous Paramètres > Safari > Appareil photo.
+noCameraFound: Impossible de trouver la caméra.
+safariSupportOnly: Sur iOS, veuillez utiliser le navigateur Safari.
