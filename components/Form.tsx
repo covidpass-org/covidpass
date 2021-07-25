@@ -73,7 +73,14 @@ function Form(): JSX.Element {
         const codeReader = new BrowserQRCodeReader();
 
         // Needs to be called before any camera can be accessed
-        const deviceList = await BrowserQRCodeReader.listVideoInputDevices();
+        let deviceList: MediaDeviceInfo[];
+
+        try {
+            deviceList = await BrowserQRCodeReader.listVideoInputDevices();
+        } catch (e) {
+            setErrorMessage('noCameraAccess');
+            return;
+        }
         
         // Check access to camera device
         if (deviceList.length == 0) {
@@ -101,7 +108,7 @@ function Form(): JSX.Element {
                         setIsCameraOpen(false);
                     }
                     if (error !== undefined) {
-                        setErrorMessage("noCameraAccess");
+                        setErrorMessage(error.message);
                     }
                 }
             )
@@ -114,6 +121,12 @@ function Form(): JSX.Element {
     async function addToWallet(event: FormEvent<HTMLFormElement>) {
         event.preventDefault();
         setLoading(true);
+
+        if(navigator.userAgent.match('CriOS')) {
+            setErrorMessage('safariSupportOnly');
+            setLoading(false);
+            return;
+        }
 
         if (!file && !qrCode) {
             setErrorMessage('noFileOrQrCode')

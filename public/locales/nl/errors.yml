@@ -17,3 +17,4 @@ invalidTestResult: Ongeldig testresultaat
 invalidTestType: Ongeldig testtype
 noCameraAccess: Kon geen toegang krijgen tot de camera. Controleer de machtigingen onder Instellingen > Safari > Camera.
 noCameraFound: Ik kon de camera niet vinden.
+safariSupportOnly: Gebruik op iOS de Safari-browser.

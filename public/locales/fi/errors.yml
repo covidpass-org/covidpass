@@ -17,3 +17,4 @@ invalidTestResult: Virheellinen testitulos
 invalidTestType: Virheellinen testityyppi
 noCameraAccess: Kameraan ei päässyt käsiksi. Tarkista käyttöoikeudet kohdasta Asetukset > Safari > Kamera.
 noCameraFound: En löytänyt kameraa.
+safariSupportOnly: Käytä iOS:ssä Safari-selainta.

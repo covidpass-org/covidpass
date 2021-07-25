@@ -17,3 +17,4 @@ invalidTestResult: Invalid test result
 invalidTestType: Invalid test type
 noCameraAccess: Could not access camera. Check permissions under Settings > Safari > Camera.
 noCameraFound: Could not find camera.
+safariSupportOnly: On iOS, please use the Safari Browser.
