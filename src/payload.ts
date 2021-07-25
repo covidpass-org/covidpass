@@ -2,7 +2,7 @@ import {ValueSets} from "./value_sets";
 import {Constants} from "./constants";
 
 enum CertificateType {
-    Vaccination = 'Vaccination',
+    Vaccine = 'Vaccine',
     Test = 'Test',
     Recovery = 'Recovery',
 }
@@ -63,25 +63,35 @@ export class Payload {
             throw new Error('certificateData');
         }
 
-        // Get name and date of birth information
+        // Get name information
         const nameInformation = covidCertificate['nam'];
-        const dateOfBirthInformation = covidCertificate['dob'];
 
         if (nameInformation == undefined) {
             throw new Error('nameMissing');
         }
-        if (dateOfBirthInformation == undefined) {
-            throw new Error('dobMissing');
-        }
 
-        const name = `${nameInformation['fn']}, ${nameInformation['gn']}`;
-        const dateOfBirth = dateOfBirthInformation;
+        const firstName = nameInformation['gn'];
+        const lastName = nameInformation['fn'];
+        
+        const transliteratedFirstName = nameInformation['gnt'];
+        const transliteratedLastName = nameInformation['fnt'];
+
+        // Check if name contains non-latin characters
+        const nameRegex = new RegExp('^(\\p{Script=Latin}|[ -\'`´])+$', 'u');
+        
+        let name: string;
+
+        if (nameRegex.test(firstName) && nameRegex.test(lastName)) {
+            name = `${firstName} ${lastName}`;
+        } else {
+            name = `${transliteratedFirstName} ${transliteratedLastName}`;
+        }
 
         let properties: object;
 
         // Set certificate type and properties
         if (covidCertificate['v'] !== undefined) {
-            this.certificateType = CertificateType.Vaccination;
+            this.certificateType = CertificateType.Vaccine;
             properties = covidCertificate['v'][0];
         }
         if (covidCertificate['t'] !== undefined) {
@@ -96,23 +106,16 @@ export class Payload {
             throw new Error('certificateType')
         }
 
-        // Get country code, identifier and issuer
-        const countryCode = properties['co'];
+        // Get identifier and issuer
         const uvci = properties['ci'];
         const certificateIssuer = properties['is'];
-
-        if (!(countryCode in valueSets.countryCodes)) {
-            throw new Error('invalidCountryCode');
-        }
-
-        const country = valueSets.countryCodes[countryCode].display;
 
         const generic: PassDictionary = {
             headerFields: [
                 {
                     key: "type",
-                    label: "Certificate Type",
-                    value: this.certificateType
+                    label: "EU Digital COVID",
+                    value: this.certificateType + " Certificate"
                 }
             ],
             primaryFields: [
@@ -123,14 +126,7 @@ export class Payload {
                 }
             ],
             secondaryFields: [],
-            auxiliaryFields: [
-                {
-                    key: "dob",
-                    label: "Date of Birth",
-                    value: dateOfBirth,
-                    textAlignment: TextAlignment.right
-                }
-            ],
+            auxiliaryFields: [],
             backFields: [
                 {
                     key: "uvci",
@@ -141,11 +137,6 @@ export class Payload {
                     key: "issuer",
                     label: "Certificate Issuer",
                     value: certificateIssuer
-                },
-                {
-                    key: "country",
-                    label: "Country",
-                    value: country
                 }
             ]
         }
@@ -164,8 +155,17 @@ export class Payload {
     }
 
     static fillPassData(type: CertificateType, data: PassDictionary, properties: Object, valueSets: ValueSets): PassDictionary {
+        // Get country name
+        const countryCode = properties['co'];
+
+        if (!(countryCode in valueSets.countryCodes)) {
+            throw new Error('invalidCountryCode');
+        }
+
+        const country = valueSets.countryCodes[countryCode].display;
+
         switch (type) {
-            case CertificateType.Vaccination:
+            case CertificateType.Vaccine:
                 const dose = `${properties['dn']}/${properties['sd']}`;
                 const dateOfVaccination = properties['dt'];
                 const medialProductKey = properties['mp'];
@@ -178,7 +178,7 @@ export class Payload {
                     throw new Error('invalidManufacturer')
                 }
 
-                const vaccineName = valueSets.medicalProducts[medialProductKey].display;
+                const vaccineName = valueSets.medicalProducts[medialProductKey].display.replace(/\s*\([^)]*\)\s*/g, "");
                 const manufacturer = valueSets.manufacturers[manufacturerKey].display;
 
                 data.secondaryFields.push(...[
@@ -194,11 +194,19 @@ export class Payload {
                         textAlignment: TextAlignment.right
                     }
                 ]);
-                data.auxiliaryFields.splice(0, 0, {
-                    key: "vaccine",
-                    label: "Vaccine",
-                    value: vaccineName
-                });
+                data.auxiliaryFields.push(...[
+                    {
+                        key: "vaccine",
+                        label: "Vaccine",
+                        value: vaccineName
+                    },
+                    {
+                        key: "cov",
+                        label: "Country of Vaccination",
+                        value: country,
+                        textAlignment: TextAlignment.right
+                    }
+                ]);
                 data.backFields.push(...[
                     {
                         key: "manufacturer",
@@ -234,7 +242,7 @@ export class Payload {
                 data.secondaryFields.push(...[
                     {
                         key: "result",
-                        label: "Result",
+                        label: "Test Result",
                         value: testResult
                     },
                     {
@@ -244,7 +252,6 @@ export class Payload {
                         textAlignment: TextAlignment.right
                     }
                 ]);
-                data.auxiliaryFields.pop();
                 data.auxiliaryFields.push(...[
                     {
                         key: "test",
@@ -258,6 +265,11 @@ export class Payload {
                         textAlignment: TextAlignment.right
                     },
                 ]);
+                data.backFields.push({
+                    key: "cot",
+                    label: "Country of Test",
+                    value: country
+                });
                 if (testingCentre !== undefined)
                     data.backFields.push({
                         key: "centre",
@@ -277,28 +289,27 @@ export class Payload {
 
                 data.secondaryFields.push(...[
                     {
-                        key: "result",
-                        label: "Test Result",
-                        value: "Detected"
-                    },
-                    {
                         key: "from",
                         label: "Valid From",
                         value: validFrom,
+                    },
+                    {
+                        key: "dov",
+                        label: "Date of positive Test",
+                        value: firstPositiveTestDate,
                         textAlignment: TextAlignment.right
                     }
                 ]);
-                data.auxiliaryFields.pop();
                 data.auxiliaryFields.push(...[
-                    {
-                        key: "testdate",
-                        label: "Test Date",
-                        value: firstPositiveTestDate
-                    },
                     {
                         key: "until",
                         label: "Valid Until",
                         value: validUntil,
+                    },
+                    {
+                        key: "cov",
+                        label: "Country of Test",
+                        value: country,
                         textAlignment: TextAlignment.right
                     },
                 ]);

@@ -7,7 +7,7 @@ selectCertificateDescription: |
 stopCamera: Arrêter l'appareil photo
 startCamera: Démarrer l'appareil photo
 openFile: Sélectionner un fichier
-foundQrCode: Code QR trouvé!
+foundQrCode: Code QR trouvé !
 pickColor: Choisissez une couleur
 pickColorDescription: Choisissez une couleur de fond pour votre passe.
 colorWhite: blanc
