@@ -1,0 +1,29 @@
+iosHint: Στο iOS, παρακαλώ χρησιμοποιήστε τον περιηγητή Safari.
+errorClose: Κλείσιμο
+selectCertificate: Επιλογή Πιστοποιητικού
+selectCertificateDescription: |
+  Παρακαλώ σαρώστε τον κωδικό QR του πιστοποιητικού σας ή επιλέξτε ένα στιγμιότυπο οθόνης ή την σελίδα PDF με τον κωδικό QR.
+  Λάβετε υπόψη πως η απευθείας επιλογή κάποιου αρχείου μέσω της κάμερας, δεν υποστηρίζεται.
+stopCamera: Τερματισμός Κάμερας
+startCamera: Εκκίνηση Κάμερας
+openFile: Επιλογή Αρχείου
+foundQrCode: Βρέθηκε κωδικός QR!
+pickColor: Επιλέξτε Χρώμα
+pickColorDescription: Επιλέξτε ένα χρώμα φόντου για το πάσο σας.
+colorWhite: λευκό
+colorBlack: μαύρο
+colorGrey: γκρι
+colorGreen: πράσινο
+colorIndigo: σκούρο μωβ
+colorBlue: μπλε
+colorPurple: ανοικτό μωβ
+colorTeal: τιρκουάζ
+addToWallet: Προσθήκη στο Wallet
+dataPrivacyDescription: |
+  Το απόρρητο των δεδομένων αποκτά ιδιαίτερη σημασία κατά την επεξεργασία εκείνων που σχετίζονται με την υγεία.
+  Για να μπορέσετε να λάβετε μια τεκμηριωμένη απόφαση, παρακαλώ διαβάστε πρώτα την
+iAcceptThe: Αποδέχομαι την
+privacyPolicy: Πολιτική Απορρήτου
+noCameraAccess: Αποτυχία πρόσβασης στην κάμερα. Ελέγξτε τα δικαιώματα στις Ρυθμίσεις > Safari > Κάμερα.
+noCameraFound: Δεν βρέθηκε κάποια κάμερα.
+safariSupportOnly: Στο iOS, παρακαλώ χρησιμοποιήστε τον περιηγητή Safari.

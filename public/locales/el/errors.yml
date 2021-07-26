@@ -1,0 +1,20 @@
+noFileOrQrCode: Παρακαλώ σαρώστε έναν κωδικό QR ή επιλέξτε ένα αρχείο
+signatureFailed: Σφάλμα κατά την ψηφιακή υπογραφή του πάσου στον διακομιστή
+decodingFailed: Αποτυχία αποκωδικοποίησης του ωφέλιμου φορτίου του κωδικού QR
+invalidColor: Μη έγκυρο χρώμα
+certificateData: Αποτυχία ανάγνωσης δεδομένων πιστοποιητικού
+nameMissing: Αποτυχία ανάγνωσης ονόματος
+dobMissing: Αποτυχία ανάγνωσης ημερομηνίας γέννησης
+invalidMedicalProduct: Μη έγκυρο ιατρικό προϊόν
+invalidCountryCode: Μη έγκυρος κωδικός χώρας
+invalidManufacturer: Μη έγκυρος κατασκευαστής
+invalidFileType: Μη έγκυρος τύπος αρχείου
+couldNotDecode: Δεν ήταν δυνατή η αποκωδικοποίηση του κωδικού QR από το αρχείο
+couldNotFindQrCode: Δεν ήταν δυνατή η εύρεση ενός κωδικού QR στο παρεχόμενο αρχείο
+invalidQrCode: Μη έγκυρος κωδικός QR
+certificateType: Δεν βρέθηκε έγκυρος τύπος πιστοποιητικού
+invalidTestResult: Μη έγκυρο αποτέλεσμα εξέτασης
+invalidTestType: Μη έγκυρος τύπος εξέτασης
+noCameraAccess: Δεν ήταν δυνατή η πρόσβαση στην κάμερα. Ελέγξτε τα δικαιώματα στις Ρυθμίσεις > Safari > Κάμερα.
+noCameraFound: Δεν μπόρεσε να βρει τη φωτογραφική μηχανή.
+safariSupportOnly: Στο iOS, χρησιμοποιήστε το πρόγραμμα περιήγησης Safari.
