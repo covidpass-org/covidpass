@@ -331,8 +331,7 @@ export class Payload {
                     {
                         key: "cot",
                         label: "Country of Test",
-                        value: country,
-                        textAlignment: TextAlignment.right
+                        value: country
                     },
                     {
                         key: "disclaimer",
