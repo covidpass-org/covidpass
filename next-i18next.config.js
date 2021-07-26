@@ -8,7 +8,7 @@ module.exports = {
       'nl', 'nl-NL', 'nl-BE',
       'fi', 'fi-FI',
       'el', 'el-GR', 'el-CY',
-      'it'
+      'it', 'it-IT', 'it-CH'
     ],
     localeExtension: 'yml',
   },
