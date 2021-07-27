@@ -7,6 +7,7 @@ import Link from 'next/link';
 
 import Card from "./Card";
 import Alert from "./Alert";
+import Check from './Check';
 import {PayloadBody} from "../src/payload";
 import {getPayloadBodyFromFile, getPayloadBodyFromQR} from "../src/process";
 import {PassData} from "../src/pass";
@@ -238,6 +239,13 @@ function Form(): JSX.Element {
                                 </a>
                             </Link>.
                         </p>
+                        <div>
+                            <ul className="list-none">
+                                <Check text={t('createdOnDevice')}></Check>
+                                <Check text={t('openSourceTransparent')}></Check>
+                                <Check text={t('hostedInEU')}></Check>
+                            </ul>
+                        </div>
                         <label htmlFor="privacy" className="flex flex-row space-x-4 items-center">
                             <input type="checkbox" id="privacy" value="privacy" required className="h-4 w-4"/>
                             <p>

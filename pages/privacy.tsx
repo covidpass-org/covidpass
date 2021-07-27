@@ -9,10 +9,10 @@ function Privacy(): JSX.Element {
     return (
         <Page content={
             <Card step="i" heading={t('common:privacyPolicy')} content={
-                <div className="space-y-2">
+                <div className="space-y-3">
                     <p>{t('privacy:gdprNotice')}</p>
-                    <p className="font-bold">{t('privacy:generalInfo')}</p>
-                    <div className="px-4">
+                    <p className="font-bold text-lg">{t('privacy:generalInfo')}</p>
+                    <div className="pl-6">
                         <ul className="list-disc">
                             <li>{t('privacy:generalInfoProcess')}</li>
                             <li>{t('privacy:generalInfoStoring')}</li>
@@ -62,7 +62,7 @@ function Privacy(): JSX.Element {
                     </p>
                     <p className="font-bold">{t('privacy:process')}</p>
                     <p>{t('privacy:processFirst')}:</p>
-                    <div className="px-4">
+                    <div className="pl-6">
                         <ul className="list-disc">
                             <li>{t('privacy:processRecognizing')}</li>
                             <li>{t('privacy:processDecoding')}</li>
@@ -72,7 +72,7 @@ function Privacy(): JSX.Element {
                         </ul>
                     </div>
                     <p>{t('privacy:processSecond')}:</p>
-                    <div className="px-4">
+                    <div className="pl-6">
                         <ul className="list-disc">
                             <li>{t('privacy:processReceiving')}</li>
                             <li>{t('privacy:processSigning')}</li>
@@ -80,7 +80,7 @@ function Privacy(): JSX.Element {
                         </ul>
                     </div>
                     <p>{t('privacy:processThird')}:</p>
-                    <div className="px-4">
+                    <div className="px-5">
                         <ul className="list-disc">
                             <li>{t('privacy:processCompleting')}</li>
                             <li>{t('privacy:processSaving')}</li>
@@ -107,7 +107,7 @@ function Privacy(): JSX.Element {
                         91710 Gunzenhausen<br />
                     </p>
                     <p>{t('privacy:logFiles')}:</p>
-                    <div className="px-4">
+                    <div className="pl-6">
                         <ul className="list-disc">
                             <li>{t('privacy:logFilesBrowser')}</li>
                             <li>{t('privacy:logFilesOs')}</li>
@@ -118,7 +118,7 @@ function Privacy(): JSX.Element {
                     </div>
                     <p className="font-bold">{t('privacy:rights')}</p>
                     <p>{t('privacy:rightsGranted')}:</p>
-                    <div className="px-4">
+                    <div className="pl-6">
                         <ul className="list-disc">
                             <li>{t('privacy:rightsAccess')}</li>
                             <li>{t('privacy:rightsErasure')}</li>
@@ -127,7 +127,7 @@ function Privacy(): JSX.Element {
                         </ul>
                     </div>
                     <p className="font-bold">{t('privacy:thirdParties')}</p>
-                    <div className="px-4">
+                    <div className="pl-6">
                         <ul className="list-disc">
                             <li>
                                 GitHub:
