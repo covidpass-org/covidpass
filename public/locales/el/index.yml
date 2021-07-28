@@ -14,9 +14,9 @@ colorWhite: λευκό
 colorBlack: μαύρο
 colorGrey: γκρι
 colorGreen: πράσινο
-colorIndigo: σκούρο μωβ
-colorBlue: μπλε
-colorPurple: ανοικτό μωβ
+colorIndigo: μπλε
+colorBlue: γαλάζιο
+colorPurple: μωβ
 colorTeal: τιρκουάζ
 addToWallet: Προσθήκη στο Wallet
 dataPrivacyDescription: |
@@ -24,6 +24,6 @@ dataPrivacyDescription: |
   Για να μπορέσετε να λάβετε μια τεκμηριωμένη απόφαση, παρακαλώ διαβάστε πρώτα την
 iAcceptThe: Αποδέχομαι την
 privacyPolicy: Πολιτική Απορρήτου
-createdOnDevice: Δημιουργήθηκε στη συσκευή σας
-OpenSourceTransparent: Ανοιχτού κώδικα και διαφανής
-hostedInEU: φιλοξενείται στην ΕΕ
+createdOnDevice: Δημιουργείται στη συσκευή σας
+openSourceTransparent: Ανοιχτού κώδικα και διαφανής
+hostedInEU: Φιλοξενείται στην ΕΕ
