@@ -3,9 +3,9 @@ import {Constants} from "./constants";
 import {COLORS} from "./colors";
 
 enum CertificateType {
-    Vaccine = 'Vaccine',
-    Test = 'Test',
-    Recovery = 'Recovery',
+    Vaccination = 'Vaccination Card',
+    Test = 'Test Certificate',
+    Recovery = 'Recovery Certificate',
 }
 
 enum TextAlignment {
@@ -90,7 +90,7 @@ export class Payload {
 
         // Set certificate type and properties
         if (covidCertificate['v'] !== undefined) {
-            this.certificateType = CertificateType.Vaccine;
+            this.certificateType = CertificateType.Vaccination;
             properties = covidCertificate['v'][0];
         }
         if (covidCertificate['t'] !== undefined) {
@@ -121,7 +121,7 @@ export class Payload {
                 {
                     key: "type",
                     label: "EU Digital COVID",
-                    value: this.certificateType + " Certificate"
+                    value: this.certificateType
                 }
             ],
             primaryFields: [
@@ -162,7 +162,7 @@ export class Payload {
 
     static fillPassData(type: CertificateType, data: PassDictionary, properties: Object, valueSets: ValueSets, country: string, dateOfBirth: string): PassDictionary {
         switch (type) {
-            case CertificateType.Vaccine:
+            case CertificateType.Vaccination:
                 const dose = `${properties['dn']}/${properties['sd']}`;
                 const dateOfVaccination = properties['dt'];
                 const medialProductKey = properties['mp'];
