@@ -1,16 +1,16 @@
 noFileOrQrCode: Perfavore scannerizza un Codice QR, o seleziona un file
 signatureFailed: Errore durante la firma del pass sul server
-decodingFailed: Impossibile decodificare il payload del Codice QR
+decodingFailed: Impossibile decodificare il contenuto del codice QR
 invalidColor: Colore non valido
 certificateData: Impossibile leggere i dati del certificato
 nameMissing: Impossibile leggere il nome
 dobMissing: Impossibile leggere la data di nascita
 invalidMedicalProduct: Prodotto medico non valido
-invalidCountryCode: Codice paese non valido
+invalidCountryCode: Codice del paese non valido
 invalidManufacturer: Produttore non valido
 invalidFileType: Tipo di file non valido
 couldNotDecode: Impossibile decodificare il Codice QR dal file
-couldNotFindQrCode: Impossibile trovare il Codice QR nel Codice QR fornito dal file
+couldNotFindQrCode: Impossibile trovare il Codice QR nel file
 invalidQrCode: Codice QR non valido
 certificateType: Nessun tipo di certificato valido trovato
 invalidTestResult: Risultato del test non valido

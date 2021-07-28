@@ -2,11 +2,11 @@ iosHint: Su iOS, si prega di utilizzare il browser Safari.
 errorClose: Chiudi
 selectCertificate: Seleziona il certificato
 selectCertificateDescription: |
-  Scannerizza il codice QR sul tuo certificato o seleziona uno screenshot o una pagina PDF con il codice QR. 
+  Scannerizza il codice QR sul tuo certificato o seleziona uno screenshot o una pagina PDF con il codice QR.
   Nota che la selezione di un file direttamente dalla fotocamera non è supportata.
 stopCamera: Blocca Fotocamera
 startCamera: Avvia Fotocamera
-openFile: Selezionare File
+openFile: Seleziona un File
 foundQrCode: Codice QR trovato!
 pickColor: Seleziona un colore
 pickColorDescription: Seleziona un colore di sfondo per il certificato.
@@ -22,8 +22,8 @@ addToWallet: Aggiungi a Wallet
 dataPrivacyDescription: |
   La riservatezza dei dati è di particolare importanza quando si elaborano dati relativi alla salute.
   Per poter prendere una decisione informata, si prega di leggere il
-iAcceptThe: Accetto il
-privacyPolicy: Politica sulla Riservatezza
+iAcceptThe: Accetto la
+privacyPolicy: Privacy Policy
 createdOnDevice: Creato sul tuo dispositivo
 openSourceTransparent: Open source e trasparente
-hostedInEU: Ospitato nell'UE
+hostedInEU: Server nell'UE
