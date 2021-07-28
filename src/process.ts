@@ -4,10 +4,11 @@ import * as PdfJS from 'pdfjs-dist'
 import jsQR, {QRCode} from "jsqr";
 import {decodeData} from "./decode";
 import {Result} from "@zxing/library";
+import {COLORS} from "./colors";
 
 PdfJS.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${PdfJS.version}/pdf.worker.js`
 
-export async function getPayloadBodyFromFile(file: File, color: string): Promise<PayloadBody> {
+export async function getPayloadBodyFromFile(file: File, color: COLORS): Promise<PayloadBody> {
     // Read file
     const fileBuffer = await file.arrayBuffer();
 
@@ -59,7 +60,7 @@ export async function getPayloadBodyFromFile(file: File, color: string): Promise
     }
 }
 
-export async function getPayloadBodyFromQR(qrCodeResult: Result, color: string): Promise<PayloadBody> {
+export async function getPayloadBodyFromQR(qrCodeResult: Result, color: COLORS): Promise<PayloadBody> {
 
     // Get raw data
     let rawData = qrCodeResult.getText();
