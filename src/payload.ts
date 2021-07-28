@@ -1,5 +1,6 @@
 import {ValueSets} from "./value_sets";
 import {Constants} from "./constants";
+import {COLORS} from "./colors";
 
 enum CertificateType {
     Vaccine = 'Vaccine',
@@ -27,7 +28,7 @@ export interface PassDictionary {
 }
 
 export interface PayloadBody {
-    color: string;
+    color: COLORS;
     rawData: string;
     decodedData: Uint8Array;
 }
@@ -48,13 +49,7 @@ export class Payload {
 
     constructor(body: PayloadBody, valueSets: ValueSets) {
 
-        let colors = Constants.COLORS;
-
-        if (!(body.color in colors)) {
-            throw new Error('invalidColor');
-        }
-
-        const dark = body.color != 'white'
+        const dark = body.color != COLORS.WHITE;
 
         const healthCertificate = body.decodedData['-260'];
         const covidCertificate = healthCertificate['1']; // Version number subject to change
@@ -76,13 +71,13 @@ export class Payload {
 
         const firstName = nameInformation['gn'];
         const lastName = nameInformation['fn'];
-        
+
         const transliteratedFirstName = nameInformation['gnt'].replaceAll('<', ' ');
         const transliteratedLastName = nameInformation['fnt'].replaceAll('<', ' ');
 
         // Check if name contains non-latin characters
         const nameRegex = new RegExp('^[\\p{Script=Latin}\\p{P}\\p{M}\\p{Z}]+$', 'u');
-        
+
         let name: string;
 
         if (nameRegex.test(firstName) && nameRegex.test(lastName)) {
@@ -155,9 +150,9 @@ export class Payload {
         // Set Values
         this.rawData = body.rawData;
 
-        this.backgroundColor = dark ? colors[body.color] : colors.white
-        this.labelColor = dark ? colors.white : colors.grey
-        this.foregroundColor = dark ? colors.white : colors.black
+        this.backgroundColor = dark ? body.color : COLORS.WHITE
+        this.labelColor = dark ? COLORS.WHITE : COLORS.GREY
+        this.foregroundColor = dark ? COLORS.WHITE : COLORS.BLACK
         this.img1x = dark ? Constants.img1xWhite : Constants.img1xBlack
         this.img2x = dark ? Constants.img2xWhite : Constants.img2xBlack
         this.dark = dark;
@@ -188,7 +183,7 @@ export class Payload {
                         key: "dose",
                         label: "Dose",
                         value: dose
-                    }, 
+                    },
                     {
                         key: "dov",
                         label: "Date of Vaccination",
@@ -232,7 +227,7 @@ export class Payload {
                 const testDateTimeString = properties['sc'];
                 const testResultKey = properties['tr'];
                 const testingCentre = properties['tc'];
-                
+
                 if (!(testResultKey in valueSets.testResults)) {
                     throw new Error('invalidTestResult');
                 }
@@ -244,7 +239,7 @@ export class Payload {
                 const testType = valueSets.testTypes[testTypeKey].display;
 
                 const testTime = testDateTimeString.replace(/.*T/, '').replace('Z', ' ') + 'UTC';
-                const testDate = testDateTimeString.replace(/T.*/,'');
+                const testDate = testDateTimeString.replace(/T.*/, '');
 
                 data.secondaryFields.push(...[
                     {
@@ -343,7 +338,7 @@ export class Payload {
             default:
                 throw new Error('certificateType');
         }
-        
+
         return data;
     }
 }
