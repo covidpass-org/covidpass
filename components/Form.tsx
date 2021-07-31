@@ -234,7 +234,7 @@ function Form(): JSX.Element {
                                 <Check text={t('hostedInEU')}/>
                             </ul>
                         </div>
-                        <label htmlFor="privacy" className="flex flex-row space-x-4 items-center">
+                        <label htmlFor="privacy" className="flex flex-row space-x-4 items-center pb-2">
                             <input type="checkbox" id="privacy" value="privacy" required className="h-5 w-5 outline-none"/>
                             <p>
                                 {t('index:iAcceptThe')}&nbsp;
@@ -247,7 +247,7 @@ function Form(): JSX.Element {
                         </label>
                         <div className="flex flex-row items-center justify-start">
                             <button id="download" type="submit"
-                                    className="focus:outline-none bg-green-600 py-2 px-3 mt-2 text-white font-semibold rounded-md disabled:bg-gray-400">
+                                    className="focus:outline-none bg-green-600 py-2 px-3 text-white font-semibold rounded-md disabled:bg-gray-400">
                                 {t('index:addToWallet')}
                             </button>
                             <div id="spin" className={loading ? undefined : "hidden"}>
