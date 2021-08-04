@@ -41,7 +41,7 @@ docker run -t -i -p 3000:3000 covidpass
 
 ### Deploy on your own server
 
-We have a [separate repository](https://github.com/covidpass-org/docker-compose) containing a docker-compose file which you can use for your own deployment of CovidPass.
+We have a [separate repository](https://github.com/jantsop/docker-compose) containing a docker-compose file which you can use for your own deployment of CovidPass.
 
 # FAQ
 
@@ -111,7 +111,7 @@ Finally, the following steps happen locally in your browser:
 
 # Privacy policy of our service
 
-You can find the full privacy policy of our service [here](https://covidpass.marvinsextro.de/privacy).
+You can find the full privacy policy of our service [here](https://covidpassi.fi/privacy).
 
 # Credits
 
