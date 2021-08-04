@@ -1,10 +1,11 @@
 import {ValueSets} from "./value_sets";
 import {Constants} from "./constants";
+import {COLORS} from "./colors";
 
 enum CertificateType {
-    Vaccine = 'Vaccine',
-    Test = 'Test',
-    Recovery = 'Recovery',
+    Vaccination = 'Vaccination Card',
+    Test = 'Test Certificate',
+    Recovery = 'Recovery Certificate',
 }
 
 enum TextAlignment {
@@ -27,7 +28,7 @@ export interface PassDictionary {
 }
 
 export interface PayloadBody {
-    color: string;
+    color: COLORS;
     rawData: string;
     decodedData: Uint8Array;
 }
@@ -48,13 +49,7 @@ export class Payload {
 
     constructor(body: PayloadBody, valueSets: ValueSets) {
 
-        let colors = Constants.COLORS;
-
-        if (!(body.color in colors)) {
-            throw new Error('invalidColor');
-        }
-
-        const dark = body.color != 'white'
+        const dark = body.color != COLORS.WHITE;
 
         const healthCertificate = body.decodedData['-260'];
         const covidCertificate = healthCertificate['1']; // Version number subject to change
@@ -63,22 +58,26 @@ export class Payload {
             throw new Error('certificateData');
         }
 
-        // Get name information
+        // Get name and date of birth information
         const nameInformation = covidCertificate['nam'];
+        const dateOfBirth = covidCertificate['dob'];
 
         if (nameInformation == undefined) {
             throw new Error('nameMissing');
         }
+        if (dateOfBirth == undefined) {
+            throw new Error('dobMissing');
+        }
 
         const firstName = nameInformation['gn'];
         const lastName = nameInformation['fn'];
-        
-        const transliteratedFirstName = nameInformation['gnt'];
-        const transliteratedLastName = nameInformation['fnt'];
+
+        const transliteratedFirstName = nameInformation['gnt'].replaceAll('<', ' ');
+        const transliteratedLastName = nameInformation['fnt'].replaceAll('<', ' ');
 
         // Check if name contains non-latin characters
-        const nameRegex = new RegExp('^(\\p{Script=Latin}|[ -\'`´])+$', 'u');
-        
+        const nameRegex = new RegExp('^[\\p{Script=Latin}\\p{P}\\p{M}\\p{Z}]+$', 'u');
+
         let name: string;
 
         if (nameRegex.test(firstName) && nameRegex.test(lastName)) {
@@ -91,7 +90,7 @@ export class Payload {
 
         // Set certificate type and properties
         if (covidCertificate['v'] !== undefined) {
-            this.certificateType = CertificateType.Vaccine;
+            this.certificateType = CertificateType.Vaccination;
             properties = covidCertificate['v'][0];
         }
         if (covidCertificate['t'] !== undefined) {
@@ -106,16 +105,23 @@ export class Payload {
             throw new Error('certificateType')
         }
 
-        // Get identifier and issuer
+        // Get country, identifier and issuer
+        const countryCode = properties['co'];
         const uvci = properties['ci'];
         const certificateIssuer = properties['is'];
+
+        if (!(countryCode in valueSets.countryCodes)) {
+            throw new Error('invalidCountryCode');
+        }
+
+        const country = valueSets.countryCodes[countryCode].display;
 
         const generic: PassDictionary = {
             headerFields: [
                 {
                     key: "type",
                     label: "EU Digital COVID",
-                    value: this.certificateType + " Certificate"
+                    value: this.certificateType
                 }
             ],
             primaryFields: [
@@ -144,28 +150,19 @@ export class Payload {
         // Set Values
         this.rawData = body.rawData;
 
-        this.backgroundColor = dark ? colors[body.color] : colors.white
-        this.labelColor = dark ? colors.white : colors.grey
-        this.foregroundColor = dark ? colors.white : colors.black
+        this.backgroundColor = dark ? body.color : COLORS.WHITE
+        this.labelColor = dark ? COLORS.WHITE : COLORS.GREY
+        this.foregroundColor = dark ? COLORS.WHITE : COLORS.BLACK
         this.img1x = dark ? Constants.img1xWhite : Constants.img1xBlack
         this.img2x = dark ? Constants.img2xWhite : Constants.img2xBlack
         this.dark = dark;
 
-        this.generic = Payload.fillPassData(this.certificateType, generic, properties, valueSets);
+        this.generic = Payload.fillPassData(this.certificateType, generic, properties, valueSets, country, dateOfBirth);
     }
 
-    static fillPassData(type: CertificateType, data: PassDictionary, properties: Object, valueSets: ValueSets): PassDictionary {
-        // Get country name
-        const countryCode = properties['co'];
-
-        if (!(countryCode in valueSets.countryCodes)) {
-            throw new Error('invalidCountryCode');
-        }
-
-        const country = valueSets.countryCodes[countryCode].display;
-
+    static fillPassData(type: CertificateType, data: PassDictionary, properties: Object, valueSets: ValueSets, country: string, dateOfBirth: string): PassDictionary {
         switch (type) {
-            case CertificateType.Vaccine:
+            case CertificateType.Vaccination:
                 const dose = `${properties['dn']}/${properties['sd']}`;
                 const dateOfVaccination = properties['dt'];
                 const medialProductKey = properties['mp'];
@@ -186,7 +183,7 @@ export class Payload {
                         key: "dose",
                         label: "Dose",
                         value: dose
-                    }, 
+                    },
                     {
                         key: "dov",
                         label: "Date of Vaccination",
@@ -201,13 +198,18 @@ export class Payload {
                         value: vaccineName
                     },
                     {
-                        key: "cov",
-                        label: "Country of Vaccination",
-                        value: country,
+                        key: "dob",
+                        label: "Date of Birth",
+                        value: dateOfBirth,
                         textAlignment: TextAlignment.right
                     }
                 ]);
                 data.backFields.push(...[
+                    {
+                        key: "cov",
+                        label: "Country of Vaccination",
+                        value: country
+                    },
                     {
                         key: "manufacturer",
                         label: "Manufacturer",
@@ -216,7 +218,7 @@ export class Payload {
                     {
                         key: "disclaimer",
                         label: "Disclaimer",
-                        value: "This certificate is only valid in combination with the ID card of the certificate holder and expires 30 June 2022. The validity of this certificate was not checked by CovidPass."
+                        value: "This certificate is not a travel document. It is only valid in combination with the ID card of the certificate holder and may expire one year + 14 days after the last dose. The validity of this certificate was not checked by CovidPass."
                     }
                 ]);
                 break;
@@ -225,7 +227,7 @@ export class Payload {
                 const testDateTimeString = properties['sc'];
                 const testResultKey = properties['tr'];
                 const testingCentre = properties['tc'];
-                
+
                 if (!(testResultKey in valueSets.testResults)) {
                     throw new Error('invalidTestResult');
                 }
@@ -237,7 +239,7 @@ export class Payload {
                 const testType = valueSets.testTypes[testTypeKey].display;
 
                 const testTime = testDateTimeString.replace(/.*T/, '').replace('Z', ' ') + 'UTC';
-                const testDate = testDateTimeString.replace(/T.*/,'');
+                const testDate = testDateTimeString.replace(/T.*/, '');
 
                 data.secondaryFields.push(...[
                     {
@@ -254,14 +256,14 @@ export class Payload {
                 ]);
                 data.auxiliaryFields.push(...[
                     {
-                        key: "test",
-                        label: "Test Type",
-                        value: testType
-                    },
-                    {
                         key: "time",
                         label: "Time of Test",
-                        value: testTime,
+                        value: testTime
+                    },
+                    {
+                        key: "dob",
+                        label: "Date of Birth",
+                        value: dateOfBirth,
                         textAlignment: TextAlignment.right
                     },
                 ]);
@@ -276,11 +278,18 @@ export class Payload {
                         label: "Testing Centre",
                         value: testingCentre
                     });
-                data.backFields.push({
-                    key: "disclaimer",
-                    label: "Disclaimer",
-                    value: "This certificate is only valid in combination with the ID card of the certificate holder and may expire 24h after the test. The validity of this certificate was not checked by CovidPass."
-                });
+                data.backFields.push(...[
+                    {
+                        key: "test",
+                        label: "Test Type",
+                        value: testType
+                    },
+                    {
+                        key: "disclaimer",
+                        label: "Disclaimer",
+                        value: "This certificate is not a travel document. It is only valid in combination with the ID card of the certificate holder and may expire 24h after the test. The validity of this certificate was not checked by CovidPass."
+                    }
+                ]);
                 break;
             case CertificateType.Recovery:
                 const firstPositiveTestDate = properties['fr'];
@@ -289,12 +298,12 @@ export class Payload {
 
                 data.secondaryFields.push(...[
                     {
-                        key: "from",
-                        label: "Valid From",
-                        value: validFrom,
+                        key: "until",
+                        label: "Valid Until",
+                        value: validUntil,
                     },
                     {
-                        key: "dov",
+                        key: "dot",
                         label: "Date of positive Test",
                         value: firstPositiveTestDate,
                         textAlignment: TextAlignment.right
@@ -302,27 +311,34 @@ export class Payload {
                 ]);
                 data.auxiliaryFields.push(...[
                     {
-                        key: "until",
-                        label: "Valid Until",
-                        value: validUntil,
+                        key: "from",
+                        label: "Valid From",
+                        value: validFrom,
                     },
                     {
-                        key: "cov",
-                        label: "Country of Test",
-                        value: country,
+                        key: "dob",
+                        label: "Date of Birth",
+                        value: dateOfBirth,
                         textAlignment: TextAlignment.right
-                    },
+                    }
                 ]);
-                data.backFields.push({
-                    key: "disclaimer",
-                    label: "Disclaimer",
-                    value: "This certificate is only valid in combination with the ID card of the certificate holder. The validity of this certificate was not checked by CovidPass."
-                });
+                data.backFields.push(...[
+                    {
+                        key: "cot",
+                        label: "Country of Test",
+                        value: country
+                    },
+                    {
+                        key: "disclaimer",
+                        label: "Disclaimer",
+                        value: "This certificate is not a travel document. It is only valid in combination with the ID card of the certificate holder. The validity of this certificate was not checked by CovidPass."
+                    }
+                ]);
                 break;
             default:
                 throw new Error('certificateType');
         }
-        
+
         return data;
     }
 }
