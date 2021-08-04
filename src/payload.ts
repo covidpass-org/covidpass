@@ -218,7 +218,7 @@ export class Payload {
                     {
                         key: "disclaimer",
                         label: "Disclaimer",
-                        value: "This certificate is not a travel document. It is only valid in combination with the ID card of the certificate holder and may expire one year + 14 days after the last dose. The validity of this certificate was not checked by CovidPass."
+                        value: "This certificate is not a travel document. It is only valid in combination with the ID card of the certificate holder and expires on 30.6.2022. The validity of this certificate was not checked by CovidPass."
                     }
                 ]);
                 break;
