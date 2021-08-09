@@ -117,6 +117,11 @@ You can find the full privacy policy of our service [here](https://covidpassi.fi
 
 The idea for this web app originated from the [solution of an Austrian web developer](https://coronapass.fabianpimminger.com), which only works for Austrian certificates at the moment.
 
+# Selfhosting
+
+Yes, you can selfhost this application, but I would highly recommend getting original repository [here](https://github.com/covidpass/covidpass).
+This instance is modified for Finnish language only.
+
 # Contribute
 
 Any contribution to this project is welcome. Feel free to leave your suggestions, issues or pull requests. We are also looking for people to translate this web app for all EU countries.
