@@ -119,7 +119,7 @@ The idea for this web app originated from the [solution of an Austrian web devel
 
 # Selfhosting
 
-Yes, you can selfhost this application, but I would highly recommend getting original repository [here](https://github.com/covidpass/covidpass).
+Yes, you can selfhost this application, but I would highly recommend getting original repository [here](https://github.com/covidpass-org/covidpass).
 This instance is modified for Finnish language only.
 
 # Contribute
