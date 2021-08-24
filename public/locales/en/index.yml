@@ -1,13 +1,12 @@
 iosHint: On iOS, please use the Safari Browser.
 errorClose: Close
-selectCertificate: Select Certificate
+selectCertificate: Select vaccination receipt (PDF)
 selectCertificateDescription: |
-  Please scan the QR code on your certificate or select a screenshot or PDF page with the QR code. 
-  Note that selecting a file directly from camera is not supported.
-stopCamera: Stop Camera
-startCamera: Start Camera
+  If you have more than one receipts, just select the most recent one downloaded from covid19.ontariohealth.ca
+#stopCamera: Stop Camera
+#startCamera: Start Camera
 openFile: Select File
-foundQrCode: Found QR Code!
+#foundQrCode: Found QR Code!
 pickColor: Pick a Color
 pickColorDescription: Pick a background color for your pass.
 colorWhite: white
@@ -20,10 +19,9 @@ colorPurple: purple
 colorTeal: teal
 addToWallet: Add to Wallet
 dataPrivacyDescription: |
-  Data privacy is of special importance when processing health-related data. 
-  In order for you to make an informed decision, please read the
+  Your vaccination receipt is processed on your mobile phone only. No data is sent to the internet.
 iAcceptThe: I accept the
 privacyPolicy: Privacy Policy
 createdOnDevice: Created on your device
-openSourceTransparent: Open source and transparent
-hostedInEU: Hosted in the EU
+openSourceTransparent: 100% open source - You can validate all lines of code used.
+#hostedInEU: Hosted in the EU

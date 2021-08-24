@@ -168,12 +168,12 @@ function Form(): JSX.Element {
                     <div className="space-y-5">
                         <p>{t('index:selectCertificateDescription')}</p>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                            <button
+                            {/* <button
                                 type="button"
                                 onClick={isCameraOpen ? hideCameraView : showCameraView}
                                 className="focus:outline-none h-20 bg-gray-500 hover:bg-gray-700 text-white font-semibold rounded-md">
                                 {isCameraOpen ? t('index:stopCamera') : t('index:startCamera')}
-                            </button>
+                            </button> */}
                             <button
                                 type="button"
                                 onClick={showFileDialog}
@@ -209,15 +209,15 @@ function Form(): JSX.Element {
                         }
                     </div>
                 }/>
-                <Card step="2" heading={t('index:pickColor')} content={
+                {/* <Card step="2" heading={t('index:pickColor')} content={
                     <div className="space-y-5">
                         <p>{t('index:pickColorDescription')}</p>
                         <div className="relative inline-block w-full">
                             <Colors onChange={setSelectedColor} initialValue={selectedColor}/>
                         </div>
                     </div>
-                }/>
-                <Card step="3" heading={t('index:addToWallet')} content={
+                }/> */}
+                <Card step="2" heading={t('index:addToWallet')} content={
                     <div className="space-y-5">
                         <p>
                             {t('index:dataPrivacyDescription')}
@@ -231,10 +231,10 @@ function Form(): JSX.Element {
                             <ul className="list-none">
                                 <Check text={t('createdOnDevice')}/>
                                 <Check text={t('openSourceTransparent')}/>
-                                <Check text={t('hostedInEU')}/>
+                                {/* <Check text={t('hostedInEU')}/> */}
                             </ul>
                         </div>
-                        <label htmlFor="privacy" className="flex flex-row space-x-4 items-center pb-2">
+                        {/* <label htmlFor="privacy" className="flex flex-row space-x-4 items-center pb-2">
                             <input type="checkbox" id="privacy" value="privacy" required className="h-5 w-5 outline-none"/>
                             <p>
                                 {t('index:iAcceptThe')}&nbsp;
@@ -244,7 +244,7 @@ function Form(): JSX.Element {
                                     </a>
                                 </Link>.
                             </p>
-                        </label>
+                        </label> */}
                         <div className="flex flex-row items-center justify-start">
                             <button id="download" type="submit"
                                     className="focus:outline-none bg-green-600 py-2 px-3 text-white font-semibold rounded-md disabled:bg-gray-400">

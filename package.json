@@ -8,8 +8,14 @@
     "build": "next build",
     "start": "next start"
   },
+  "browser": {
+    "fs": false,
+    "os": false,
+    "path": false
+  },
   "dependencies": {
     "@headlessui/react": "^1.3.0",
+    "@ninja-labs/verify-pdf": "^0.3.9",
     "@zxing/browser": "^0.0.9",
     "@zxing/library": "^0.18.6",
     "base45": "^3.0.0",
@@ -18,7 +24,7 @@
     "file-saver": "^2.0.5",
     "jpeg-js": "^0.4.3",
     "jsqr": "^1.4.0",
-    "next": "latest",
+    "next": "^11.0.1",
     "next-i18next": "^8.5.1",
     "next-seo": "^4.26.0",
     "node-fetch": "^2.6.1",
@@ -26,6 +32,7 @@
     "pngjs": "^6.0.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
+    "tls": "^0.0.1",
     "uuid": "^8.3.2",
     "webpack": "^5.0.0",
     "worker-loader": "^3.0.7"
