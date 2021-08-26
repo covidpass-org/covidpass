@@ -1,4 +1,4 @@
-noFileOrQrCode: Please scan a QR Code, or select a file
+noFileOrQrCode: Please select your vaccination receipt PDF file
 signatureFailed: Error while signing pass on server
 decodingFailed: Failed to decode QR code payload
 invalidColor: Invalid color

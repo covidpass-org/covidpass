@@ -1,5 +1,5 @@
-title: Ontario vaccination receipt to mobile wallet
-subtitle: This tool validates the digital signature of your receipt and saves the information onto your mobile wallet for easy validation.
+title: Vaccination Receipt to Wallet
+subtitle: This tool verifies your electronic receipt (PDF) and save the record onto your Apple Wallet securely.
 privacyPolicy: Privacy Policy
 donate: Sponsor
 gitHub: GitHub

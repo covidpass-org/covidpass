@@ -9,16 +9,19 @@ const crypto = require('crypto')
 
 enum QrFormat {
     PKBarcodeFormatQR = 'PKBarcodeFormatQR',
+    PKBarcodeFormatPDF417 = 'PKBarcodeFormatPDF417'
 }
 
 enum Encoding {
     utf8 = "utf-8",
+    iso88591 = "iso-8859-1"
 }
 
 interface QrCode {
     message: string;
     format: QrFormat;
     messageEncoding: Encoding;
+    // altText: string;
 }
 
 interface SignData {
@@ -52,8 +55,12 @@ export class PassData {
 
     private static async signWithRemote(signData: SignData): Promise<ArrayBuffer> {
         // Load API_BASE_URL form nextjs backend
+
         const configResponse = await fetch('/api/config')
         const apiBaseUrl = (await configResponse.json()).apiBaseUrl
+        console.log(`${apiBaseUrl}/sign`);
+
+        console.log(JSON.stringify(signData));
 
         const response = await fetch(`${apiBaseUrl}/sign`, {
             method: 'POST',
@@ -72,17 +79,20 @@ export class PassData {
     }
 
     static async generatePass(payloadBody: PayloadBody): Promise<Buffer> {
-        // Get the Value Sets from GitHub
-        const valueSets: ValueSets = await ValueSets.loadValueSets();
 
         // Create Payload
-        const payload: Payload = new Payload(payloadBody, valueSets);
+
+        const payload: Payload = new Payload(payloadBody);
+
+        payload.serialNumber = uuid4();
 
         // Create QR Code Object
         const qrCode: QrCode = {
-            message: payload.rawData,
+            message: `https://verifier.vaccine-ontario.ca/?serialNumber=${payload.serialNumber}`,
             format: QrFormat.PKBarcodeFormatQR,
-            messageEncoding: Encoding.utf8,
+            messageEncoding: Encoding.iso88591,
+            // altText : payload.rawData
+
         }
 
         // Create pass data
@@ -92,6 +102,8 @@ export class PassData {
         const zip = [] as { path: string; data: Buffer | string }[];
 
         // Adding required fields
+
+        console.log(pass);
 
         // Create pass.json
         const passJson = JSON.stringify(pass);
@@ -117,6 +129,8 @@ export class PassData {
             ),
         );
 
+        console.log(manifestJson);
+
         // Add Manifest JSON to zip
         zip.push({path: 'manifest.json', data: Buffer.from(manifestJson)});
 
@@ -126,7 +140,7 @@ export class PassData {
         // Sign hash with server
         const manifestSignature = await PassData.signWithRemote({
             PassJsonHash: passHash,
-            useBlackVersion: !payload.dark,
+            useBlackVersion: true,
         });
 
         // Add signature to zip
@@ -139,7 +153,7 @@ export class PassData {
         this.labelColor = payload.labelColor;
         this.foregroundColor = payload.foregroundColor;
         this.backgroundColor = payload.backgroundColor;
-        this.serialNumber = uuid4(); // Generate random UUID v4
+        this.serialNumber = payload.serialNumber; // Generate random UUID v4
         this.barcodes = [qrCode];
         this.barcode = qrCode;
         this.generic = payload.generic;

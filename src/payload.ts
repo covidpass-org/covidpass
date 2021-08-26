@@ -1,15 +1,13 @@
-import {ValueSets} from "./value_sets";
 import {Constants} from "./constants";
 import {COLORS} from "./colors";
 
-enum CertificateType {
-    Vaccination = 'Vaccination Card',
-    Test = 'Test Certificate',
-    Recovery = 'Recovery Certificate',
+export class Receipt {
+  constructor(public name: string, public vaccinationDate: string, public vaccineName: string, public dateOfBirth: string, public numDoses: number, public organization: string) {};
 }
 
 enum TextAlignment {
     right = 'PKTextAlignmentRight',
+    center = 'PKTextAlignmentCenter'
 }
 
 interface Field {
@@ -28,317 +26,102 @@ export interface PassDictionary {
 }
 
 export interface PayloadBody {
-    color: COLORS;
+    // color: COLORS;
     rawData: string;
-    decodedData: Uint8Array;
+    receipt: Receipt;
 }
 
 export class Payload {
-    certificateType: CertificateType;
 
+    receipt: Receipt;
     rawData: string;
-
     backgroundColor: string;
     labelColor: string;
     foregroundColor: string;
     img1x: Buffer;
     img2x: Buffer;
-    dark: boolean;
-
+    serialNumber: string;
     generic: PassDictionary;
 
-    constructor(body: PayloadBody, valueSets: ValueSets) {
-
-        const dark = body.color != COLORS.WHITE;
-
-        const healthCertificate = body.decodedData['-260'];
-        const covidCertificate = healthCertificate['1']; // Version number subject to change
-
-        if (covidCertificate == undefined) {
-            throw new Error('certificateData');
-        }
+    constructor(body: PayloadBody) {
 
         // Get name and date of birth information
-        const nameInformation = covidCertificate['nam'];
-        const dateOfBirth = covidCertificate['dob'];
-
-        if (nameInformation == undefined) {
+        const name = body.receipt.name;
+        const dateOfBirth = body.receipt.dateOfBirth;
+        const vaccineName = body.receipt.vaccineName;
+        const vaccineNameProper = vaccineName.charAt(0) + vaccineName.substr(1).toLowerCase();
+        const doseVaccine = "Dose " + String(body.receipt.numDoses) + ": " + vaccineNameProper;
+        if (name == undefined) {
             throw new Error('nameMissing');
         }
         if (dateOfBirth == undefined) {
             throw new Error('dobMissing');
         }
 
-        const firstName = nameInformation['gn'];
-        const lastName = nameInformation['fn'];
-
-        const transliteratedFirstName = nameInformation['gnt'].replaceAll('<', ' ');
-        const transliteratedLastName = nameInformation['fnt'].replaceAll('<', ' ');
-
-        // Check if name contains non-latin characters
-        const nameRegex = new RegExp('^[\\p{Script=Latin}\\p{P}\\p{M}\\p{Z}]+$', 'u');
-
-        let name: string;
-
-        if (nameRegex.test(firstName) && nameRegex.test(lastName)) {
-            name = `${firstName} ${lastName}`;
-        } else {
-            name = `${transliteratedFirstName} ${transliteratedLastName}`;
-        }
-
-        let properties: object;
-
-        // Set certificate type and properties
-        if (covidCertificate['v'] !== undefined) {
-            this.certificateType = CertificateType.Vaccination;
-            properties = covidCertificate['v'][0];
-        }
-        if (covidCertificate['t'] !== undefined) {
-            this.certificateType = CertificateType.Test;
-            properties = covidCertificate['t'][0];
-        }
-        if (covidCertificate['r'] !== undefined) {
-            this.certificateType = CertificateType.Recovery;
-            properties = covidCertificate['r'][0];
-        }
-        if (this.certificateType == undefined) {
-            throw new Error('certificateType')
-        }
-
-        // Get country, identifier and issuer
-        const countryCode = properties['co'];
-        const uvci = properties['ci'];
-        const certificateIssuer = properties['is'];
-
-        if (!(countryCode in valueSets.countryCodes)) {
-            throw new Error('invalidCountryCode');
-        }
-
-        const country = valueSets.countryCodes[countryCode].display;
-
         const generic: PassDictionary = {
             headerFields: [
-                {
-                    key: "type",
-                    label: "EU Digital COVID",
-                    value: this.certificateType
-                }
             ],
             primaryFields: [
                 {
-                    key: "name",
-                    label: "Name",
-                    value: name
+                key: "vaccine",
+                label: "Vaccine",
+                value: doseVaccine,
                 }
+
             ],
-            secondaryFields: [],
-            auxiliaryFields: [],
-            backFields: [
-                {
-                    key: "uvci",
-                    label: "Unique Certificate Identifier (UVCI)",
-                    value: uvci
-                },
-                {
+            secondaryFields: [
+                                {
                     key: "issuer",
-                    label: "Certificate Issuer",
-                    value: certificateIssuer
-                }
+                    label: "Authorized Organization",
+                    value: body.receipt.organization
+                },
+
+            {
+                key: "dov",
+                label: "Date",
+                value: body.receipt.vaccinationDate,
+                // textAlignment: TextAlignment.right
+            }
+            ],
+            auxiliaryFields: [   
+   
+
+
+            ],
+            backFields: [
+            {
+                key: "name",
+                label: "Name",
+                value: name
+            },
+            {
+                key: "dob",
+                label: "Date of Birth",
+                value: body.receipt.dateOfBirth,
+                textAlignment: TextAlignment.right
+            }
+
             ]
         }
 
         // Set Values
+        this.receipt = body.receipt;
         this.rawData = body.rawData;
 
-        this.backgroundColor = dark ? body.color : COLORS.WHITE
-        this.labelColor = dark ? COLORS.WHITE : COLORS.GREY
-        this.foregroundColor = dark ? COLORS.WHITE : COLORS.BLACK
-        this.img1x = dark ? Constants.img1xWhite : Constants.img1xBlack
-        this.img2x = dark ? Constants.img2xWhite : Constants.img2xBlack
-        this.dark = dark;
-
-        this.generic = Payload.fillPassData(this.certificateType, generic, properties, valueSets, country, dateOfBirth);
-    }
-
-    static fillPassData(type: CertificateType, data: PassDictionary, properties: Object, valueSets: ValueSets, country: string, dateOfBirth: string): PassDictionary {
-        switch (type) {
-            case CertificateType.Vaccination:
-                const dose = `${properties['dn']}/${properties['sd']}`;
-                const dateOfVaccination = properties['dt'];
-                const medialProductKey = properties['mp'];
-                const manufacturerKey = properties['ma'];
-
-                if (!(medialProductKey in valueSets.medicalProducts)) {
-                    throw new Error('invalidMedicalProduct');
-                }
-                if (!(manufacturerKey in valueSets.manufacturers)) {
-                    throw new Error('invalidManufacturer')
-                }
-
-                const vaccineName = valueSets.medicalProducts[medialProductKey].display.replace(/\s*\([^)]*\)\s*/g, "");
-                const manufacturer = valueSets.manufacturers[manufacturerKey].display;
-
-                data.secondaryFields.push(...[
-                    {
-                        key: "dose",
-                        label: "Dose",
-                        value: dose
-                    },
-                    {
-                        key: "dov",
-                        label: "Date of Vaccination",
-                        value: dateOfVaccination,
-                        textAlignment: TextAlignment.right
-                    }
-                ]);
-                data.auxiliaryFields.push(...[
-                    {
-                        key: "vaccine",
-                        label: "Vaccine",
-                        value: vaccineName
-                    },
-                    {
-                        key: "dob",
-                        label: "Date of Birth",
-                        value: dateOfBirth,
-                        textAlignment: TextAlignment.right
-                    }
-                ]);
-                data.backFields.push(...[
-                    {
-                        key: "cov",
-                        label: "Country of Vaccination",
-                        value: country
-                    },
-                    {
-                        key: "manufacturer",
-                        label: "Manufacturer",
-                        value: manufacturer
-                    },
-                    {
-                        key: "disclaimer",
-                        label: "Disclaimer",
-                        value: "This certificate is not a travel document. It is only valid in combination with the ID card of the certificate holder and may expire one year + 14 days after the last dose. The validity of this certificate was not checked by CovidPass."
-                    }
-                ]);
-                break;
-            case CertificateType.Test:
-                const testTypeKey = properties['tt'];
-                const testDateTimeString = properties['sc'];
-                const testResultKey = properties['tr'];
-                const testingCentre = properties['tc'];
-
-                if (!(testResultKey in valueSets.testResults)) {
-                    throw new Error('invalidTestResult');
-                }
-                if (!(testTypeKey in valueSets.testTypes)) {
-                    throw new Error('invalidTestType')
-                }
-
-                const testResult = valueSets.testResults[testResultKey].display;
-                const testType = valueSets.testTypes[testTypeKey].display;
-
-                const testTime = testDateTimeString.replace(/.*T/, '').replace('Z', ' ') + 'UTC';
-                const testDate = testDateTimeString.replace(/T.*/, '');
-
-                data.secondaryFields.push(...[
-                    {
-                        key: "result",
-                        label: "Test Result",
-                        value: testResult
-                    },
-                    {
-                        key: "dot",
-                        label: "Date of Test",
-                        value: testDate,
-                        textAlignment: TextAlignment.right
-                    }
-                ]);
-                data.auxiliaryFields.push(...[
-                    {
-                        key: "time",
-                        label: "Time of Test",
-                        value: testTime
-                    },
-                    {
-                        key: "dob",
-                        label: "Date of Birth",
-                        value: dateOfBirth,
-                        textAlignment: TextAlignment.right
-                    },
-                ]);
-                data.backFields.push({
-                    key: "cot",
-                    label: "Country of Test",
-                    value: country
-                });
-                if (testingCentre !== undefined)
-                    data.backFields.push({
-                        key: "centre",
-                        label: "Testing Centre",
-                        value: testingCentre
-                    });
-                data.backFields.push(...[
-                    {
-                        key: "test",
-                        label: "Test Type",
-                        value: testType
-                    },
-                    {
-                        key: "disclaimer",
-                        label: "Disclaimer",
-                        value: "This certificate is not a travel document. It is only valid in combination with the ID card of the certificate holder and may expire 24h after the test. The validity of this certificate was not checked by CovidPass."
-                    }
-                ]);
-                break;
-            case CertificateType.Recovery:
-                const firstPositiveTestDate = properties['fr'];
-                const validFrom = properties['df'];
-                const validUntil = properties['du'];
-
-                data.secondaryFields.push(...[
-                    {
-                        key: "until",
-                        label: "Valid Until",
-                        value: validUntil,
-                    },
-                    {
-                        key: "dot",
-                        label: "Date of positive Test",
-                        value: firstPositiveTestDate,
-                        textAlignment: TextAlignment.right
-                    }
-                ]);
-                data.auxiliaryFields.push(...[
-                    {
-                        key: "from",
-                        label: "Valid From",
-                        value: validFrom,
-                    },
-                    {
-                        key: "dob",
-                        label: "Date of Birth",
-                        value: dateOfBirth,
-                        textAlignment: TextAlignment.right
-                    }
-                ]);
-                data.backFields.push(...[
-                    {
-                        key: "cot",
-                        label: "Country of Test",
-                        value: country
-                    },
-                    {
-                        key: "disclaimer",
-                        label: "Disclaimer",
-                        value: "This certificate is not a travel document. It is only valid in combination with the ID card of the certificate holder. The validity of this certificate was not checked by CovidPass."
-                    }
-                ]);
-                break;
-            default:
-                throw new Error('certificateType');
+        if (body.receipt.numDoses > 1) {
+            this.backgroundColor = COLORS.GREEN;
+        } else {
+            this.backgroundColor = COLORS.YELLOW;
         }
 
-        return data;
+        this.labelColor = COLORS.WHITE
+        this.foregroundColor = COLORS.BLACK
+        this.img1x = Constants.img1xBlack
+        this.img2x = Constants.img2xBlack
+        this.generic = generic;
+
     }
+
+
+
 }

@@ -1,8 +1,8 @@
-iosHint: On iOS, please use the Safari Browser.
+iosHint: On iOS, please use Safari.
 errorClose: Close
 selectCertificate: Select vaccination receipt (PDF)
 selectCertificateDescription: |
-  If you have more than one receipts, just select the most recent one downloaded from covid19.ontariohealth.ca
+  If you have more than one receipts, download the most recent one from covid19.ontariohealth.ca
 #stopCamera: Stop Camera
 #startCamera: Start Camera
 openFile: Select File
@@ -19,9 +19,9 @@ colorPurple: purple
 colorTeal: teal
 addToWallet: Add to Wallet
 dataPrivacyDescription: |
-  Your vaccination receipt is processed on your mobile phone only. No data is sent to the internet.
+  Your vaccination receipt is processed on your mobile phone only.
 iAcceptThe: I accept the
 privacyPolicy: Privacy Policy
-createdOnDevice: Created on your device
-openSourceTransparent: 100% open source - You can validate all lines of code used.
+createdOnDevice: No personal data is sent to the Internet.
+openSourceTransparent: 100% open source for full transparency.
 #hostedInEU: Hosted in the EU

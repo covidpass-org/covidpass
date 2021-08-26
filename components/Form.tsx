@@ -9,7 +9,7 @@ import Card from "./Card";
 import Alert from "./Alert";
 import Check from './Check';
 import {PayloadBody} from "../src/payload";
-import {getPayloadBodyFromFile, getPayloadBodyFromQR} from "../src/process";
+import {getPayloadBodyFromFile} from "../src/process";
 import {PassData} from "../src/pass";
 import {COLORS} from "../src/colors";
 import Colors from './Colors';
@@ -221,11 +221,11 @@ function Form(): JSX.Element {
                     <div className="space-y-5">
                         <p>
                             {t('index:dataPrivacyDescription')}
-                            <Link href="/privacy">
+                            {/* <Link href="/privacy">
                                 <a>
                                     {t('index:privacyPolicy')}
                                 </a>
-                            </Link>.
+                            </Link>. */}
                         </p>
                         <div>
                             <ul className="list-none">
