@@ -1,4 +1,4 @@
-![Grassroots](https://covidpass.marvinsextro.de/thumbnail.png)
+# Grassroots
 
 This web app offers the ability to add your Ontario Vaccination Receipt as a pass into your Apple Wallet on iOS. Grassroots accomplishes this without sending your data to a server and instead only uses a hashed representation for the signing step.
 
