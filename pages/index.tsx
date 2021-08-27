@@ -9,8 +9,8 @@ import Page from '../components/Page';
 function Index(): JSX.Element {
     const { t } = useTranslation(['common', 'index', 'errors']);
 
-    const title = 'Ontario Vaccination Record (PDF -> Apple Wallet / Android Wallet)';
-    const description = 'Add your Ontario vaccination receipt to your Apple / Android wallet.';
+    const title = 'Grassroots - Ontario vaccination receipt to your Apple wallet';
+    const description = 'Stores it on iPhone with a QR code for others to validate in a privacy respecting way.';
 
     return (
         <>
@@ -18,17 +18,17 @@ function Index(): JSX.Element {
                 title={title}
                 description={description}
                 openGraph={{
-                    url: 'https://receipt2wallet.vaccine-ontario.ca/',
+                    url: 'https://grassroots.vaccine-ontario.ca/',
                     title: title,
                     description: description,
-                    images: [
-                        {
-                            url: 'https://covidpass.marvinsextro.de/thumbnail.png',
-                            width: 1000,
-                            height: 500,
-                            alt: description,
-                        }
-                    ],
+                    // images: [
+                    //     {
+                    //         url: 'https://covidpass.marvinsextro.de/thumbnail.png',
+                    //         width: 1000,
+                    //         height: 500,
+                    //         alt: description,
+                    //     }
+                    // ],
                     site_name: title,
                 }}
                 twitter={{

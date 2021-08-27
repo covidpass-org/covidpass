@@ -247,6 +247,7 @@ function Form(): JSX.Element {
                         <div>
                             <ul className="list-none">
                                 <Check text={t('createdOnDevice')}/>
+                                <Check text={t('qrCode')}/>
                                 <Check text={t('openSourceTransparent')}/>
                                 {/* <Check text={t('hostedInEU')}/> */}
                             </ul>

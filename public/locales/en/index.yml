@@ -28,5 +28,7 @@ dataPrivacyDescription: |
 iAcceptThe: I accept the
 privacyPolicy: Privacy Policy
 createdOnDevice: No personal data is sent to the Internet.
-openSourceTransparent: 100% open source for full transparency.
+qrCode: QR code is for verification only, with no personal info.
+openSourceTransparent: Fully open source for transparency to users.
+demo: Video Demo
 #hostedInEU: Hosted in the EU
