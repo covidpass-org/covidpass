@@ -2,13 +2,13 @@
 
 This web app offers the ability to add your Ontario Vaccination Receipt as a pass into your Apple Wallet on iOS. Grassroots accomplishes this without sending your data to a server and instead only uses a hashed representation for the signing step.
 
+Here is a [demo](https://www.youtube.com/watch?v=AIrG5Qbjptg)
+
 # Getting started
 
 If you want to add your vaccination certificate into your wallet with Grassroots, there are two main options.
 
-* Use the [Grassroots web app](https://grassroots.vaccine-ontario.ca)
-
-Here is a [demo](https://www.youtube.com/watch?v=AIrG5Qbjptg)
+* Visit [https://grassroots.vaccine-ontario.ca](https://grassroots.vaccine-ontario.ca)
 
 # Quick start
 
