@@ -84,22 +84,20 @@ export class Payload {
             }
             ],
             auxiliaryFields: [   
-   
-
-
-            ],
-            backFields: [
-            {
+               {
                 key: "name",
                 label: "Name",
                 value: name
-            },
-            {
-                key: "dob",
-                label: "Date of Birth",
-                value: body.receipt.dateOfBirth,
-                textAlignment: TextAlignment.right
             }
+            ],
+            backFields: [
+
+            // {
+            //     key: "dob",
+            //     label: "Date of Birth",
+            //     value: body.receipt.dateOfBirth,
+            //     textAlignment: TextAlignment.right
+            // }
 
             ]
         }
@@ -114,7 +112,7 @@ export class Payload {
             this.backgroundColor = COLORS.YELLOW;
         }
 
-        this.labelColor = COLORS.WHITE
+        this.labelColor = COLORS.BLACK
         this.foregroundColor = COLORS.BLACK
         this.img1x = Constants.img1xBlack
         this.img2x = Constants.img2xBlack

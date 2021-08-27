@@ -15,7 +15,8 @@ export enum COLORS {
     PURPLE = 'rgb(137, 68, 171)',
     RED = 'rgb(215, 0, 21)',
     TEAL = 'rgb(0, 130, 153)',
-    YELLOW = 'rgb(178, 80, 0)'
+    YELLOW = 'rgb(178, 80, 0)',
+    LIGHTGREEN = 'rgb(144, 238, 144)'
 }
 
 export function rgbToHex(rgbString: string) {

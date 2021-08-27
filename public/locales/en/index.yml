@@ -2,11 +2,16 @@ iosHint: On iOS, please use Safari.
 errorClose: Close
 selectCertificate: Select vaccination receipt (PDF)
 selectCertificateDescription: |
-  If you have more than one receipts, download the most recent one from covid19.ontariohealth.ca
+  Press "Select File", "Browse..." and select the PDF file you have saved in Step 1.
 #stopCamera: Stop Camera
 #startCamera: Start Camera
 openFile: Select File
 #foundQrCode: Found QR Code!
+downloadReceipt: Download official receipt from Ontario Health
+visit: Visit
+ontarioHealth: Ontario Health
+gotoOntarioHealth: Go to Ontario Health
+downloadSignedPDF: and enter your information to display your official vaccination receipt. Press the Share Icon at the bottom, "Save As Files" to store it onto your iPhone.
 pickColor: Pick a Color
 pickColorDescription: Pick a background color for your pass.
 colorWhite: white
@@ -19,7 +24,7 @@ colorPurple: purple
 colorTeal: teal
 addToWallet: Add to Wallet
 dataPrivacyDescription: |
-  Your vaccination receipt is processed on your mobile phone only.
+  Press the "Add to Wallet" below to import the data in Wallet.
 iAcceptThe: I accept the
 privacyPolicy: Privacy Policy
 createdOnDevice: No personal data is sent to the Internet.

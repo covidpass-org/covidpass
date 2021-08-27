@@ -65,6 +65,10 @@ function Form(): JSX.Element {
         inputFile.current.click();
     }
 
+    async function gotoOntarioHealth() {
+        window.location.href = 'https://covid19.ontariohealth.ca';
+    }
+    
     // Hide camera view
     async function hideCameraView() {
         if (globalControls !== undefined) {
@@ -125,6 +129,7 @@ function Form(): JSX.Element {
 
     // Add Pass to wallet
     async function addToWallet(event: FormEvent<HTMLFormElement>) {
+        
         event.preventDefault();
         setLoading(true);
 
@@ -146,15 +151,14 @@ function Form(): JSX.Element {
         try {
             if (file) {
                 payloadBody = await getPayloadBodyFromFile(file, color);
-            } else {
-                payloadBody = await getPayloadBodyFromQR(qrCode, color);
-            }
+                let pass = await PassData.generatePass(payloadBody);
 
-            let pass = await PassData.generatePass(payloadBody);
+                const passBlob = new Blob([pass], {type: "application/vnd.apple.pkpass"});
+                saveAs(passBlob, 'covid.pkpass');
+                setLoading(false);
+            } 
 
-            const passBlob = new Blob([pass], {type: "application/vnd.apple.pkpass"});
-            saveAs(passBlob, 'covid.pkpass');
-            setLoading(false);
+
         } catch (e) {
             setErrorMessage(e.message);
             setLoading(false);
@@ -164,7 +168,27 @@ function Form(): JSX.Element {
     return (
         <div>
             <form className="space-y-5" id="form" onSubmit={addToWallet}>
-                <Card step="1" heading={t('index:selectCertificate')} content={
+                <Card step="1" heading={t('index:downloadReceipt')} content={
+                    <div className="space-y-5">
+                        <p>
+                            {t('index:visit')}&nbsp;
+
+                                <Link href="https://covid19.ontariohealth.ca">
+                                    <a className="underline">
+                                        {t('index:ontarioHealth')}
+                                    </a>
+                                </Link>&nbsp;
+                                {t('index:downloadSignedPDF')}
+                        </p>
+                        <button id="ontariohealth" onClick={gotoOntarioHealth}
+        
+                                    className="focus:outline-none bg-green-600 py-2 px-3 text-white font-semibold rounded-md disabled:bg-gray-400">
+                                {t('index:gotoOntarioHealth')}
+                        </button>
+                    </div>
+                }/>
+
+                <Card step="2" heading={t('index:selectCertificate')} content={
                     <div className="space-y-5">
                         <p>{t('index:selectCertificateDescription')}</p>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
@@ -182,8 +206,8 @@ function Form(): JSX.Element {
                             </button>
                         </div>
 
-                        <video id="cameraPreview"
-                               className={`${isCameraOpen ? undefined : "hidden"} rounded-md w-full`}/>
+                        {/* <video id="cameraPreview"
+                               className={`${isCameraOpen ? undefined : "hidden"} rounded-md w-full`}/> */}
                         <input type='file'
                                id='file'
                                accept="application/pdf,image/png"
@@ -209,15 +233,8 @@ function Form(): JSX.Element {
                         }
                     </div>
                 }/>
-                {/* <Card step="2" heading={t('index:pickColor')} content={
-                    <div className="space-y-5">
-                        <p>{t('index:pickColorDescription')}</p>
-                        <div className="relative inline-block w-full">
-                            <Colors onChange={setSelectedColor} initialValue={selectedColor}/>
-                        </div>
-                    </div>
-                }/> */}
-                <Card step="2" heading={t('index:addToWallet')} content={
+
+                <Card step="3" heading={t('index:addToWallet')} content={
                     <div className="space-y-5">
                         <p>
                             {t('index:dataPrivacyDescription')}
@@ -234,17 +251,7 @@ function Form(): JSX.Element {
                                 {/* <Check text={t('hostedInEU')}/> */}
                             </ul>
                         </div>
-                        {/* <label htmlFor="privacy" className="flex flex-row space-x-4 items-center pb-2">
-                            <input type="checkbox" id="privacy" value="privacy" required className="h-5 w-5 outline-none"/>
-                            <p>
-                                {t('index:iAcceptThe')}&nbsp;
-                                <Link href="/privacy">
-                                    <a className="underline">
-                                        {t('index:privacyPolicy')}
-                                    </a>
-                                </Link>.
-                            </p>
-                        </label> */}
+
                         <div className="flex flex-row items-center justify-start">
                             <button id="download" type="submit"
                                     className="focus:outline-none bg-green-600 py-2 px-3 text-white font-semibold rounded-md disabled:bg-gray-400">

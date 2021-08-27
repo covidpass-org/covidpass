@@ -157,5 +157,6 @@ export class PassData {
         this.barcodes = [qrCode];
         this.barcode = qrCode;
         this.generic = payload.generic;
+        this.sharingProhibited = true;
     }
 }

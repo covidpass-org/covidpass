@@ -2,6 +2,7 @@ import {PayloadBody, Receipt} from "./payload";
 import * as PdfJS from 'pdfjs-dist'
 import {COLORS} from "./colors";
 import  { getCertificatesInfoFromPDF } from "@ninja-labs/verify-pdf";  // ES6 
+import { TextItem } from "pdfjs-dist/types/display/api";
 // import verifyPDF from "@ninja-labs/verify-pdf";
 // import {PNG} from 'pngjs'
 // import {decodeData} from "./decode";
@@ -83,22 +84,22 @@ async function getPdfDetails(fileBuffer: ArrayBuffer): Promise<Receipt> {
     let name, vaccinationDate, vaccineName, dateOfBirth, numDoses, organization;
 
     for (let i = 0; i < numItems; i++) {
-        const item = content.items[i];
+        let item = content.items[i] as TextItem;
         const value = item.str;
         if (value.includes('Name / Nom'))
-            name = content.items[i+1].str;
+            name = (content.items[i+1] as TextItem).str;
         if (value.includes('Date:')) {
-            vaccinationDate = content.items[i+1].str;
+            vaccinationDate = (content.items[i+1] as TextItem).str;
             vaccinationDate = vaccinationDate.split(',')[0];
         }
         if (value.includes('Product name')) {
-            vaccineName = content.items[i+1].str;
+            vaccineName = (content.items[i+1] as TextItem).str;
             vaccineName = vaccineName.split(' ')[0];
         } 
         if (value.includes('Date of birth'))
-            dateOfBirth = content.items[i+1].str;
+            dateOfBirth = (content.items[i+1] as TextItem).str;
         if (value.includes('Authorized organization'))
-            organization = content.items[i+1].str;    
+            organization = (content.items[i+1] as TextItem).str;    
         if (value.includes('You have received'))
             numDoses = Number(value.split(' ')[3]);
     }
