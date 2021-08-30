@@ -186,7 +186,7 @@ function Form(): JSX.Element {
                                className={`${isCameraOpen ? undefined : "hidden"} rounded-md w-full`}/>
                         <input type='file'
                                id='file'
-                               accept="application/pdf,image/png"
+                               accept="application/pdf,image/png,image/jpeg,image/webp,image/gif"
                                ref={inputFile}
                                style={{display: 'none'}}
                         />
