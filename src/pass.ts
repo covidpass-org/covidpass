@@ -86,9 +86,40 @@ export class PassData {
 
         payload.serialNumber = uuid4();
 
+        // register record
+
+        const clonedReceipt = Object.assign({}, payload.receipt);
+        delete clonedReceipt.name;
+        delete clonedReceipt.dateOfBirth;
+        clonedReceipt["serialNumber"] = payload.serialNumber;
+
+        let requestOptions = {
+            method: 'POST', // *GET, POST, PUT, DELETE, etc.
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(clonedReceipt) // body data type must match "Content-Type" header
+        }
+
+        console.log('registering ' + JSON.stringify(clonedReceipt, null, 2));
+
+        // const configResponse = await fetch('/api/config')
+        // const verifierHost = (await configResponse.json()).verifierHost
+
+        const verifierHost = 'https://verifier.vaccine-ontario.ca';
+        //const verifierHost = 'http://localhost:5001/grassroot-verifier/us-central1';
+
+        const response  = await fetch(`${verifierHost}/register`, requestOptions);
+        const responseJson = await response.json();
+
+        console.log(JSON.stringify(responseJson,null,2));
+
+        if (responseJson["result"] != 'OK') 
+            return Promise.reject();
+
         // Create QR Code Object
         const qrCode: QrCode = {
-            message: `https://verifier.vaccine-ontario.ca/?serialNumber=${payload.serialNumber}`,
+            message: `https://verifier.vaccine-ontario.ca/verify?serialNumber=${payload.serialNumber}&vaccineName=${payload.receipt.vaccineName}&vaccinationDate=${payload.receipt.vaccinationDate}&organization=${payload.receipt.organization}&dose=${payload.receipt.numDoses}`,
             format: QrFormat.PKBarcodeFormatQR,
             messageEncoding: Encoding.iso88591,
             // altText : payload.rawData
@@ -103,7 +134,7 @@ export class PassData {
 
         // Adding required fields
 
-        console.log(pass);
+        // console.log(pass);
 
         // Create pass.json
         const passJson = JSON.stringify(pass);
@@ -129,7 +160,7 @@ export class PassData {
             ),
         );
 
-        console.log(manifestJson);
+        // console.log(manifestJson);
 
         // Add Manifest JSON to zip
         zip.push({path: 'manifest.json', data: Buffer.from(manifestJson)});
