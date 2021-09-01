@@ -112,10 +112,10 @@ export class Payload {
             this.backgroundColor = COLORS.YELLOW;
         }
 
-        this.labelColor = COLORS.BLACK
-        this.foregroundColor = COLORS.BLACK
-        this.img1x = Constants.img1xBlack
-        this.img2x = Constants.img2xBlack
+        this.labelColor = COLORS.WHITE
+        this.foregroundColor = COLORS.WHITE
+        this.img1x = Constants.img1xWhite
+        this.img2x = Constants.img2xWhite
         this.generic = generic;
 
     }
