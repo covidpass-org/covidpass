@@ -7,10 +7,10 @@ selectCertificateDescription: |
 #startCamera: Start Camera
 openFile: Select File
 #foundQrCode: Found QR Code!
-downloadReceipt: Download official receipt from Ontario Health
+downloadReceipt: Download official receipt from Ontario Ministry of Health
 visit: Visit
-ontarioHealth: Ontario Health
-gotoOntarioHealth: Go to Ontario Health
+ontarioHealth: Ontario Ministry of Health
+gotoOntarioHealth: Go to Ontario Ministry of Health
 downloadSignedPDF: and enter your information to display your official vaccination receipt. Press the Share Icon at the bottom, "Save As Files" to store it onto your iPhone.
 pickColor: Pick a Color
 pickColorDescription: Pick a background color for your pass.

@@ -107,7 +107,7 @@ export class PassData {
         // const verifierHost = (await configResponse.json()).verifierHost
 
         const verifierHost = 'https://verifier.vaccine-ontario.ca';
-        //const verifierHost = 'http://localhost:5001/grassroot-verifier/us-central1';
+        // const verifierHost = 'http://localhost:5001/grassroot-verifier/us-central1';
 
         const response  = await fetch(`${verifierHost}/register`, requestOptions);
         const responseJson = await response.json();
