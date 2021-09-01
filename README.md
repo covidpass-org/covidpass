@@ -1,6 +1,6 @@
 # Grassroots
 
-This web-based tool allows you to add your Ontario Vaccination Receipt as a pass into your Apple Wallet on iOS in a privacy-respecting way. It achieves this without sending your data to a server and instead only uses a hashed representation for the signing step.
+This web-based tool allows you to add your Ontario Vaccination Receipt as a pass into your Apple Wallet on iOS in a privacy-respecting way. It achieves this without sending your data to a server and instead uses a hashed representation for the signing step.
 
 Here is a [demo](https://www.youtube.com/watch?v=AIrG5Qbjptg)
 
@@ -29,7 +29,7 @@ docker run -t -i -p 3000:3000 covidpass
 
 #### I do not want to trust a third party with my vaccination data, does this tool respect my privacy?
 
-Processing of your data happens entirely in your mobile browser and only a hashed representation is sent to the server for the signing step.
+Processing of your data happens entirely in your browser and only a hashed representation is sent to the server for the signing step.
 
 #### How do I make sure that nobody can access my vaccination pass from the lock screen (iOS)?
 
@@ -60,13 +60,14 @@ To connect the web app to your local server, you have to set the `API_BASE_URL` 
 
 # Explanation of the process
 
-The whole process of generating the pass file happens locally in your browser. For the signing step, only a hashed representation of your data is sent to the server.
+The whole process of generating the pass file happens locally in your browser. For the signing step, a hashed representation of your data is sent to the server.
 
 First, the following steps happen locally in your browser:
 
 * Validating the digital signature on the receipt from Ontario Health to ensure it's authentic
 * Decoding your vaccination event data from the PDF file (e.g. date, type of vaccine, dose #, organization who administered it
 * Assembling a pkpass file out of your data
+* Sending the serial number and vaccination event data for verification when the QR code is scanned.
 * Generating a file containing hashes of the data stored in the pass file
 * Sending only the file containing the hashes to the server
 
