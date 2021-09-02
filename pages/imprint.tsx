@@ -9,7 +9,7 @@ function Imprint(): JSX.Element {
 
     return (
         <Page content={
-            <Card step="§" heading={t('common:imprint')} content={
+            <Card step="§" heading={t('common:faq')} content={
                 <div className="space-y-3">
                     <p className="font-bold">{t('imprint:heading')}</p>
                     <p>

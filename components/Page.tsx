@@ -29,8 +29,7 @@ function Page(props: PageProps): JSX.Element {
                             <a href="mailto:grassroots@vaccine-ontario.ca" className="hover:underline">{t('common:contact')}</a>
                             <a href="https://vaccine-ontario.ca" className="hover:underline">{t('common:returnToMainSite')}</a>
                             {/* <a href="https://github.com/billylo1/covidpass" className="hover:underline">{t('common:gitHub')}</a> */}
-                            {/* <Link href="/privacy"><a className="hover:underline">{t('common:privacyPolicy')}</a></Link>
-                            <Link href="/imprint"><a className="hover:underline">{t('common:imprint')}</a></Link> */}
+                            {/* {<Link href="/faq"><a className="hover:underline">{t('common:faq')}</a></Link>} */}
                         </nav>
                     </footer>
                 </main>

@@ -2,8 +2,9 @@ import {PayloadBody, Receipt} from "./payload";
 import * as PdfJS from 'pdfjs-dist'
 import {COLORS} from "./colors";
 import  { getCertificatesInfoFromPDF } from "@ninja-labs/verify-pdf";  // ES6 
+
 import { TextItem } from "pdfjs-dist/types/display/api";
-// import verifyPDF from "@ninja-labs/verify-pdf";
+
 // import {PNG} from 'pngjs'
 // import {decodeData} from "./decode";
 // import {Result} from "@zxing/library";
@@ -32,27 +33,21 @@ export async function getPayloadBodyFromFile(file: File, color: COLORS): Promise
     }
 }
 
-async function loadPDF(signedPdfBuffer): Promise<any> {
+async function loadPDF(signedPdfBuffer : ArrayBuffer): Promise<any> {
 
     try {
 
         const certs = getCertificatesInfoFromPDF(signedPdfBuffer);
 
-        // console.log('certs = ' + JSON.stringify(certs, null, 2));
-
-        // check signature
-
-        // console.log("verifying");
-        // const verificationResult = verifyPDF(signedPdfBuffer);      // not sure why it failed
-
         const result = certs[0];
         const isClientCertificate = result.clientCertificate;
         const issuedByEntrust = (result.issuedBy.organizationName == 'Entrust, Inc.');
         const issuedToOntarioHealth = (result.issuedTo.commonName == 'covid19signer.ontariohealth.ca');
+        console.log(`PDF is signed by ${result.issuedBy.organizationName}, issued to ${result.issuedTo.commonName}`);
         if (isClientCertificate && issuedByEntrust && issuedToOntarioHealth) {
-            console.log('PDF looks good, getting payload');
+            console.log('getting receipt details inside PDF');
             const receipt = await getPdfDetails(signedPdfBuffer);
-            console.log(JSON.stringify(receipt, null, 2));
+            // console.log(JSON.stringify(receipt, null, 2));
             return Promise.resolve(receipt);
 
         } else {
@@ -63,6 +58,9 @@ async function loadPDF(signedPdfBuffer): Promise<any> {
 
     } catch (e) {
         console.error(e);
+        if (e.message.includes('Failed to locate ByteRange')) {
+            e.message = 'Sorry. Selected PDF file is not digitally signed. Please download official copy from Step 1 and retry. Thanks.'
+        }
         return Promise.reject(e);
     }
 
