@@ -91,16 +91,30 @@ function getImageDataFromImage(file: File): Promise<ImageData> {
         const img = new Image();
 
         img.onload = () => {
+            // constrain image to 2 Mpx
+            const maxPx = 2000000;
+            let width: number;
+            let height: number;
+            if (img.naturalWidth * img.naturalHeight > maxPx) {
+                const ratio = img.naturalHeight / img.naturalWidth;
+                width = Math.sqrt(maxPx / ratio);
+                height = Math.floor(width * ratio);
+                width = Math.floor(width);
+            } else {
+                width = img.naturalWidth;
+                height = img.naturalHeight;
+            }
+
             // Set correct canvas width / height
-            canvas.width = img.naturalWidth;
-            canvas.height = img.naturalHeight;
+            canvas.width = width;
+            canvas.height = height;
 
             // draw image into canvas
-            canvasContext.clearRect(0, 0, canvas.width, canvas.height);
-            canvasContext.drawImage(img, 0, 0);
+            canvasContext.clearRect(0, 0, width, height);
+            canvasContext.drawImage(img, 0, 0, width, height);
 
             // Obtain image data
-            resolve(canvasContext.getImageData(0, 0, canvas.width, canvas.height));
+            resolve(canvasContext.getImageData(0, 0, width, height));
         };
 
         img.onerror = (e) => {
