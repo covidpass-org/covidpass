@@ -32,7 +32,7 @@ interface SignData {
 export class PassData {
     passTypeIdentifier: string = Constants.PASS_IDENTIFIER;
     teamIdentifier: string = Constants.TEAM_IDENTIFIER;
-    sharingProhibited: boolean = false;
+    sharingProhibited: boolean = true;
     voided: boolean = false;
     formatVersion: number = 1;
     logoText: string = Constants.NAME;
