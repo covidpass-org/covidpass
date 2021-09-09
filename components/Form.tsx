@@ -14,6 +14,8 @@ import {PassData} from "../src/pass";
 import {Photo} from "../src/photo";
 import {COLORS} from "../src/colors";
 import Colors from './Colors';
+import {isIOS, isMacOs, isSafari} from 'react-device-detect';
+
 
 function Form(): JSX.Element {
     const {t} = useTranslation(['index', 'errors', 'common']);
@@ -59,6 +61,7 @@ function Form(): JSX.Element {
                 }
             });
         }
+        checkBrowserType();
     }, [inputFile])
 
     // Show file Dialog
@@ -198,6 +201,18 @@ function Form(): JSX.Element {
             setLoading(false);
         }
     }
+
+    async function checkBrowserType() {
+
+        if (isMacOs || (isIOS && isSafari)) {
+            document.getElementById('download').hidden = false;
+        } else {
+            document.getElementById('download').hidden = true;
+        }
+
+
+    }
+
     return (
         <div>
             <form className="space-y-5" id="form" onSubmit={addToWallet}>
@@ -259,7 +274,7 @@ function Form(): JSX.Element {
                     </div>
                 }/>
 
-                <Card step="3" heading={t('index:addToWallet')} content={
+                <Card step="3" heading={t('index:addToWalletHeader')} content={
                     <div className="space-y-5">
                         <p>
                             {t('index:dataPrivacyDescription')}

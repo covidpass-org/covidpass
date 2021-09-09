@@ -34,7 +34,7 @@ function Page(props: PageProps): JSX.Element {
 
                             {/* <a href="https://github.com/billylo1/covidpass" className="hover:underline">{t('common:gitHub')}</a> */}
                         </nav>
-                        <div className="flex pt-4 flex-row space-x-4 justify-center text-md flex-wrap">Last updated: 2021-09-09 (v1.5)</div>
+                        <div className="flex pt-4 flex-row space-x-4 justify-center text-md flex-wrap">Last updated: 2021-09-09 (v1.6)</div>
                     </footer>
                 </main>
             </div>
@@ -84,9 +84,6 @@ function Page(props: PageProps): JSX.Element {
                 <div id='qrcode' style={{width:'63%', display:'block', marginLeft: 'auto', marginRight: 'auto'}}></div>
                 <br/>
                 <br/>
-            </div>
-            <div id='canvas-container'>
-
             </div>
         </div>
     )

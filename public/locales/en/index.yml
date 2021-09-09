@@ -22,7 +22,8 @@ colorIndigo: indigo
 colorBlue: blue
 colorPurple: purple
 colorTeal: teal
-addToWallet: Add to Wallet
+addToWallet: Add to Apple Wallet
+addToWalletHeader: Add to Apple Wallet / Save as Photos
 saveAsPhoto: Save as Photo
 dataPrivacyDescription: |
   Press the "Add to Wallet" below to import data into Wallet.

@@ -32,8 +32,8 @@ function Index(): JSX.Element {
                     site_name: title,
                 }}
                 twitter={{
-                    handle: '@vaxtoronto',
-                    site: '@vaxtotorono',
+                    handle: '@grassroots_team',
+                    site: '@grassroots_team',
                     cardType: 'summary_large_image',
                 }}
             />
