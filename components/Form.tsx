@@ -182,10 +182,9 @@ function Form(): JSX.Element {
 
         try {
             payloadBody = await getPayloadBodyFromFile(file, null);
-            let photo = await Photo.generatePass(payloadBody);
-            const photoBlob = new Blob([photo], {type: "image/png"});
-            saveAs(photoBlob);
-
+            let photoBlob = await Photo.generatePass(payloadBody);
+            saveAs(photoBlob, 'pass.png');
+            
             // need to clean up
             const qrcodeElement = document.getElementById('qrcode');
             const svg = qrcodeElement.firstChild;

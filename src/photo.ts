@@ -1,9 +1,8 @@
 import {Constants} from "./constants";
 import {Payload, PayloadBody} from "./payload";
 import {v4 as uuid4} from 'uuid';
-import domtoimage from 'dom-to-image';
-import { promises as fs } from "fs";
 import {BrowserQRCodeSvgWriter} from "@zxing/browser";
+import { toPng, toJpeg, toBlob, toPixelData, toSvg } from 'html-to-image';
 
 enum QrFormat {
     PKBarcodeFormatQR = 'PKBarcodeFormatQR',
@@ -35,7 +34,7 @@ export class Photo {
 
 
 
-    static async generatePass(payloadBody: PayloadBody): Promise<Buffer> {
+    static async generatePass(payloadBody: PayloadBody): Promise<Blob> {
 
         // Create Payload
 
@@ -103,22 +102,12 @@ export class Photo {
         document.getElementById('name').innerText = payload.receipt.name;
 
         const codeWriter = new BrowserQRCodeSvgWriter();
-        const svg = codeWriter.write(qrCode.message,160,160);
-        
+        const svg = codeWriter.write(qrCode.message,200,200);
+        svg.setAttribute('style','background-color: white; display:block; marginLeft: auto; marginRight: auto');
         document.getElementById('qrcode').appendChild(svg);
-
-        const img = document.createElement('img');
-        img.setAttribute('src', "/favicon1.jpg");
-        img.setAttribute('width', '50');
-        img.setAttribute('height', '50');
-
-        document.getElementById('logo-container').appendChild(img);
-
-
-        // console.log(body);        
-        let imageBlob = domtoimage.toBlob(body);      // png format
-
-        return Promise.resolve(imageBlob);
+        
+        const blobPromise = toBlob(body);
+        return blobPromise;
     }
 
     private constructor(payload: Payload, qrCode: QrCode) {

@@ -45,8 +45,8 @@ function Page(props: PageProps): JSX.Element {
                 <table style={{verticalAlign: "middle"}}>
                     <tbody>
                         <tr>
-                            <td id='logo-container'></td>
-                            <td style={{fontSize: 20, width: 280}}><span><b>Vaccination Receipt</b></span></td>
+                            <td><img src='shield4.svg' width='50' height='50' /></td>
+                            <td style={{fontSize: 20, width: 280}}><span><b>&nbsp;&nbsp;Vaccination Receipt</b></span></td>
                         </tr>
                     </tbody>
                  </table>
@@ -81,9 +81,12 @@ function Page(props: PageProps): JSX.Element {
                 <br/>
                 <br/>
                 <br/>
-                <div id='qrcode' style={{width: 160, height: 160, display:'block', marginLeft: 'auto', marginRight: 'auto', backgroundColor: 'white'}}></div>
+                <div id='qrcode' style={{width:'63%', display:'block', marginLeft: 'auto', marginRight: 'auto'}}></div>
                 <br/>
                 <br/>
+            </div>
+            <div id='canvas-container'>
+
             </div>
         </div>
     )
