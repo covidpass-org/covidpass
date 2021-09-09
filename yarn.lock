@@ -1087,6 +1087,11 @@
   "resolved" "https://registry.npmjs.org/do-not-zip/-/do-not-zip-1.0.0.tgz"
   "version" "1.0.0"
 
+"dom-to-image@^2.6.0":
+  "integrity" "sha1-ilA2CAiMh7HCL5A0rgMuGJiVWGc="
+  "resolved" "https://registry.npmjs.org/dom-to-image/-/dom-to-image-2.6.0.tgz"
+  "version" "2.6.0"
+
 "domain-browser@^1.1.1":
   "integrity" "sha512-jnjyiM6eRyZl2H+W8Q/zLMA481hzi0eszAaBUzIVnmYVDBbnLxVNnfu1HgEBvCbL+71FrxMl3E6lpKH7Ge3OXA=="
   "resolved" "https://registry.npmjs.org/domain-browser/-/domain-browser-1.2.0.tgz"
@@ -1333,6 +1338,11 @@
     "graceful-fs" "^4.2.0"
     "jsonfile" "^6.0.1"
     "universalify" "^2.0.0"
+
+"fs.promises@^0.1.2":
+  "integrity" "sha512-LNfkXdN6EToumV455EbdJaNxqLmEFqKqNZVIEyI2whtdpIppTsne2fHWgx05s+B2Aif29Lhzdz0AaOXKLvMGsA=="
+  "resolved" "https://registry.npmjs.org/fs.promises/-/fs.promises-0.1.2.tgz"
+  "version" "0.1.2"
 
 "fs.realpath@^1.0.0":
   "integrity" "sha1-FQStJSMVjKpA20onh8sBQRmU6k8="

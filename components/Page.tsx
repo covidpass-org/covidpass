@@ -28,13 +28,61 @@ function Page(props: PageProps): JSX.Element {
                             {<Link href="/faq"><a className="underline">{t('common:faq')}</a></Link>}
                             <a href="https://www.youtube.com/watch?v=AIrG5Qbjptg" className="underline">{t('index:demo')}</a>
                             <a href="mailto:grassroots@vaccine-ontario.ca" className="underline">{t('common:contact')}</a>
+                            <a href="https://verifier.vaccine-ontario.ca" className="underline">{t('common:gotoVerifier')}</a>
                             <a href="https://vaccine-ontario.ca" className="underline">{t('common:returnToMainSite')}</a>
 
                             {/* <a href="https://github.com/billylo1/covidpass" className="hover:underline">{t('common:gitHub')}</a> */}
                         </nav>
-                        <div className="flex pt-4 flex-row space-x-4 justify-center text-md flex-wrap">Last updated: 2021-09-04 (v1.3)</div>
+                        <div className="flex pt-4 flex-row space-x-4 justify-center text-md flex-wrap">Last updated: 2021-09-08 (v1.4)</div>
                     </footer>
                 </main>
+            </div>
+            <br/>
+            <br/>
+            <br/>
+            <div id="pass-image" style={{backgroundColor: "orangered", color: "white", fontFamily: 'Arial', fontSize: 10, width: '350px', padding: '10px'}} hidden>
+                <table style={{verticalAlign: "middle"}}>
+                    <tbody>
+                        <tr>
+                            <td><img src="/favicon-white.png" width="50" height="50"/></td>
+                            <td style={{fontSize: 20, width: 280}}><span><b>Vaccination Receipt</b></span></td>
+                        </tr>
+                    </tbody>
+                 </table>
+                <br/>
+                <br/>
+                <br/>
+
+                <div style={{height:12}}><b>VACCINE</b></div>
+                <div id='vaccineName' style={{fontSize:28}}></div>
+                <br/>
+                <br/>
+                <table style={{fontSize:12, border: 0 }}>
+                    <tbody>
+                        <tr>
+                            <td style={{width: 220}}><b>AUTHORIZED ORGANIZATION</b></td>
+                            <td><b>DATE</b></td>
+                        </tr>
+                        <tr>
+                            <td id='organization' style={{width: 220}}></td>
+                            <td id='vaccinationDate' style={{width:120}}></td>
+                        </tr>
+                        <tr style={{height: 20}}></tr>
+                        <tr>
+                            <td><b>NAME</b></td>
+                        </tr>
+                        <tr>
+                            <td id='name' style={{fontSize: 16}}></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <div id='qrcode' style={{width: 160, height: 160, display:'block', marginLeft: 'auto', marginRight: 'auto', backgroundColor: 'white'}}></div>
+                <br/>
+                <br/>
             </div>
         </div>
     )

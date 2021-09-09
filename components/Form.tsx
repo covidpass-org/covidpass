@@ -11,6 +11,7 @@ import Check from './Check';
 import {PayloadBody} from "../src/payload";
 import {getPayloadBodyFromFile} from "../src/process";
 import {PassData} from "../src/pass";
+import {Photo} from "../src/photo";
 import {COLORS} from "../src/colors";
 import Colors from './Colors';
 
@@ -133,6 +134,8 @@ function Form(): JSX.Element {
         event.preventDefault();
         setLoading(true);
 
+        console.log(event);
+
         if (navigator.userAgent.match('CriOS')) {
             setErrorMessage('safariSupportOnly');
             setLoading(false);
@@ -150,9 +153,11 @@ function Form(): JSX.Element {
 
         try {
             if (file) {
+
+                console.log('> generatePass');
+
                 payloadBody = await getPayloadBodyFromFile(file, color);
                 let pass = await PassData.generatePass(payloadBody);
-
                 const passBlob = new Blob([pass], {type: "application/vnd.apple.pkpass"});
                 saveAs(passBlob, 'covid.pkpass');
                 setLoading(false);
@@ -165,6 +170,37 @@ function Form(): JSX.Element {
         }
     }
 
+    async function saveAsPhoto() {
+        
+        setLoading(true);
+
+        if (!file && !qrCode) {
+            setErrorMessage('noFileOrQrCode')
+            setLoading(false);
+            return;
+        }
+
+        let payloadBody: PayloadBody;
+
+        try {
+            payloadBody = await getPayloadBodyFromFile(file, null);
+            let photo = await Photo.generatePass(payloadBody);
+            const photoBlob = new Blob([photo], {type: "image/png"});
+            saveAs(photoBlob);
+
+            // need to clean up
+            const qrcodeElement = document.getElementById('qrcode');
+            const svg = qrcodeElement.firstChild;
+            qrcodeElement.removeChild(svg);
+            const body = document.getElementById('pass-image');
+            body.hidden = true;
+
+            setLoading(false);
+        } catch (e) {
+            setErrorMessage(e.message);
+            setLoading(false);
+        }
+    }
     return (
         <div>
             <form className="space-y-5" id="form" onSubmit={addToWallet}>
@@ -192,12 +228,6 @@ function Form(): JSX.Element {
                     <div className="space-y-5">
                         <p>{t('index:selectCertificateDescription')}</p>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                            {/* <button
-                                type="button"
-                                onClick={isCameraOpen ? hideCameraView : showCameraView}
-                                className="focus:outline-none h-20 bg-gray-500 hover:bg-gray-700 text-white font-semibold rounded-md">
-                                {isCameraOpen ? t('index:stopCamera') : t('index:startCamera')}
-                            </button> */}
                             <button
                                 type="button"
                                 onClick={showFileDialog}
@@ -206,11 +236,9 @@ function Form(): JSX.Element {
                             </button>
                         </div>
 
-                        {/* <video id="cameraPreview"
-                               className={`${isCameraOpen ? undefined : "hidden"} rounded-md w-full`}/> */}
                         <input type='file'
                                id='file'
-                               accept="application/pdf,image/png"
+                               accept="application/pdf"
                                ref={inputFile}
                                style={{display: 'none'}}
                         />
@@ -249,15 +277,23 @@ function Form(): JSX.Element {
                                 <Check text={t('createdOnDevice')}/>
                                 <Check text={t('qrCode')}/>
                                 <Check text={t('openSourceTransparent')}/>
+                                <Check text={t('verifierLink')}/>
+
                                 {/* <Check text={t('hostedInEU')}/> */}
                             </ul>
                         </div>
 
                         <div className="flex flex-row items-center justify-start">
-                            <button id="download" type="submit"
+                            <button id="download" type="submit" value='applewallet' name='action'
                                     className="focus:outline-none bg-green-600 py-2 px-3 text-white font-semibold rounded-md disabled:bg-gray-400">
                                 {t('index:addToWallet')}
                             </button>
+                            {/* &nbsp;&nbsp;&nbsp;&nbsp;
+                            <button id="saveAsPhoto" type="button" value='photo' name='action' onClick={saveAsPhoto}
+                                    className="focus:outline-none bg-green-600 py-2 px-3 text-white font-semibold rounded-md disabled:bg-gray-400">
+                                {t('index:saveAsPhoto')}
+                            </button> */}
+
                             <div id="spin" className={loading ? undefined : "hidden"}>
                                 <svg className="animate-spin h-5 w-5 ml-4" viewBox="0 0 24 24">
                                     <circle className="opacity-0" cx="12" cy="12" r="10" stroke="currentColor"

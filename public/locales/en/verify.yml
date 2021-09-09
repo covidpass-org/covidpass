@@ -1,3 +1,5 @@
+title: Verify QR code
+subtitle: Verify the vaccination record is consistent with provincial records
 iosHint: On iOS, please use Safari.
 errorClose: Close
 selectCertificate: Select vaccination receipt (PDF)
@@ -23,7 +25,6 @@ colorBlue: blue
 colorPurple: purple
 colorTeal: teal
 addToWallet: Add to Wallet
-saveAsPhoto: Save as Photo
 dataPrivacyDescription: |
   Press the "Add to Wallet" below to import data into Wallet.
 iAcceptThe: I accept the
@@ -31,6 +32,5 @@ privacyPolicy: Privacy Policy
 createdOnDevice: No personal data is sent to the Internet.
 qrCode: QR code is for verification only, with no personal info.
 openSourceTransparent: Source code is free and open for re-use/contributions on GitHub.
-verifierLink: QR code verifier available at https://verifier.vaccine-ontario.ca
 demo: Video Demo
 #hostedInEU: Hosted in the EU
