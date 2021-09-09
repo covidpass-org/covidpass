@@ -7,9 +7,9 @@ import Card from '../components/Card'
 function Faq(): JSX.Element {
     const { t } = useTranslation(['common', 'index', 'faq']);
     const questionList = [
-      {description: 'Which version of iOS does this support?', answer: 'iOS 14.2 is the minimum at the moment. Lower version will get an error. If possible, please upgrade to latest 14.3 or 14.4. We are looking for workarounds for older iOSes, but it will take some time.', key: 1},
+      {description: 'Which version of iOS does this support?', answer: 'iOS 14.0 is the minimum at the moment. We are looking for adjustments for older iOSes, but it will take a bit of time.', key: 1},
       {description: 'Why have we taken time to build this?', answer: 'Gives Ontarians/organizations something very easy to verify vaccination status.', key: 2},
-      {description: 'Who made this?', answer: 'The same group of volunteers (Billy Lo, Ryan Slobojan, Evert Timberg, Jason Liu, Anujan Mathisekaran, Lisa Discepola, Samantha Finn, Madison Pearce) who created the integrated vaccine appointment finding tool at vaccine-ontario.ca.', key: 3},
+      {description: 'Who made this?', answer: 'The same group of volunteers (Billy Lo, Ryan Slobojan, Evert Timberg, Jason Liu, Anujan Mathisekaran, Lisa Discepola, Samantha Finn, Madison Pearce) who created the all-in-one vaccine appointment finding tool at vaccine-ontario.ca.', key: 3},
       {description: 'How is the data on my vaccination receipt processed?', answer: 'It checks the receipt for an official signature from the province. If present, the receipt data is converted into Apple\'s format and then added into your iOS Wallet app.', key: 4},
       {description: 'How can organizations validate the QR code?', answer: 'Just aim your standard camera app (iPhone/Android) at the code, and it will bring up a web page that shows the verification result.', key: 5},
       {description: 'Is this free and private?', answer: 'Similar to VaxHunters, this is not backed by any commerical businesses. Just volunteers trying to do our part to help the community.', key: 6},

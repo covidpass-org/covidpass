@@ -16,6 +16,7 @@ function Page(props: PageProps): JSX.Element {
             <Head>
                 <title>{t('common:title')}</title>
                 <link rel="icon" href="/favicon.ico"/>
+                <script src='patch-arrayBuffer.js' />
             </Head>
             <div>
                 <main className="flex flex-col space-y-5">
@@ -33,7 +34,7 @@ function Page(props: PageProps): JSX.Element {
 
                             {/* <a href="https://github.com/billylo1/covidpass" className="hover:underline">{t('common:gitHub')}</a> */}
                         </nav>
-                        <div className="flex pt-4 flex-row space-x-4 justify-center text-md flex-wrap">Last updated: 2021-09-08 (v1.4)</div>
+                        <div className="flex pt-4 flex-row space-x-4 justify-center text-md flex-wrap">Last updated: 2021-09-09 (v1.5)</div>
                     </footer>
                 </main>
             </div>
@@ -44,7 +45,7 @@ function Page(props: PageProps): JSX.Element {
                 <table style={{verticalAlign: "middle"}}>
                     <tbody>
                         <tr>
-                            <td><img src="/favicon-white.png" width="50" height="50"/></td>
+                            <td id='logo-container'></td>
                             <td style={{fontSize: 20, width: 280}}><span><b>Vaccination Receipt</b></span></td>
                         </tr>
                     </tbody>

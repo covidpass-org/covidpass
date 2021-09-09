@@ -134,8 +134,6 @@ function Form(): JSX.Element {
         event.preventDefault();
         setLoading(true);
 
-        console.log(event);
-
         if (navigator.userAgent.match('CriOS')) {
             setErrorMessage('safariSupportOnly');
             setLoading(false);
@@ -288,11 +286,11 @@ function Form(): JSX.Element {
                                     className="focus:outline-none bg-green-600 py-2 px-3 text-white font-semibold rounded-md disabled:bg-gray-400">
                                 {t('index:addToWallet')}
                             </button>
-                            {/* &nbsp;&nbsp;&nbsp;&nbsp;
+                            &nbsp;&nbsp;&nbsp;&nbsp;
                             <button id="saveAsPhoto" type="button" value='photo' name='action' onClick={saveAsPhoto}
                                     className="focus:outline-none bg-green-600 py-2 px-3 text-white font-semibold rounded-md disabled:bg-gray-400">
                                 {t('index:saveAsPhoto')}
-                            </button> */}
+                            </button>
 
                             <div id="spin" className={loading ? undefined : "hidden"}>
                                 <svg className="animate-spin h-5 w-5 ml-4" viewBox="0 0 24 24">

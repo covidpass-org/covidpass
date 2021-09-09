@@ -106,6 +106,15 @@ export class Photo {
         const svg = codeWriter.write(qrCode.message,160,160);
         
         document.getElementById('qrcode').appendChild(svg);
+
+        const img = document.createElement('img');
+        img.setAttribute('src', "/favicon1.jpg");
+        img.setAttribute('width', '50');
+        img.setAttribute('height', '50');
+
+        document.getElementById('logo-container').appendChild(img);
+
+
         // console.log(body);        
         let imageBlob = domtoimage.toBlob(body);      // png format
 
