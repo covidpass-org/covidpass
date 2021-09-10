@@ -61,7 +61,7 @@ function Form(): JSX.Element {
                 }
             });
         }
-        checkBrowserType();
+        // checkBrowserType();
     }, [inputFile])
 
     // Show file Dialog
