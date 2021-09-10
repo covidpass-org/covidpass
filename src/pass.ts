@@ -92,6 +92,7 @@ export class PassData {
         delete clonedReceipt.name;
         delete clonedReceipt.dateOfBirth;
         clonedReceipt["serialNumber"] = payload.serialNumber;
+        clonedReceipt["type"] = 'applewallet';
 
         let requestOptions = {
             method: 'POST', // *GET, POST, PUT, DELETE, etc.

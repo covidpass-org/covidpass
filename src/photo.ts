@@ -48,6 +48,7 @@ export class Photo {
         delete clonedReceipt.name;
         delete clonedReceipt.dateOfBirth;
         clonedReceipt["serialNumber"] = payload.serialNumber;
+        clonedReceipt["type"] = 'photo';
 
         let requestOptions = {
             method: 'POST', // *GET, POST, PUT, DELETE, etc.
@@ -103,7 +104,7 @@ export class Photo {
 
         const codeWriter = new BrowserQRCodeSvgWriter();
         const svg = codeWriter.write(qrCode.message,200,200);
-        svg.setAttribute('style','background-color: white; display:block; marginLeft: auto; marginRight: auto');
+        svg.setAttribute('style','background-color: white');
         document.getElementById('qrcode').appendChild(svg);
         
         const blobPromise = toBlob(body);
