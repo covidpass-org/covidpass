@@ -2,6 +2,7 @@ import {PayloadBody, Receipt} from "./payload";
 import * as PdfJS from 'pdfjs-dist'
 import {COLORS} from "./colors";
 import  { getCertificatesInfoFromPDF } from "@ninja-labs/verify-pdf";  // ES6 
+import * as Sentry from '@sentry/react';
 
 import { TextItem } from "pdfjs-dist/types/display/api";
 
@@ -61,8 +62,10 @@ async function loadPDF(signedPdfBuffer : ArrayBuffer): Promise<any> {
         if (e.message.includes('Failed to locate ByteRange')) {
             e.message = 'Sorry. Selected PDF file is not digitally signed. Please download official copy from Step 1 and retry. Thanks.'
         }
-        if (e.message.includes('arrayBuffer')) {
+        else if (e.message.includes('arrayBuffer')) {
             e.message = 'Sorry. The tool currently requires iOS 14.2+. If possible, please upgrade. We are looking for workarounds, but it will take some time.'
+        } else {
+            Sentry.captureException(e);
         }
 
         return Promise.reject(e);
