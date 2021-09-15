@@ -3,7 +3,7 @@ import {v4 as uuid4} from 'uuid';
 
 import {Constants} from "./constants";
 import {Payload, PayloadBody, PassDictionary} from "./payload";
-import {ValueSets} from "./value_sets";
+import * as Sentry from '@sentry/react';
 
 const crypto = require('crypto')
 
@@ -81,102 +81,106 @@ export class PassData {
     static async generatePass(payloadBody: PayloadBody): Promise<Buffer> {
 
         // Create Payload
+        try {
+            const payload: Payload = new Payload(payloadBody);
 
-        const payload: Payload = new Payload(payloadBody);
+            payload.serialNumber = uuid4();
 
-        payload.serialNumber = uuid4();
+            // register record
 
-        // register record
+            const clonedReceipt = Object.assign({}, payload.receipt);
+            delete clonedReceipt.name;
+            delete clonedReceipt.dateOfBirth;
+            clonedReceipt["serialNumber"] = payload.serialNumber;
+            clonedReceipt["type"] = 'applewallet';
 
-        const clonedReceipt = Object.assign({}, payload.receipt);
-        delete clonedReceipt.name;
-        delete clonedReceipt.dateOfBirth;
-        clonedReceipt["serialNumber"] = payload.serialNumber;
-        clonedReceipt["type"] = 'applewallet';
-
-        let requestOptions = {
-            method: 'POST', // *GET, POST, PUT, DELETE, etc.
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(clonedReceipt) // body data type must match "Content-Type" header
-        }
-
-        console.log('registering ' + JSON.stringify(clonedReceipt, null, 2));
-        const configResponse = await fetch('/api/config')
-        const verifierHost = (await configResponse.json()).verifierHost
-
-        // const verifierHost = 'https://verifier.vaccine-ontario.ca';
-
-        const response  = await fetch(`${verifierHost}/register`, requestOptions);
-        const responseJson = await response.json();
-
-        console.log(JSON.stringify(responseJson,null,2));
-
-        if (responseJson["result"] != 'OK') 
-            return Promise.reject();
-
-        // Create QR Code Object
-        const qrCode: QrCode = {
-            message: `${verifierHost}/verify?serialNumber=${payload.serialNumber}&vaccineName=${payload.receipt.vaccineName}&vaccinationDate=${payload.receipt.vaccinationDate}&organization=${payload.receipt.organization}&dose=${payload.receipt.numDoses}`,
-            format: QrFormat.PKBarcodeFormatQR,
-            messageEncoding: Encoding.iso88591,
-            // altText : payload.rawData
-
-        }
-
-        // Create pass data
-        const pass: PassData = new PassData(payload, qrCode);
-
-        // Create new zip
-        const zip = [] as { path: string; data: Buffer | string }[];
-
-        // Adding required fields
-
-        // console.log(pass);
-
-        // Create pass.json
-        const passJson = JSON.stringify(pass);
-
-        // Add pass.json to zip
-        zip.push({path: 'pass.json', data: Buffer.from(passJson)});
-
-        // Add Images to zip
-        zip.push({path: 'icon.png', data: payload.img1x})
-        zip.push({path: 'icon@2x.png', data: payload.img2x})
-        zip.push({path: 'logo.png', data: payload.img1x})
-        zip.push({path: 'logo@2x.png', data: payload.img2x})
-
-        // Adding manifest
-        // Construct manifest
-        const manifestJson = JSON.stringify(
-            zip.reduce(
-                (res, {path, data}) => {
-                    res[path] = PassData.getBufferHash(data);
-                    return res;
+            let requestOptions = {
+                method: 'POST', // *GET, POST, PUT, DELETE, etc.
+                headers: {
+                    'Content-Type': 'application/json'
                 },
-                {},
-            ),
-        );
+                body: JSON.stringify(clonedReceipt) // body data type must match "Content-Type" header
+            }
 
-        // console.log(manifestJson);
+            console.log('registering ' + JSON.stringify(clonedReceipt, null, 2));
+            const configResponse = await fetch('/api/config')
+            const verifierHost = (await configResponse.json()).verifierHost
 
-        // Add Manifest JSON to zip
-        zip.push({path: 'manifest.json', data: Buffer.from(manifestJson)});
+            // const verifierHost = 'https://verifier.vaccine-ontario.ca';
 
-        // Create pass hash
-        const passHash = PassData.getBufferHash(Buffer.from(passJson));
+            const response  = await fetch(`${verifierHost}/register`, requestOptions);
+            const responseJson = await response.json();
 
-        // Sign hash with server
-        const manifestSignature = await PassData.signWithRemote({
-            PassJsonHash: passHash,
-            useBlackVersion: false,
-        });
+            console.log(JSON.stringify(responseJson,null,2));
 
-        // Add signature to zip
-        zip.push({path: 'signature', data: Buffer.from(manifestSignature)});
+            if (responseJson["result"] != 'OK') 
+                return Promise.reject();
 
-        return createZip(zip);
+            // Create QR Code Object
+            const qrCode: QrCode = {
+                message: `${verifierHost}/verify?serialNumber=${payload.serialNumber}&vaccineName=${payload.receipt.vaccineName}&vaccinationDate=${payload.receipt.vaccinationDate}&organization=${payload.receipt.organization}&dose=${payload.receipt.numDoses}`,
+                format: QrFormat.PKBarcodeFormatQR,
+                messageEncoding: Encoding.iso88591,
+                // altText : payload.rawData
+
+            }
+
+            // Create pass data
+            const pass: PassData = new PassData(payload, qrCode);
+
+            // Create new zip
+            const zip = [] as { path: string; data: Buffer | string }[];
+
+            // Adding required fields
+
+            // console.log(pass);
+
+            // Create pass.json
+            const passJson = JSON.stringify(pass);
+
+            // Add pass.json to zip
+            zip.push({path: 'pass.json', data: Buffer.from(passJson)});
+
+            // Add Images to zip
+            zip.push({path: 'icon.png', data: payload.img1x})
+            zip.push({path: 'icon@2x.png', data: payload.img2x})
+            zip.push({path: 'logo.png', data: payload.img1x})
+            zip.push({path: 'logo@2x.png', data: payload.img2x})
+
+            // Adding manifest
+            // Construct manifest
+            const manifestJson = JSON.stringify(
+                zip.reduce(
+                    (res, {path, data}) => {
+                        res[path] = PassData.getBufferHash(data);
+                        return res;
+                    },
+                    {},
+                ),
+            );
+
+            // console.log(manifestJson);
+
+            // Add Manifest JSON to zip
+            zip.push({path: 'manifest.json', data: Buffer.from(manifestJson)});
+
+            // Create pass hash
+            const passHash = PassData.getBufferHash(Buffer.from(passJson));
+
+            // Sign hash with server
+            const manifestSignature = await PassData.signWithRemote({
+                PassJsonHash: passHash,
+                useBlackVersion: false,
+            });
+
+            // Add signature to zip
+            zip.push({path: 'signature', data: Buffer.from(manifestSignature)});
+
+            return createZip(zip);
+        } catch (e) {
+            Sentry.captureException(e);
+            return Promise.reject();
+        }
     }
 
     private constructor(payload: Payload, qrCode: QrCode) {

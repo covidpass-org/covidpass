@@ -14,7 +14,8 @@ import {PassData} from "../src/pass";
 import {Photo} from "../src/photo";
 import {COLORS} from "../src/colors";
 import Colors from './Colors';
-import {isIOS, isMacOs, isSafari} from 'react-device-detect';
+import {isChrome, isIOS, isIPad13, isMacOs, isSafari, deviceDetect, osName, osVersion} from 'react-device-detect';
+import * as Sentry from '@sentry/react';
 
 
 function Form(): JSX.Element {
@@ -61,7 +62,7 @@ function Form(): JSX.Element {
                 }
             });
         }
-        // checkBrowserType();
+        checkBrowserType();
     }, [inputFile])
 
     // Show file Dialog
@@ -137,12 +138,6 @@ function Form(): JSX.Element {
         event.preventDefault();
         setLoading(true);
 
-        if (navigator.userAgent.match('CriOS')) {
-            setErrorMessage('safariSupportOnly');
-            setLoading(false);
-            return;
-        }
-
         if (!file && !qrCode) {
             setErrorMessage('noFileOrQrCode')
             setLoading(false);
@@ -167,6 +162,7 @@ function Form(): JSX.Element {
 
         } catch (e) {
             setErrorMessage(e.message);
+            Sentry.captureException(e);
             setLoading(false);
         }
     }
@@ -197,6 +193,7 @@ function Form(): JSX.Element {
 
             setLoading(false);
         } catch (e) {
+            Sentry.captureException(e);
             setErrorMessage(e.message);
             setLoading(false);
         }
@@ -204,13 +201,22 @@ function Form(): JSX.Element {
 
     async function checkBrowserType() {
 
-        if (isMacOs || (isIOS && isSafari)) {
-            document.getElementById('download').hidden = false;
-        } else {
-            document.getElementById('download').hidden = true;
+        if (isIPad13) {
+            setErrorMessage('Sorry. Apple does not support the use of Wallet on iPad. Please use iPhone/Safari.');
+            document.getElementById('download').setAttribute('disabled','true');
+        } 
+        if (!isSafari && !isChrome) {
+            setErrorMessage('Sorry. Apple Wallet pass can be added using Safari or Chrome only.');
+            document.getElementById('download').setAttribute('disabled','true');
         }
-
-
+        if (isIOS && (!osVersion.includes('13') && !osVersion.includes('14') && !osVersion.includes('15'))) {
+            setErrorMessage(`Sorry. iOS 13+ is needed for the Apple Wallet functionality to work (Your version is ${osVersion})`);
+            document.getElementById('download').setAttribute('disabled','true');
+        }
+        if (isIOS && !isSafari) {
+            setErrorMessage(`Sorry. Only Safari can be used to add a Wallet Pass on iOS`);
+            document.getElementById('download').setAttribute('disabled','true');
+        }
     }
 
     return (

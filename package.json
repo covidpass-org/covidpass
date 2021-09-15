@@ -1,8 +1,8 @@
 {
-  "name": "covidpass",
-  "version": "0.1.0",
-  "author": "Marvin Sextro <marvin.sextro@gmail.com>",
-  "private": true,
+  "name": "grassroots_covidpass",
+  "version": "1.7.0",
+  "author": "Billy Lo <billy@vaccine-ontario.ca>",
+  "private": false,
   "scripts": {
     "dev": "next dev",
     "build": "next build",

@@ -82,6 +82,10 @@ Finally, the following steps happen locally in your browser:
 * Assembling the signed pass file out of the incomplete file generated locally and the signature
 * Saving the file on your device
 
+# Logging
+
+* Sentry.io is used. Please put your DSN into your environment variable SENTRY_DSN at runtime to activate it.
+
 # Credits
 
 The idea for this web app originated from the [solution of an Austrian web developer](https://coronapass.fabianpimminger.com), which only works for Austrian certificates at the moment.

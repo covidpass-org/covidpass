@@ -59,15 +59,11 @@ async function loadPDF(signedPdfBuffer : ArrayBuffer): Promise<any> {
 
     } catch (e) {
         console.error(e);
+        Sentry.captureException(e);
+
         if (e.message.includes('Failed to locate ByteRange')) {
             e.message = 'Sorry. Selected PDF file is not digitally signed. Please download official copy from Step 1 and retry. Thanks.'
         }
-        else if (e.message.includes('arrayBuffer')) {
-            e.message = 'Sorry. The tool currently requires iOS 14.2+. If possible, please upgrade. We are looking for workarounds, but it will take some time.'
-        } else {
-            Sentry.captureException(e);
-        }
-
         return Promise.reject(e);
     }
 
@@ -76,40 +72,45 @@ async function loadPDF(signedPdfBuffer : ArrayBuffer): Promise<any> {
 
 async function getPdfDetails(fileBuffer: ArrayBuffer): Promise<Receipt> {
 
-    const typedArray = new Uint8Array(fileBuffer);
-    let loadingTask = PdfJS.getDocument(typedArray);
+    try {
+        const typedArray = new Uint8Array(fileBuffer);
+        let loadingTask = PdfJS.getDocument(typedArray);
 
-    const pdfDocument = await loadingTask.promise;
-        // Load last PDF page
-    const pageNumber = pdfDocument.numPages;
+        const pdfDocument = await loadingTask.promise;
+            // Load last PDF page
+        const pageNumber = pdfDocument.numPages;
 
-    const pdfPage = await pdfDocument.getPage(pageNumber);
-    const content = await pdfPage.getTextContent();
-    const numItems = content.items.length;
-    let name, vaccinationDate, vaccineName, dateOfBirth, numDoses, organization;
+        const pdfPage = await pdfDocument.getPage(pageNumber);
+        const content = await pdfPage.getTextContent();
+        const numItems = content.items.length;
+        let name, vaccinationDate, vaccineName, dateOfBirth, numDoses, organization;
 
-    for (let i = 0; i < numItems; i++) {
-        let item = content.items[i] as TextItem;
-        const value = item.str;
-        if (value.includes('Name / Nom'))
-            name = (content.items[i+1] as TextItem).str;
-        if (value.includes('Date:')) {
-            vaccinationDate = (content.items[i+1] as TextItem).str;
-            vaccinationDate = vaccinationDate.split(',')[0];
+        for (let i = 0; i < numItems; i++) {
+            let item = content.items[i] as TextItem;
+            const value = item.str;
+            if (value.includes('Name / Nom'))
+                name = (content.items[i+1] as TextItem).str;
+            if (value.includes('Date:')) {
+                vaccinationDate = (content.items[i+1] as TextItem).str;
+                vaccinationDate = vaccinationDate.split(',')[0];
+            }
+            if (value.includes('Product name')) {
+                vaccineName = (content.items[i+1] as TextItem).str;
+                vaccineName = vaccineName.split(' ')[0];
+            } 
+            if (value.includes('Date of birth'))
+                dateOfBirth = (content.items[i+1] as TextItem).str;
+            if (value.includes('Authorized organization'))
+                organization = (content.items[i+1] as TextItem).str;    
+            if (value.includes('You have received'))
+                numDoses = Number(value.split(' ')[3]);
         }
-        if (value.includes('Product name')) {
-            vaccineName = (content.items[i+1] as TextItem).str;
-            vaccineName = vaccineName.split(' ')[0];
-        } 
-        if (value.includes('Date of birth'))
-            dateOfBirth = (content.items[i+1] as TextItem).str;
-        if (value.includes('Authorized organization'))
-            organization = (content.items[i+1] as TextItem).str;    
-        if (value.includes('You have received'))
-            numDoses = Number(value.split(' ')[3]);
-    }
-    const receipt = new Receipt(name, vaccinationDate, vaccineName, dateOfBirth, numDoses, organization);
+        const receipt = new Receipt(name, vaccinationDate, vaccineName, dateOfBirth, numDoses, organization);
 
-    return Promise.resolve(receipt);
+        return Promise.resolve(receipt);
+    } catch (e) {
+        Sentry.captureException(e);
+        return Promise.reject();
+    }
 
 }
