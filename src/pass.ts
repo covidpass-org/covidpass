@@ -110,7 +110,7 @@ export class PassData {
 
             // const verifierHost = 'https://verifier.vaccine-ontario.ca';
 
-            const response  = await fetch(`${verifierHost}/register`, requestOptions);
+            const response  = await fetch('https://us-central1-grassroot-verifier.cloudfunctions.net/register', requestOptions);
             const responseJson = await response.json();
 
             // console.log(JSON.stringify(responseJson,null,2));
