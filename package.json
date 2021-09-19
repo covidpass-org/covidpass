@@ -1,7 +1,8 @@
 {
   "name": "grassroots_covidpass",
-  "version": "1.7.0",
+  "version": "1.8.0",
   "author": "Billy Lo <billy@vaccine-ontario.ca>",
+  "license": "MIT",
   "private": false,
   "scripts": {
     "dev": "next dev",

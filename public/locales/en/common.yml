@@ -1,6 +1,6 @@
 title: Vaccination Receipt to Wallet
-subtitle: This tool converts your vaccination receipt from Ontario Ministry of Health to an Apple Wallet pass with a QR code. Other organizations (e.g. schools, workplaces) can then scan that QR code to validate in a privacy-respecting way.
-verifySubtitle: Confirm vaccination record is consistent with provincial records
+subtitle: This tool converts your vaccination receipt from Ontario Ministry of Health to an Apple Wallet pass for easy access in the interim. 
+subtitle2: Once Ontario's official QR code is released on Oct 22, you will be able to update your Apple Wallet pass by visiting this site again.
 privacyPolicy: Privacy Policy
 donate: Sponsor
 gitHub: GitHub

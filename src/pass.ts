@@ -56,11 +56,13 @@ export class PassData {
     private static async signWithRemote(signData: SignData): Promise<ArrayBuffer> {
         // Load API_BASE_URL form nextjs backend
 
+        // console.log('signWithRemote');
+
         const configResponse = await fetch('/api/config')
         const apiBaseUrl = (await configResponse.json()).apiBaseUrl
         console.log(`${apiBaseUrl}/sign`);
 
-        console.log(JSON.stringify(signData));
+        // console.log(JSON.stringify(signData));
 
         const response = await fetch(`${apiBaseUrl}/sign`, {
             method: 'POST',
@@ -111,7 +113,7 @@ export class PassData {
             const response  = await fetch(`${verifierHost}/register`, requestOptions);
             const responseJson = await response.json();
 
-            console.log(JSON.stringify(responseJson,null,2));
+            // console.log(JSON.stringify(responseJson,null,2));
 
             if (responseJson["result"] != 'OK') 
                 return Promise.reject();

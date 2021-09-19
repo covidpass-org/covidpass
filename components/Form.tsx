@@ -16,6 +16,7 @@ import {COLORS} from "../src/colors";
 import Colors from './Colors';
 import {isChrome, isIOS, isIPad13, isMacOs, isSafari, deviceDetect, osName, osVersion} from 'react-device-detect';
 import * as Sentry from '@sentry/react';
+import { counterReset } from 'html2canvas/dist/types/css/property-descriptors/counter-reset';
 
 
 function Form(): JSX.Element {
@@ -36,6 +37,42 @@ function Form(): JSX.Element {
 
     const [errorMessage, _setErrorMessage] = useState<string>(undefined);
     const [loading, setLoading] = useState<boolean>(false);
+
+    const [passCount, setPassCount] = useState<string>('');
+    const [generated, setGenerated] = useState<boolean>(false);         // this flag represents the file has been used to generate a pass
+    const hitcountHost = 'https://stats.vaccine-ontario.ca';
+
+
+    useEffect(() => {
+        if (passCount.length == 0) {
+            getPassCount();
+        }
+    }, []);
+
+    const getPassCount = async () => {
+        const hitCount = await getHitCount();
+        console.log(`hitcount = ${hitCount}`);
+        setPassCount(hitCount);
+    };
+
+    async function getHitCount() {
+
+        try {
+            const request = `${hitcountHost}/nocount?url=pass.vaccine-ontario.ca`;
+
+            let response = await fetch(request);
+            const counter = await response.text();
+            
+            console.log('getHitCount returns ' + counter);
+
+            return Promise.resolve(counter);
+
+        } catch (e) {
+            console.error(e);
+            return Promise.reject(e);
+        }
+
+    }
 
     // Check if there is a translation and replace message accordingly
     const setErrorMessage = (message: string) => {
@@ -59,6 +96,7 @@ function Form(): JSX.Element {
                 if (selectedFile !== undefined) {
                     setQrCode(undefined);
                     setFile(selectedFile);
+                    setGenerated(false);
                 }
             });
         }
@@ -132,6 +170,34 @@ function Form(): JSX.Element {
         setIsCameraOpen(true);
     }
 
+    async function incrementCount() {
+
+        try {
+            if (typeof generated == undefined || !generated) {
+
+                const request = `${hitcountHost}/count?url=pass.vaccine-ontario.ca`;
+                console.log(request);
+
+                let response = await fetch(request);
+                console.log(request);
+
+                const counter = await response.text();      // response count is not used intentionally so it always goes up by 1 only even if the server has changed
+
+                let newPasscount = Number(passCount) + 1;
+                console.log(counter);
+                setPassCount(counter);
+                setGenerated(true);
+                console.log(`new PassCount  = ${newPasscount}`);
+
+            }
+
+        } catch (e) {
+            console.error(e);
+            return Promise.reject(e);
+        }
+
+    }
+
     // Add Pass to wallet
     async function addToWallet(event: FormEvent<HTMLFormElement>) {
         
@@ -153,6 +219,8 @@ function Form(): JSX.Element {
                 console.log('> generatePass');
 
                 payloadBody = await getPayloadBodyFromFile(file, color);
+                await incrementCount();
+
                 let pass = await PassData.generatePass(payloadBody);
                 const passBlob = new Blob([pass], {type: "application/vnd.apple.pkpass"});
                 saveAs(passBlob, 'covid.pkpass');
@@ -161,11 +229,14 @@ function Form(): JSX.Element {
 
 
         } catch (e) {
+            console.error(e);
             setErrorMessage(e.message);
             Sentry.captureException(e);
             setLoading(false);
         }
     }
+
+    //TODO: merge with addToWallet for common flow
 
     async function saveAsPhoto() {
         
@@ -181,9 +252,11 @@ function Form(): JSX.Element {
 
         try {
             payloadBody = await getPayloadBodyFromFile(file, null);
+            await incrementCount();
+
             let photoBlob = await Photo.generatePass(payloadBody);
             saveAs(photoBlob, 'pass.png');
-            
+
             // need to clean up
             const qrcodeElement = document.getElementById('qrcode');
             const svg = qrcodeElement.firstChild;
@@ -210,12 +283,12 @@ function Form(): JSX.Element {
             document.getElementById('download').setAttribute('disabled','true');
         }
         if (isIOS && (!osVersion.includes('13') && !osVersion.includes('14') && !osVersion.includes('15'))) {
-            setErrorMessage(`Sorry. iOS 13+ is needed for the Apple Wallet functionality to work (Your version is ${osVersion})`);
-            document.getElementById('download').setAttribute('disabled','true');
+            setErrorMessage('Sorry, iOS 13+ is needed for the Apple Wallet functionality to work')
+            document.getElementById('download').setAttribute('disabled','true')
         }
         if (isIOS && !isSafari) {
-            setErrorMessage(`Sorry. Only Safari can be used to add a Wallet Pass on iOS`);
-            document.getElementById('download').setAttribute('disabled','true');
+            setErrorMessage('Sorry, only Safari can be used to add a Wallet Pass on iOS')
+            document.getElementById('download').setAttribute('disabled','true')
         }
     }
 
@@ -245,6 +318,7 @@ function Form(): JSX.Element {
                 <Card step="2" heading={t('index:selectCertificate')} content={
                     <div className="space-y-5">
                         <p>{t('index:selectCertificateDescription')}</p>
+                        <p>{t('index:selectCertificateReminder')}</p>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                             <button
                                 type="button"
@@ -296,6 +370,7 @@ function Form(): JSX.Element {
                                 <Check text={t('qrCode')}/>
                                 <Check text={t('openSourceTransparent')}/>
                                 <Check text={t('verifierLink')}/>
+                                {passCount && <Check text={passCount + ' ' + t('numPasses')}/>}
 
                                 {/* <Check text={t('hostedInEU')}/> */}
                             </ul>

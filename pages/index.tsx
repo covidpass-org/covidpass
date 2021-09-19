@@ -5,6 +5,7 @@ import {serverSideTranslations} from 'next-i18next/serverSideTranslations';
 import Form from '../components/Form';
 import Card from '../components/Card';
 import Page from '../components/Page';
+import { useEffect, useState } from 'react';
 
 function Index(): JSX.Element {
     const { t } = useTranslation(['common', 'index', 'errors']);
@@ -40,7 +41,7 @@ function Index(): JSX.Element {
             <Page content={
                 <div className="space-y-5">
                     <Card content={
-                        <p>{t('common:subtitle')}</p>
+                        <div><p>{t('common:subtitle')}</p><br /><p>{t('common:subtitle2')}</p></div>
                     }/>
 
                     <Form/>
@@ -49,6 +50,7 @@ function Index(): JSX.Element {
         </>
     )
 }
+
 
 export async function getStaticProps({ locale }) {
     return {

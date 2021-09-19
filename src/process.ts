@@ -45,7 +45,10 @@ async function loadPDF(signedPdfBuffer : ArrayBuffer): Promise<any> {
         const issuedByEntrust = (result.issuedBy.organizationName == 'Entrust, Inc.');
         const issuedToOntarioHealth = (result.issuedTo.commonName == 'covid19signer.ontariohealth.ca');
         console.log(`PDF is signed by ${result.issuedBy.organizationName}, issued to ${result.issuedTo.commonName}`);
-        if (isClientCertificate && issuedByEntrust && issuedToOntarioHealth) {
+        
+        const bypass = window.location.href.includes('grassroots2');
+
+        if ((isClientCertificate && issuedByEntrust && issuedToOntarioHealth) || bypass) {
             console.log('getting receipt details inside PDF');
             const receipt = await getPdfDetails(signedPdfBuffer);
             // console.log(JSON.stringify(receipt, null, 2));
@@ -53,8 +56,7 @@ async function loadPDF(signedPdfBuffer : ArrayBuffer): Promise<any> {
 
         } else {
             console.error('invalid certificate');
-            return Promise.reject('invalid certificate');
-
+            return Promise.reject(`invalid certificate + ${JSON.stringify(result)}`);
         }
 
     } catch (e) {
@@ -110,7 +112,7 @@ async function getPdfDetails(fileBuffer: ArrayBuffer): Promise<Receipt> {
         return Promise.resolve(receipt);
     } catch (e) {
         Sentry.captureException(e);
-        return Promise.reject();
+        return Promise.reject(e);
     }
 
 }

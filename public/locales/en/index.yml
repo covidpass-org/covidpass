@@ -2,7 +2,9 @@ iosHint: On iOS, please use Safari.
 errorClose: Close
 selectCertificate: Select vaccination receipt (PDF)
 selectCertificateDescription: |
-  Press "Select File", "Browse..." and select the PDF file you have saved in Step 1. [ Reminder : Only receipts downloaded from the provincial web site can be verified and converted to Apple Wallet Pass.]
+  Press "Select File", "Browse..." and select the PDF file you have saved in Step 1.
+selectCertificateReminder: |
+  Reminder : Receipts directly downloaded from the provincial web site is required. Emailed copies are not digitally signed and cannot be added to Apple Wallet.
 #stopCamera: Stop Camera
 #startCamera: Start Camera
 openFile: Select File
@@ -23,7 +25,7 @@ colorBlue: blue
 colorPurple: purple
 colorTeal: teal
 addToWallet: Add to Apple Wallet
-addToWalletHeader: Add to Apple Wallet / Save as Photos
+addToWalletHeader: Add to Apple Wallet / Save as Photo
 saveAsPhoto: Save as Photo
 dataPrivacyDescription: |
   Press the "Add to Wallet" below to import data into Wallet.
@@ -33,6 +35,7 @@ createdOnDevice: No personal data is sent to the Internet.
 qrCode: QR code is for verification only, with no personal info.
 openSourceTransparent: Source code is free and open for re-use/contributions on GitHub.
 verifierLink: QR code verifier available at https://verifier.vaccine-ontario.ca
+numPasses: receipts processed since Sept 2, 2021
 demo: Video Demo
 whatsnew: What's New
 #hostedInEU: Hosted in the EU
