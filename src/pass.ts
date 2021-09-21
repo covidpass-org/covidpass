@@ -90,7 +90,7 @@ export class PassData {
 
             // register record
 
-            const clonedReceipt = Object.assign({}, payload.receipt);
+            const clonedReceipt = Object.assign({}, payload.receipts[0]);
             delete clonedReceipt.name;
             delete clonedReceipt.dateOfBirth;
             clonedReceipt["serialNumber"] = payload.serialNumber;
@@ -120,7 +120,7 @@ export class PassData {
 
             // Create QR Code Object
             const qrCode: QrCode = {
-                message: `${verifierHost}/verify?serialNumber=${payload.serialNumber}&vaccineName=${payload.receipt.vaccineName}&vaccinationDate=${payload.receipt.vaccinationDate}&organization=${payload.receipt.organization}&dose=${payload.receipt.numDoses}`,
+                message: `${verifierHost}/verify?serialNumber=${payload.serialNumber}&vaccineName=${payload.receipts[0].vaccineName}&vaccinationDate=${payload.receipts[0].vaccinationDate}&organization=${payload.receipts[0].organization}&dose=${payload.receipts[0].numDoses}`,
                 format: QrFormat.PKBarcodeFormatQR,
                 messageEncoding: Encoding.iso88591,
                 // altText : payload.rawData
@@ -180,8 +180,7 @@ export class PassData {
 
             return createZip(zip);
         } catch (e) {
-            Sentry.captureException(e);
-            return Promise.reject();
+            return Promise.reject(e);
         }
     }
 

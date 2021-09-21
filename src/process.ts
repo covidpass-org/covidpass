@@ -1,10 +1,11 @@
 import {PayloadBody, Receipt} from "./payload";
 import * as PdfJS from 'pdfjs-dist'
-import {COLORS} from "./colors";
+import jsQR, {QRCode} from "jsqr";
 import  { getCertificatesInfoFromPDF } from "@ninja-labs/verify-pdf";  // ES6 
 import * as Sentry from '@sentry/react';
+import * as Decode from './decode';
 
-import { TextItem } from "pdfjs-dist/types/display/api";
+import { PDFPageProxy, TextContent, TextItem } from "pdfjs-dist/types/display/api";
 
 // import {PNG} from 'pngjs'
 // import {decodeData} from "./decode";
@@ -12,29 +13,99 @@ import { TextItem } from "pdfjs-dist/types/display/api";
 
 PdfJS.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${PdfJS.version}/pdf.worker.js`
 
-export async function getPayloadBodyFromFile(file: File, color: COLORS): Promise<PayloadBody> {
+export async function getPayloadBodyFromFile(file: File): Promise<PayloadBody> {
     // Read file
     const fileBuffer = await file.arrayBuffer();
 
-    let receipt: Receipt;
-
     switch (file.type) {
         case 'application/pdf':
-            receipt = await loadPDF(fileBuffer)
-            break
+            return detectPDFTypeAndProcess(fileBuffer)
         default:
             throw Error('invalidFileType')
     }
 
-    const rawData = ''; // unused at the moment, the original use was to store the QR code from issuer
+}
 
-    return {
-        receipt: receipt,
-        rawData: rawData
+async function detectPDFTypeAndProcess(fileBuffer : ArrayBuffer): Promise<any> {
+
+    // Ontario has 'COVID-19 vaccination receipt'
+    // BC has BC Vaccine Card
+
+        console.log('detectPDFTypeAndProcess');
+
+        const typedArray = new Uint8Array(fileBuffer);
+        let loadingTask = PdfJS.getDocument(typedArray);
+        const pdfDocument = await loadingTask.promise;
+        let pageNumber = pdfDocument.numPages;
+        const pdfPage = await pdfDocument.getPage(1);  //first page
+        const content = await pdfPage.getTextContent();
+        const numItems = content.items.length;
+        for (let i = 0; i < numItems; i++) {
+            let item = content.items[i] as TextItem;
+            const value = item.str;
+            console.log(value);
+            if (value.includes('BC Vaccine Card')) {
+                console.log('detected bc');
+                return processBC(pdfPage);
+            }
+            if (value.includes('COVID-19 vaccination receipt')) {
+                console.log('detected on');
+                return processON(fileBuffer, content);
+            }
+        }
+
+}
+
+async function getImageDataFromPdf(pdfPage: PDFPageProxy): Promise<ImageData> {
+
+    const pdfScale = 2;
+
+    const canvas = <HTMLCanvasElement>document.getElementById('canvas');
+    const canvasContext = canvas.getContext('2d');
+    const viewport = pdfPage.getViewport({scale: pdfScale})
+
+    // Set correct canvas width / height
+    canvas.width = viewport.width
+    canvas.height = viewport.height
+
+    // render PDF
+    const renderTask = pdfPage.render({
+        canvasContext: canvasContext,
+        viewport,
+    })
+
+    await renderTask.promise;
+
+    // Return PDF Image Data
+    return canvasContext.getImageData(0, 0, canvas.width, canvas.height)
+
+}
+
+async function processBC(pdfPage: PDFPageProxy) {
+
+    const imageData = await getImageDataFromPdf(pdfPage);
+    const code : QRCode = await Decode.getQRFromImage(imageData);
+    let rawData = code.data;
+    let jws = Decode.getScannedJWS(rawData);
+    // const verified = Decode.verifyJWS(jws);
+    const verified = true;
+
+    if (verified) {
+        let decoded = await Decode.decodeJWS(jws);
+        console.log(decoded);
+        
+        let receipts = Decode.decodedStringToReceipt(decoded);
+        console.log(receipts);
+
+        return Promise.resolve({receipts: receipts, rawData: rawData});
+    } else {
+        return Promise.reject('QR code not signed by BC or QC');
     }
 }
 
-async function loadPDF(signedPdfBuffer : ArrayBuffer): Promise<any> {
+async function processON(signedPdfBuffer : ArrayBuffer, content: TextContent): Promise<any> {
+
+    // check for certs first
 
     try {
 
@@ -49,10 +120,40 @@ async function loadPDF(signedPdfBuffer : ArrayBuffer): Promise<any> {
         const bypass = window.location.href.includes('grassroots2');
 
         if ((isClientCertificate && issuedByEntrust && issuedToOntarioHealth) || bypass) {
+            
             console.log('getting receipt details inside PDF');
-            const receipt = await getPdfDetails(signedPdfBuffer);
-            // console.log(JSON.stringify(receipt, null, 2));
-            return Promise.resolve(receipt);
+            
+            // to add logic to handle QR code here when it's available
+
+            const numItems = content.items.length;
+
+            let name, vaccinationDate, vaccineName, dateOfBirth, numDoses, organization;
+
+            for (let i = 0; i < numItems; i++) {
+                let item = content.items[i] as TextItem;
+                const value = item.str;
+                if (value.includes('Name / Nom'))
+                    name = (content.items[i+1] as TextItem).str;
+                if (value.includes('Date:')) {
+                    vaccinationDate = (content.items[i+1] as TextItem).str;
+                    vaccinationDate = vaccinationDate.split(',')[0];
+                }
+                if (value.includes('Product name')) {
+                    vaccineName = (content.items[i+1] as TextItem).str;
+                    vaccineName = vaccineName.split(' ')[0];
+                } 
+                if (value.includes('Date of birth'))
+                    dateOfBirth = (content.items[i+1] as TextItem).str;
+
+                if (value.includes('Authorized organization'))
+                    organization = (content.items[i+1] as TextItem).str;    
+                
+                if (value.includes('You have received'))
+                    numDoses = Number(value.split(' ')[3]);
+            }
+            const receipt = new Receipt(name, vaccinationDate, vaccineName, dateOfBirth, numDoses, organization);
+
+            return Promise.resolve({ receipt: receipt, rawData: ''});
 
         } else {
             console.error('invalid certificate');
@@ -60,58 +161,15 @@ async function loadPDF(signedPdfBuffer : ArrayBuffer): Promise<any> {
         }
 
     } catch (e) {
+
         console.error(e);
-        Sentry.captureException(e);
 
         if (e.message.includes('Failed to locate ByteRange')) {
             e.message = 'Sorry. Selected PDF file is not digitally signed. Please download official copy from Step 1 and retry. Thanks.'
+        } else {
+            Sentry.captureException(e);
         }
-        return Promise.reject(e);
-    }
 
-
-}
-
-async function getPdfDetails(fileBuffer: ArrayBuffer): Promise<Receipt> {
-
-    try {
-        const typedArray = new Uint8Array(fileBuffer);
-        let loadingTask = PdfJS.getDocument(typedArray);
-
-        const pdfDocument = await loadingTask.promise;
-            // Load last PDF page
-        const pageNumber = pdfDocument.numPages;
-
-        const pdfPage = await pdfDocument.getPage(pageNumber);
-        const content = await pdfPage.getTextContent();
-        const numItems = content.items.length;
-        let name, vaccinationDate, vaccineName, dateOfBirth, numDoses, organization;
-
-        for (let i = 0; i < numItems; i++) {
-            let item = content.items[i] as TextItem;
-            const value = item.str;
-            if (value.includes('Name / Nom'))
-                name = (content.items[i+1] as TextItem).str;
-            if (value.includes('Date:')) {
-                vaccinationDate = (content.items[i+1] as TextItem).str;
-                vaccinationDate = vaccinationDate.split(',')[0];
-            }
-            if (value.includes('Product name')) {
-                vaccineName = (content.items[i+1] as TextItem).str;
-                vaccineName = vaccineName.split(' ')[0];
-            } 
-            if (value.includes('Date of birth'))
-                dateOfBirth = (content.items[i+1] as TextItem).str;
-            if (value.includes('Authorized organization'))
-                organization = (content.items[i+1] as TextItem).str;    
-            if (value.includes('You have received'))
-                numDoses = Number(value.split(' ')[3]);
-        }
-        const receipt = new Receipt(name, vaccinationDate, vaccineName, dateOfBirth, numDoses, organization);
-
-        return Promise.resolve(receipt);
-    } catch (e) {
-        Sentry.captureException(e);
         return Promise.reject(e);
     }
 

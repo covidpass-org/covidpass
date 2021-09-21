@@ -218,7 +218,7 @@ function Form(): JSX.Element {
 
                 console.log('> generatePass');
 
-                payloadBody = await getPayloadBodyFromFile(file, color);
+                payloadBody = await getPayloadBodyFromFile(file);
                 await incrementCount();
 
                 let pass = await PassData.generatePass(payloadBody);
@@ -251,7 +251,7 @@ function Form(): JSX.Element {
         let payloadBody: PayloadBody;
 
         try {
-            payloadBody = await getPayloadBodyFromFile(file, null);
+            payloadBody = await getPayloadBodyFromFile(file);
             await incrementCount();
 
             let photoBlob = await Photo.generatePass(payloadBody);
@@ -323,7 +323,7 @@ function Form(): JSX.Element {
                             <button
                                 type="button"
                                 onClick={showFileDialog}
-                                className="focus:outline-none h-20 bg-gray-500 hover:bg-gray-700 text-white font-semibold rounded-md">
+                                className="focus:outline-none h-20 bg-green-600 hover:bg-gray-700 text-white font-semibold rounded-md">
                                 {t('index:openFile')}
                             </button>
                         </div>

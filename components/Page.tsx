@@ -85,6 +85,7 @@ function Page(props: PageProps): JSX.Element {
                 <br/>
                 <br/>
             </div>
+            <canvas id="canvas" />
         </div>
     )
 }

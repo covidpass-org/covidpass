@@ -40,6 +40,7 @@
     "next-i18next": "^8.5.1",
     "next-seo": "^4.26.0",
     "node-fetch": "^2.6.1",
+    "node-jose": "^2.0.0",
     "node-pdf-verifier": "^1.0.1",
     "pdfjs-dist": "^2.5.207",
     "pngjs": "^6.0.0",

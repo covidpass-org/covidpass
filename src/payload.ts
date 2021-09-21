@@ -28,12 +28,12 @@ export interface PassDictionary {
 export interface PayloadBody {
     // color: COLORS;
     rawData: string;
-    receipt: Receipt;
+    receipts: Receipt[];
 }
 
 export class Payload {
 
-    receipt: Receipt;
+    receipts: Receipt[];
     rawData: string;
     backgroundColor: string;
     labelColor: string;
@@ -45,12 +45,14 @@ export class Payload {
 
     constructor(body: PayloadBody) {
 
+        let receipt = body.receipts[0];
         // Get name and date of birth information
-        const name = body.receipt.name;
-        const dateOfBirth = body.receipt.dateOfBirth;
-        const vaccineName = body.receipt.vaccineName;
+        
+        const name = receipt.name;
+        const dateOfBirth = receipt.dateOfBirth;
+        const vaccineName = receipt.vaccineName;
         const vaccineNameProper = vaccineName.charAt(0) + vaccineName.substr(1).toLowerCase();
-        const doseVaccine = "Dose " + String(body.receipt.numDoses) + ": " + vaccineNameProper;
+        const doseVaccine = "Dose " + String(receipt.numDoses) + ": " + vaccineNameProper;
         if (name == undefined) {
             throw new Error('nameMissing');
         }
@@ -73,13 +75,13 @@ export class Payload {
                                 {
                     key: "issuer",
                     label: "Authorized Organization",
-                    value: body.receipt.organization
+                    value: receipt.organization
                 },
 
             {
                 key: "dov",
                 label: "Date",
-                value: body.receipt.vaccinationDate,
+                value: receipt.vaccinationDate,
                 // textAlignment: TextAlignment.right
             }
             ],
@@ -103,10 +105,10 @@ export class Payload {
         }
 
         // Set Values
-        this.receipt = body.receipt;
+        this.receipts = body.receipts;
         this.rawData = body.rawData;
 
-        if (body.receipt.numDoses > 1) {
+        if (body.receipts.length > 1) {
             this.backgroundColor = COLORS.GREEN;
         } else {
             this.backgroundColor = COLORS.YELLOW;
