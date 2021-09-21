@@ -111,8 +111,7 @@ export class Photo {
             const blobPromise = toBlob(body);
             return blobPromise;
         }   catch (e) {
-            Sentry.captureException(e);
-            return Promise.reject();
+            return Promise.reject(e);
         }
     }
 
