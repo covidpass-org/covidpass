@@ -51,7 +51,6 @@ function Form(): JSX.Element {
 
     const getPassCount = async () => {
         const hitCount = await getHitCount();
-        console.log(`hitcount = ${hitCount}`);
         setPassCount(hitCount);
     };
 
@@ -62,9 +61,7 @@ function Form(): JSX.Element {
 
             let response = await fetch(request);
             const counter = await response.text();
-            
-            console.log('getHitCount returns ' + counter);
-
+    
             return Promise.resolve(counter);
 
         } catch (e) {
@@ -286,10 +283,10 @@ function Form(): JSX.Element {
             setErrorMessage('Sorry, iOS 13+ is needed for the Apple Wallet functionality to work')
             document.getElementById('download').setAttribute('disabled','true')
         }
-        if (isIOS && !isSafari) {
-            setErrorMessage('Sorry, only Safari can be used to add a Wallet Pass on iOS')
-            document.getElementById('download').setAttribute('disabled','true')
-        }
+        // if (isIOS && !isSafari) {
+        //     setErrorMessage('Sorry, only Safari can be used to add a Wallet Pass on iOS')
+        //     document.getElementById('download').setAttribute('disabled','true')
+        // }
     }
 
     return (
@@ -323,7 +320,7 @@ function Form(): JSX.Element {
                             <button
                                 type="button"
                                 onClick={showFileDialog}
-                                className="focus:outline-none h-20 bg-gray-500 hover:bg-gray-700 text-white font-semibold rounded-md">
+                                className="focus:outline-none h-20 bg-green-600 hover:bg-gray-700 text-white font-semibold rounded-md">
                                 {t('index:openFile')}
                             </button>
                         </div>
