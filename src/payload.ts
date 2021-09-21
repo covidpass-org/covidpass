@@ -106,7 +106,7 @@ export class Payload {
         this.receipt = body.receipt;
         this.rawData = body.rawData;
 
-        if (body.receipt.numDoses > 1) {
+        if (body.receipt.numDoses > 1 || body.receipt.vaccineName.includes('JANSSEN')) {
             this.backgroundColor = COLORS.GREEN;
         } else {
             this.backgroundColor = COLORS.YELLOW;
