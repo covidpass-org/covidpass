@@ -214,13 +214,19 @@ function Form(): JSX.Element {
         try {
             if (file) {
 
-                console.log('> generatePass');
-
-                payloadBody = await getPayloadBodyFromFile(file, COLORS.GREEN);
+                console.log('> get payload');
+                payloadBody = await getPayloadBodyFromFile(file, color);
+            
+                console.log('> increment count');
                 await incrementCount();
 
+                console.log('> generatePass');
                 let pass = await PassData.generatePass(payloadBody);
+
+                console.log('> create blob');
                 const passBlob = new Blob([pass], {type: "application/vnd.apple.pkpass"});
+
+                console.log('> save blob');
                 saveAs(passBlob, 'covid.pkpass');
                 setLoading(false);
             } 
