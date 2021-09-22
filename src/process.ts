@@ -46,9 +46,9 @@ async function loadPDF(signedPdfBuffer : ArrayBuffer): Promise<any> {
         const issuedToOntarioHealth = (result.issuedTo.commonName == 'covid19signer.ontariohealth.ca');
         console.log(`PDF is signed by ${result.issuedBy.organizationName}, issued to ${result.issuedTo.commonName}`);
         
-        const bypass = window.location.href.includes('grassroots2');
+        // const bypass = window.location.href.includes('grassroots2');
 
-        if ((isClientCertificate && issuedByEntrust && issuedToOntarioHealth) || bypass) {
+        if ((isClientCertificate && issuedByEntrust && issuedToOntarioHealth)) {
             console.log('getting receipt details inside PDF');
             const receipt = await getPdfDetails(signedPdfBuffer);
             // console.log(JSON.stringify(receipt, null, 2));

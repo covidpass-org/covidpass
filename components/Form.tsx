@@ -283,10 +283,10 @@ function Form(): JSX.Element {
             setErrorMessage('Sorry, iOS 13+ is needed for the Apple Wallet functionality to work')
             document.getElementById('download').setAttribute('disabled','true')
         }
-        // if (isIOS && !isSafari) {
-        //     setErrorMessage('Sorry, only Safari can be used to add a Wallet Pass on iOS')
-        //     document.getElementById('download').setAttribute('disabled','true')
-        // }
+        if (isIOS && !isSafari) {
+            setErrorMessage('Sorry, only Safari can be used to add a Wallet Pass on iOS')
+            document.getElementById('download').setAttribute('disabled','true')
+        }
     }
 
     return (
