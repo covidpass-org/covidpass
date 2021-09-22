@@ -17,6 +17,7 @@ import Colors from './Colors';
 import {isChrome, isIOS, isIPad13, isMacOs, isSafari, deviceDetect, osName, osVersion} from 'react-device-detect';
 import * as Sentry from '@sentry/react';
 import { counterReset } from 'html2canvas/dist/types/css/property-descriptors/counter-reset';
+import { color } from 'html2canvas/dist/types/css/types/color';
 
 
 function Form(): JSX.Element {
@@ -215,7 +216,7 @@ function Form(): JSX.Element {
 
                 console.log('> generatePass');
 
-                payloadBody = await getPayloadBodyFromFile(file, color);
+                payloadBody = await getPayloadBodyFromFile(file, COLORS.GREEN);
                 await incrementCount();
 
                 let pass = await PassData.generatePass(payloadBody);
@@ -227,8 +228,15 @@ function Form(): JSX.Element {
 
         } catch (e) {
             console.error(e);
-            setErrorMessage(e.message);
+
             Sentry.captureException(e);
+
+            if (e.message != undefined) {
+                setErrorMessage(e.message);
+            } else {
+                setErrorMessage("Unable to continue.");
+            }
+
             setLoading(false);
         }
     }
@@ -248,7 +256,7 @@ function Form(): JSX.Element {
         let payloadBody: PayloadBody;
 
         try {
-            payloadBody = await getPayloadBodyFromFile(file, null);
+            payloadBody = await getPayloadBodyFromFile(file, COLORS.GREEN);
             await incrementCount();
 
             let photoBlob = await Photo.generatePass(payloadBody);
