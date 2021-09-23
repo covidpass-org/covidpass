@@ -89,11 +89,6 @@ export class Photo {
             const body = document.getElementById('pass-image');
             body.hidden = false;
 
-            if (payload.receipt.numDoses > 1)
-                body.style.backgroundColor = 'green';
-            else
-                body.style.backgroundColor = 'orangered';
-
             const name = payload.receipt.name;
             const dateOfBirth = payload.receipt.dateOfBirth;
             const vaccineName = payload.receipt.vaccineName;
@@ -104,14 +99,12 @@ export class Photo {
 
             if (vaccineName.includes('MODERNA'))
                 vaccineNameProper = 'Moderna (SpikeVax)'    
-                // vaccineNameProper = 'Pfizer (Comirnaty)'
 
             if (vaccineName.includes('ASTRAZENECA'))
                 vaccineNameProper = 'AstraZeneca (Vaxzevria)'  
 
             let doseVaccine = "#" + String(payload.receipt.numDoses) + ": " + vaccineNameProper;
     
-
             document.getElementById('vaccineName').innerText = doseVaccine;
             document.getElementById('vaccinationDate').innerText = payload.receipt.vaccinationDate;
             document.getElementById('organization').innerText = payload.receipt.organization;
