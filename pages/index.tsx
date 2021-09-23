@@ -5,10 +5,13 @@ import {serverSideTranslations} from 'next-i18next/serverSideTranslations';
 import Form from '../components/Form';
 import Card from '../components/Card';
 import Page from '../components/Page';
+import Alert from '../components/Alert';
 import { useEffect, useState } from 'react';
 
 function Index(): JSX.Element {
     const { t } = useTranslation(['common', 'index', 'errors']);
+
+    const [warning, setWarning] = useState("If you previously created a vaccination receipt before Sept. 23rd and need to add your date of birth on your vaccination receipt, please reimport your Ministry of Health official vaccination receipt again below and the date of birth will now be visible on the created receipt.")
 
     const title = 'Grassroots - Ontario vaccination receipt to your Apple wallet';
     const description = 'Stores it on iPhone with a QR code for others to validate in a privacy respecting way.';
@@ -40,10 +43,10 @@ function Index(): JSX.Element {
             />
             <Page content={
                 <div className="space-y-5">
+                    {warning && <Alert type="error" onClose={() => setWarning(undefined)} message={warning} />}
                     <Card content={
                         <div><p>{t('common:subtitle')}</p><br /><p>{t('common:subtitle2')}</p><br /><p><b>{t('common:update1Date')}</b> - {t('common:update1')}</p><br /><p>{t('common:continueSpirit')}</p></div>
                     }/>
-
                     <Form/>
                 </div>
             }/>
