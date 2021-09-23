@@ -41,7 +41,7 @@ function Index(): JSX.Element {
             <Page content={
                 <div className="space-y-5">
                     <Card content={
-                        <div><p>{t('common:subtitle')}</p><br /><p>{t('common:subtitle2')}</p></div>
+                        <div><p>{t('common:subtitle')}</p><br /><p>{t('common:subtitle2')}</p><br /><p><b>{t('common:update1Date')}</b> - {t('common:update1')}</p><br /><p>{t('common:continueSpirit')}</p></div>
                     }/>
 
                     <Form/>

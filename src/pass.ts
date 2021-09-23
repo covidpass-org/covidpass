@@ -4,6 +4,7 @@ import {v4 as uuid4} from 'uuid';
 import {Constants} from "./constants";
 import {Payload, PayloadBody, PassDictionary} from "./payload";
 import * as Sentry from '@sentry/react';
+import { QRCodeMatrixUtil } from '@zxing/library';
 
 const crypto = require('crypto')
 
@@ -105,22 +106,38 @@ export class PassData {
             }
 
             console.log('registering ' + JSON.stringify(clonedReceipt, null, 2));
-            const configResponse = await fetch('/api/config')
-            const verifierHost = (await configResponse.json()).verifierHost
+            const configResponse = await fetch('/api/config');
 
-            // const verifierHost = 'https://verifier.vaccine-ontario.ca';
+            const configResponseJson = await configResponse.json();
 
-            const response  = await fetch('https://us-central1-grassroot-verifier.cloudfunctions.net/register', requestOptions);
+            const verifierHost = configResponseJson.verifierHost;
+            const registrationHost = configResponseJson.registrationHost;
+            let functionSuffix = configResponseJson.functionSuffix;
+
+            if (functionSuffix == undefined)
+                functionSuffix = '';
+
+            const registerUrl = `${registrationHost}/register${functionSuffix}`;
+            console.log(registerUrl);
+
+            const response  = await fetch(registerUrl, requestOptions);
             const responseJson = await response.json();
 
-            // console.log(JSON.stringify(responseJson,null,2));
+            console.log(JSON.stringify(responseJson,null,2));
 
-            if (responseJson["result"] != 'OK') 
+            if (responseJson["result"] != 'OK') {
+                console.error(responseJson);
                 return Promise.reject();
+            }
+
+            const encodedUri = encodeURI(`serialNumber=${payload.serialNumber}&vaccineName=${payload.receipt.vaccineName}&vaccinationDate=${payload.receipt.vaccinationDate}&organization=${payload.receipt.organization}&dose=${payload.receipt.numDoses}`);
+            const qrCodeUrl = `${verifierHost}/verify?${encodedUri}`;
+            
+            console.log(qrCodeUrl);
 
             // Create QR Code Object
             const qrCode: QrCode = {
-                message: `${verifierHost}/verify?serialNumber=${payload.serialNumber}&vaccineName=${payload.receipt.vaccineName}&vaccinationDate=${payload.receipt.vaccinationDate}&organization=${payload.receipt.organization}&dose=${payload.receipt.numDoses}`,
+                message: qrCodeUrl,
                 format: QrFormat.PKBarcodeFormatQR,
                 messageEncoding: Encoding.iso88591,
                 // altText : payload.rawData
@@ -135,7 +152,7 @@ export class PassData {
 
             // Adding required fields
 
-            // console.log(pass);
+            console.log(pass);
 
             // Create pass.json
             const passJson = JSON.stringify(pass);

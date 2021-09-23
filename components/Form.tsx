@@ -233,17 +233,24 @@ function Form(): JSX.Element {
 
 
         } catch (e) {
-            console.error(e);
 
-            Sentry.captureException(e);
+            if (e != undefined) {
+                console.error(e);
 
-            if (e.message != undefined) {
-                setErrorMessage(e.message);
+                Sentry.captureException(e);
+
+                if (e.message != undefined) {
+                    setErrorMessage(e.message);
+                } else {
+                    setErrorMessage("Unable to continue.");
+                }
+
             } else {
-                setErrorMessage("Unable to continue.");
-            }
+                setErrorMessage("Unexpected error. Sorry.");
 
+            }
             setLoading(false);
+
         }
     }
 
