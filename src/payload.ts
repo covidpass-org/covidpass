@@ -49,8 +49,20 @@ export class Payload {
         const name = body.receipt.name;
         const dateOfBirth = body.receipt.dateOfBirth;
         const vaccineName = body.receipt.vaccineName;
-        const vaccineNameProper = vaccineName.charAt(0) + vaccineName.substr(1).toLowerCase();
-        const doseVaccine = "Dose " + String(body.receipt.numDoses) + ": " + vaccineNameProper;
+        let vaccineNameProper = vaccineName.charAt(0) + vaccineName.substr(1).toLowerCase();
+
+        if (vaccineName.includes('PFIZER'))
+            vaccineNameProper = 'Pfizer (Comirnaty)'
+
+        if (vaccineName.includes('MODERNA'))
+            vaccineNameProper = 'Moderna (SpikeVax)'    
+            // vaccineNameProper = 'Pfizer (Comirnaty)'
+
+        if (vaccineName.includes('ASTRAZENECA'))
+            vaccineNameProper = 'AstraZeneca (Vaxzevria)'  
+
+        let doseVaccine = "#" + String(body.receipt.numDoses) + ": " + vaccineNameProper;
+    
         if (name == undefined) {
             throw new Error('nameMissing');
         }
@@ -88,16 +100,16 @@ export class Payload {
                 key: "name",
                 label: "Name",
                 value: name
+            },
+                           {
+                key: "dob",
+                label: "Date of Birth",
+                value: dateOfBirth
             }
             ],
             backFields: [
 
-            // {
-            //     key: "dob",
-            //     label: "Date of Birth",
-            //     value: body.receipt.dateOfBirth,
-            //     textAlignment: TextAlignment.right
-            // }
+                //TODO: add url link back to grassroots site
 
             ]
         }

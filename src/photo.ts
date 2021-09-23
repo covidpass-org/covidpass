@@ -94,14 +94,29 @@ export class Photo {
             else
                 body.style.backgroundColor = 'orangered';
 
+            const name = payload.receipt.name;
+            const dateOfBirth = payload.receipt.dateOfBirth;
             const vaccineName = payload.receipt.vaccineName;
-            const vaccineNameProper = vaccineName.charAt(0) + vaccineName.substr(1).toLowerCase();
-            const doseVaccine = "Dose " + String(payload.receipt.numDoses) + ": " + vaccineNameProper;
+            let vaccineNameProper = vaccineName.charAt(0) + vaccineName.substr(1).toLowerCase();
+
+            if (vaccineName.includes('PFIZER'))
+                vaccineNameProper = 'Pfizer (Comirnaty)'
+
+            if (vaccineName.includes('MODERNA'))
+                vaccineNameProper = 'Moderna (SpikeVax)'    
+                // vaccineNameProper = 'Pfizer (Comirnaty)'
+
+            if (vaccineName.includes('ASTRAZENECA'))
+                vaccineNameProper = 'AstraZeneca (Vaxzevria)'  
+
+            let doseVaccine = "#" + String(payload.receipt.numDoses) + ": " + vaccineNameProper;
+    
 
             document.getElementById('vaccineName').innerText = doseVaccine;
             document.getElementById('vaccinationDate').innerText = payload.receipt.vaccinationDate;
             document.getElementById('organization').innerText = payload.receipt.organization;
             document.getElementById('name').innerText = payload.receipt.name;
+            document.getElementById('dob').innerText = payload.receipt.dateOfBirth;
 
             const codeWriter = new BrowserQRCodeSvgWriter();
             const svg = codeWriter.write(qrCode.message,200,200);

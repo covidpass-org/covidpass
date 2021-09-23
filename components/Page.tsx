@@ -34,7 +34,7 @@ function Page(props: PageProps): JSX.Element {
                             <a href="https://github.com/billylo1/covidpass" className="underline">{t('common:gitHub')}</a>
                             <a href="https://vaccine-ontario.ca" className="underline">{t('common:returnToMainSite')}</a>
                         </nav>
-                        <div className="flex pt-4 flex-row space-x-4 justify-center text-md flex-wrap">Last updated: 2021-09-23 (v1.9)</div>
+                        <div className="flex pt-4 flex-row space-x-4 justify-center text-md flex-wrap">Last updated: 2021-09-23 (v1.9.2)</div>
                     </footer>
                 </main>
             </div>
@@ -71,9 +71,11 @@ function Page(props: PageProps): JSX.Element {
                         <tr style={{height: 20}}></tr>
                         <tr>
                             <td><b>NAME</b></td>
+                            <td><b>DATE OF BIRTH</b></td>
                         </tr>
                         <tr>
-                            <td id='name' style={{fontSize: 16}}></td>
+                            <td id='name' style={{fontSize: 12}}></td>
+                            <td id='dob' style={{fontSize: 12}}></td>
                         </tr>
                     </tbody>
                 </table>

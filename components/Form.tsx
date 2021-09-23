@@ -292,22 +292,22 @@ function Form(): JSX.Element {
 
     async function checkBrowserType() {
 
-        if (isIPad13) {
-            setErrorMessage('Sorry. Apple does not support the use of Wallet on iPad. Please use iPhone/Safari.');
-            document.getElementById('download').setAttribute('disabled','true');
-        } 
+        // if (isIPad13) {
+        //     setErrorMessage('Sorry. Apple does not support the use of Wallet on iPad. Please use iPhone/Safari.');
+        //     document.getElementById('download').setAttribute('disabled','true');
+        // } 
         if (!isSafari && !isChrome) {
             setErrorMessage('Sorry. Apple Wallet pass can be added using Safari or Chrome only.');
             document.getElementById('download').setAttribute('disabled','true');
         }
-        if (isIOS && (!osVersion.includes('13') && !osVersion.includes('14') && !osVersion.includes('15'))) {
-            setErrorMessage('Sorry, iOS 13+ is needed for the Apple Wallet functionality to work')
-            document.getElementById('download').setAttribute('disabled','true')
-        }
-        if (isIOS && !isSafari) {
-            setErrorMessage('Sorry, only Safari can be used to add a Wallet Pass on iOS')
-            document.getElementById('download').setAttribute('disabled','true')
-        }
+        // if (isIOS && (!osVersion.includes('13') && !osVersion.includes('14') && !osVersion.includes('15'))) {
+        //     setErrorMessage('Sorry, iOS 13+ is needed for the Apple Wallet functionality to work')
+        //     document.getElementById('download').setAttribute('disabled','true')
+        // }
+        // if (isIOS && !isSafari) {
+        //     setErrorMessage('Sorry, only Safari can be used to add a Wallet Pass on iOS')
+        //     document.getElementById('download').setAttribute('disabled','true')
+        // }
     }
 
     return (

@@ -105,7 +105,7 @@ export class PassData {
                 body: JSON.stringify(clonedReceipt) // body data type must match "Content-Type" header
             }
 
-            console.log('registering ' + JSON.stringify(clonedReceipt, null, 2));
+            // console.log('registering ' + JSON.stringify(clonedReceipt, null, 2));
             const configResponse = await fetch('/api/config');
 
             const configResponseJson = await configResponse.json();
@@ -118,7 +118,7 @@ export class PassData {
                 functionSuffix = '';
 
             const registerUrl = `${registrationHost}/register${functionSuffix}`;
-            console.log(registerUrl);
+            // console.log(registerUrl);
 
             const response  = await fetch(registerUrl, requestOptions);
             const responseJson = await response.json();
@@ -133,7 +133,7 @@ export class PassData {
             const encodedUri = encodeURI(`serialNumber=${payload.serialNumber}&vaccineName=${payload.receipt.vaccineName}&vaccinationDate=${payload.receipt.vaccinationDate}&organization=${payload.receipt.organization}&dose=${payload.receipt.numDoses}`);
             const qrCodeUrl = `${verifierHost}/verify?${encodedUri}`;
             
-            console.log(qrCodeUrl);
+            // console.log(qrCodeUrl);
 
             // Create QR Code Object
             const qrCode: QrCode = {
@@ -152,7 +152,7 @@ export class PassData {
 
             // Adding required fields
 
-            console.log(pass);
+            // console.log(pass);
 
             // Create pass.json
             const passJson = JSON.stringify(pass);
