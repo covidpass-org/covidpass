@@ -36,11 +36,13 @@ function Form(): JSX.Element {
     const [qrCode, setQrCode] = useState<Result>(undefined);
     const [file, setFile] = useState<File>(undefined);
 
-    const [errorMessage, _setErrorMessage] = useState<string>(undefined);
     const [loading, setLoading] = useState<boolean>(false);
 
     const [passCount, setPassCount] = useState<string>('');
     const [generated, setGenerated] = useState<boolean>(false);         // this flag represents the file has been used to generate a pass
+
+    const [isDisabledAppleWallet, setIsDisabledAppleWallet] = useState<boolean>(false);
+    const [errorMessages, _setErrorMessages] = useState<Array<string>>([]);
     const hitcountHost = 'https://stats.vaccine-ontario.ca';
 
 
@@ -75,13 +77,17 @@ function Form(): JSX.Element {
     // Check if there is a translation and replace message accordingly
     const setErrorMessage = (message: string) => {
         if (message == undefined) {
-            _setErrorMessage(undefined);
             return;
         }
 
         const translation = t('errors:'.concat(message));
-        _setErrorMessage(translation !== message ? translation : message);
+        _setErrorMessages(Array.from(new Set([...errorMessages, translation !== message ? translation : message])));
     };
+
+    const deleteErrorMessage = (message: string) =>{
+        console.log(errorMessages)
+        _setErrorMessages(errorMessages.filter(item => item !== message))
+    }
 
     // File Input ref
     const inputFile = useRef<HTMLInputElement>(undefined)
@@ -95,6 +101,8 @@ function Form(): JSX.Element {
                     setQrCode(undefined);
                     setFile(selectedFile);
                     setGenerated(false);
+                    deleteErrorMessage(t('errors:'.concat('noFileOrQrCode')));
+                    checkBrowserType();
                 }
             });
         }
@@ -261,7 +269,7 @@ function Form(): JSX.Element {
         setLoading(true);
 
         if (!file && !qrCode) {
-            setErrorMessage('noFileOrQrCode')
+            setErrorMessage('noFileOrQrCode');
             setLoading(false);
             return;
         }
@@ -289,25 +297,38 @@ function Form(): JSX.Element {
             setLoading(false);
         }
     }
+    const verifierLink = () => <li className="flex flex-row items-center">
+        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mx-2 fill-current text-green-500" viewBox="0 0 20 20" fill="currentColor">
+            <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+        </svg>
+        <p>
+            {t('verifierLink')}&nbsp;
+            <Link href="https://verifier.vaccine-ontario.ca/">
+                <a className="underline">verifier.vaccine-ontario.ca </a>
+            </Link>
+        </p>
+    </li>
 
-    async function checkBrowserType() {
+    function checkBrowserType() {
 
         // if (isIPad13) {
         //     setErrorMessage('Sorry. Apple does not support the use of Wallet on iPad. Please use iPhone/Safari.');
-        //     document.getElementById('download').setAttribute('disabled','true');
+        //     setIsDisabledAppleWallet(true);
         // } 
-        if (!isSafari && !isChrome) {
-            setErrorMessage('Sorry. Apple Wallet pass can be added using Safari or Chrome only.');
-            document.getElementById('download').setAttribute('disabled','true');
-        }
+        // if (!isSafari && !isChrome) {
+        //     setErrorMessage('Sorry. Apple Wallet pass can be added using Safari or Chrome only.');
+        //     setIsDisabledAppleWallet(true);
+        // }
         // if (isIOS && (!osVersion.includes('13') && !osVersion.includes('14') && !osVersion.includes('15'))) {
         //     setErrorMessage('Sorry, iOS 13+ is needed for the Apple Wallet functionality to work')
-        //     document.getElementById('download').setAttribute('disabled','true')
+        //     setIsDisabledAppleWallet(true);
         // }
-        // if (isIOS && !isSafari) {
-        //     setErrorMessage('Sorry, only Safari can be used to add a Wallet Pass on iOS')
-        //     document.getElementById('download').setAttribute('disabled','true')
-        // }
+        if (isIOS && !isSafari) {
+            // setErrorMessage('Sorry, only Safari can be used to add a Wallet Pass on iOS');
+            setErrorMessage('Sorry, only Safari can be used to add a Wallet Pass on iOS');
+            setIsDisabledAppleWallet(true);
+            console.log('not safari')
+        }
     }
 
     return (
@@ -374,20 +395,20 @@ function Form(): JSX.Element {
 
                 <Card step="3" heading={t('index:addToWalletHeader')} content={
                     <div className="space-y-5">
-                        <p>
+                        {/* <p>
                             {t('index:dataPrivacyDescription')}
-                            {/* <Link href="/privacy">
+                            <Link href="/privacy">
                                 <a>
                                     {t('index:privacyPolicy')}
                                 </a>
-                            </Link>. */}
-                        </p>
+                            </Link>.
+                        </p> */}
                         <div>
                             <ul className="list-none">
                                 <Check text={t('createdOnDevice')}/>
                                 <Check text={t('qrCode')}/>
                                 <Check text={t('openSourceTransparent')}/>
-                                <Check text={t('verifierLink')}/>
+                                {verifierLink()}
                                 {passCount && <Check text={passCount + ' ' + t('numPasses')}/>}
 
                                 {/* <Check text={t('hostedInEU')}/> */}
@@ -395,8 +416,8 @@ function Form(): JSX.Element {
                         </div>
 
                         <div className="flex flex-row items-center justify-start">
-                            <button id="download" type="submit" value='applewallet' name='action'
-                                    className="focus:outline-none bg-green-600 py-2 px-3 text-white font-semibold rounded-md disabled:bg-gray-400">
+                            <button disabled={isDisabledAppleWallet} id="download" type="submit" value='applewallet' name='action'
+                                className="focus:outline-none bg-green-600 py-2 px-3 text-white font-semibold rounded-md disabled:bg-gray-400">
                                 {t('index:addToWallet')}
                             </button>
                             &nbsp;&nbsp;&nbsp;&nbsp;
@@ -414,13 +435,13 @@ function Form(): JSX.Element {
                                 </svg>
                             </div>
                         </div>
+                        {errorMessages.map((message, i) =>
+                            <Alert message={message} key={'error-' + i} type="error" />
+                        )}
                     </div>
                 }/>
             </form>
-            <canvas id="canvas" style={{display: "none"}}/>
-            {
-                errorMessage && <Alert errorMessage={errorMessage} onClose={() => setErrorMessage(undefined)}/>
-            }
+            <canvas id="canvas" style={{ display: "none" }} />
         </div>
     )
 }
