@@ -88,6 +88,7 @@ export class Photo {
             // const body = domTree.getElementById('main');
             const body = document.getElementById('pass-image');
             body.hidden = false;
+            body.style.backgroundColor = payload.backgroundColor
 
             const name = payload.receipt.name;
             const dateOfBirth = payload.receipt.dateOfBirth;
@@ -110,6 +111,7 @@ export class Photo {
             document.getElementById('organization').innerText = payload.receipt.organization;
             document.getElementById('name').innerText = payload.receipt.name;
             document.getElementById('dob').innerText = payload.receipt.dateOfBirth;
+            
 
             const codeWriter = new BrowserQRCodeSvgWriter();
             const svg = codeWriter.write(qrCode.message,200,200);
