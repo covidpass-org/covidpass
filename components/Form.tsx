@@ -18,6 +18,7 @@ import {isChrome, isIOS, isIPad13, isMacOs, isSafari, deviceDetect, osName, osVe
 import * as Sentry from '@sentry/react';
 import { counterReset } from 'html2canvas/dist/types/css/property-descriptors/counter-reset';
 import { color } from 'html2canvas/dist/types/css/types/color';
+import Bullet from './Bullet';
 
 
 function Form(): JSX.Element {
@@ -114,8 +115,13 @@ function Form(): JSX.Element {
         inputFile.current.click();
     }
 
-    async function gotoOntarioHealth() {
+    async function gotoOntarioHealth(e) {
+        e.preventDefault();
         window.location.href = 'https://covid19.ontariohealth.ca';
+    }
+    async function goToFAQ(e) {
+        e.preventDefault();
+        window.location.href = '/faq';
     }
     
     // Hide camera view
@@ -438,6 +444,28 @@ function Form(): JSX.Element {
                         {errorMessages.map((message, i) =>
                             <Alert message={message} key={'error-' + i} type="error" />
                         )}
+                    </div>
+                }/>
+
+                <Card step="?" heading={t('index:questions')} content={
+                    <div className="space-y-5">
+                        <p>Do you want to use this tool but...</p>
+                        <div>
+                            <ul>
+                                <Bullet text="You don't have a health card?"/>
+                                <Bullet text="You have a Red/White OHIP card?"/>
+                                <Bullet text='You have an iPhone 6 or older?'/>
+                                <Bullet text='You have an Android?'/>
+                            </ul>
+                        </div>
+
+                        <div className="flex flex-row items-center justify-start">
+                            <button id="faq-redirect" onClick={goToFAQ}
+                                className="focus:outline-none bg-green-600 py-2 px-3 text-white font-semibold rounded-md disabled:bg-gray-400">
+                                Visit our FAQ section for the answers!
+                            </button>
+                            &nbsp;&nbsp;&nbsp;&nbsp;
+                        </div>
                     </div>
                 }/>
             </form>
