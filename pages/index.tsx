@@ -7,11 +7,28 @@ import Card from '../components/Card';
 import Page from '../components/Page';
 import Alert from '../components/Alert';
 import { useEffect, useState } from 'react';
+import { isIOS, isSafari } from 'react-device-detect';
+
 
 function Index(): JSX.Element {
     const { t } = useTranslation(['common', 'index', 'errors']);
 
-    const [warning, setWarning] = useState("")
+    const [warningMessages, _setWarningMessages] = useState<Array<string>>(["If you previously created a vaccination receipt before Sept. 23rd and need to add your date of birth on your vaccination receipt, please reimport your Ministry of Health official vaccination receipt again below and the date of birth will now be visible on the created receipt"]);
+
+    const setWarningMessage = (message: string) => {
+        if (!message) return;
+
+        const translation = t('errors:'.concat(message));
+        _setWarningMessages(Array.from(new Set([...warningMessages, translation !== message ? translation : message])));
+    };
+
+    const deleteWarningMessage = (message: string) => _setWarningMessages(warningMessages.filter(item => item !== message));
+
+    useEffect(() => {
+        if ( !isSafari) setWarningMessage("iPhone users, only Safari is supported at the moment. Please switch to Safari to prevent any unexpected errors.")
+    })
+    
+
     // If you previously created a vaccination receipt before Sept. 23rd and need to add your date of birth on your vaccination receipt, please reimport your Ministry of Health official vaccination receipt again below and the date of birth will now be visible on the created receipt
 
     const title = 'Grassroots - Ontario vaccination receipt to your Apple wallet';
@@ -44,7 +61,9 @@ function Index(): JSX.Element {
             />
             <Page content={
                 <div className="space-y-5">
-                    {warning && <Alert type="error" onClose={() => setWarning(undefined)} message={warning} />}
+                    {warningMessages.map((message, i) =>
+                        <Alert message={message} key={'error-' + i} type="error" onClose={() => deleteWarningMessage(message)} />
+                    )}
                     <Card content={
                         <div><p>{t('common:subtitle')}</p><br /><p>{t('common:subtitle2')}</p><br /><p><b>{t('common:update1Date')}</b> - {t('common:update1')}</p><br /><p>{t('common:continueSpirit')}</p></div>
                     }/>
