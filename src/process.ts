@@ -85,14 +85,14 @@ async function loadPDF(signedPdfBuffer : ArrayBuffer): Promise<any> {
 
         const issuedpemCertificate = ( result.pemCertificate.trim() == refcert.trim());
         
-        console.log(`pdf is signed by this cert ${result.pemCertificate.trim()}`);
-        console.log(issuedpemCertificate);
-        console.log(`PDF is signed by ${result.issuedBy.organizationName}, issued to ${result.issuedTo.commonName}`);
+        //console.log(`pdf is signed by this cert ${result.pemCertificate.trim()}`);
+        //console.log(issuedpemCertificate);
+        //console.log(`PDF is signed by ${result.issuedBy.organizationName}, issued to ${result.issuedTo.commonName}`);
         
         // const bypass = window.location.href.includes('grassroots2');
 
         if (( issuedpemCertificate )) {
-            console.log('getting receipt details inside PDF');
+            //console.log('getting receipt details inside PDF');
             const receipt = await getPdfDetails(signedPdfBuffer);
             // console.log(JSON.stringify(receipt, null, 2));
             return Promise.resolve(receipt);
