@@ -447,7 +447,7 @@ function Form(): JSX.Element {
                     </div>
                 }/>
 
-                <Card step="?" heading={t('index:experiencingIssues')} content={
+                <Card step="?" heading={t('index:questions')} content={
                     <div className="space-y-5">
                         <p>Do you want to use this tool but...</p>
                         <div>
