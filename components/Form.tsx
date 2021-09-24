@@ -86,7 +86,7 @@ function Form(): JSX.Element {
     };
 
     const setWarningMessage = (message: string) => {
-        if (message == undefined) {
+        if (!message) {
             return;
         }
 
