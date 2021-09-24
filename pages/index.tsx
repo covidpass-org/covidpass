@@ -65,7 +65,20 @@ function Index(): JSX.Element {
                         <Alert message={message} key={'error-' + i} type="error" onClose={() => deleteWarningMessage(message)} />
                     )}
                     <Card content={
-                        <div><p>{t('common:subtitle')}</p><br /><p>{t('common:subtitle2')}</p><br /><p><b>{t('common:update1Date')}</b> - {t('common:update1')}</p><br /><p>{t('common:continueSpirit')}</p></div>
+                        <div><p>{t('common:subtitle')}</p><br /><p>{t('common:subtitle2')}</p><br />
+                            <b>Sept 24 updates</b> - Improvements: 
+                            <br />
+                            <br />
+                            <ul className="list-decimal list-outside" style={{ marginLeft: '20px' }}>
+                                <li>Added date of birth to the pass (to save more time for staff)</li>
+                                <li>Corrected the color of Janssen receipts</li>
+                                <li>Corrected 'Not Found' error for some users</li>
+                                <li>Reduced # of errors (thanks for your patience, traffic grew 100x in 3 days, we are working hard to keep things smooth without line-ups.)</li>
+                            </ul><br />
+                            If you need to regenerate your pass, you can skip Step 1 altogether.  This will reduce the province's workload too. 🙏
+                            <br />
+                            <br />
+                            <p>{t('common:continueSpirit')}</p></div>
                     }/>
                     <Form/>
                 </div>
