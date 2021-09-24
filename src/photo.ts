@@ -70,10 +70,10 @@ export class Photo {
 
             console.log(JSON.stringify(responseJson,null,2));
 
-            if (responseJson["result"] != 'OK') 
+            if (responseJson["result"] != 'OK')
                 return Promise.reject();
 
-            const encodedUri = encodeURI(`serialNumber=${payload.serialNumber}&vaccineName=${payload.receipt.vaccineName}&vaccinationDate=${payload.receipt.vaccinationDate}&organization=${payload.receipt.organization}&dose=${payload.receipt.numDoses}`);
+            const encodedUri = `serialNumber=${encodeURIComponent(payload.serialNumber)}&vaccineName=${encodeURIComponent(payload.receipt.vaccineName)}&vaccinationDate=${encodeURIComponent(payload.receipt.vaccinationDate)}&organization=${encodeURIComponent(payload.receipt.organization)}&dose=${encodeURIComponent(payload.receipt.numDoses)}`;
             const qrCodeUrl = `${verifierHost}/verify?${encodedUri}`;
 
             // Create QR Code Object
@@ -102,25 +102,25 @@ export class Photo {
                 vaccineNameProper = 'Pfizer (Comirnaty)'
 
             if (vaccineName.includes('MODERNA'))
-                vaccineNameProper = 'Moderna (SpikeVax)'    
+                vaccineNameProper = 'Moderna (SpikeVax)'
 
             if (vaccineName.includes('ASTRAZENECA'))
-                vaccineNameProper = 'AstraZeneca (Vaxzevria)'  
+                vaccineNameProper = 'AstraZeneca (Vaxzevria)'
 
             let doseVaccine = "#" + String(payload.receipt.numDoses) + ": " + vaccineNameProper;
-    
+
             document.getElementById('vaccineName').innerText = doseVaccine;
             document.getElementById('vaccinationDate').innerText = payload.receipt.vaccinationDate;
             document.getElementById('organization').innerText = payload.receipt.organization;
             document.getElementById('name').innerText = payload.receipt.name;
             document.getElementById('dob').innerText = payload.receipt.dateOfBirth;
-            
+
 
             const codeWriter = new BrowserQRCodeSvgWriter();
             const svg = codeWriter.write(qrCode.message,200,200);
             svg.setAttribute('style','background-color: white');
             document.getElementById('qrcode').appendChild(svg);
-            
+
             const blobPromise = toBlob(body);
             return blobPromise;
         }   catch (e) {

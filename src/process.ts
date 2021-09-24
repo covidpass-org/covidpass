@@ -1,7 +1,7 @@
 import {PayloadBody, Receipt} from "./payload";
 import * as PdfJS from 'pdfjs-dist'
 import {COLORS} from "./colors";
-import  { getCertificatesInfoFromPDF } from "@ninja-labs/verify-pdf";  // ES6 
+import  { getCertificatesInfoFromPDF } from "@ninja-labs/verify-pdf";  // ES6
 import * as Sentry from '@sentry/react';
 
 import { TextItem } from "pdfjs-dist/types/display/api";
@@ -83,12 +83,14 @@ async function loadPDF(signedPdfBuffer : ArrayBuffer): Promise<any> {
         '8h9+TbL3ACHDqA4fi5sAbZ7nMXp8RK4o5A==\r\n'+
         '-----END CERTIFICATE-----';
 
-        const issuedpemCertificate = ( result.pemCertificate.trim() == refcert.trim());
-        
+        const pdfCert = result.pemCertificate.trim();
+        const pdfOrg = result.issuedBy.organizationName;
+        const issuedpemCertificate = (pdfCert == refcert.trim());
+
         //console.log(`pdf is signed by this cert ${result.pemCertificate.trim()}`);
         //console.log(issuedpemCertificate);
         //console.log(`PDF is signed by ${result.issuedBy.organizationName}, issued to ${result.issuedTo.commonName}`);
-        
+
         // const bypass = window.location.href.includes('grassroots2');
 
         if (( issuedpemCertificate )) {
@@ -98,6 +100,13 @@ async function loadPDF(signedPdfBuffer : ArrayBuffer): Promise<any> {
             return Promise.resolve(receipt);
 
         } else {
+            // According to the Sentry docs, this can be up to 8KB in size
+            // https://develop.sentry.dev/sdk/data-handling/#variable-size
+            Sentry.setContext("certificate", {
+                pdfCert: pdfCert,
+                pdfOrg: pdfOrg,
+            });
+            Sentry.captureMessage('Certificate validation failed');
             console.error('invalid certificate');
             return Promise.reject(`invalid certificate + ${JSON.stringify(result)}`);
         }
@@ -142,11 +151,11 @@ async function getPdfDetails(fileBuffer: ArrayBuffer): Promise<Receipt> {
             if (value.includes('Product name')) {
                 vaccineName = (content.items[i+1] as TextItem).str;
                 vaccineName = vaccineName.split(' ')[0];
-            } 
+            }
             if (value.includes('Date of birth'))
                 dateOfBirth = (content.items[i+1] as TextItem).str;
             if (value.includes('Authorized organization'))
-                organization = (content.items[i+1] as TextItem).str;    
+                organization = (content.items[i+1] as TextItem).str;
             if (value.includes('You have received'))
                 numDoses = Number(value.split(' ')[3]);
         }
