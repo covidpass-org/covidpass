@@ -73,7 +73,7 @@ export class Photo {
             if (responseJson["result"] != 'OK')
                 return Promise.reject();
 
-            const encodedUri = encodeURI(`serialNumber=${encodeURIComponent(payload.serialNumber)}&vaccineName=${encodeURIComponent(payload.receipt.vaccineName)}&vaccinationDate=${encodeURIComponent(payload.receipt.vaccinationDate)}&organization=${encodeURIComponent(payload.receipt.organization)}&dose=${encodeURIComponent(payload.receipt.numDoses)}`);
+            const encodedUri = `serialNumber=${encodeURIComponent(payload.serialNumber)}&vaccineName=${encodeURIComponent(payload.receipt.vaccineName)}&vaccinationDate=${encodeURIComponent(payload.receipt.vaccinationDate)}&organization=${encodeURIComponent(payload.receipt.organization)}&dose=${encodeURIComponent(payload.receipt.numDoses)}`;
             const qrCodeUrl = `${verifierHost}/verify?${encodedUri}`;
 
             // Create QR Code Object
