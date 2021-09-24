@@ -339,8 +339,8 @@ function Form(): JSX.Element {
             setIsDisabledAppleWallet(true);
             console.log('not safari')
         } else if (!isIOS) {
-            setWarningMessage('Only Safari is officially supported at the moment. ' +
-                'Please download a compitable apps on other platform to open .pkpass');
+            setWarningMessage('Only Safari on iOS is officially supported for Wallet import at the moment - ' +
+                'for other platforms, please ensure you have an application which can open Apple Wallet .pkpass files');
             setIsDisabledAppleWallet(false);
         }
     }
