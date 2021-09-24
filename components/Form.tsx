@@ -77,7 +77,7 @@ function Form(): JSX.Element {
 
     // Check if there is a translation and replace message accordingly
     const setErrorMessage = (message: string) => {
-        if (message == undefined) {
+        if (!message) {
             return;
         }
 
