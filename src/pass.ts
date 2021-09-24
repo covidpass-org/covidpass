@@ -130,9 +130,9 @@ export class PassData {
                 return Promise.reject();
             }
 
-            const encodedUri = encodeURI(`serialNumber=${payload.serialNumber}&vaccineName=${payload.receipt.vaccineName}&vaccinationDate=${payload.receipt.vaccinationDate}&organization=${payload.receipt.organization}&dose=${payload.receipt.numDoses}`);
+            const encodedUri = encodeURI(`serialNumber=${encodeURIComponent(payload.serialNumber)}&vaccineName=${encodeURIComponent(payload.receipt.vaccineName)}&vaccinationDate=${encodeURIComponent(payload.receipt.vaccinationDate)}&organization=${encodeURIComponent(payload.receipt.organization)}&dose=${encodeURIComponent(payload.receipt.numDoses)}`);
             const qrCodeUrl = `${verifierHost}/verify?${encodedUri}`;
-            
+
             // console.log(qrCodeUrl);
 
             // Create QR Code Object
