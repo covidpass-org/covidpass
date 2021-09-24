@@ -451,12 +451,11 @@ function Form(): JSX.Element {
                     <div className="space-y-5">
                         <p>Do you want to use this tool but...</p>
                         <div>
-                            <ul style={{ listStyle: 'disc' }}>
+                            <ul>
                                 <Bullet text="You don't have a health card?"/>
                                 <Bullet text="You have a Red/White OHIP card?"/>
                                 <Bullet text='You have an iPhone 6 or older?'/>
                                 <Bullet text='You have an Android?'/>
-                                <Bullet text="You don't know where your data is going?"/>
                             </ul>
                         </div>
 
