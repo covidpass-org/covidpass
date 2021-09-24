@@ -11,7 +11,8 @@ import { useEffect, useState } from 'react';
 function Index(): JSX.Element {
     const { t } = useTranslation(['common', 'index', 'errors']);
 
-    const [warning, setWarning] = useState("If you previously created a vaccination receipt before Sept. 23rd and need to add your date of birth on your vaccination receipt, please reimport your Ministry of Health official vaccination receipt again below and the date of birth will now be visible on the created receipt.")
+    const [warning, setWarning] = useState("")
+    // If you previously created a vaccination receipt before Sept. 23rd and need to add your date of birth on your vaccination receipt, please reimport your Ministry of Health official vaccination receipt again below and the date of birth will now be visible on the created receipt
 
     const title = 'Grassroots - Ontario vaccination receipt to your Apple wallet';
     const description = 'Stores it on iPhone with a QR code for others to validate in a privacy respecting way.';
