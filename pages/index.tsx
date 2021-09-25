@@ -7,13 +7,13 @@ import Card from '../components/Card';
 import Page from '../components/Page';
 import Alert from '../components/Alert';
 import { useEffect, useState } from 'react';
-import { isIOS, isSafari } from 'react-device-detect';
+import { isIOS, isSafari, isAndroid} from 'react-device-detect';
 
 
 function Index(): JSX.Element {
     const { t } = useTranslation(['common', 'index', 'errors']);
 
-    const [warningMessages, _setWarningMessages] = useState<Array<string>>(["If you previously created a vaccination receipt before Sept. 23rd and need to add your date of birth on your vaccination receipt, please reimport your Ministry of Health official vaccination receipt again below and the date of birth will now be visible on the created receipt"]);
+    const [warningMessages, _setWarningMessages] = useState<Array<string>>([]);
 
     const setWarningMessage = (message: string) => {
         if (!message) return;
@@ -24,9 +24,9 @@ function Index(): JSX.Element {
 
     const deleteWarningMessage = (message: string) => _setWarningMessages(warningMessages.filter(item => item !== message));
 
-    useEffect(() => {
-        if ( !isSafari) setWarningMessage("iPhone users, only Safari is supported at the moment. Please switch to Safari to prevent any unexpected errors.")
-    })
+    // useEffect(() => {
+    //     if (!isSafari) setWarningMessage("iPhone users, only Safari is supported at the moment. Please switch to Safari to prevent any unexpected errors.")
+    // })
     
 
     // If you previously created a vaccination receipt before Sept. 23rd and need to add your date of birth on your vaccination receipt, please reimport your Ministry of Health official vaccination receipt again below and the date of birth will now be visible on the created receipt
