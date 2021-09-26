@@ -365,7 +365,7 @@ function Form(): JSX.Element {
                             {t('index:visit')}&nbsp;
 
                                 <Link href="https://covid19.ontariohealth.ca">
-                                    <a className="underline">
+                                    <a className="underline" target="_blank">
                                         {t('index:ontarioHealth')}
                                     </a>
                                 </Link>&nbsp;
