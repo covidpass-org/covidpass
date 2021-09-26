@@ -1,3 +1,4 @@
+import React, {useEffect, useState} from "react";
 import {useTranslation} from 'next-i18next';
 
 import Head from 'next/head'
@@ -11,6 +12,7 @@ interface PageProps {
 function Page(props: PageProps): JSX.Element {
     const { t } = useTranslation('common');
     const [passCount, setPassCount] = useState<string>('');
+    const hitcountHost = 'https://stats.vaccine-ontario.ca';
 
     useEffect(() => {
         if (passCount.length == 0) {
