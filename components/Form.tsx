@@ -431,7 +431,7 @@ function Form(): JSX.Element {
                         <div>
                             <ul className="list-none">
                                 <Check text={t('createdOnDevice')}/>
-                                <Check text={t('qrCode')}/>
+                                <Check text={t('piiNotSent')}/>
                                 <Check text={t('openSourceTransparent')}/>
                                 {verifierLink()}
                                 {passCount && <Check text={passCount + ' ' + t('numPasses')}/>}

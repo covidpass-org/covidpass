@@ -31,8 +31,8 @@ dataPrivacyDescription: |
   Press the "Add to Wallet" below to import data into Wallet.
 iAcceptThe: I accept the
 privacyPolicy: Privacy Policy
-createdOnDevice: The receipt data is processed on your device only - no personally-identifiable information is sent to our servers
-qrCode: QR code is for verification only. It does not contain your name or date of birth.
+createdOnDevice: Your receipt is processed on your device only.
+piiNotSent: No personally-identifiable information is sent to servers
 openSourceTransparent: Source code is open for re-use/contributions on GitHub.
 verifierLink: QR code verifier available at 
 numPasses: receipts processed since Sept 2, 2021
