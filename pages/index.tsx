@@ -66,18 +66,14 @@ function Index(): JSX.Element {
                     )}
                     <Card content={
                         <div><p>{t('common:subtitle')}</p><br /><p>{t('common:subtitle2')}</p><br />
-                            <b>Sept 24 updates</b> - Improvements: 
+                            <b>Sept 25 evening updates</b> - Improvements: 
                             <br />
                             <br />
                             <ul className="list-decimal list-outside" style={{ marginLeft: '20px' }}>
-                                <li>Added date of birth to the pass (to save more time for staff)</li>
-                                <li>Corrected the color of Janssen receipts</li>
-                                <li>Corrected 'Not Found' error for some users</li>
-                                <li>Reduced # of errors (thanks for your patience, traffic grew 100x in 3 days, we are working hard to keep things smooth without line-ups.)</li>
+                                <li>Better support the use of .pkpass files on non-iOS platforms (thx samuelyeungkc)</li>
+                                <li>Improved multiple passes handling</li>
+                                <li>Added FAQ on how critical data (name & date of birth) is protected and they stay private to you.</li>
                             </ul><br />
-                            If you need to regenerate your pass, you can skip Step 1 altogether.  This will reduce the province's workload too. 🙏
-                            <br />
-                            <br />
                             <p>{t('common:continueSpirit')}</p></div>
                     }/>
                     <Form/>
