@@ -228,20 +228,25 @@ function Form(): JSX.Element {
         try {
             if (file) {
 
-                console.log('> get payload');
+                //console.log('> get payload');
                 payloadBody = await getPayloadBodyFromFile(file, color);
-            
-                console.log('> increment count');
+
+                const passName = payloadBody.receipt.name.replace(' ', '-');
+                const vaxName = payloadBody.receipt.vaccineName.replace(' ', '-');
+                const passDose = payloadBody.receipt.numDoses;
+                const covidPassFilename = `grassroots-receipt-${passName}-${vaxName}-${passDose}.pkpass`;
+
+                //console.log('> increment count');
                 await incrementCount();
 
-                console.log('> generatePass');
+                //console.log('> generatePass');
                 let pass = await PassData.generatePass(payloadBody);
 
-                console.log('> create blob');
+                //console.log('> create blob');
                 const passBlob = new Blob([pass], {type: "application/vnd.apple.pkpass"});
 
-                console.log('> save blob');
-                saveAs(passBlob, 'covid.pkpass');
+                //console.log(`> save blob as ${covidPassFilename}`);
+                saveAs(passBlob, covidPassFilename);
                 setLoading(false);
             } 
 
