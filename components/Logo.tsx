@@ -25,7 +25,7 @@ function Logo(): JSX.Element {
                 </svg>
                 <h1 className="text-3xl font-bold">
                     {t('common:title')}
-                    {displayPassCount}
+                    {/* {displayPassCount} */}
                 </h1>
             </a>
         </Link>

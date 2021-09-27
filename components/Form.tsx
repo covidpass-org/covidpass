@@ -325,13 +325,14 @@ function Form(): JSX.Element {
                     <div className="space-y-5">
                         <p>
                             {t('index:visit')}&nbsp;
-
                                 <Link href="https://covid19.ontariohealth.ca">
                                     <a className="underline" target="_blank">
                                         {t('index:ontarioHealth')}
                                     </a>
                                 </Link>&nbsp;
-                                {t('index:downloadSignedPDF')}
+                                {t('index:downloadSignedPDF')}<br/><br/>
+                                {t('index:reminderNotToRepeat')}
+
                         </p>
                         <button id="ontariohealth" onClick={gotoOntarioHealth}
         
@@ -344,7 +345,6 @@ function Form(): JSX.Element {
                 <Card step="2" heading={t('index:selectCertificate')} content={
                     <div className="space-y-5">
                         <p>{t('index:selectCertificateDescription')}</p>
-                        <p>{t('index:selectCertificateReminder')}</p>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                             <button
                                 type="button"

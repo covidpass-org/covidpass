@@ -8,10 +8,13 @@ import Page from '../components/Page';
 import Alert from '../components/Alert';
 import { useEffect, useState } from 'react';
 import { isIOS, isSafari, isAndroid} from 'react-device-detect';
+import usePassCount from "../src/hooks/use_pass_count";
 
 
 function Index(): JSX.Element {
     const { t } = useTranslation(['common', 'index', 'errors']);
+    const passCount = usePassCount();    
+    const displayPassCount = (passCount? `${passCount} receipts have been processed successfully to date!` : '');
 
     const [warningMessages, _setWarningMessages] = useState<Array<string>>([]);
 
@@ -66,15 +69,17 @@ function Index(): JSX.Element {
                     )}
                     <Card content={
                         <div><p>{t('common:subtitle')}</p><br /><p>{t('common:subtitle2')}</p><br />
-                            <b>Sept 25 evening updates</b> - Improvements: 
+                            <b>{displayPassCount}</b><br/><br/>
+                            Sept 27 afternoon updates: 
                             <br />
                             <br />
                             <ul className="list-decimal list-outside" style={{ marginLeft: '20px' }}>
-                                <li>Better support the use of .pkpass files on non-iOS platforms (thx samuelyeungkc)</li>
-                                <li>Improved multiple passes handling</li>
-                                <li>Added FAQ on how critical data (name & date of birth) is protected and they stay private to you.</li>
+                                <li>Simplified instructions</li>
+                                <li>Extra details added to FAQs</li>
                             </ul><br />
-                            <p>{t('common:continueSpirit')}</p></div>
+                            <p>{t('common:continueSpirit')}</p>
+
+                            </div>
                     }/>
                     <Form/>
                 </div>
