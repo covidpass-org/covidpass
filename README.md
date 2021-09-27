@@ -25,6 +25,10 @@ docker build . -t covidpass
 docker run -t -i -p 3000:3000 covidpass
 ```
 
+### Integration with other repos required
+
+Docs being developed/tested on Sep 26. Should be done tomorrow.
+
 # FAQ
 
 #### I do not want to trust a third party with my vaccination data, does this tool respect my privacy?
