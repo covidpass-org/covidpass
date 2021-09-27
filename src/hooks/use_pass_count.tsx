@@ -23,7 +23,7 @@ export default function usePassCount() {
             let response = await fetch(request);
             const counter = await response.text();
 
-            return Promise.resolve(counter);
+            return Promise.resolve(parseInt(counter, 10).toLocaleString());
 
         } catch (e) {
             console.error(e);
