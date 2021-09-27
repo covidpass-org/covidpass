@@ -1,5 +1,7 @@
-import React, {useEffect, useState} from "react";
+import React from "react";
 import {useTranslation} from 'next-i18next';
+
+import usePassCount from "../src/hooks/use_pass_count";
 
 import Head from 'next/head'
 import Logo from './Logo'
@@ -11,36 +13,8 @@ interface PageProps {
 
 function Page(props: PageProps): JSX.Element {
     const { t } = useTranslation('common');
-    const [passCount, setPassCount] = useState<string>('');
-    const hitcountHost = 'https://stats.vaccine-ontario.ca';
 
-    useEffect(() => {
-        if (passCount.length == 0) {
-            getPassCount();
-        }
-    }, []);
-
-    const getPassCount = async () => {
-        const hitCount = await getHitCount();
-        setPassCount(hitCount);
-    };
-
-    async function getHitCount() {
-
-        try {
-            const request = `${hitcountHost}/nocount?url=pass.vaccine-ontario.ca`;
-
-            let response = await fetch(request);
-            const counter = await response.text();
-    
-            return Promise.resolve(counter);
-
-        } catch (e) {
-            console.error(e);
-            return Promise.reject(e);
-        }
-    }
-
+    const passCount = usePassCount();    
     const displayPassCount = (passCount? ` - ${passCount.toLocaleString()} receipts processed to date!` : '');
 
     return (
