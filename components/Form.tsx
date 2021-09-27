@@ -106,7 +106,7 @@ function Form(): JSX.Element {
     // Add event listener to listen for file change events
     useEffect(() => {
         if (inputFile && inputFile.current) {
-            inputFile.current.addEventListener('input', () => {
+            inputFile.current.addEventListener('change', () => {
                 let selectedFile = inputFile.current.files[0];
                 if (selectedFile !== undefined) {
                     setQrCode(undefined);

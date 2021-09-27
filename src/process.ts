@@ -1,5 +1,5 @@
 import {PayloadBody, Receipt} from "./payload";
-import * as PdfJS from 'pdfjs-dist'
+import * as PdfJS from 'pdfjs-dist/legacy/build/pdf'
 import {COLORS} from "./colors";
 import  { getCertificatesInfoFromPDF } from "@ninja-labs/verify-pdf";  // ES6
 import * as Sentry from '@sentry/react';
