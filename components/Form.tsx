@@ -39,7 +39,6 @@ function Form(): JSX.Element {
 
     const [loading, setLoading] = useState<boolean>(false);
 
-    const [passCount, setPassCount] = useState<string>('');
     const [generated, setGenerated] = useState<boolean>(false);         // this flag represents the file has been used to generate a pass
 
     const [isDisabledAppleWallet, setIsDisabledAppleWallet] = useState<boolean>(false);
@@ -47,34 +46,6 @@ function Form(): JSX.Element {
     const [warningMessages, _setWarningMessages] = useState<Array<string>>([]);
     const hitcountHost = 'https://stats.vaccine-ontario.ca';
 
-
-    useEffect(() => {
-        if (passCount.length == 0) {
-            getPassCount();
-        }
-    }, []);
-
-    const getPassCount = async () => {
-        const hitCount = await getHitCount();
-        setPassCount(hitCount);
-    };
-
-    async function getHitCount() {
-
-        try {
-            const request = `${hitcountHost}/nocount?url=pass.vaccine-ontario.ca`;
-
-            let response = await fetch(request);
-            const counter = await response.text();
-    
-            return Promise.resolve(counter);
-
-        } catch (e) {
-            console.error(e);
-            return Promise.reject(e);
-        }
-
-    }
 
     // Check if there is a translation and replace message accordingly
     const setErrorMessage = (message: string) => {
@@ -193,31 +164,22 @@ function Form(): JSX.Element {
     }
 
     async function incrementCount() {
-
         try {
             if (typeof generated == undefined || !generated) {
 
                 const request = `${hitcountHost}/count?url=pass.vaccine-ontario.ca`;
-                console.log(request);
+                //console.log(request);
 
                 let response = await fetch(request);
-                console.log(request);
+                //console.log(response);
 
-                const counter = await response.text();      // response count is not used intentionally so it always goes up by 1 only even if the server has changed
-
-                let newPasscount = Number(passCount) + 1;
-                console.log(counter);
-                setPassCount(counter);
                 setGenerated(true);
-                console.log(`new PassCount  = ${newPasscount}`);
-
             }
 
         } catch (e) {
             console.error(e);
             return Promise.reject(e);
         }
-
     }
 
     // Add Pass to wallet
@@ -434,9 +396,6 @@ function Form(): JSX.Element {
                                 <Check text={t('piiNotSent')}/>
                                 <Check text={t('openSourceTransparent')}/>
                                 {verifierLink()}
-                                {passCount && <Check text={passCount + ' ' + t('numPasses')}/>}
-
-                                {/* <Check text={t('hostedInEU')}/> */}
                             </ul>
                         </div>
 
