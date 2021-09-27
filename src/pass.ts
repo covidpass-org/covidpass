@@ -118,9 +118,13 @@ export class PassData {
             if (responseJson["result"] != 'OK') 
                 return Promise.reject();
 
+            let qrCodeMessage = payloadBody.rawData.startsWith('shc:/')
+                                ? payloadBody.rawData
+                                : `${verifierHost}/verify?serialNumber=${payload.serialNumber}&vaccineName=${payload.receipts[0].vaccineName}&vaccinationDate=${payload.receipts[0].vaccinationDate}&organization=${payload.receipts[0].organization}&dose=${payload.receipts[0].numDoses}`;
+
             // Create QR Code Object
             const qrCode: QrCode = {
-                message: `${verifierHost}/verify?serialNumber=${payload.serialNumber}&vaccineName=${payload.receipts[0].vaccineName}&vaccinationDate=${payload.receipts[0].vaccinationDate}&organization=${payload.receipts[0].organization}&dose=${payload.receipts[0].numDoses}`,
+                message: qrCodeMessage,
                 format: QrFormat.PKBarcodeFormatQR,
                 messageEncoding: Encoding.iso88591,
                 // altText : payload.rawData
