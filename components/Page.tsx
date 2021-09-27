@@ -15,7 +15,7 @@ function Page(props: PageProps): JSX.Element {
     const { t } = useTranslation('common');
 
     const passCount = usePassCount();    
-    const displayPassCount = (passCount? ` - ${passCount.toLocaleString()} receipts processed to date!` : '');
+    const displayPassCount = (passCount? ` - ${passCount} receipts processed to date!` : '');
 
     return (
         <div className="md:w-2/3 xl:w-2/5 md:mx-auto flex flex-col min-h-screen justify-center px-5 py-12">
