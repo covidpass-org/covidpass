@@ -4,6 +4,7 @@ import jsQR, {QRCode} from "jsqr";
 import  { getCertificatesInfoFromPDF } from "@ninja-labs/verify-pdf";  // ES6 
 import * as Sentry from '@sentry/react';
 import * as Decode from './decode';
+import { PNG } from 'pngjs/browser';
 
 import { PDFPageProxy, TextContent, TextItem } from "pdfjs-dist/types/display/api";
 
@@ -20,6 +21,8 @@ export async function getPayloadBodyFromFile(file: File): Promise<PayloadBody> {
     switch (file.type) {
         case 'application/pdf':
             return detectPDFTypeAndProcess(fileBuffer)
+        case 'image/png':
+            return processBCPNG(fileBuffer);
         default:
             throw Error('invalidFileType')
     }
@@ -101,6 +104,34 @@ async function processBC(pdfPage: PDFPageProxy) {
     } else {
         return Promise.reject('QR code not signed by BC or QC');
     }
+}
+
+async function processBCPNG(fileBuffer : ArrayBuffer): Promise<any> {
+
+    return new Promise((resolve, reject) => {
+        new PNG({ filterType: 4 }).parse(fileBuffer, async function (error, data) {
+            const scannedQR = jsQR(new Uint8ClampedArray(data.data.buffer), data.width, data.height)
+            if (scannedQR) {
+                //console.log(scannedQR.data);
+                let jws = Decode.getScannedJWS(scannedQR.data);
+                // const verified = Decode.verifyJWS(jws);
+                const verified = true;
+
+                if (verified) {
+                    let decoded = await Decode.decodeJWS(jws);
+                    //console.log(decoded);
+                    let receipts = Decode.decodedStringToReceipt(decoded);
+                    //console.log(receipts);
+                    resolve({receipts: receipts, rawData: scannedQR.data});
+                } else {
+                    reject('QR code not signed by BC or QC');
+                }
+            } else {
+                throw new Error('Invalid QR code')
+            }
+            resolve(data);
+        });
+    })
 }
 
 async function processON(signedPdfBuffer : ArrayBuffer, content: TextContent): Promise<any> {
