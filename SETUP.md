@@ -1,4 +1,4 @@
-## Environment Setup
+# Environment Setup
 
 The whole solution is made up of 4 repos.
 
@@ -9,35 +9,43 @@ The whole solution is made up of 4 repos.
 
 The steps were tested against a standard ubuntu LTS 18 vm running in GCP
 
-GCP console - Firewall Rule config
-    allow-covidpass-ports, port 3000,80,5001,5003,8080 tcp/inbound
+## GCP console - Firewall - New Firewall Rule
+* allow-covidpass-ports, port 3000,80,5001,5003,8080 tcp/inbound
 
-GCP console - VM setup
-    ubuntu, no customization, 2 core, 4Gb RAM, allow all GCP API, network tag (allow-covidpass-ports), fixed external ip will be helpful
+## GCP console - VM setup
+* ubuntu LTS 18, 2 core, 4Gb RAM, allow all GCP API, network tag (allow-covidpass-ports), fixed external ip will be helpful
 
 ssh into the newly created vm
 
 Install docker
-   https://docs.docker.com/engine/install/ubuntu/
+* https://docs.docker.com/engine/install/ubuntu/
 
-Enable non-root usage of docker   
-   sudo groupadd docker
-   sudo usermod -aG docker ${USER}
-   exit SSH session and login again
+Enable non-root usage of docker
+```sh
+sudo groupadd docker
+sudo usermod -aG docker ${USER}
+```
+exit SSH session and login again
 
 Install yarn
-   curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
-   echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
-   sudo apt-get update && sudo apt-get install yarn 
+```sh
+curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
+echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+sudo apt-get update && sudo apt-get install yarn 
+```
 
 Upgrade node to 14
-    sudo apt-get install -y nodejs
+```sh
+sudo apt-get install -y nodejs
+```
 
 Prepare to start
+```sh
     mkdir web
     cd web
+```
 
-Repo 1 (covidpass)
+Repo 1 (https://github.com/billylo1/covidpass)
 
     git clone https://github.com/billylo1/covidpass.git
     cd covidpass
