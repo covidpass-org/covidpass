@@ -31,10 +31,11 @@ Install yarn
    sudo apt-get update && sudo apt-get install yarn 
 
 Upgrade node to 14
-   sudo apt-get install -y nodejs
+    sudo apt-get install -y nodejs
 
-mkdir web
-cd web
+Prepare to start
+    mkdir web
+    cd web
 
 Repo 1 (covidpass)
 
