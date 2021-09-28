@@ -24,9 +24,13 @@ function Index(): JSX.Element {
 
     const deleteWarningMessage = (message: string) => _setWarningMessages(warningMessages.filter(item => item !== message));
 
-    // useEffect(() => {
-    //     if (!isSafari) setWarningMessage("iPhone users, only Safari is supported at the moment. Please switch to Safari to prevent any unexpected errors.")
-    // })
+    useEffect(() => {
+        if (isIOS && !isSafari) setWarningMessage("iPhone users, only Safari is supported at the moment. Please switch to Safari to prevent any unexpected errors.")
+        else if (!isIOS) {
+                setWarningMessage('Only Safari on iOS is officially supported for Apple Wallet import at the moment - ' +
+                    'for other platforms, please ensure you have an application which can open Apple Wallet .pkpass files');
+        }
+    })
     
 
     // If you previously created a vaccination receipt before Sept. 23rd and need to add your date of birth on your vaccination receipt, please reimport your Ministry of Health official vaccination receipt again below and the date of birth will now be visible on the created receipt
@@ -62,7 +66,7 @@ function Index(): JSX.Element {
             <Page content={
                 <div className="space-y-5">
                     {warningMessages.map((message, i) =>
-                        <Alert message={message} key={'error-' + i} type="error" onClose={() => deleteWarningMessage(message)} />
+                        <Alert message={message} key={'error-' + i} type="warning" onClose={() => deleteWarningMessage(message)} />
                     )}
                     <Card content={
                         <div><p>{t('common:subtitle')}</p><br /><p>{t('common:subtitle2')}</p><br />

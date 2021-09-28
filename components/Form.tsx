@@ -43,7 +43,7 @@ function Form(): JSX.Element {
 
     const [isDisabledAppleWallet, setIsDisabledAppleWallet] = useState<boolean>(false);
     const [errorMessages, _setErrorMessages] = useState<Array<string>>([]);
-    const [warningMessages, _setWarningMessages] = useState<Array<string>>([]);
+    // const [warningMessages, _setWarningMessages] = useState<Array<string>>([]);
     const hitcountHost = 'https://stats.vaccine-ontario.ca';
 
 
@@ -57,14 +57,14 @@ function Form(): JSX.Element {
         _setErrorMessages(Array.from(new Set([...errorMessages, translation !== message ? translation : message])));
     };
 
-    const setWarningMessage = (message: string) => {
-        if (!message) {
-            return;
-        }
+    // const setWarningMessage = (message: string) => {
+    //     if (!message) {
+    //         return;
+    //     }
 
-        const translation = t('errors:'.concat(message));
-        _setWarningMessages(Array.from(new Set([...warningMessages, translation !== message ? translation : message])));
-    }
+    //     const translation = t('errors:'.concat(message));
+    //     _setWarningMessages(Array.from(new Set([...warningMessages, translation !== message ? translation : message])));
+    // }
 
     const deleteErrorMessage = (message: string) =>{
         console.log(errorMessages)
@@ -98,7 +98,7 @@ function Form(): JSX.Element {
 
     async function gotoOntarioHealth(e) {
         e.preventDefault();
-        window.location.href = 'https://covid19.ontariohealth.ca';
+        window.open('https://covid19.ontariohealth.ca','_blank');
     }
     async function goToFAQ(e) {
         e.preventDefault();
@@ -311,11 +311,12 @@ function Form(): JSX.Element {
             setErrorMessage('Sorry, only Safari can be used to add a Wallet Pass on iOS');
             setIsDisabledAppleWallet(true);
             console.log('not safari')
-        } else if (!isIOS) {
-            setWarningMessage('Only Safari on iOS is officially supported for Wallet import at the moment - ' +
-                'for other platforms, please ensure you have an application which can open Apple Wallet .pkpass files');
-            setIsDisabledAppleWallet(false);
         }
+        // } else if (!isIOS) {
+        //     setWarningMessage('Only Safari on iOS is officially supported for Wallet import at the moment - ' +
+        //         'for other platforms, please ensure you have an application which can open Apple Wallet .pkpass files');
+        //     setIsDisabledAppleWallet(false);
+        // }
     }
 
     return (
@@ -422,9 +423,9 @@ function Form(): JSX.Element {
                         {errorMessages.map((message, i) =>
                             <Alert message={message} key={'error-' + i} type="error" />
                         )}
-                        {warningMessages.map((message, i) =>
+                        {/* {warningMessages.map((message, i) =>
                             <Alert message={message} key={'warning-' + i} type="warning" />
-                        )}
+                        )} */}
                     </div>
                 }/>
 
