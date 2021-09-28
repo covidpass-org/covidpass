@@ -1,4 +1,4 @@
-Environment Overview
+## Environment Setup
 
 The whole solution is made up of 4 repos.
 
@@ -7,15 +7,15 @@ The whole solution is made up of 4 repos.
 3. verifier (web app for scanning, port 5001;  GCP cloud functions /register /verify in support of #1)
 4. hit-counter (simple python script running in VM, web enabled using flask, port 8080)
 
-The steps were tested against a standard debian vm running in GCP
+The steps were tested against a standard ubuntu LTS 18 vm running in GCP
 
-Firewall Rule config
-- allow-covidpass-ports, port 3000,80,5001,5003,8080 tcp/inbound
+GCP console - Firewall Rule config
+    allow-covidpass-ports, port 3000,80,5001,5003,8080 tcp/inbound
 
-VM setup
-- ubuntu, no customization, 2 core, 4Gb RAM, allow all GCP API, network tag (allow-covidpass-ports), fixed external ip will be useful
+GCP console - VM setup
+    ubuntu, no customization, 2 core, 4Gb RAM, allow all GCP API, network tag (allow-covidpass-ports), fixed external ip will be helpful
 
-ssh into that vm
+ssh into the newly created vm
 
 Install docker
    https://docs.docker.com/engine/install/ubuntu/
