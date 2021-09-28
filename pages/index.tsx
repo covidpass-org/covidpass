@@ -6,10 +6,10 @@ import Form from '../components/Form';
 import Card from '../components/Card';
 import Page from '../components/Page';
 import Alert from '../components/Alert';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { isIOS, isSafari, isAndroid} from 'react-device-detect';
 import usePassCount from "../src/hooks/use_pass_count";
-
+import Link from 'next/link'
 
 function Index(): JSX.Element {
     const { t } = useTranslation(['common', 'index', 'errors']);
@@ -82,7 +82,12 @@ function Index(): JSX.Element {
                                 <li>Extra details added to FAQs</li>
                             </ul><br />
                             <p>{t('common:continueSpirit')}</p>
-
+                            <br />
+                            <Link href="https://www.youtube.com/watch?v=AIrG5Qbjptg">
+                                <a className="underline" target="_blank">
+                                    Click here for a video demo
+                                </a>
+                            </Link>&nbsp;
                             </div>
                     }/>
                     <Form/>
