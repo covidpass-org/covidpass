@@ -1,9 +1,13 @@
 import {useTranslation} from 'next-i18next';
 
+import usePassCount from '../src/hooks/use_pass_count';
+
 import Link from 'next/link'
 
 function Logo(): JSX.Element {
     const { t } = useTranslation('common');
+    const passCount = usePassCount();
+    const displayPassCount = (passCount? ` - ${passCount} receipts processed to date!` : '');
 
     return (
         <Link href="/">
@@ -21,6 +25,7 @@ function Logo(): JSX.Element {
                 </svg>
                 <h1 className="text-3xl font-bold">
                     {t('common:title')}
+                    {/* {displayPassCount} */}
                 </h1>
             </a>
         </Link>

@@ -1,4 +1,7 @@
+import React from "react";
 import {useTranslation} from 'next-i18next';
+
+import usePassCount from "../src/hooks/use_pass_count";
 
 import Head from 'next/head'
 import Logo from './Logo'
@@ -10,7 +13,6 @@ interface PageProps {
 
 function Page(props: PageProps): JSX.Element {
     const { t } = useTranslation('common');
-
     return (
         <div className="md:w-2/3 xl:w-2/5 md:mx-auto flex flex-col min-h-screen justify-center px-5 py-12">
             <Head>
@@ -34,7 +36,7 @@ function Page(props: PageProps): JSX.Element {
                             <a href="https://github.com/billylo1/covidpass" className="underline">{t('common:gitHub')}</a>
                             <a href="https://vaccine-ontario.ca" className="underline">{t('common:returnToMainSite')}</a>
                         </nav>
-                        <div className="flex pt-4 flex-row space-x-4 justify-center text-md flex-wrap">Last updated: 2021-09-18 (v1.8)</div>
+                        <div className="flex pt-4 flex-row space-x-4 justify-center text-md flex-wrap">Last updated: 2021-09-27 (v1.9.9)</div>
                     </footer>
                 </main>
             </div>
@@ -71,9 +73,11 @@ function Page(props: PageProps): JSX.Element {
                         <tr style={{height: 20}}></tr>
                         <tr>
                             <td><b>NAME</b></td>
+                            <td><b>DATE OF BIRTH</b></td>
                         </tr>
                         <tr>
-                            <td id='name' style={{fontSize: 16}}></td>
+                            <td id='name' style={{fontSize: 12}}></td>
+                            <td id='dob' style={{fontSize: 12}}></td>
                         </tr>
                     </tbody>
                 </table>
