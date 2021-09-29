@@ -74,12 +74,12 @@ function Index(): JSX.Element {
                     <Card content={
                         <div><p>{t('common:subtitle')}</p><br /><p>{t('common:subtitle2')}</p><br />
                             <b>{displayPassCount}</b><br/><br/>
-                            Sept 27 afternoon updates: 
+                            Sept 29 afternoon update: 
                             <br />
                             <br />
                             <ul className="list-decimal list-outside" style={{ marginLeft: '20px' }}>
-                                <li>Simplified instructions</li>
-                                <li>Extra details added to FAQs</li>
+                                <li>You can now select which page to import for multi-page receipts</li>
+                                <li>System reminders (e.g. unsupported browsers) are now on the top to improve ease of use</li>
                             </ul><br />
                             <p>{t('common:continueSpirit')}</p>
                             <br />
