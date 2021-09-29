@@ -4,6 +4,7 @@ import jsQR, {QRCode} from "jsqr";
 import  { getCertificatesInfoFromPDF } from "@ninja-labs/verify-pdf";  // ES6 
 import * as Sentry from '@sentry/react';
 import * as Decode from './decode';
+import {getScannedJWS, verifyJWS, decodeJWS} from "./shc";
 import { PNG } from 'pngjs/browser';
 
 import { PDFPageProxy, TextContent, TextItem } from "pdfjs-dist/types/display/api";
@@ -89,49 +90,27 @@ async function processBC(pdfPage: PDFPageProxy) {
     const imageData = await getImageDataFromPdf(pdfPage);
     const code : QRCode = await Decode.getQRFromImage(imageData);
     let rawData = code.data;
-    let jws = Decode.getScannedJWS(rawData);
-    // const verified = Decode.verifyJWS(jws);
-    const verified = true;
+    const jws = getScannedJWS(rawData);
+
+    let decoded = await decodeJWS(jws);
+    
+    console.log(JSON.stringify(decoded, null, 2));
+
+    const verified = verifyJWS(jws, decoded.iss);
 
     if (verified) {
-        let decoded = await Decode.decodeJWS(jws);
-        console.log(decoded);
         
-        let receipts = Decode.decodedStringToReceipt(decoded);
+        let receipts = Decode.decodedStringToReceipt(decoded.vc.credentialSubject.fhirBundle.entry);
+
         console.log(receipts);
 
         return Promise.resolve({receipts: receipts, rawData: rawData});
+
     } else {
-        return Promise.reject('QR code not signed by BC or QC');
+
+        return Promise.reject(`Issuer ${decoded.iss} cannot be verified.`);
+    
     }
-}
-
-async function processBCPNG(fileBuffer : ArrayBuffer): Promise<any> {
-
-    return new Promise((resolve, reject) => {
-        new PNG({ filterType: 4 }).parse(fileBuffer, async function (error, data) {
-            const scannedQR = jsQR(new Uint8ClampedArray(data.data.buffer), data.width, data.height)
-            if (scannedQR) {
-                //console.log(scannedQR.data);
-                let jws = Decode.getScannedJWS(scannedQR.data);
-                // const verified = Decode.verifyJWS(jws);
-                const verified = true;
-
-                if (verified) {
-                    let decoded = await Decode.decodeJWS(jws);
-                    //console.log(decoded);
-                    let receipts = Decode.decodedStringToReceipt(decoded);
-                    //console.log(receipts);
-                    resolve({receipts: receipts, rawData: scannedQR.data});
-                } else {
-                    reject('QR code not signed by BC or QC');
-                }
-            } else {
-                throw new Error('Invalid QR code')
-            }
-            resolve(data);
-        });
-    })
 }
 
 async function processON(signedPdfBuffer : ArrayBuffer, content: TextContent): Promise<any> {
@@ -148,9 +127,7 @@ async function processON(signedPdfBuffer : ArrayBuffer, content: TextContent): P
         const issuedToOntarioHealth = (result.issuedTo.commonName == 'covid19signer.ontariohealth.ca');
         console.log(`PDF is signed by ${result.issuedBy.organizationName}, issued to ${result.issuedTo.commonName}`);
         
-        const bypass = window.location.href.includes('grassroots2');
-
-        if ((isClientCertificate && issuedByEntrust && issuedToOntarioHealth) || bypass) {
+        if ((isClientCertificate && issuedByEntrust && issuedToOntarioHealth)) {
             
             console.log('getting receipt details inside PDF');
             
