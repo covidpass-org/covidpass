@@ -33,7 +33,7 @@ function Index(): JSX.Element {
                 setWarningMessage('Only Safari on iOS is officially supported for Apple Wallet import at the moment - ' +
                     'for other platforms, please ensure you have an application which can open Apple Wallet .pkpass files');
         }
-    })
+    }, []);
     
 
     // If you previously created a vaccination receipt before Sept. 23rd and need to add your date of birth on your vaccination receipt, please reimport your Ministry of Health official vaccination receipt again below and the date of birth will now be visible on the created receipt
