@@ -131,8 +131,8 @@ async function getPdfDetails(fileBuffer: ArrayBuffer): Promise<Receipt> {
         let loadingTask = PdfJS.getDocument(typedArray);
 
         const pdfDocument = await loadingTask.promise;
-            // Load last PDF page
-        const pageNumber = pdfDocument.numPages;
+            // Load FIRST DUE TO NEW COVAXON FORMAT
+        const pageNumber = 1;
 
         const pdfPage = await pdfDocument.getPage(pageNumber);
         const content = await pdfPage.getTextContent();
