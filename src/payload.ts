@@ -4,6 +4,9 @@ import {COLORS} from "./colors";
 export class Receipt {
   constructor(public name: string, public vaccinationDate: string, public vaccineName: string, public dateOfBirth: string, public numDoses: number, public organization: string) {};
 }
+export interface HashTable<T> {
+    [key: string]: T;
+}
 
 enum TextAlignment {
     right = 'PKTextAlignmentRight',
@@ -28,7 +31,7 @@ export interface PassDictionary {
 export interface PayloadBody {
     // color: COLORS;
     rawData: string;
-    receipt: Receipt;
+    receipts: HashTable<Receipt>;
 }
 
 export class Payload {
@@ -43,12 +46,12 @@ export class Payload {
     serialNumber: string;
     generic: PassDictionary;
 
-    constructor(body: PayloadBody) {
+    constructor(body: PayloadBody, numDose: number) {
 
         // Get name and date of birth information
-        const name = body.receipt.name;
-        const dateOfBirth = body.receipt.dateOfBirth;
-        const vaccineName = body.receipt.vaccineName;
+        const name = body.receipts[numDose].name;
+        const dateOfBirth = body.receipts[numDose].dateOfBirth;
+        const vaccineName = body.receipts[numDose].vaccineName;
         let vaccineNameProper = vaccineName.charAt(0) + vaccineName.substr(1).toLowerCase();
 
         if (vaccineName.includes('PFIZER'))
@@ -61,7 +64,7 @@ export class Payload {
         if (vaccineName.includes('ASTRAZENECA'))
             vaccineNameProper = 'AstraZeneca (Vaxzevria)'  
 
-        let doseVaccine = "#" + String(body.receipt.numDoses) + ": " + vaccineNameProper;
+        let doseVaccine = "#" + String(body.receipts[numDose].numDoses) + ": " + vaccineNameProper;
     
         if (name == undefined) {
             throw new Error('nameMissing');
@@ -85,13 +88,13 @@ export class Payload {
                                 {
                     key: "issuer",
                     label: "Authorized Organization",
-                    value: body.receipt.organization
+                    value: body.receipts[numDose].organization
                 },
 
             {
                 key: "dov",
                 label: "Date",
-                value: body.receipt.vaccinationDate,
+                value: body.receipts[numDose].vaccinationDate,
                 // textAlignment: TextAlignment.right
             }
             ],
@@ -115,10 +118,10 @@ export class Payload {
         }
 
         // Set Values
-        this.receipt = body.receipt;
+        this.receipt = body.receipts[numDose];
         this.rawData = body.rawData;
 
-        if (body.receipt.numDoses > 1 || body.receipt.vaccineName.toLowerCase().includes('janssen') || body.receipt.vaccineName.toLowerCase().includes('johnson') || body.receipt.vaccineName.toLowerCase().includes('j&j')) {
+        if (body.receipts[numDose].numDoses > 1 || body.receipts[numDose].vaccineName.toLowerCase().includes('janssen') || body.receipts[numDose].vaccineName.toLowerCase().includes('johnson') || body.receipts[numDose].vaccineName.toLowerCase().includes('j&j')) {
             this.backgroundColor = COLORS.GREEN;
         } else {
             this.backgroundColor = COLORS.YELLOW;

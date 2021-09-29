@@ -81,11 +81,11 @@ export class PassData {
         return await response.arrayBuffer()
     }
 
-    static async generatePass(payloadBody: PayloadBody): Promise<Buffer> {
+    static async generatePass(payloadBody: PayloadBody, numDose: number): Promise<Buffer> {
 
         // Create Payload
         try {
-            const payload: Payload = new Payload(payloadBody);
+            const payload: Payload = new Payload(payloadBody, numDose);
 
             payload.serialNumber = uuid4();
 

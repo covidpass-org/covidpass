@@ -1,4 +1,4 @@
-import {PayloadBody, Receipt} from "./payload";
+import {PayloadBody, Receipt, HashTable} from "./payload";
 import * as PdfJS from 'pdfjs-dist'
 import {COLORS} from "./colors";
 import  { getCertificatesInfoFromPDF } from "@ninja-labs/verify-pdf";  // ES6
@@ -16,11 +16,11 @@ export async function getPayloadBodyFromFile(file: File, color: COLORS): Promise
     // Read file
     const fileBuffer = await file.arrayBuffer();
 
-    let receipt: Receipt;
+    let receipts: HashTable<Receipt>;
 
     switch (file.type) {
         case 'application/pdf':
-            receipt = await loadPDF(fileBuffer)
+            receipts = await loadPDF(fileBuffer)
             break
         default:
             throw Error('invalidFileType')
@@ -29,12 +29,12 @@ export async function getPayloadBodyFromFile(file: File, color: COLORS): Promise
     const rawData = ''; // unused at the moment, the original use was to store the QR code from issuer
 
     return {
-        receipt: receipt,
+        receipts: receipts,
         rawData: rawData
     }
 }
 
-async function loadPDF(signedPdfBuffer : ArrayBuffer): Promise<any> {
+async function loadPDF(signedPdfBuffer : ArrayBuffer): Promise<HashTable<Receipt>> {
 
     try {
 
@@ -124,44 +124,47 @@ async function loadPDF(signedPdfBuffer : ArrayBuffer): Promise<any> {
 
 }
 
-async function getPdfDetails(fileBuffer: ArrayBuffer): Promise<Receipt> {
+async function getPdfDetails(fileBuffer: ArrayBuffer): Promise<HashTable<Receipt>> {
 
     try {
         const typedArray = new Uint8Array(fileBuffer);
         let loadingTask = PdfJS.getDocument(typedArray);
 
         const pdfDocument = await loadingTask.promise;
-            // Load FIRST DUE TO NEW COVAXON FORMAT
-        const pageNumber = 1;
+        // Load all dose numbers
+        const { numPages } = pdfDocument;
+        const receiptObj = {};
 
-        const pdfPage = await pdfDocument.getPage(pageNumber);
-        const content = await pdfPage.getTextContent();
-        const numItems = content.items.length;
-        let name, vaccinationDate, vaccineName, dateOfBirth, numDoses, organization;
-
-        for (let i = 0; i < numItems; i++) {
-            let item = content.items[i] as TextItem;
-            const value = item.str;
-            if (value.includes('Name / Nom'))
-                name = (content.items[i+1] as TextItem).str;
-            if (value.includes('Date:')) {
-                vaccinationDate = (content.items[i+1] as TextItem).str;
-                vaccinationDate = vaccinationDate.split(',')[0];
+        for (let pages = 1; pages <= numPages; pages++){
+            const pdfPage = await pdfDocument.getPage(pages);
+            const content = await pdfPage.getTextContent();
+            const numItems = content.items.length;
+            let name, vaccinationDate, vaccineName, dateOfBirth, numDoses, organization;
+    
+            for (let i = 0; i < numItems; i++) {
+                let item = content.items[i] as TextItem;
+                const value = item.str;
+                if (value.includes('Name / Nom'))
+                    name = (content.items[i+1] as TextItem).str;
+                if (value.includes('Date:')) {
+                    vaccinationDate = (content.items[i+1] as TextItem).str;
+                    vaccinationDate = vaccinationDate.split(',')[0];
+                }
+                if (value.includes('Product name')) {
+                    vaccineName = (content.items[i+1] as TextItem).str;
+                    vaccineName = vaccineName.split(' ')[0];
+                }
+                if (value.includes('Date of birth'))
+                    dateOfBirth = (content.items[i+1] as TextItem).str;
+                if (value.includes('Authorized organization'))
+                    organization = (content.items[i+1] as TextItem).str;
+                if (value.includes('You have received'))
+                    numDoses = Number(value.split(' ')[3]);
             }
-            if (value.includes('Product name')) {
-                vaccineName = (content.items[i+1] as TextItem).str;
-                vaccineName = vaccineName.split(' ')[0];
-            }
-            if (value.includes('Date of birth'))
-                dateOfBirth = (content.items[i+1] as TextItem).str;
-            if (value.includes('Authorized organization'))
-                organization = (content.items[i+1] as TextItem).str;
-            if (value.includes('You have received'))
-                numDoses = Number(value.split(' ')[3]);
+            receiptObj[numDoses] = new Receipt(name, vaccinationDate, vaccineName, dateOfBirth, numDoses, organization);
         }
-        const receipt = new Receipt(name, vaccinationDate, vaccineName, dateOfBirth, numDoses, organization);
 
-        return Promise.resolve(receipt);
+        return Promise.resolve(receiptObj);
     } catch (e) {
         Sentry.captureException(e);
         return Promise.reject(e);
