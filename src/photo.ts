@@ -104,7 +104,7 @@ export class Photo {
             if (vaccineName.includes('MODERNA'))
                 vaccineNameProper = 'Moderna (SpikeVax)'
 
-            if (vaccineName.includes('ASTRAZENECA'))
+            if (vaccineName.includes('ASTRAZENECA') || vaccineName.includes('COVISHIELD'))
                 vaccineNameProper = 'AstraZeneca (Vaxzevria)'
 
             let doseVaccine = "#" + String(payload.receipt.numDoses) + ": " + vaccineNameProper;
