@@ -112,11 +112,12 @@ async function loadPDF(signedPdfBuffer : ArrayBuffer): Promise<HashTable<Receipt
         }
 
     } catch (e) {
-        console.error(e);
-        Sentry.captureException(e);
-
         if (e.message.includes('Failed to locate ByteRange')) {
-            e.message = 'Sorry. Selected PDF file is not digitally signed. Please download official copy from Step 1 and retry. Thanks.'
+            e.message = 'Sorry. Selected PDF file is not digitally signed. Please download official copy from Step 1 and retry. Thanks.';
+            Sentry.captureMessage("Attempted to generate a pass from a PDF that was not digitally signed.");
+        } else {
+            console.error(e);
+            Sentry.captureException(e);
         }
         return Promise.reject(e);
     }
