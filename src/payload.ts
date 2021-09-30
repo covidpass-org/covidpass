@@ -61,7 +61,7 @@ export class Payload {
             vaccineNameProper = 'Moderna (SpikeVax)'    
             // vaccineNameProper = 'Pfizer (Comirnaty)'
 
-        if (vaccineName.includes('ASTRAZENECA'))
+        if (vaccineName.includes('ASTRAZENECA') || vaccineName.includes('COVISHIELD'))
             vaccineNameProper = 'AstraZeneca (Vaxzevria)'  
 
         let doseVaccine = "#" + String(body.receipts[numDose].numDoses) + ": " + vaccineNameProper;

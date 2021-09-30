@@ -308,9 +308,14 @@ function Form(): JSX.Element {
         }
 
         try {
+            const passName = payloadBody.receipts[selectedDose].name.replace(' ', '-');
+            const vaxName = payloadBody.receipts[selectedDose].vaccineName.replace(' ', '-');
+            const passDose = payloadBody.receipts[selectedDose].numDoses;
+            const covidPassFilename = `grassroots-receipt-${passName}-${vaxName}-${passDose}.png`;
+
             await incrementCount();
             let photoBlob = await Photo.generatePass(payloadBody, selectedDose);
-            saveAs(photoBlob, 'pass.png');
+            saveAs(photoBlob, covidPassFilename);
 
             // need to clean up
             const qrcodeElement = document.getElementById('qrcode');
