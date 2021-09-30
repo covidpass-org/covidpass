@@ -5,6 +5,8 @@ import SEO from '../next-seo.config';
 import type {AppProps} from 'next/app';
 import {appWithTranslation} from 'next-i18next';
 
+import 'string.prototype.startswith';
+
 import { initSentry } from '../src/sentry';
 
 initSentry();
