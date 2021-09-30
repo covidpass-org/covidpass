@@ -70,6 +70,14 @@ function Page(props: PageProps): JSX.Element {
                             <td id='organization' style={{width: 220}}></td>
                             <td id='vaccinationDate' style={{width:120}}></td>
                         </tr>
+                        <tr id='extraRow2' hidden>
+                            <td id='organization2' style={{width: 220}}></td>
+                            <td id='vaccinationDate2' style={{width:120}}></td>
+                        </tr>
+                        <tr id='extraRow1' hidden>
+                            <td id='organization1' style={{width: 220}}></td>
+                            <td id='vaccinationDate1' style={{width:120}}></td>
+                        </tr>
                         <tr style={{height: 20}}></tr>
                         <tr>
                             <td><b>NAME</b></td>

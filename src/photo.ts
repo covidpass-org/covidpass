@@ -4,25 +4,10 @@ import {v4 as uuid4} from 'uuid';
 import {BrowserQRCodeSvgWriter} from "@zxing/browser";
 import { toPng, toJpeg, toBlob, toPixelData, toSvg } from 'html-to-image';
 import * as Sentry from '@sentry/react';
-
-enum QrFormat {
-    PKBarcodeFormatQR = 'PKBarcodeFormatQR',
-    PKBarcodeFormatPDF417 = 'PKBarcodeFormatPDF417'
-}
-
-enum Encoding {
-    utf8 = "utf-8",
-    iso88591 = "iso-8859-1"
-}
-
-interface QrCode {
-    message: string;
-    format: QrFormat;
-    messageEncoding: Encoding;
-    // altText: string;
-}
+import {QrCode,Encoding,PackageResult,QrFormat,PassPhotoCommon} from './passphoto-common';
 
 export class Photo {
+
     logoText: string = Constants.NAME;
     organizationName: string = Constants.NAME;
     description: string = Constants.NAME;
@@ -33,88 +18,53 @@ export class Photo {
     barcodes: Array<QrCode>;
     barcode: QrCode;
 
-
-
     static async generatePass(payloadBody: PayloadBody, numDose: number): Promise<Blob> {
 
         // Create Payload
         try {
-            const payload: Payload = new Payload(payloadBody, numDose);
 
-            payload.serialNumber = uuid4();
+            console.log('generatePass');
+            
+            const results = await PassPhotoCommon.preparePayload(payloadBody, numDose);
+            
+            const payload = results.payload;
+            const qrCode = results.qrCode;
 
-            // register record
+            let receipt;
 
-            const clonedReceipt = Object.assign({}, payload.receipt);
-            delete clonedReceipt.name;
-            delete clonedReceipt.dateOfBirth;
-            clonedReceipt["serialNumber"] = payload.serialNumber;
-            clonedReceipt["type"] = 'photo';
-
-            let requestOptions = {
-                method: 'POST', // *GET, POST, PUT, DELETE, etc.
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(clonedReceipt) // body data type must match "Content-Type" header
+            if (results.payload.rawData.length == 0) {
+                receipt = results.payload.receipts[numDose];
+            } else {
+                receipt = results.payload.receipts[numDose];
             }
 
-            console.log('registering ' + JSON.stringify(clonedReceipt, null, 2));
-            const configResponse = await fetch('/api/config')
-            const verifierHost = (await configResponse.json()).verifierHost
-
-            // const verifierHost = 'https://verifier.vaccine-ontario.ca';
-
-            const response  = await fetch('https://us-central1-grassroot-verifier.cloudfunctions.net/register', requestOptions);
-            const responseJson = await response.json();
-
-            console.log(JSON.stringify(responseJson,null,2));
-
-            if (responseJson["result"] != 'OK')
-                return Promise.reject();
-
-            const encodedUri = `serialNumber=${encodeURIComponent(payload.serialNumber)}&vaccineName=${encodeURIComponent(payload.receipt.vaccineName)}&vaccinationDate=${encodeURIComponent(payload.receipt.vaccinationDate)}&organization=${encodeURIComponent(payload.receipt.organization)}&dose=${encodeURIComponent(payload.receipt.numDoses)}`;
-            const qrCodeUrl = `${verifierHost}/verify?${encodedUri}`;
-
-            // Create QR Code Object
-            const qrCode: QrCode = {
-                message: qrCodeUrl,
-                format: QrFormat.PKBarcodeFormatQR,
-                messageEncoding: Encoding.iso88591,
-                // altText : payload.rawData
-
-            }
-
-            // Create photo
-            // const photo: Photo = new Photo(payload, qrCode);
-
-            // const body = domTree.getElementById('main');
             const body = document.getElementById('pass-image');
             body.hidden = false;
             body.style.backgroundColor = payload.backgroundColor
 
-            const name = payload.receipt.name;
-            const dateOfBirth = payload.receipt.dateOfBirth;
-            const vaccineName = payload.receipt.vaccineName;
-            let vaccineNameProper = vaccineName.charAt(0) + vaccineName.substr(1).toLowerCase();
-
-            if (vaccineName.includes('PFIZER'))
-                vaccineNameProper = 'Pfizer (Comirnaty)'
-
-            if (vaccineName.includes('MODERNA'))
-                vaccineNameProper = 'Moderna (SpikeVax)'
-
-            if (vaccineName.includes('ASTRAZENECA'))
-                vaccineNameProper = 'AstraZeneca (Vaxzevria)'
-
-            let doseVaccine = "#" + String(payload.receipt.numDoses) + ": " + vaccineNameProper;
+            const vaccineName = receipt.vaccineName;
+            let doseVaccine = "#" + String(receipt.numDoses) + ": " + vaccineName;
 
             document.getElementById('vaccineName').innerText = doseVaccine;
-            document.getElementById('vaccinationDate').innerText = payload.receipt.vaccinationDate;
-            document.getElementById('organization').innerText = payload.receipt.organization;
-            document.getElementById('name').innerText = payload.receipt.name;
-            document.getElementById('dob').innerText = payload.receipt.dateOfBirth;
+            
+            document.getElementById('vaccinationDate').innerText = receipt.vaccinationDate;
+            document.getElementById('organization').innerText = receipt.organization;
 
+            document.getElementById('name').innerText = receipt.name;
+            document.getElementById('dob').innerText = receipt.dateOfBirth;
+
+            if ((results.payload.rawData.length != 0) && (numDose > 1)) {
+                for (let i = 1; i < numDose; i++) {
+                    
+                    console.log(i);
+
+                    receipt = results.payload.receipts[i];
+
+                    document.getElementById('extraRow' + i ).hidden = false;
+                    document.getElementById('vaccinationDate' + i).innerText = receipt.vaccinationDate;
+                    document.getElementById('organization' + i).innerText = receipt.organization;
+                }
+            }
 
             const codeWriter = new BrowserQRCodeSvgWriter();
             const svg = codeWriter.write(qrCode.message,200,200);
@@ -123,6 +73,7 @@ export class Photo {
 
             const blobPromise = toBlob(body);
             return blobPromise;
+
         }   catch (e) {
             return Promise.reject(e);
         }

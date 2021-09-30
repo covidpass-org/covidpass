@@ -37,7 +37,7 @@ export interface PayloadBody {
 
 export class Payload {
 
-    receipts: Receipt[];
+    receipts: HashTable<Receipt>;
     rawData: string;
     backgroundColor: string;
     labelColor: string;
@@ -50,14 +50,11 @@ export class Payload {
     constructor(body: PayloadBody, numDose: number) {
 
         let generic: PassDictionary = {
-            headerFields: [            
-            ],
+            headerFields: [],
             primaryFields: [],
             secondaryFields: [],
             auxiliaryFields: [],
-            backFields: [
-                //TODO: add url link back to grassroots site
-            ]
+            backFields: []
         }
         this.backgroundColor = COLORS.YELLOW;
         this.labelColor = COLORS.WHITE
@@ -82,7 +79,7 @@ export class Payload {
             }
         }
 
-
+        this.receipts = body.receipts;
         this.rawData = body.rawData;
         this.generic = generic;
 

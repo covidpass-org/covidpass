@@ -5,25 +5,9 @@ import {Constants} from "./constants";
 import {Payload, PayloadBody, PassDictionary} from "./payload";
 import * as Sentry from '@sentry/react';
 import { QRCodeMatrixUtil } from '@zxing/library';
+import {QrCode,Encoding,PackageResult,QrFormat,PassPhotoCommon} from './passphoto-common';
 
 const crypto = require('crypto')
-
-enum QrFormat {
-    PKBarcodeFormatQR = 'PKBarcodeFormatQR',
-    PKBarcodeFormatPDF417 = 'PKBarcodeFormatPDF417'
-}
-
-enum Encoding {
-    utf8 = "utf-8",
-    iso88591 = "iso-8859-1"
-}
-
-interface QrCode {
-    message: string;
-    format: QrFormat;
-    messageEncoding: Encoding;
-    // altText: string;
-}
 
 interface SignData {
     PassJsonHash: string;
@@ -85,74 +69,12 @@ export class PassData {
 
         // Create Payload
         try {
-
-            console.log(JSON.stringify(payloadBody, null, 2), numDose);
-
-            const payload: Payload = new Payload(payloadBody, numDose);
-
-            payload.serialNumber = uuid4();
-
-            // register record
-
-            const clonedReceipt = Object.assign({}, payloadBody.receipts[numDose]);
-            delete clonedReceipt.name;
-            delete clonedReceipt.dateOfBirth;
-            clonedReceipt["serialNumber"] = payload.serialNumber;
-            clonedReceipt["type"] = 'applewallet';
-
-            let requestOptions = {
-                method: 'POST', // *GET, POST, PUT, DELETE, etc.
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(clonedReceipt) // body data type must match "Content-Type" header
-            }
-
-            console.log('registering ' + JSON.stringify(clonedReceipt, null, 2));
-            const configResponse = await fetch('/api/config');
-
-            const configResponseJson = await configResponse.json();
-
-            const verifierHost = configResponseJson.verifierHost;
-            const registrationHost = configResponseJson.registrationHost;
-            let functionSuffix = configResponseJson.functionSuffix;
-
-            if (functionSuffix == undefined)
-                functionSuffix = '';
-
-            const registerUrl = `${registrationHost}/register${functionSuffix}`;
-            // console.log(registerUrl);
-
-            const response  = await fetch(registerUrl, requestOptions);
-            const responseJson = await response.json();
-
-            console.log(JSON.stringify(responseJson,null,2));
-
-            if (responseJson["result"] != 'OK') {
-                console.error(responseJson);
-                return Promise.reject();
-            }
-
-            const encodedUri = `serialNumber=${encodeURIComponent(payload.serialNumber)}&vaccineName=${encodeURIComponent(payloadBody.receipts[numDose].vaccineName)}&vaccinationDate=${encodeURIComponent(payloadBody.receipts[numDose].vaccinationDate)}&organization=${encodeURIComponent(payloadBody.receipts[numDose].organization)}&dose=${encodeURIComponent(payloadBody.receipts[numDose].numDoses)}`;
-            const qrCodeUrl = `${verifierHost}/verify?${encodedUri}`;
-
-            // console.log(qrCodeUrl);
-
-            let qrCodeMessage = payloadBody.rawData.startsWith('shc:/')
-                                ? payloadBody.rawData
-                                : qrCodeUrl;
-
-            // Create QR Code Object
-            const qrCode: QrCode = {
-                message: qrCodeMessage,
-                format: QrFormat.PKBarcodeFormatQR,
-                messageEncoding: Encoding.iso88591,
-                // altText : payload.rawData
-
-            }
+            
+            const results = await PassPhotoCommon.preparePayload(payloadBody, numDose);
+            const payload = results.payload;
 
             // Create pass data
-            const pass: PassData = new PassData(payload, qrCode);
+            const pass: PassData = new PassData(results.payload, results.qrCode);
 
             // Create new zip
             const zip = [] as { path: string; data: Buffer | string }[];
