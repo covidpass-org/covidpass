@@ -58,8 +58,7 @@ export class Payload {
             vaccineNameProper = 'Pfizer (Comirnaty)'
 
         if (vaccineName.includes('MODERNA'))
-            vaccineNameProper = 'Moderna (SpikeVax)'    
-            // vaccineNameProper = 'Pfizer (Comirnaty)'
+            vaccineNameProper = 'Moderna (SpikeVax)'
 
         if (vaccineName.includes('ASTRAZENECA') || vaccineName.includes('COVISHIELD'))
             vaccineNameProper = 'AstraZeneca (Vaxzevria)'  

@@ -120,8 +120,6 @@ async function loadPDF(signedPdfBuffer : ArrayBuffer): Promise<HashTable<Receipt
         }
         return Promise.reject(e);
     }
-
-
 }
 
 async function getPdfDetails(fileBuffer: ArrayBuffer): Promise<HashTable<Receipt>> {
@@ -152,7 +150,6 @@ async function getPdfDetails(fileBuffer: ArrayBuffer): Promise<HashTable<Receipt
                 }
                 if (value.includes('Product name')) {
                     vaccineName = (content.items[i+1] as TextItem).str;
-                    vaccineName = vaccineName.split(' ')[0];
                 }
                 if (value.includes('Date of birth'))
                     dateOfBirth = (content.items[i+1] as TextItem).str;
@@ -169,5 +166,4 @@ async function getPdfDetails(fileBuffer: ArrayBuffer): Promise<HashTable<Receipt
         Sentry.captureException(e);
         return Promise.reject(e);
     }
-
 }
