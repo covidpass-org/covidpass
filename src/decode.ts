@@ -16,14 +16,27 @@ export function getQRFromImage(imageData) {
 // https://gist.github.com/alexdunae/49cc0ea95001da3360ad6896fa5677ec
 // http://mchp-appserv.cpe.umanitoba.ca/viewConcept.php?printer=Y&conceptID=1514
 
-
-export function decodedStringToReceipt(shcResources: object[]) : HashTable<Receipt> {
+// .vc.credentialSubject.fhirBundle.entry
+export function decodedStringToReceipt(decoded: object) : HashTable<Receipt> {
 
     const codeToVaccineName = {
         '28581000087106': 'Pfizer-BioNTech',
         '28951000087107': 'Johnson & Johnson / Janssen',
         '28761000087108': 'AstraZeneca',
         '28571000087109': 'Moderna'
+    }
+
+    console.log(decoded);
+    const shcResources = decoded['vc'].credentialSubject.fhirBundle.entry;
+    let issuer;
+    if (decoded['iss'].includes('quebec.ca')) {
+        issuer = 'qc';
+    }
+    if (decoded['iss'].includes('ontariohealth.ca')) {
+        issuer = 'on';
+    }
+    if (decoded['iss'].includes('bchealth.ca')) {
+        issuer = 'bc';
     }
 
     let name = '';
@@ -57,13 +70,23 @@ export function decodedStringToReceipt(shcResources: object[]) : HashTable<Recei
                         vaccineName = 'Unknown - ' + vaccineCodes.code;
                 }
             }
-            const performers = resource['performer'];
-            for (let j = 0; j < performers.length; j++) {
-                const performer = performers[j];
-                organizationName = performer.actor.display;
+
+            let performers = resource['performer'];     // BC
+            let receiptNumber;
+            if (issuer == 'bc') {
+                performers = resource['performer'];     
+                receiptNumber = shcResources[i]['fullUrl'].split(':')[1];
+                for (let j = 0; j < performers.length; j++) {
+                   const performer = performers[j];
+                    organizationName = performer.actor.display;
+                }
             }
+            if (issuer == 'qc') {
+                organizationName = resource['location'].display;      // QC
+                receiptNumber = resource['protocolApplied'].doseNumber;
+            } 
             vaccinationDate = resource.occurrenceDateTime;
-            const receiptNumber = shcResources[i]['fullUrl'].split(':')[1];
+
             const receipt = new Receipt(name, vaccinationDate, vaccineName, dateOfBirth, receiptNumber, organizationName);
             console.log(receipt);
             receipts[receiptNumber] = receipt;

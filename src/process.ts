@@ -257,12 +257,12 @@ async function processSHC(fileBuffer : ArrayBuffer) : Promise<any> {
 
         let decoded = await decodeJWS(jws);
         
-        console.log(decoded);
+        // console.log(decoded);
 
         const verified = verifyJWS(jws, decoded.iss);
 
         if (verified) {
-            let receipts = Decode.decodedStringToReceipt(decoded.vc.credentialSubject.fhirBundle.entry);
+            let receipts = Decode.decodedStringToReceipt(decoded);
             console.log(receipts);
             return Promise.resolve({receipts: receipts, rawData: rawData});
 
