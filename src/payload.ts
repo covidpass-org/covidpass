@@ -102,7 +102,7 @@ function processReceipt(receipt: Receipt, generic: PassDictionary) : boolean {
         if (vaccineName.includes('MODERNA'))
             vaccineNameProper = 'Moderna (SpikeVax)'    
 
-        if (vaccineName.includes('ASTRAZENECA') || vaccineName.includes('Covishield'))
+        if (vaccineName.includes('ASTRAZENECA') || vaccineName.includes('COVISHIELD'))
             vaccineNameProper = 'AstraZeneca (Vaxzevria)'  
 
         let doseVaccine = "#" + String(receipt.numDoses) + ": " + vaccineNameProper;
