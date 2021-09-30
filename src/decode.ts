@@ -2,7 +2,7 @@
 
 const jsQR = require("jsqr");
 const zlib = require("zlib");
-import {Receipt} from "./payload";
+import {Receipt, HashTable} from "./payload";
 
 export function getQRFromImage(imageData) {
   return jsQR(
@@ -17,7 +17,7 @@ export function getQRFromImage(imageData) {
 // http://mchp-appserv.cpe.umanitoba.ca/viewConcept.php?printer=Y&conceptID=1514
 
 
-export function decodedStringToReceipt(shcResources: object[]) : Receipt[] {
+export function decodedStringToReceipt(shcResources: object[]) : HashTable<Receipt> {
 
     const codeToVaccineName = {
         '28581000087106': 'Pfizer-BioNTech',
@@ -28,7 +28,7 @@ export function decodedStringToReceipt(shcResources: object[]) : Receipt[] {
 
     let name = '';
     let dateOfBirth;
-    let receipts : Receipt[] = [];
+    let receipts : HashTable<Receipt> = {};
 
     const numResources = shcResources.length;
     for (let i = 0; i < numResources; i++) {
@@ -63,10 +63,10 @@ export function decodedStringToReceipt(shcResources: object[]) : Receipt[] {
                 organizationName = performer.actor.display;
             }
             vaccinationDate = resource.occurrenceDateTime;
-            const receiptNumber = receipts.length + 1;
+            const receiptNumber = shcResources[i]['fullUrl'].split(':')[1];
             const receipt = new Receipt(name, vaccinationDate, vaccineName, dateOfBirth, receiptNumber, organizationName);
             console.log(receipt);
-            receipts.push(receipt);
+            receipts[receiptNumber] = receipt;
         }
     }
     return receipts;

@@ -85,13 +85,16 @@ export class PassData {
 
         // Create Payload
         try {
+
+            console.log(JSON.stringify(payloadBody, null, 2), numDose);
+
             const payload: Payload = new Payload(payloadBody, numDose);
 
             payload.serialNumber = uuid4();
 
             // register record
 
-            const clonedReceipt = Object.assign({}, payload.receipts[0]);
+            const clonedReceipt = Object.assign({}, payloadBody.receipts[numDose]);
             delete clonedReceipt.name;
             delete clonedReceipt.dateOfBirth;
             clonedReceipt["serialNumber"] = payload.serialNumber;
@@ -105,7 +108,7 @@ export class PassData {
                 body: JSON.stringify(clonedReceipt) // body data type must match "Content-Type" header
             }
 
-            // console.log('registering ' + JSON.stringify(clonedReceipt, null, 2));
+            console.log('registering ' + JSON.stringify(clonedReceipt, null, 2));
             const configResponse = await fetch('/api/config');
 
             const configResponseJson = await configResponse.json();
@@ -130,18 +133,18 @@ export class PassData {
                 return Promise.reject();
             }
 
-            const encodedUri = `serialNumber=${encodeURIComponent(payload.serialNumber)}&vaccineName=${encodeURIComponent(payload.receipt.vaccineName)}&vaccinationDate=${encodeURIComponent(payload.receipt.vaccinationDate)}&organization=${encodeURIComponent(payload.receipt.organization)}&dose=${encodeURIComponent(payload.receipt.numDoses)}`;
+            const encodedUri = `serialNumber=${encodeURIComponent(payload.serialNumber)}&vaccineName=${encodeURIComponent(payloadBody.receipts[numDose].vaccineName)}&vaccinationDate=${encodeURIComponent(payloadBody.receipts[numDose].vaccinationDate)}&organization=${encodeURIComponent(payloadBody.receipts[numDose].organization)}&dose=${encodeURIComponent(payloadBody.receipts[numDose].numDoses)}`;
             const qrCodeUrl = `${verifierHost}/verify?${encodedUri}`;
 
             // console.log(qrCodeUrl);
 
             let qrCodeMessage = payloadBody.rawData.startsWith('shc:/')
                                 ? payloadBody.rawData
-                                : `${verifierHost}/verify?serialNumber=${payload.serialNumber}&vaccineName=${payload.receipts[0].vaccineName}&vaccinationDate=${payload.receipts[0].vaccinationDate}&organization=${payload.receipts[0].organization}&dose=${payload.receipts[0].numDoses}`;
+                                : qrCodeUrl;
 
             // Create QR Code Object
             const qrCode: QrCode = {
-                message: qrCodeUrl,
+                message: qrCodeMessage,
                 format: QrFormat.PKBarcodeFormatQR,
                 messageEncoding: Encoding.iso88591,
                 // altText : payload.rawData

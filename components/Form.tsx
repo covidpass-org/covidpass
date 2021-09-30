@@ -122,11 +122,13 @@ function Form(): JSX.Element {
             setFileLoading(false);
             setFile(file);
 
-            if (Object.keys(payload.receipts).length === 1) {
-                setSelectedDose(parseInt(Object.keys(payload.receipts)[0]));
-            }else{
-                setShowDoseOption(true);
-            }
+            if (payload.rawData.length == 0) {
+                if (Object.keys(payload.receipts).length === 1) {
+                    setSelectedDose(parseInt(Object.keys(payload.receipts)[0]));
+                } else {
+                    setShowDoseOption(true);
+                }
+            } 
         } catch (e) {
             setFile(file);
             setFileLoading(false);
