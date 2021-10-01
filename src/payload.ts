@@ -1,5 +1,6 @@
 import {Constants} from "./constants";
 import {COLORS} from "./colors";
+import { TEXT_ALIGN } from "html2canvas/dist/types/css/property-descriptors/text-align";
 
 export class Receipt {
   constructor(public name: string, public vaccinationDate: string, public vaccineName: string, public dateOfBirth: string, public numDoses: number, public organization: string) {};
@@ -36,7 +37,7 @@ export interface PayloadBody {
 
 export class Payload {
 
-    receipt: Receipt;
+    receipts: HashTable<Receipt>;
     rawData: string;
     backgroundColor: string;
     labelColor: string;
@@ -48,10 +49,51 @@ export class Payload {
 
     constructor(body: PayloadBody, numDose: number) {
 
-        // Get name and date of birth information
-        const name = body.receipts[numDose].name;
-        const dateOfBirth = body.receipts[numDose].dateOfBirth;
-        const vaccineName = body.receipts[numDose].vaccineName;
+        let generic: PassDictionary = {
+            headerFields: [],
+            primaryFields: [],
+            secondaryFields: [],
+            auxiliaryFields: [],
+            backFields: []
+        }
+        this.backgroundColor = COLORS.YELLOW;
+        this.labelColor = COLORS.WHITE
+        this.foregroundColor = COLORS.WHITE
+        this.img1x = Constants.img1xWhite
+        this.img2x = Constants.img2xWhite
+
+        let fullyVaccinated = false;
+        var keys = Object.keys(body.receipts).reverse();
+
+        if (body.rawData.length > 0) {                      // SHC contains multiple receipts
+            for (let k of keys) {
+                fullyVaccinated = processReceipt(body.receipts[k], generic);
+                if (fullyVaccinated) {
+                    this.backgroundColor = COLORS.GREEN;
+                }            
+            }
+        } else {
+            fullyVaccinated = processReceipt(body.receipts[numDose], generic);
+            if (fullyVaccinated) {
+               this.backgroundColor = COLORS.GREEN;
+            }
+        }
+
+        this.receipts = body.receipts;
+        this.rawData = body.rawData;
+        this.generic = generic;
+
+    }
+}
+
+function processReceipt(receipt: Receipt, generic: PassDictionary) : boolean {
+
+        console.log('processing receipt #' + receipt.numDoses);
+
+        const name = receipt['name'];
+        const dateOfBirth = receipt.dateOfBirth;
+        const numDoses = receipt.numDoses;
+        const vaccineName = receipt.vaccineName.toLocaleUpperCase();
         let vaccineNameProper = vaccineName.charAt(0) + vaccineName.substr(1).toLowerCase();
 
         if (vaccineName.includes('PFIZER'))
@@ -63,42 +105,58 @@ export class Payload {
         if (vaccineName.includes('ASTRAZENECA') || vaccineName.includes('COVISHIELD'))
             vaccineNameProper = 'AstraZeneca (Vaxzevria)'  
 
-        let doseVaccine = "#" + String(body.receipts[numDose].numDoses) + ": " + vaccineNameProper;
-    
-        if (name == undefined) {
-            throw new Error('nameMissing');
-        }
-        if (dateOfBirth == undefined) {
-            throw new Error('dobMissing');
+        let doseVaccine = "#" + String(receipt.numDoses) + ": " + vaccineNameProper;
+        let fullyVaccinated = false;
+
+        if (receipt.numDoses > 1 || 
+            vaccineName.toLowerCase().includes('janssen') || 
+            vaccineName.toLowerCase().includes('johnson') || 
+            vaccineName.toLowerCase().includes('j&j')) {
+            fullyVaccinated = true;
         }
 
-        const generic: PassDictionary = {
-            headerFields: [
-            ],
-            primaryFields: [
+        if (generic.primaryFields.length == 0) {
+            generic.primaryFields.push(
                 {
-                key: "vaccine",
-                label: "Vaccine",
-                value: doseVaccine,
+                    key: "vaccine",
+                    label: "Vaccine",
+                    value: doseVaccine
                 }
+            )
+        }
 
-            ],
-            secondaryFields: [
-                                {
+        let fieldToPush = generic.secondaryFields;
+        if (fieldToPush.length > 0) {
+            fieldToPush = generic.backFields;
+            generic.headerFields.push({
+                key: "extra",
+                label: "More",
+                value: "(i)",
+                "textAlignment" : "PKTextAlignmentCenter"
+            });
+            generic.backFields.push({
+                key: "vaccine" + numDoses,
+                label: `Vaccine (Dose ${numDoses})`,
+                value: receipt.vaccineName
+            })
+        }
+
+        fieldToPush.push(
+            {
                     key: "issuer",
                     label: "Authorized Organization",
-                    value: body.receipts[numDose].organization
-                },
-
+                    value: receipt.organization
+            },
             {
                 key: "dov",
                 label: "Date",
-                value: body.receipts[numDose].vaccinationDate,
-                // textAlignment: TextAlignment.right
+                value: receipt.vaccinationDate,
             }
-            ],
-            auxiliaryFields: [   
-               {
+        );
+
+        if (generic.auxiliaryFields.length == 0) {
+            generic.auxiliaryFields.push(
+            {
                 key: "name",
                 label: "Name",
                 value: name
@@ -107,33 +165,7 @@ export class Payload {
                 key: "dob",
                 label: "Date of Birth",
                 value: dateOfBirth
-            }
-            ],
-            backFields: [
-
-                //TODO: add url link back to grassroots site
-
-            ]
+            });
         }
-
-        // Set Values
-        this.receipt = body.receipts[numDose];
-        this.rawData = body.rawData;
-
-        if (body.receipts[numDose].numDoses > 1 || body.receipts[numDose].vaccineName.toLowerCase().includes('janssen') || body.receipts[numDose].vaccineName.toLowerCase().includes('johnson') || body.receipts[numDose].vaccineName.toLowerCase().includes('j&j')) {
-            this.backgroundColor = COLORS.GREEN;
-        } else {
-            this.backgroundColor = COLORS.YELLOW;
-        }
-
-        this.labelColor = COLORS.WHITE
-        this.foregroundColor = COLORS.WHITE
-        this.img1x = Constants.img1xWhite
-        this.img2x = Constants.img2xWhite
-        this.generic = generic;
-
+        return fullyVaccinated;
     }
-
-
-
-}

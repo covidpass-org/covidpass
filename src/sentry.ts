@@ -8,7 +8,9 @@ export const initSentry = () => {
         integrations: [
             new Integrations.BrowserTracing(),
         ],
-        attachStacktrace: true
+        attachStacktrace: true,
+        tracesSampleRate: 0.5
+
     });
     console.log('sentry initialized');
 
