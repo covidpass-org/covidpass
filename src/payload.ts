@@ -100,7 +100,7 @@ function processReceipt(receipt: Receipt, generic: PassDictionary) : boolean {
             vaccineNameProper = 'Pfizer (Comirnaty)'
 
         if (vaccineName.includes('MODERNA'))
-            vaccineNameProper = 'Moderna (SpikeVax)'    
+            vaccineNameProper = 'Moderna (SpikeVax)'
 
         if (vaccineName.includes('ASTRAZENECA') || vaccineName.includes('COVISHIELD'))
             vaccineNameProper = 'AstraZeneca (Vaxzevria)'  
