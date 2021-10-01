@@ -59,6 +59,16 @@ const issuers = [
         y: "jA5uS5bz8R2nxf_TU-0ZmXq6CKWZhAG1Y4icAx8a9CA" },
     ]
   },
+  {
+    id: "ca.sk",
+    iss: "https://skphr.prd.telushealthspace.com",
+    keys: [
+      { kid: "xOqUO82bEz8APn_5wohZZvSK4Ui6pqWdSAv5BEhkes0",
+        alg: "ES256", kty: "EC", crv: "P-256", use: "sig",
+        x: "Hk4ktlNfoIIo7jp5I8cefp54Ils3TsKvKXw_E9CGIPE",
+        y: "7hVieFGuHJeaNRCxVgKeVpoxDJevytgoCxqVZ6cfcdk" },
+    ]
+  },
 ];
 
 module.exports = {
