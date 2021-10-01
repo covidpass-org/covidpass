@@ -72,8 +72,8 @@ export class PassData {
             
             const results = await PassPhotoCommon.preparePayload(payloadBody, numDose);
             const payload = results.payload;
-
             // Create pass data
+
             const pass: PassData = new PassData(results.payload, results.qrCode);
 
             // Create new zip

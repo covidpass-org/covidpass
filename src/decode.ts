@@ -20,10 +20,17 @@ export function getQRFromImage(imageData) {
 export function decodedStringToReceipt(decoded: object) : HashTable<Receipt> {
 
     const codeToVaccineName = {
-        '28581000087106': 'Pfizer-BioNTech',
-        '28951000087107': 'Johnson & Johnson / Janssen',
-        '28761000087108': 'AstraZeneca',
-        '28571000087109': 'Moderna'
+        '28581000087106': 'PFIZER',
+        '28951000087107': 'JANSSEN',
+        '28761000087108': 'ASTRAZENECA',
+        '28571000087109': 'MODERNA'
+    }
+
+    const cvxCodeToVaccineName = {                   // https://www2a.cdc.gov/vaccines/iis/iisstandards/vaccines.asp?rpt=cvx
+        '208': 'PFIZER',
+        '212': 'JANSSEN',
+        '210': 'ASTRAZENECA',
+        '207': 'MODERNA'
     }
 
     console.log(decoded);
@@ -35,7 +42,7 @@ export function decodedStringToReceipt(decoded: object) : HashTable<Receipt> {
     if (decoded['iss'].includes('ontariohealth.ca')) {
         issuer = 'on';
     }
-    if (decoded['iss'].includes('bchealth.ca')) {
+    if (decoded['iss'] == "https://smarthealthcard.phsa.ca/v1/issuer") {
         issuer = 'bc';
     }
 
@@ -62,10 +69,13 @@ export function decodedStringToReceipt(decoded: object) : HashTable<Receipt> {
             let vaccineName : string;
             let organizationName : string;
             let vaccinationDate : string;
-
             for (const vaccineCodes of resource.vaccineCode.coding) {
-                if (vaccineCodes.system.includes("snomed.info")) {
+                if (vaccineCodes.system.includes("snomed.info")) {              //bc
                     vaccineName = codeToVaccineName[vaccineCodes.code];
+                    if (vaccineName == undefined)
+                        vaccineName = 'Unknown - ' + vaccineCodes.code;
+                } else if (vaccineCodes.system == "http://hl7.org/fhir/sid/cvx") {      //qc
+                    vaccineName = cvxCodeToVaccineName[vaccineCodes.code];
                     if (vaccineName == undefined)
                         vaccineName = 'Unknown - ' + vaccineCodes.code;
                 }

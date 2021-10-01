@@ -23,16 +23,13 @@ export class Photo {
 
         // Create Payload
         try {
-
             console.log('generatePass');
-            
             const results = await PassPhotoCommon.preparePayload(payloadBody, numDose);
             
             const payload = results.payload;
             const qrCode = results.qrCode;
 
             let receipt;
-
             if (results.payload.rawData.length == 0) {
                 receipt = results.payload.receipts[numDose];
             } else {
@@ -68,7 +65,7 @@ export class Photo {
             }
 
             const codeWriter = new BrowserQRCodeSvgWriter();
-            const hints : Map<EncodeHintType,any> = new Map().set(EncodeHintType.ERROR_CORRECTION,'M');
+            const hints : Map<EncodeHintType,any> = new Map().set(EncodeHintType.ERROR_CORRECTION,'L');
             const svg = codeWriter.write(qrCode.message,200,200, hints);
             svg.setAttribute('style','background-color: white');
             document.getElementById('qrcode').appendChild(svg);
