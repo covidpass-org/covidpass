@@ -31,7 +31,10 @@ export interface PackageResult {
 export class PassPhotoCommon {
 
     static async preparePayload(payloadBody: PayloadBody, numDose: number) : Promise<PackageResult> {
-        console.log(JSON.stringify(payloadBody, null, 2), numDose);
+
+        console.log('preparePayload');
+        
+        // console.log(JSON.stringify(payloadBody, null, 2), numDose);
 
         const payload: Payload = new Payload(payloadBody, numDose);
 
@@ -60,7 +63,7 @@ export class PassPhotoCommon {
                 body: JSON.stringify(clonedReceipt) // body data type must match "Content-Type" header
             }
 
-            console.log('registering ' + JSON.stringify(clonedReceipt, null, 2));
+            // console.log('registering ' + JSON.stringify(clonedReceipt, null, 2));
             const configResponse = await fetch('/api/config');
 
             const configResponseJson = await configResponse.json();
@@ -78,7 +81,7 @@ export class PassPhotoCommon {
             const response  = await fetch(registerUrl, requestOptions);
             const responseJson = await response.json();
 
-            console.log(JSON.stringify(responseJson,null,2));
+            // console.log(JSON.stringify(responseJson,null,2));
 
             if (responseJson["result"] != 'OK') {
                 console.error(responseJson);

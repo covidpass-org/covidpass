@@ -33,7 +33,7 @@ export function decodedStringToReceipt(decoded: object) : HashTable<Receipt> {
         '207': 'MODERNA'
     }
 
-    console.log(decoded);
+    // console.log(decoded);
     const shcResources = decoded['vc'].credentialSubject.fhirBundle.entry;
     let issuer;
     if (decoded['iss'].includes('quebec.ca')) {
@@ -98,7 +98,7 @@ export function decodedStringToReceipt(decoded: object) : HashTable<Receipt> {
             vaccinationDate = resource.occurrenceDateTime;
 
             const receipt = new Receipt(name, vaccinationDate, vaccineName, dateOfBirth, receiptNumber, organizationName);
-            console.log(receipt);
+            // console.log(receipt);
             receipts[receiptNumber] = receipt;
         }
     }

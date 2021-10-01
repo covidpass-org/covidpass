@@ -25,7 +25,7 @@ export async function getPayloadBodyFromFile(file: File): Promise<PayloadBody> {
     switch (file.type) {
         case 'application/pdf':
             const receiptType = await detectReceiptType(fileBuffer);
-            console.log(receiptType);
+            console.log(`receiptType = ${receiptType}`);
             if (receiptType == 'ON') {
                 receipts = await loadPDF(fileBuffer)                   // receipt type is needed to decide if digital signature checking is needed
             } else {
