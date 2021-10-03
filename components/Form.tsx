@@ -30,74 +30,64 @@ function Form(): JSX.Element {
     // Currently selected color
     const [selectedColor, setSelectedColor] = useState<COLORS>(COLORS.WHITE);
 
+    // Currently selected dose
+    const [selectedDose, setSelectedDose] = useState<number>(2);
+
     // Global camera controls
     const [globalControls, setGlobalControls] = useState<IScannerControls>(undefined);
 
     // Currently selected QR Code / File. Only one of them is set.
     const [qrCode, setQrCode] = useState<Result>(undefined);
     const [file, setFile] = useState<File>(undefined);
+    const [payloadBody, setPayloadBody] = useState<PayloadBody>(undefined);
 
-    const [loading, setLoading] = useState<boolean>(false);
+    const [saveLoading, setSaveLoading] = useState<boolean>(false);
+    const [fileLoading, setFileLoading] = useState<boolean>(false);
 
-    const [passCount, setPassCount] = useState<string>('');
     const [generated, setGenerated] = useState<boolean>(false);         // this flag represents the file has been used to generate a pass
 
     const [isDisabledAppleWallet, setIsDisabledAppleWallet] = useState<boolean>(false);
-    const [errorMessages, _setErrorMessages] = useState<Array<string>>([]);
-    const [warningMessages, _setWarningMessages] = useState<Array<string>>([]);
+    const [addErrorMessages, _setAddErrorMessages] = useState<Array<string>>([]);
+    const [fileErrorMessages, _setFileErrorMessages] = useState<Array<string>>([]);
+
+    const [showDoseOption, setShowDoseOption] = useState<boolean>(false);
+    // const [warningMessages, _setWarningMessages] = useState<Array<string>>([]);
     const hitcountHost = 'https://stats.vaccine-ontario.ca';
 
 
-    useEffect(() => {
-        if (passCount.length == 0) {
-            getPassCount();
-        }
-    }, []);
-
-    const getPassCount = async () => {
-        const hitCount = await getHitCount();
-        setPassCount(hitCount);
-    };
-
-    async function getHitCount() {
-
-        try {
-            const request = `${hitcountHost}/nocount?url=pass.vaccine-ontario.ca`;
-
-            let response = await fetch(request);
-            const counter = await response.text();
-    
-            return Promise.resolve(counter);
-
-        } catch (e) {
-            console.error(e);
-            return Promise.reject(e);
-        }
-
-    }
-
     // Check if there is a translation and replace message accordingly
-    const setErrorMessage = (message: string) => {
+    const setAddErrorMessage = (message: string) => {
         if (!message) {
             return;
         }
 
         const translation = t('errors:'.concat(message));
-        _setErrorMessages(Array.from(new Set([...errorMessages, translation !== message ? translation : message])));
+        _setAddErrorMessages(Array.from(new Set([...addErrorMessages, translation !== message ? translation : message])));
     };
 
-    const setWarningMessage = (message: string) => {
+    const setFileErrorMessage = (message: string) => {
         if (!message) {
             return;
         }
 
         const translation = t('errors:'.concat(message));
-        _setWarningMessages(Array.from(new Set([...warningMessages, translation !== message ? translation : message])));
-    }
+        _setFileErrorMessages(Array.from(new Set([...addErrorMessages, translation !== message ? translation : message])));
+    };
 
-    const deleteErrorMessage = (message: string) =>{
-        console.log(errorMessages)
-        _setErrorMessages(errorMessages.filter(item => item !== message))
+    // const setWarningMessage = (message: string) => {
+    //     if (!message) {
+    //         return;
+    //     }
+
+    //     const translation = t('errors:'.concat(message));
+    //     _setWarningMessages(Array.from(new Set([...warningMessages, translation !== message ? translation : message])));
+    // }
+
+    const deleteAddErrorMessage = (message: string) =>{
+        _setAddErrorMessages(addErrorMessages.filter(item => item !== message))
+    }
+    const deleteFileErrorMessage = (message: string) =>{
+        _setFileErrorMessages(addErrorMessages.filter(item => item !== message))
     }
 
     // File Input ref
@@ -109,16 +99,56 @@ function Form(): JSX.Element {
             inputFile.current.addEventListener('change', () => {
                 let selectedFile = inputFile.current.files[0];
                 if (selectedFile !== undefined) {
+                    setFileLoading(true);
                     setQrCode(undefined);
-                    setFile(selectedFile);
+                    setPayloadBody(undefined);
+                    setFile(undefined);
+                    setShowDoseOption(false);
                     setGenerated(false);
-                    deleteErrorMessage(t('errors:'.concat('noFileOrQrCode')));
+                    deleteAddErrorMessage(t('errors:'.concat('noFileOrQrCode')));
+                    _setFileErrorMessages([]);
                     checkBrowserType();
+                    getPayload(selectedFile);
                 }
             });
         }
         checkBrowserType();
     }, [inputFile])
+
+    async function getPayload(file){
+        try {
+            const payload = await getPayloadBodyFromFile(file);
+            setPayloadBody(payload);
+            setFileLoading(false);
+            setFile(file);
+
+            if (payload.rawData.length == 0) {
+                if (Object.keys(payload.receipts).length === 1) {
+                    setSelectedDose(parseInt(Object.keys(payload.receipts)[0]));
+                } else {
+                    setShowDoseOption(true);
+                }
+            } 
+        } catch (e) {
+            setFile(file);
+            setFileLoading(false);
+            if (e != undefined) {
+                console.error(e);
+
+                Sentry.captureException(e);
+
+                if (e.message != undefined) {
+                    setFileErrorMessage(e.message);
+                } else {
+                    setFileErrorMessage("Unable to continue.");
+                }
+
+            } else {
+                setFileErrorMessage("Unexpected error. Sorry.");
+            }
+        }
+
+    }
 
     // Show file Dialog
     async function showFileDialog() {
@@ -127,7 +157,7 @@ function Form(): JSX.Element {
 
     async function gotoOntarioHealth(e) {
         e.preventDefault();
-        window.location.href = 'https://covid19.ontariohealth.ca';
+        window.open('https://covid19.ontariohealth.ca','_blank');
     }
     async function goToFAQ(e) {
         e.preventDefault();
@@ -153,13 +183,13 @@ function Form(): JSX.Element {
         try {
             deviceList = await BrowserQRCodeReader.listVideoInputDevices();
         } catch (e) {
-            setErrorMessage('noCameraAccess');
+            setAddErrorMessage('noCameraAccess');
             return;
         }
 
         // Check if camera device is present
         if (deviceList.length == 0) {
-            setErrorMessage("noCameraFound");
+            setAddErrorMessage("noCameraFound");
             return;
         }
 
@@ -183,7 +213,7 @@ function Form(): JSX.Element {
                         setIsCameraOpen(false);
                     }
                     if (error !== undefined) {
-                        setErrorMessage(error.message);
+                        setAddErrorMessage(error.message);
                     }
                 }
             )
@@ -193,71 +223,64 @@ function Form(): JSX.Element {
     }
 
     async function incrementCount() {
-
         try {
             if (typeof generated == undefined || !generated) {
 
                 const request = `${hitcountHost}/count?url=pass.vaccine-ontario.ca`;
-                console.log(request);
+                //console.log(request);
 
                 let response = await fetch(request);
-                console.log(request);
+                //console.log(response);
 
-                const counter = await response.text();      // response count is not used intentionally so it always goes up by 1 only even if the server has changed
-
-                let newPasscount = Number(passCount) + 1;
-                console.log(counter);
-                setPassCount(counter);
                 setGenerated(true);
-                console.log(`new PassCount  = ${newPasscount}`);
-
             }
 
         } catch (e) {
             console.error(e);
             return Promise.reject(e);
         }
-
     }
 
     // Add Pass to wallet
     async function addToWallet(event: FormEvent<HTMLFormElement>) {
         
         event.preventDefault();
-        setLoading(true);
+        setSaveLoading(true);
 
         if (!file && !qrCode) {
-            setErrorMessage('noFileOrQrCode')
-            setLoading(false);
+            setAddErrorMessage('noFileOrQrCode')
+            setSaveLoading(false);
             return;
         }
 
-        const color = selectedColor;
-        let payloadBody: PayloadBody;
-
         try {
-            if (file) {
-
-                //console.log('> get payload');
-                payloadBody = await getPayloadBodyFromFile(file, color);
-
-                const passName = payloadBody.receipt.name.replace(' ', '-');
-                const vaxName = payloadBody.receipt.vaccineName.replace(' ', '-');
-                const passDose = payloadBody.receipt.numDoses;
+            if (payloadBody) {
+                
+                let selectedReceipt;
+                if (payloadBody.rawData.length > 0) {                   // shc stuff
+                    const sortedKeys = Object.keys(payloadBody.receipts).sort();             // pickup the last key in the receipt table
+                    const lastKey = sortedKeys[sortedKeys.length - 1];
+                    selectedReceipt = payloadBody.receipts[lastKey];
+                } else {
+                    selectedReceipt = payloadBody.receipts[selectedDose];
+                }
+                const passName = selectedReceipt.name.replace(' ', '-');
+                const vaxName = selectedReceipt.vaccineName.replace(' ', '-');
+                const passDose = selectedReceipt.numDoses;
                 const covidPassFilename = `grassroots-receipt-${passName}-${vaxName}-${passDose}.pkpass`;
 
-                //console.log('> increment count');
+                console.log('> increment count');
                 await incrementCount();
 
-                //console.log('> generatePass');
-                let pass = await PassData.generatePass(payloadBody);
+                console.log('> generatePass');
+                const pass = await PassData.generatePass(payloadBody, selectedDose);
 
-                //console.log('> create blob');
+                console.log('> create blob');
                 const passBlob = new Blob([pass], {type: "application/vnd.apple.pkpass"});
 
-                //console.log(`> save blob as ${covidPassFilename}`);
+                console.log(`> save blob as ${covidPassFilename}`);
                 saveAs(passBlob, covidPassFilename);
-                setLoading(false);
+                setSaveLoading(false);
             } 
 
 
@@ -269,16 +292,16 @@ function Form(): JSX.Element {
                 Sentry.captureException(e);
 
                 if (e.message != undefined) {
-                    setErrorMessage(e.message);
+                    setAddErrorMessage(e.message);
                 } else {
-                    setErrorMessage("Unable to continue.");
+                    setAddErrorMessage("Unable to continue.");
                 }
 
             } else {
-                setErrorMessage("Unexpected error. Sorry.");
+                setAddErrorMessage("Unexpected error. Sorry.");
 
             }
-            setLoading(false);
+            setSaveLoading(false);
 
         }
     }
@@ -287,22 +310,34 @@ function Form(): JSX.Element {
 
     async function saveAsPhoto() {
         
-        setLoading(true);
+        setSaveLoading(true);
 
         if (!file && !qrCode) {
-            setErrorMessage('noFileOrQrCode');
-            setLoading(false);
+            setAddErrorMessage('noFileOrQrCode');
+            setSaveLoading(false);
             return;
         }
 
-        let payloadBody: PayloadBody;
-
         try {
-            payloadBody = await getPayloadBodyFromFile(file, COLORS.GREEN);
-            await incrementCount();
 
-            let photoBlob = await Photo.generatePass(payloadBody);
-            saveAs(photoBlob, 'pass.png');
+            let selectedReceipt;
+            if (payloadBody.rawData.length > 0) {                   // shc stuff
+                const sortedKeys = Object.keys(payloadBody.receipts).sort();             // pickup the last key in the receipt table
+                const lastKey = sortedKeys[sortedKeys.length - 1];
+                selectedReceipt = payloadBody.receipts[lastKey];
+                setSelectedDose(Number(lastKey));
+            } else {
+                selectedReceipt = payloadBody.receipts[selectedDose];
+            }
+            const passName = selectedReceipt.name.replace(' ', '-');
+            const vaxName = selectedReceipt.vaccineName.replace(' ', '-');
+            const passDose = selectedReceipt.numDoses;
+            const covidPassFilename = `grassroots-receipt-${passName}-${vaxName}-${passDose}.png`;
+
+            await incrementCount();
+            
+            let photoBlob = await Photo.generatePass(payloadBody, passDose);
+            saveAs(photoBlob, covidPassFilename);
 
             // need to clean up
             const qrcodeElement = document.getElementById('qrcode');
@@ -311,11 +346,11 @@ function Form(): JSX.Element {
             const body = document.getElementById('pass-image');
             body.hidden = true;
 
-            setLoading(false);
+            setSaveLoading(false);
         } catch (e) {
             Sentry.captureException(e);
-            setErrorMessage(e.message);
-            setLoading(false);
+            setAddErrorMessage(e.message);
+            setSaveLoading(false);
         }
     }
     const verifierLink = () => <li className="flex flex-row items-center">
@@ -330,30 +365,35 @@ function Form(): JSX.Element {
         </p>
     </li>
 
+    const setDose = (e) => {
+        setSelectedDose(e.target.value);
+    }
+
     function checkBrowserType() {
 
         // if (isIPad13) {
-        //     setErrorMessage('Sorry. Apple does not support the use of Wallet on iPad. Please use iPhone/Safari.');
+        //     setAddErrorMessage('Sorry. Apple does not support the use of Wallet on iPad. Please use iPhone/Safari.');
         //     setIsDisabledAppleWallet(true);
         // } 
         // if (!isSafari && !isChrome) {
-        //     setErrorMessage('Sorry. Apple Wallet pass can be added using Safari or Chrome only.');
+        //     setAddErrorMessage('Sorry. Apple Wallet pass can be added using Safari or Chrome only.');
         //     setIsDisabledAppleWallet(true);
         // }
         // if (isIOS && (!osVersion.includes('13') && !osVersion.includes('14') && !osVersion.includes('15'))) {
-        //     setErrorMessage('Sorry, iOS 13+ is needed for the Apple Wallet functionality to work')
+        //     setAddErrorMessage('Sorry, iOS 13+ is needed for the Apple Wallet functionality to work')
         //     setIsDisabledAppleWallet(true);
         // }
         if (isIOS && !isSafari) {
-            // setErrorMessage('Sorry, only Safari can be used to add a Wallet Pass on iOS');
-            setErrorMessage('Sorry, only Safari can be used to add a Wallet Pass on iOS');
+            // setAddErrorMessage('Sorry, only Safari can be used to add a Wallet Pass on iOS');
+            setAddErrorMessage('Sorry, only Safari can be used to add a Wallet Pass on iOS');
             setIsDisabledAppleWallet(true);
             console.log('not safari')
-        } else if (!isIOS) {
-            setWarningMessage('Only Safari on iOS is officially supported for Wallet import at the moment - ' +
-                'for other platforms, please ensure you have an application which can open Apple Wallet .pkpass files');
-            setIsDisabledAppleWallet(false);
         }
+        // } else if (!isIOS) {
+        //     setWarningMessage('Only Safari on iOS is officially supported for Wallet import at the moment - ' +
+        //         'for other platforms, please ensure you have an application which can open Apple Wallet .pkpass files');
+        //     setIsDisabledAppleWallet(false);
+        // }
     }
 
     return (
@@ -363,13 +403,14 @@ function Form(): JSX.Element {
                     <div className="space-y-5">
                         <p>
                             {t('index:visit')}&nbsp;
-
                                 <Link href="https://covid19.ontariohealth.ca">
                                     <a className="underline" target="_blank">
                                         {t('index:ontarioHealth')}
                                     </a>
                                 </Link>&nbsp;
-                                {t('index:downloadSignedPDF')}
+                                {t('index:downloadSignedPDF')}<br/><br/>
+                                {t('index:reminderNotToRepeat')}
+
                         </p>
                         <button id="ontariohealth" onClick={gotoOntarioHealth}
         
@@ -382,19 +423,26 @@ function Form(): JSX.Element {
                 <Card step="2" heading={t('index:selectCertificate')} content={
                     <div className="space-y-5">
                         <p>{t('index:selectCertificateDescription')}</p>
-                        <p>{t('index:selectCertificateReminder')}</p>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-5 items-center justify-start">
                             <button
                                 type="button"
                                 onClick={showFileDialog}
                                 className="focus:outline-none h-20 bg-green-600 hover:bg-gray-700 text-white font-semibold rounded-md">
                                 {t('index:openFile')}
                             </button>
+                            <div id="spin" className={fileLoading ? undefined : "hidden"}>
+                                <svg className="animate-spin h-5 w-5 ml-4" viewBox="0 0 24 24">
+                                    <circle className="opacity-0" cx="12" cy="12" r="10" stroke="currentColor"
+                                            strokeWidth="4"/>
+                                    <path className="opacity-75" fill="currentColor"
+                                          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"/>
+                                </svg>
+                            </div>
                         </div>
 
                         <input type='file'
                                id='file'
-                               accept="application/pdf"
+                               accept="application/pdf,image/png"
                                ref={inputFile}
                                style={{display: 'none'}}
                         />
@@ -415,10 +463,37 @@ function Form(): JSX.Element {
                             </span>
                         </div>
                         }
+                        
+                        {fileErrorMessages.map((message, i) =>
+                            <Alert message={message} key={'error-' + i} type="error" />
+                        )}
                     </div>
                 }/>
 
-                <Card step="3" heading={t('index:addToWalletHeader')} content={
+                {showDoseOption && <Card step="3" heading={'Choose dose number'} content={
+                    <div className="space-y-5">
+                        <p>
+                            {t('index:formatChange')}
+                            <br /><br />
+                            {t('index:saveMultiple')}
+                        </p>
+                        <link href="https://cdn.jsdelivr.net/npm/@tailwindcss/custom-forms@0.2.1/dist/custom-forms.css" rel="stylesheet"/>
+                        <div className="block">
+                            <div className="mt-2">
+                                {payloadBody && Object.keys(payloadBody.receipts).map(key =>
+                                    <div key={key}>
+                                        <label className="inline-flex items-center">
+                                            <input onChange={setDose} type="radio" className="form-radio" name="radio" value={key} checked={parseInt(key) == selectedDose} />
+                                            <span className="ml-2">Dose {key}</span>
+                                        </label>
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                    </div>
+                } />}
+
+                <Card step={showDoseOption ? '4' : '3'} heading={t('index:addToWalletHeader')} content={
                     <div className="space-y-5">
                         {/* <p>
                             {t('index:dataPrivacyDescription')}
@@ -434,24 +509,21 @@ function Form(): JSX.Element {
                                 <Check text={t('piiNotSent')}/>
                                 <Check text={t('openSourceTransparent')}/>
                                 {verifierLink()}
-                                {passCount && <Check text={passCount + ' ' + t('numPasses')}/>}
-
-                                {/* <Check text={t('hostedInEU')}/> */}
                             </ul>
                         </div>
 
                         <div className="flex flex-row items-center justify-start">
-                            <button disabled={isDisabledAppleWallet || loading} id="download" type="submit" value='applewallet' name='action'
+                            <button disabled={isDisabledAppleWallet || saveLoading ||!payloadBody} id="download" type="submit" value='applewallet' name='action'
                                 className="focus:outline-none bg-green-600 py-2 px-3 text-white font-semibold rounded-md disabled:bg-gray-400">
                                 {t('index:addToWallet')}
                             </button>
                             &nbsp;&nbsp;&nbsp;&nbsp;
-                            <button id="saveAsPhoto" type="button" disabled={loading} value='photo' name='action' onClick={saveAsPhoto}
+                            <button id="saveAsPhoto" type="button" disabled={saveLoading || !payloadBody} value='photo' name='action' onClick={saveAsPhoto}
                                     className="focus:outline-none bg-green-600 py-2 px-3 text-white font-semibold rounded-md disabled:bg-gray-400">
                                 {t('index:saveAsPhoto')}
                             </button>
 
-                            <div id="spin" className={loading ? undefined : "hidden"}>
+                            <div id="spin" className={saveLoading ? undefined : "hidden"}>
                                 <svg className="animate-spin h-5 w-5 ml-4" viewBox="0 0 24 24">
                                     <circle className="opacity-0" cx="12" cy="12" r="10" stroke="currentColor"
                                             strokeWidth="4"/>
@@ -460,12 +532,12 @@ function Form(): JSX.Element {
                                 </svg>
                             </div>
                         </div>
-                        {errorMessages.map((message, i) =>
+                        {addErrorMessages.map((message, i) =>
                             <Alert message={message} key={'error-' + i} type="error" />
                         )}
-                        {warningMessages.map((message, i) =>
+                        {/* {warningMessages.map((message, i) =>
                             <Alert message={message} key={'warning-' + i} type="warning" />
-                        )}
+                        )} */}
                     </div>
                 }/>
 

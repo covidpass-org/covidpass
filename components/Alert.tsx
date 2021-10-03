@@ -8,26 +8,27 @@ interface AlertProps {
 
 function Alert(props: AlertProps): JSX.Element {
     const { t } = useTranslation(['index', 'errors']);
-    let color = 'red';
+    let spanStyle = 'bg-red-100 border border-red-400 text-red-700';
+    let svgStyle = 'text-red-500';
     let icon;
     switch (props.type) {
         case 'error':
-            color = 'red'
             // icon = () => 
             //     <svg className="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" fill-rule="evenodd"></path></svg>
             break;
         case 'warning':
-            color = 'yellow'
+            spanStyle = 'bg-yellow-100 border border-yellow-400 text-yellow-700';
+            svgStyle = 'text-yellow-500';
             break;
     }
 
 
     return (
-        <div className={`flex items-center bg-red-100 border border-red-400 text-red-700 px-4 py-3 mt-5 rounded relative`} role="alert">
+        <div className={`flex items-center ${spanStyle} px-4 py-3 mt-5 rounded relative`} role="alert">
             {icon && icon()}
             <span className="block sm:inline pr-6" id="message">{props.message}</span>
             {props.onClose && <span className="absolute right-0 px-4 py-3" onClick={props.onClose}>
-                <svg className={`fill-current h-6 w-6 text-red-500`} role="button" xmlns="http://www.w3.org/2000/svg"
+                <svg className={`fill-current h-6 w-6 ${svgStyle}`} role="button" xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 20 20">
                     <title>{t('index:errorClose')}</title>
                     <path

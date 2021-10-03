@@ -6,12 +6,15 @@ import Form from '../components/Form';
 import Card from '../components/Card';
 import Page from '../components/Page';
 import Alert from '../components/Alert';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { isIOS, isSafari, isAndroid} from 'react-device-detect';
-
+import usePassCount from "../src/hooks/use_pass_count";
+import Link from 'next/link'
 
 function Index(): JSX.Element {
     const { t } = useTranslation(['common', 'index', 'errors']);
+    const passCount = usePassCount();    
+    const displayPassCount = (passCount? `${passCount} receipts have been processed successfully to date!` : '');
 
     const [warningMessages, _setWarningMessages] = useState<Array<string>>([]);
 
@@ -24,9 +27,13 @@ function Index(): JSX.Element {
 
     const deleteWarningMessage = (message: string) => _setWarningMessages(warningMessages.filter(item => item !== message));
 
-    // useEffect(() => {
-    //     if (!isSafari) setWarningMessage("iPhone users, only Safari is supported at the moment. Please switch to Safari to prevent any unexpected errors.")
-    // })
+    useEffect(() => {
+        if (isIOS && !isSafari) setWarningMessage("iPhone users, only Safari is supported at the moment. Please switch to Safari to prevent any unexpected errors.")
+        else if (!isIOS) {
+                setWarningMessage('Only Safari on iOS is officially supported for Apple Wallet import at the moment - ' +
+                    'for other platforms, please ensure you have an application which can open Apple Wallet .pkpass files');
+        }
+    }, []);
     
 
     // If you previously created a vaccination receipt before Sept. 23rd and need to add your date of birth on your vaccination receipt, please reimport your Ministry of Health official vaccination receipt again below and the date of birth will now be visible on the created receipt
@@ -62,19 +69,27 @@ function Index(): JSX.Element {
             <Page content={
                 <div className="space-y-5">
                     {warningMessages.map((message, i) =>
-                        <Alert message={message} key={'error-' + i} type="error" onClose={() => deleteWarningMessage(message)} />
+                        <Alert message={message} key={'error-' + i} type="warning" onClose={() => deleteWarningMessage(message)} />
                     )}
                     <Card content={
                         <div><p>{t('common:subtitle')}</p><br /><p>{t('common:subtitle2')}</p><br />
-                            <b>Sept 25 evening updates</b> - Improvements: 
+                            <b>{displayPassCount}</b><br/><br/>
+                            Oct 1 morning update: 
                             <br />
                             <br />
                             <ul className="list-decimal list-outside" style={{ marginLeft: '20px' }}>
-                                <li>Better support the use of .pkpass files on non-iOS platforms (thx samuelyeungkc)</li>
-                                <li>Improved multiple passes handling</li>
-                                <li>Added FAQ on how critical data (name & date of birth) is protected and they stay private to you.</li>
+                                <li>Foundation improvements</li>
+                                <li>You can now select which page to import for multi-page receipts</li>
+                                <li>System reminders (e.g. unsupported browsers) are now on the top to improve ease of use</li>
                             </ul><br />
-                            <p>{t('common:continueSpirit')}</p></div>
+                            <p>{t('common:continueSpirit')}</p>
+                            <br />
+                            <Link href="https://www.youtube.com/watch?v=AIrG5Qbjptg">
+                                <a className="underline" target="_blank">
+                                    Click here for a video demo
+                                </a>
+                            </Link>&nbsp;
+                            </div>
                     }/>
                     <Form/>
                 </div>

@@ -1,4 +1,7 @@
+import React from "react";
 import {useTranslation} from 'next-i18next';
+
+import usePassCount from "../src/hooks/use_pass_count";
 
 import Head from 'next/head'
 import Logo from './Logo'
@@ -10,7 +13,6 @@ interface PageProps {
 
 function Page(props: PageProps): JSX.Element {
     const { t } = useTranslation('common');
-
     return (
         <div className="md:w-2/3 xl:w-2/5 md:mx-auto flex flex-col min-h-screen justify-center px-5 py-12">
             <Head>
@@ -34,7 +36,7 @@ function Page(props: PageProps): JSX.Element {
                             <a href="https://github.com/billylo1/covidpass" className="underline">{t('common:gitHub')}</a>
                             <a href="https://vaccine-ontario.ca" className="underline">{t('common:returnToMainSite')}</a>
                         </nav>
-                        <div className="flex pt-4 flex-row space-x-4 justify-center text-md flex-wrap">Last updated: 2021-09-25 (v1.9.8)</div>
+                        <div className="flex pt-4 flex-row space-x-4 justify-center text-md flex-wrap">Last updated: 2021-10-01 (v1.9.13)</div>
                     </footer>
                 </main>
             </div>
@@ -68,6 +70,14 @@ function Page(props: PageProps): JSX.Element {
                             <td id='organization' style={{width: 220}}></td>
                             <td id='vaccinationDate' style={{width:120}}></td>
                         </tr>
+                        <tr id='extraRow2' hidden>
+                            <td id='organization2' style={{width: 220}}></td>
+                            <td id='vaccinationDate2' style={{width:120}}></td>
+                        </tr>
+                        <tr id='extraRow1' hidden>
+                            <td id='organization1' style={{width: 220}}></td>
+                            <td id='vaccinationDate1' style={{width:120}}></td>
+                        </tr>
                         <tr style={{height: 20}}></tr>
                         <tr>
                             <td><b>NAME</b></td>
@@ -87,6 +97,7 @@ function Page(props: PageProps): JSX.Element {
                 <br/>
                 <br/>
             </div>
+            <canvas id="canvas" />
         </div>
     )
 }
