@@ -442,7 +442,7 @@ function Form(): JSX.Element {
 
                         <input type='file'
                                id='file'
-                               accept="application/pdf,image/png"
+                               accept="application/pdf,.png"
                                ref={inputFile}
                                style={{display: 'none'}}
                         />
