@@ -8,7 +8,7 @@ import * as Decode from './decode';
 import {getScannedJWS, verifyJWS, decodeJWS} from "./shc";
 import { PNG } from 'pngjs/browser';
 
-import { PDFPageProxy, TextContent, TextItem } from "pdfjs-dist/types/display/api";
+import { PDFPageProxy, TextContent, TextItem } from 'pdfjs-dist/types/src/display/api';
 
 // import {PNG} from 'pngjs'
 // import {decodeData} from "./decode";

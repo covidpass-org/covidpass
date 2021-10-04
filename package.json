@@ -42,7 +42,7 @@
     "node-fetch": "^2.6.1",
     "node-jose": "^2.0.0",
     "node-pdf-verifier": "^1.0.1",
-    "pdfjs-dist": "^2.5.207",
+    "pdfjs-dist": "^2.6.347",
     "pngjs": "^6.0.0",
     "qrcode": "^1.4.4",
     "react": "^17.0.2",
