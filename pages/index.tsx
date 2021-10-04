@@ -78,7 +78,7 @@ function Index(): JSX.Element {
                             <br />
                             <br />
                             <ul className="list-decimal list-outside" style={{ marginLeft: '20px' }}>
-                                <li>Added expiration date so it aligns with the province's schedule.</li>
+                                <li>Added expiration date to Apple Wallet pass so it aligns with the province's schedule.</li>
                                 <li>On Oct 22, we will update this tool as well so you can import the official QR code into your mobile wallet too.</li>
                             </ul><br />
                             <p>{t('common:continueSpirit')}</p>

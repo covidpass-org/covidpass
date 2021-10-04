@@ -83,7 +83,14 @@ export class Payload {
         this.receipts = body.receipts;
         this.rawData = body.rawData;
         this.generic = generic;
-        this.expirationDate = '2021-10-22T23:59:59-04:00';
+        if (body.rawData.length == 0) {          // Ontario special handling
+            this.expirationDate = '2021-10-22T23:59:59-04:00';
+            generic.auxiliaryFields.push({
+                    key: "expiry",
+                    label: "Expiry Date",
+                    value: '2021-10-23'
+            })
+        }
     }
 }
 
@@ -168,5 +175,6 @@ function processReceipt(receipt: Receipt, generic: PassDictionary) : boolean {
                 value: dateOfBirth
             });
         }
+
         return fullyVaccinated;
     }
