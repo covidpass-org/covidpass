@@ -87,8 +87,8 @@ export class Payload {
             this.expirationDate = '2021-10-22T23:59:59-04:00';
             generic.auxiliaryFields.push({
                     key: "expiry",
-                    label: "Expiry Date",
-                    value: '2021-10-23'
+                    label: "QR code expiry",
+                    value: '2021-10-22'
             })
         }
     }
@@ -157,7 +157,7 @@ function processReceipt(receipt: Receipt, generic: PassDictionary) : boolean {
             },
             {
                 key: "dov",
-                label: "Date",
+                label: "Vacc. Date",
                 value: receipt.vaccinationDate,
             }
         );
