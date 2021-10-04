@@ -96,7 +96,7 @@ function Form(): JSX.Element {
     // Add event listener to listen for file change events
     useEffect(() => {
         if (inputFile && inputFile.current) {
-            inputFile.current.addEventListener('input', () => {
+            inputFile.current.addEventListener('change', () => {
                 let selectedFile = inputFile.current.files[0];
                 if (selectedFile !== undefined) {
                     setFileLoading(true);
@@ -442,7 +442,7 @@ function Form(): JSX.Element {
 
                         <input type='file'
                                id='file'
-                               accept="application/pdf,image/png"
+                               accept="application/pdf,.png"
                                ref={inputFile}
                                style={{display: 'none'}}
                         />
