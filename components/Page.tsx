@@ -48,7 +48,7 @@ function Page(props: PageProps): JSX.Element {
                     <tbody>
                         <tr>
                             <td><img src='shield4.svg' width='50' height='50' /></td>
-                            <td style={{fontSize: 20, width: 280}}><span><b>&nbsp;&nbsp;Vaccination Receipt</b></span></td>
+                            <td style={{fontSize: 20, width: 280}}><span style={{marginLeft: '11px'}}><b>Vaccination Receipt</b></span></td>
                         </tr>
                     </tbody>
                  </table>
