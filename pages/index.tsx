@@ -74,13 +74,12 @@ function Index(): JSX.Element {
                     <Card content={
                         <div><p>{t('common:subtitle')}</p><br /><p>{t('common:subtitle2')}</p><br />
                             <b>{displayPassCount}</b><br/><br/>
-                            Oct 1 morning update: 
+                            Oct 3 evening update: 
                             <br />
                             <br />
                             <ul className="list-decimal list-outside" style={{ marginLeft: '20px' }}>
-                                <li>Foundation improvements</li>
-                                <li>You can now select which page to import for multi-page receipts</li>
-                                <li>System reminders (e.g. unsupported browsers) are now on the top to improve ease of use</li>
+                                <li>Added expiration date so it aligns with the province's schedule.</li>
+                                <li>On Oct 22, we will update this tool as well so you can import the official QR code into your mobile wallet too.</li>
                             </ul><br />
                             <p>{t('common:continueSpirit')}</p>
                             <br />

@@ -30,6 +30,7 @@ export class PassData {
     barcodes: Array<QrCode>;
     barcode: QrCode;
     generic: PassDictionary;
+    expirationDate: string;
 
     // Generates a sha1 hash from a given buffer
     private static getBufferHash(buffer: Buffer | string): string {
@@ -139,5 +140,6 @@ export class PassData {
         this.barcode = qrCode;
         this.generic = payload.generic;
         this.sharingProhibited = true;
+        this.expirationDate = payload.expirationDate;
     }
 }

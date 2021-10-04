@@ -59,16 +59,21 @@ async function detectReceiptType(fileBuffer : ArrayBuffer): Promise<string> {
         const pdfPage = await pdfDocument.getPage(1);  //first page
         const content = await pdfPage.getTextContent();
         const numItems = content.items.length;
-        for (let i = 0; i < numItems; i++) {
-            let item = content.items[i] as TextItem;
-            const value = item.str;
-            console.log(value);
-            if (value.includes('COVID-19 vaccination receipt')) {
-                console.log('detected on');
-                return Promise.resolve('ON');
+        if (numItems == 0) {                    // QC has no text items
+            console.log('detected QC');
+            return Promise.resolve('SHC');
+        } else {
+            for (let i = 0; i < numItems; i++) {
+                let item = content.items[i] as TextItem;
+                const value = item.str;
+                // console.log(value);
+                if (value.includes('BC Vaccine Card')) {
+                    console.log('detected BC');
+                    return Promise.resolve('SHC');
+                }
             }
         }
-        return Promise.resolve('SHC');
+        return Promise.resolve('ON');
 
 }
 

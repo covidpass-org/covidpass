@@ -46,6 +46,7 @@ export class Payload {
     img2x: Buffer;
     serialNumber: string;
     generic: PassDictionary;
+    expirationDate: string;
 
     constructor(body: PayloadBody, numDose: number) {
 
@@ -82,7 +83,7 @@ export class Payload {
         this.receipts = body.receipts;
         this.rawData = body.rawData;
         this.generic = generic;
-
+        this.expirationDate = '2021-10-22T23:59:59-04:00';
     }
 }
 
