@@ -54,8 +54,6 @@ function Page(props: PageProps): JSX.Element {
                  </table>
                 <br/>
                 <br/>
-                <br/>
-
                 <div style={{height:12}}><b>VACCINE</b></div>
                 <div id='vaccineName' style={{fontSize:28}}></div>
                 <br/>
@@ -64,7 +62,7 @@ function Page(props: PageProps): JSX.Element {
                     <tbody>
                         <tr>
                             <td style={{width: 220}}><b>AUTHORIZED ORGANIZATION</b></td>
-                            <td><b>DATE</b></td>
+                            <td><b>VACC. DATE</b></td>
                         </tr>
                         <tr>
                             <td id='organization' style={{width: 220}}></td>
@@ -87,10 +85,17 @@ function Page(props: PageProps): JSX.Element {
                             <td id='name' style={{fontSize: 12}}></td>
                             <td id='dob' style={{fontSize: 12}}></td>
                         </tr>
+                        <tr style={{height: 20}}></tr>
+                        <tr>
+                            <td><b></b></td>
+                            <td><b>QR CODE EXPIRY</b></td>
+                        </tr>
+                        <tr>
+                            <td id='null' style={{fontSize: 12}}></td>
+                            <td id='expiry' style={{fontSize: 12}}>2021-10-23</td>
+                        </tr>
                     </tbody>
                 </table>
-                <br/>
-                <br/>
                 <br/>
                 <br/>
                 <div id='qrcode' style={{width:'63%', display:'block', marginLeft: 'auto', marginRight: 'auto'}}></div>
