@@ -40,8 +40,19 @@ export class Photo {
             body.hidden = false;
             body.style.backgroundColor = payload.backgroundColor
 
-            const vaccineName = receipt.vaccineName;
-            let doseVaccine = "#" + String(receipt.numDoses) + ": " + vaccineName;
+            const vaccineName = receipt.vaccineName.toLocaleUpperCase();
+            let vaccineNameProper = vaccineName.charAt(0) + vaccineName.substr(1).toLowerCase();
+    
+            if (vaccineName.includes('PFIZER'))
+                vaccineNameProper = 'Pfizer (Comirnaty)'
+    
+            if (vaccineName.includes('MODERNA'))
+                vaccineNameProper = 'Moderna (SpikeVax)'
+    
+            if (vaccineName.includes('ASTRAZENECA') || vaccineName.includes('COVISHIELD'))
+                vaccineNameProper = 'AstraZeneca (Vaxzevria)'  
+                
+            let doseVaccine = "#" + String(receipt.numDoses) + ": " + vaccineNameProper;
 
             document.getElementById('vaccineName').innerText = doseVaccine;
             
