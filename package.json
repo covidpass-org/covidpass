@@ -40,8 +40,9 @@
     "next-i18next": "^8.5.1",
     "next-seo": "^4.26.0",
     "node-fetch": "^2.6.1",
+    "node-jose": "^2.0.0",
     "node-pdf-verifier": "^1.0.1",
-    "pdfjs-dist": "^2.5.207",
+    "pdfjs-dist": "^2.6.347",
     "pngjs": "^6.0.0",
     "qrcode": "^1.4.4",
     "react": "^17.0.2",
@@ -54,6 +55,7 @@
   },
   "devDependencies": {
     "@types/pako": "^1.0.1",
+    "@types/pngjs": "^6.0.1",
     "@types/react": "^17.0.11",
     "autoprefixer": "^10.0.4",
     "postcss": "^8.1.10",

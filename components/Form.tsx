@@ -96,7 +96,7 @@ function Form(): JSX.Element {
     // Add event listener to listen for file change events
     useEffect(() => {
         if (inputFile && inputFile.current) {
-            inputFile.current.addEventListener('input', () => {
+            inputFile.current.addEventListener('change', () => {
                 let selectedFile = inputFile.current.files[0];
                 if (selectedFile !== undefined) {
                     setFileLoading(true);
@@ -117,16 +117,18 @@ function Form(): JSX.Element {
 
     async function getPayload(file){
         try {
-            const payload = await getPayloadBodyFromFile(file, COLORS.GREEN);
+            const payload = await getPayloadBodyFromFile(file);
             setPayloadBody(payload);
             setFileLoading(false);
             setFile(file);
 
-            if (Object.keys(payload.receipts).length === 1) {
-                setSelectedDose(parseInt(Object.keys(payload.receipts)[0]));
-            }else{
-                setShowDoseOption(true);
-            }
+            if (payload.rawData.length == 0) {
+                if (Object.keys(payload.receipts).length === 1) {
+                    setSelectedDose(parseInt(Object.keys(payload.receipts)[0]));
+                } else {
+                    setShowDoseOption(true);
+                }
+            } 
         } catch (e) {
             setFile(file);
             setFileLoading(false);
@@ -253,21 +255,30 @@ function Form(): JSX.Element {
 
         try {
             if (payloadBody) {
-                const passName = payloadBody.receipts[selectedDose].name.replace(' ', '-');
-                const vaxName = payloadBody.receipts[selectedDose].vaccineName.replace(' ', '-');
-                const passDose = payloadBody.receipts[selectedDose].numDoses;
+                
+                let selectedReceipt;
+                if (payloadBody.rawData.length > 0) {                   // shc stuff
+                    const sortedKeys = Object.keys(payloadBody.receipts).sort();             // pickup the last key in the receipt table
+                    const lastKey = sortedKeys[sortedKeys.length - 1];
+                    selectedReceipt = payloadBody.receipts[lastKey];
+                } else {
+                    selectedReceipt = payloadBody.receipts[selectedDose];
+                }
+                const passName = selectedReceipt.name.replace(' ', '-');
+                const vaxName = selectedReceipt.vaccineName.replace(' ', '-');
+                const passDose = selectedReceipt.numDoses;
                 const covidPassFilename = `grassroots-receipt-${passName}-${vaxName}-${passDose}.pkpass`;
 
-                //console.log('> increment count');
+                console.log('> increment count');
                 await incrementCount();
 
-                // console.log('> generatePass');
+                console.log('> generatePass');
                 const pass = await PassData.generatePass(payloadBody, selectedDose);
 
-                //console.log('> create blob');
+                console.log('> create blob');
                 const passBlob = new Blob([pass], {type: "application/vnd.apple.pkpass"});
 
-                //console.log(`> save blob as ${covidPassFilename}`);
+                console.log(`> save blob as ${covidPassFilename}`);
                 saveAs(passBlob, covidPassFilename);
                 setSaveLoading(false);
             } 
@@ -308,13 +319,24 @@ function Form(): JSX.Element {
         }
 
         try {
-            const passName = payloadBody.receipts[selectedDose].name.replace(' ', '-');
-            const vaxName = payloadBody.receipts[selectedDose].vaccineName.replace(' ', '-');
-            const passDose = payloadBody.receipts[selectedDose].numDoses;
+
+            let selectedReceipt;
+            if (payloadBody.rawData.length > 0) {                   // shc stuff
+                const sortedKeys = Object.keys(payloadBody.receipts).sort();             // pickup the last key in the receipt table
+                const lastKey = sortedKeys[sortedKeys.length - 1];
+                selectedReceipt = payloadBody.receipts[lastKey];
+                setSelectedDose(Number(lastKey));
+            } else {
+                selectedReceipt = payloadBody.receipts[selectedDose];
+            }
+            const passName = selectedReceipt.name.replace(' ', '-');
+            const vaxName = selectedReceipt.vaccineName.replace(' ', '-');
+            const passDose = selectedReceipt.numDoses;
             const covidPassFilename = `grassroots-receipt-${passName}-${vaxName}-${passDose}.png`;
 
             await incrementCount();
-            let photoBlob = await Photo.generatePass(payloadBody, selectedDose);
+            
+            let photoBlob = await Photo.generatePass(payloadBody, passDose);
             saveAs(photoBlob, covidPassFilename);
 
             // need to clean up
@@ -420,7 +442,7 @@ function Form(): JSX.Element {
 
                         <input type='file'
                                id='file'
-                               accept="application/pdf"
+                               accept="application/pdf,.png"
                                ref={inputFile}
                                style={{display: 'none'}}
                         />
