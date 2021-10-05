@@ -48,6 +48,7 @@
     "react": "^17.0.2",
     "react-device-detect": "^1.17.0",
     "react-dom": "^17.0.2",
+    "string.prototype.startswith": "^1.0.0",
     "tls": "^0.0.1",
     "uuid": "^8.3.2",
     "webpack": "^5.0.0",
