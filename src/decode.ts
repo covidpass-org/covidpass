@@ -1,48 +1,107 @@
-// Taken from https://github.com/ehn-dcc-development/ehn-sign-verify-javascript-trivial/blob/main/cose_verify.js
-// and https://github.com/ehn-dcc-development/dgc-check-mobile-app/blob/main/src/app/cose-js/sign.js
+// adapted from https://github.com/fproulx/shc-covid19-decoder/blob/main/src/shc.js
 
-import base45 from 'base45';
-import pako from 'pako';
-import cbor from 'cbor-js';
+const jsQR = require("jsqr");
+const zlib = require("zlib");
+import {Receipt, HashTable} from "./payload";
 
-export function typedArrayToBufferSliced(array: Uint8Array): ArrayBuffer {
-    return array.buffer.slice(array.byteOffset, array.byteLength + array.byteOffset);
+export function getQRFromImage(imageData) {
+  return jsQR(
+    new Uint8ClampedArray(imageData.data.buffer),
+    imageData.width,
+    imageData.height
+  );
 }
 
-export function typedArrayToBuffer(array: Uint8Array): ArrayBuffer {
-    var buffer = new ArrayBuffer(array.length);
+// vaccine codes based on Alex Dunae's findings
+// https://gist.github.com/alexdunae/49cc0ea95001da3360ad6896fa5677ec
+// http://mchp-appserv.cpe.umanitoba.ca/viewConcept.php?printer=Y&conceptID=1514
 
-    array.map(function (value, i) {
-        return buffer[i] = value;
-    })
+// .vc.credentialSubject.fhirBundle.entry
+export function decodedStringToReceipt(decoded: object) : HashTable<Receipt> {
 
-    return array.buffer;
-}
+    const codeToVaccineName = {
+        '28581000087106': 'PFIZER',
+        '28951000087107': 'JANSSEN',
+        '28761000087108': 'ASTRAZENECA',
+        '28571000087109': 'MODERNA'
+    }
 
-export function decodeData(data: string): Object {
+    const cvxCodeToVaccineName = {                   // https://www2a.cdc.gov/vaccines/iis/iisstandards/vaccines.asp?rpt=cvx
+        '208': 'PFIZER',
+        '212': 'JANSSEN',
+        '210': 'ASTRAZENECA',
+        '207': 'MODERNA'
+    }
 
-    if (data.startsWith('HC1')) {
-        data = data.substring(3);
+    // console.log(decoded);
+    const shcResources = decoded['vc'].credentialSubject.fhirBundle.entry;
+    let issuer;
+    if (decoded['iss'].includes('quebec.ca')) {
+        issuer = 'qc';
+    }
+    if (decoded['iss'].includes('ontariohealth.ca')) {
+        issuer = 'on';
+    }
+    if (decoded['iss'] == "https://smarthealthcard.phsa.ca/v1/issuer") {
+        issuer = 'bc';
+    }
 
-        if (data.startsWith(':')) {
-            data = data.substring(1);
+    let name = '';
+    let dateOfBirth;
+    let receipts : HashTable<Receipt> = {};
+
+    const numResources = shcResources.length;
+    for (let i = 0; i < numResources; i++) {
+        const resource = shcResources[i]['resource'];
+        if (resource["resourceType"] == 'Patient') {
+            if (name.length > 0)
+                name += '\n';
+
+            for (const nameField of resource.name) {
+                for (const given of nameField.given) {
+                    name += (given + ' ')
+                }
+                name += (nameField.family);
+            }
+            dateOfBirth = resource['birthDate'];
+        }
+       if (resource["resourceType"] == 'Immunization') { 
+            let vaccineName : string;
+            let organizationName : string;
+            let vaccinationDate : string;
+            for (const vaccineCodes of resource.vaccineCode.coding) {
+                if (vaccineCodes.system.includes("snomed.info")) {              //bc
+                    vaccineName = codeToVaccineName[vaccineCodes.code];
+                    if (vaccineName == undefined)
+                        vaccineName = 'Unknown - ' + vaccineCodes.code;
+                } else if (vaccineCodes.system == "http://hl7.org/fhir/sid/cvx") {      //qc
+                    vaccineName = cvxCodeToVaccineName[vaccineCodes.code];
+                    if (vaccineName == undefined)
+                        vaccineName = 'Unknown - ' + vaccineCodes.code;
+                }
+            }
+
+            let performers = resource['performer'];     // BC
+            let receiptNumber;
+            if (issuer == 'bc') {
+                performers = resource['performer'];     
+                receiptNumber = shcResources[i]['fullUrl'].split(':')[1];
+                for (let j = 0; j < performers.length; j++) {
+                   const performer = performers[j];
+                    organizationName = performer.actor.display;
+                }
+            }
+            if (issuer == 'qc') {
+                organizationName = resource['location'].display;      // QC
+                receiptNumber = resource['protocolApplied'].doseNumber;
+            } 
+            vaccinationDate = resource.occurrenceDateTime;
+
+            const receipt = new Receipt(name, vaccinationDate, vaccineName, dateOfBirth, receiptNumber, organizationName);
+            // console.log(receipt);
+            receipts[receiptNumber] = receipt;
         }
     }
+    return receipts;
 
-    var arrayBuffer: Uint8Array = base45.decode(data);
-
-    if (arrayBuffer[0] == 0x78) {
-        arrayBuffer = pako.inflate(arrayBuffer);
-    }
-
-    var payloadArray: Array<Uint8Array> = cbor.decode(typedArrayToBuffer(arrayBuffer));
-
-    if (!Array.isArray(payloadArray) || payloadArray.length !== 4) {
-        throw new Error('decodingFailed');
-    }
-
-    var plaintext: Uint8Array = payloadArray[2];
-    var decoded: Object = cbor.decode(typedArrayToBufferSliced(plaintext));
-
-    return decoded;
 }
