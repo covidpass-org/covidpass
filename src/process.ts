@@ -153,16 +153,18 @@ async function loadPDF(fileBuffer : ArrayBuffer): Promise<HashTable<Receipt>> {
             console.error('invalid certificate');
             return Promise.reject(`invalid certificate + ${JSON.stringify(result)}`);
         }
-        
 
     } catch (e) {
 
-        console.error(e);
-
-        if (e.message.includes('Failed to locate ByteRange')) {
+        if (e.message.includes('Failed to locate ByteRange') || 
+            e.message.includes('read ASN.1') ||
+            e.message.includes('Failed byte range verification')) {
             e.message = 'Sorry. Selected PDF file is not digitally signed. Please download official copy from Step 1 and retry. Thanks.'
         } else {
-            Sentry.captureException(e);
+            if (!e.message.includes('cancelled')) {
+              console.error(e);
+              Sentry.captureException(e);
+            }
         }
         return Promise.reject(e);
     }
@@ -184,7 +186,7 @@ async function getPdfDetails(fileBuffer: ArrayBuffer): Promise<HashTable<Receipt
             const content = await pdfPage.getTextContent();
             const numItems = content.items.length;
             let name, vaccinationDate, vaccineName, dateOfBirth, numDoses, organization;
-    
+
             for (let i = 0; i < numItems; i++) {
                 let item = content.items[i] as TextItem;
                 const value = item.str;
@@ -210,7 +212,9 @@ async function getPdfDetails(fileBuffer: ArrayBuffer): Promise<HashTable<Receipt
 
         return Promise.resolve(receiptObj);
     } catch (e) {
-        Sentry.captureException(e);
+        if (e && e.message && !e.message.includes('cancelled')) {
+          Sentry.captureException(e);
+        }
         return Promise.reject(e);
     }
 }

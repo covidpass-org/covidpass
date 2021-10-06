@@ -135,7 +135,12 @@ function Form(): JSX.Element {
             if (e != undefined) {
                 console.error(e);
 
-                Sentry.captureException(e);
+                // Don't report known errors to Sentry
+                if (!e.message.includes('invalidFileType') &&
+                    !e.message.includes('not digitally signed')) {
+                  Sentry.captureException(e);
+                }
+
 
                 if (e.message != undefined) {
                     setFileErrorMessage(e.message);
@@ -286,12 +291,11 @@ function Form(): JSX.Element {
 
         } catch (e) {
 
-            if (e != undefined) {
+            if (e) {
                 console.error(e);
-
                 Sentry.captureException(e);
 
-                if (e.message != undefined) {
+                if (e.message) {
                     setAddErrorMessage(e.message);
                 } else {
                     setAddErrorMessage("Unable to continue.");
@@ -299,10 +303,9 @@ function Form(): JSX.Element {
 
             } else {
                 setAddErrorMessage("Unexpected error. Sorry.");
-
             }
-            setSaveLoading(false);
 
+            setSaveLoading(false);
         }
     }
 
@@ -348,7 +351,9 @@ function Form(): JSX.Element {
 
             setSaveLoading(false);
         } catch (e) {
+
             Sentry.captureException(e);
+
             setAddErrorMessage(e.message);
             setSaveLoading(false);
         }
