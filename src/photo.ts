@@ -65,7 +65,7 @@ export class Photo {
             if ((results.payload.rawData.length != 0) && (numDose > 1)) {
                 for (let i = 1; i < numDose; i++) {
                     
-                    console.log(i);
+                    //console.log(i);
 
                     receipt = results.payload.receipts[i];
 

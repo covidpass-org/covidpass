@@ -34,7 +34,7 @@ function verifyJWS(jws, iss) {
   }
   return jose.JWK.asKeyStore({ keys: issuer.keys }).then(function (keyStore) {
     const { verify } = jose.JWS.createVerify(keyStore);
-    console.log("jws", jws);
+    //console.log("jws", jws);
     return verify(jws);
   });
 }
@@ -58,7 +58,7 @@ function decodeJWSPayload(decodedPayload) {
         reject(err);
       } else {
         try {
-          console.log(decompressedResult);
+          //console.log(decompressedResult);
           scannedResult = decompressedResult.toString("utf8");
           resolve(JSON.parse(scannedResult));
         } catch (e) {

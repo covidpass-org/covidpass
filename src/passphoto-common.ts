@@ -85,7 +85,7 @@ export class PassPhotoCommon {
 
             if (responseJson["result"] != 'OK') {
                 console.error(responseJson);
-                return Promise.reject();
+                return Promise.reject(`Error while trying to register pass!`);
             }
 
             const encodedUri = `serialNumber=${encodeURIComponent(payload.serialNumber)}&vaccineName=${encodeURIComponent(payloadBody.receipts[numDose].vaccineName)}&vaccinationDate=${encodeURIComponent(payloadBody.receipts[numDose].vaccinationDate)}&organization=${encodeURIComponent(payloadBody.receipts[numDose].organization)}&dose=${encodeURIComponent(payloadBody.receipts[numDose].numDoses)}`;

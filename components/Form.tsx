@@ -241,8 +241,9 @@ function Form(): JSX.Element {
             }
 
         } catch (e) {
+	        // Fail silently - we shouldn't blow up receipt processing because we couldn't increment our counter
             console.error(e);
-            return Promise.reject(e);
+            //return Promise.reject(e);
         }
     }
 

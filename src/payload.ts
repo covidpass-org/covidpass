@@ -96,7 +96,7 @@ export class Payload {
 
 function processReceipt(receipt: Receipt, generic: PassDictionary) : boolean {
 
-        console.log('processing receipt #' + receipt.numDoses);
+        console.log(`processing receipt #${receipt.numDoses}`);
 
         const name = receipt['name'];
         const dateOfBirth = receipt.dateOfBirth;

@@ -46,7 +46,7 @@ export class PassData {
 
         const configResponse = await fetch('/api/config')
         const apiBaseUrl = (await configResponse.json()).apiBaseUrl
-        console.log(`${apiBaseUrl}/sign`);
+        // console.log(`${apiBaseUrl}/sign`);
 
         // console.log(JSON.stringify(signData));
 

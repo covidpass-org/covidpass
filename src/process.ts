@@ -61,6 +61,13 @@ async function detectReceiptType(fileBuffer : ArrayBuffer): Promise<string> {
         const numItems = content.items.length;
         if (numItems == 0) {                    // QC has no text items
             console.log('detected QC');
+            Sentry.setContext("QC-pdf-metadata", {
+                numPages: pdfDocument.numPages,
+                docMetadata: await pdfDocument.getMetadata()
+            });
+            Sentry.captureMessage('QC PDF Metadata for structure analysis');
+            console.log(`PDF details: numPages=${pdfDocument.numPages}`);
+
             return Promise.resolve('SHC');
         } else {
             for (let i = 0; i < numItems; i++) {
@@ -69,7 +76,22 @@ async function detectReceiptType(fileBuffer : ArrayBuffer): Promise<string> {
                 // console.log(value);
                 if (value.includes('BC Vaccine Card')) {
                     console.log('detected BC');
+
+                    Sentry.setContext("BC-pdf-metadata", {
+                        numPages: pdfDocument.numPages,
+                        docMetadata: await pdfDocument.getMetadata()
+                    });
+                    Sentry.captureMessage('BC PDF Metadata for structure analysis');
+
                     return Promise.resolve('SHC');
+                } else if (value.includes('Proof of Vaccination') || value.includes('User Information')) {
+				  // possible missed QC PDF?
+	              Sentry.setContext("Possible-missed-QC-pdf-metadata", {
+	                  numPages: pdfDocument.numPages,
+	                  docMetadata: await pdfDocument.getMetadata(),
+                      matchedValue: value
+	              });
+	              Sentry.captureMessage('Possible missed QC PDF Metadata for structure analysis');
                 }
             }
         }
@@ -157,8 +179,10 @@ async function loadPDF(fileBuffer : ArrayBuffer): Promise<HashTable<Receipt>> {
     } catch (e) {
 
         if (e.message.includes('Failed to locate ByteRange') || 
-            e.message.includes('read ASN.1') ||
-            e.message.includes('Failed byte range verification')) {
+            e.message.includes(' ASN.1') ||
+            e.message.includes('Failed byte range verification') ||
+			e.message.includes('parse DER') ||
+			e.message.includes('8, 16, 24, or 32 bits')) {
             e.message = 'Sorry. Selected PDF file is not digitally signed. Please download official copy from Step 1 and retry. Thanks.'
         } else {
             if (!e.message.includes('cancelled')) {
@@ -207,7 +231,7 @@ async function getPdfDetails(fileBuffer: ArrayBuffer): Promise<HashTable<Receipt
                     numDoses = Number(value.split(' ')[3]);
             }
             receiptObj[numDoses] = new Receipt(name, vaccinationDate, vaccineName, dateOfBirth, numDoses, organization);
-            console.log(receiptObj[numDoses]);
+            //console.log(receiptObj[numDoses]);
         }
 
         return Promise.resolve(receiptObj);
@@ -268,7 +292,7 @@ async function processSHC(fileBuffer : ArrayBuffer) : Promise<any> {
 
         if (verified) {
             let receipts = Decode.decodedStringToReceipt(decoded);
-            console.log(receipts);
+            //console.log(receipts);
             return Promise.resolve({receipts: receipts, rawData: rawData});
 
         } else {
