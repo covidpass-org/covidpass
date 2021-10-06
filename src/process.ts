@@ -58,12 +58,13 @@ async function detectReceiptType(fileBuffer : ArrayBuffer): Promise<string> {
         const pdfDocument = await loadingTask.promise;
         const pdfPage = await pdfDocument.getPage(1);  //first page
         const content = await pdfPage.getTextContent();
+        const docMetadata = await pdfDocument.getMetadata();
         const numItems = content.items.length;
         if (numItems == 0) {                    // QC has no text items
             console.log('detected QC');
             Sentry.setContext("QC-pdf-metadata", {
                 numPages: pdfDocument.numPages,
-                docMetadata: await pdfDocument.getMetadata()
+                docMetadata: JSON.stringify(docMetadata)
             });
             Sentry.captureMessage('QC PDF Metadata for structure analysis');
             console.log(`PDF details: numPages=${pdfDocument.numPages}`);
@@ -79,7 +80,7 @@ async function detectReceiptType(fileBuffer : ArrayBuffer): Promise<string> {
 
                     Sentry.setContext("BC-pdf-metadata", {
                         numPages: pdfDocument.numPages,
-                        docMetadata: await pdfDocument.getMetadata()
+                        docMetadata: JSON.stringify(docMetadata)
                     });
                     Sentry.captureMessage('BC PDF Metadata for structure analysis');
 
@@ -88,7 +89,7 @@ async function detectReceiptType(fileBuffer : ArrayBuffer): Promise<string> {
 				  // possible missed QC PDF?
 	              Sentry.setContext("Possible-missed-QC-pdf-metadata", {
 	                  numPages: pdfDocument.numPages,
-	                  docMetadata: await pdfDocument.getMetadata(),
+	                  docMetadata: JSON.stringify(docMetadata),
                       matchedValue: value
 	              });
 	              Sentry.captureMessage('Possible missed QC PDF Metadata for structure analysis');
