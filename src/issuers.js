@@ -73,7 +73,7 @@ const issuers = [
 	id: "ca.ab",
 	iss: "https://covidrecords.alberta.ca/smarthealth/issuer",
 	keys: [
-	  { kid: "JoO-sJHpheZboXdsUK4NtfulfvpiN1GlTdNnXN3XAnM",
+      { kid: "JoO-sJHpheZboXdsUK4NtfulfvpiN1GlTdNnXN3XAnM",
         alg: "ES256", kty: "EC", crv: "P-256", use: "sig" }
 	]
   }

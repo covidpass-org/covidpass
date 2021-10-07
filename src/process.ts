@@ -275,24 +275,34 @@ async function processSHC(fileBuffer : ArrayBuffer) : Promise<any> {
 
     try {
         const typedArray = new Uint8Array(fileBuffer);
-        let loadingTask = PdfJS.getDocument(typedArray);
+        const loadingTask = PdfJS.getDocument(typedArray);
 
         const pdfDocument = await loadingTask.promise;
+        console.log('SHC PDF loaded');
         // Load all dose numbers
         const pdfPage = await pdfDocument.getPage(1);
+        console.log('SHC PDF Page 1 loaded');
         const imageData = await getImageDataFromPdf(pdfPage);
+        console.log('SHC PDF Page 1 image data loaded');
         const code : QRCode = await Decode.getQRFromImage(imageData);
-        let rawData = code.data;
+        console.log('SHC code detected:');
+        console.log(code);
+
+		if (!code) {
+			return Promise.reject('No valid ON proof-of-vaccination digital signature found! Please make sure you download the PDF directly from covid19.ontariohealth.ca, Save as Files on your iPhone, and do NOT save/print it as a PDF!');
+		}
+
+        const rawData = code.data;
         const jws = getScannedJWS(rawData);
 
-        let decoded = await decodeJWS(jws);
+        const decoded = await decodeJWS(jws);
         
         // console.log(decoded);
 
         const verified = verifyJWS(jws, decoded.iss);
 
         if (verified) {
-            let receipts = Decode.decodedStringToReceipt(decoded);
+            const receipts = Decode.decodedStringToReceipt(decoded);
             //console.log(receipts);
             return Promise.resolve({receipts: receipts, rawData: rawData});
 
@@ -301,7 +311,8 @@ async function processSHC(fileBuffer : ArrayBuffer) : Promise<any> {
         }
 
     } catch (e) {
-        Promise.reject(e);
+        Sentry.captureException(e);
+        return Promise.reject(e);
     }
 
 }

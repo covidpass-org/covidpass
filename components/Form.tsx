@@ -141,7 +141,6 @@ function Form(): JSX.Element {
                   Sentry.captureException(e);
                 }
 
-
                 if (e.message != undefined) {
                     setFileErrorMessage(e.message);
                 } else {
@@ -448,7 +447,7 @@ function Form(): JSX.Element {
 
                         <input type='file'
                                id='file'
-                               accept="application/pdf,.png"
+                               accept="application/pdf"
                                ref={inputFile}
                                style={{display: 'none'}}
                         />
