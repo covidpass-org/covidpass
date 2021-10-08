@@ -137,7 +137,8 @@ function Form(): JSX.Element {
 
                 // Don't report known errors to Sentry
                 if (!e.message.includes('invalidFileType') &&
-                    !e.message.includes('not digitally signed')) {
+                    !e.message.includes('not digitally signed') &&
+					!e.message.includes('No valid ON proof-of-vaccination')) {
                   Sentry.captureException(e);
                 }
 

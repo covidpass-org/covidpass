@@ -289,7 +289,7 @@ async function processSHC(fileBuffer : ArrayBuffer) : Promise<any> {
         console.log(code);
 
 		if (!code) {
-			return Promise.reject('No valid ON proof-of-vaccination digital signature found! Please make sure you download the PDF directly from covid19.ontariohealth.ca, Save as Files on your iPhone, and do NOT save/print it as a PDF!');
+			return Promise.reject(new Error('No valid ON proof-of-vaccination digital signature found! Please make sure you download the PDF directly from covid19.ontariohealth.ca, Save as Files on your iPhone, and do NOT save/print it as a PDF!'));
 		}
 
         const rawData = code.data;
