@@ -28,6 +28,7 @@ colorBlue: blue
 colorPurple: purple
 colorTeal: teal
 addToWallet: Add to Apple Wallet
+addToGooglePay: Add to Google Pay
 addToWalletHeader: Add to Apple Wallet / Save as Photo
 saveAsPhoto: Save as Photo
 dataPrivacyDescription: |

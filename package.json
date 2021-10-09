@@ -15,6 +15,7 @@
     "path": false
   },
   "dependencies": {
+    "@google-pay/button-react": "^3.0.0",
     "@headlessui/react": "^1.3.0",
     "@ninja-labs/verify-pdf": "^0.3.9",
     "@sentry/browser": "^6.13.2",
@@ -48,6 +49,7 @@
     "react": "^17.0.2",
     "react-device-detect": "^1.17.0",
     "react-dom": "^17.0.2",
+    "react-router-dom": "^5.3.0",
     "string.prototype.startswith": "^1.0.0",
     "tls": "^0.0.1",
     "uuid": "^8.3.2",

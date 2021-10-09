@@ -14,11 +14,14 @@ import {PassData} from "../src/pass";
 import {Photo} from "../src/photo";
 import {COLORS} from "../src/colors";
 import Colors from './Colors';
+import GooglePayButton from '@google-pay/button-react';
 import {isChrome, isIOS, isIPad13, isMacOs, isSafari, deviceDetect, osName, osVersion} from 'react-device-detect';
 import * as Sentry from '@sentry/react';
 import { counterReset } from 'html2canvas/dist/types/css/property-descriptors/counter-reset';
 import { color } from 'html2canvas/dist/types/css/types/color';
 import Bullet from './Bullet';
+import { GPayData } from '../src/gpay';
+import Router from 'next/router'
 
 
 function Form(): JSX.Element {
@@ -53,7 +56,8 @@ function Form(): JSX.Element {
     const [showDoseOption, setShowDoseOption] = useState<boolean>(false);
     // const [warningMessages, _setWarningMessages] = useState<Array<string>>([]);
     const hitcountHost = 'https://stats.vaccine-ontario.ca';
-
+    
+    const [jwt, setJwt] = useState<string>('');               // for google pay
 
     // Check if there is a translation and replace message accordingly
     const setAddErrorMessage = (message: string) => {
@@ -310,7 +314,66 @@ function Form(): JSX.Element {
         }
     }
 
-    //TODO: merge with addToWallet for common flow
+    // Add Pass to Google Pay
+    async function addToGooglePay(event: FormEvent<HTMLFormElement>) {
+        
+        event.preventDefault();
+        setSaveLoading(true);
+
+        if (!file && !qrCode) {
+            setAddErrorMessage('noFileOrQrCode')
+            setSaveLoading(false);
+            return;
+        }
+
+        try {
+            if (payloadBody) {
+                
+                let selectedReceipt;
+                if (payloadBody.rawData.length > 0) {                   // shc stuff
+                    const sortedKeys = Object.keys(payloadBody.receipts).sort();             // pickup the last key in the receipt table
+                    const lastKey = sortedKeys[sortedKeys.length - 1];
+                    selectedReceipt = payloadBody.receipts[lastKey];
+                } else {
+                    selectedReceipt = payloadBody.receipts[selectedDose];
+                }
+
+                console.log('> increment count');
+                await incrementCount();
+
+                console.log('> generatePass');
+                const jwt = await GPayData.generatePass(payloadBody, selectedDose);
+
+                setJwt(jwt);
+
+                const newUrl = `https://pay.google.com/gp/v/save/${jwt}`;
+                console.log(`redirect to ${newUrl}`);
+
+                // saveAs(passBlob, covidPassFilename);
+                setSaveLoading(false);
+                Router.push(newUrl);
+            } 
+
+
+        } catch (e) {
+
+            if (e) {
+                console.error(e);
+                Sentry.captureException(e);
+
+                if (e.message) {
+                    setAddErrorMessage(e.message);
+                } else {
+                    setAddErrorMessage("Unable to continue.");
+                }
+
+            } else {
+                setAddErrorMessage("Unexpected error. Sorry.");
+            }
+
+            setSaveLoading(false);
+        }
+    }
 
     async function saveAsPhoto() {
         
@@ -523,7 +586,15 @@ function Form(): JSX.Element {
                                 className="focus:outline-none bg-green-600 py-2 px-3 text-white font-semibold rounded-md disabled:bg-gray-400">
                                 {t('index:addToWallet')}
                             </button>
-                            &nbsp;&nbsp;&nbsp;&nbsp;
+
+                            &nbsp;&nbsp;
+
+                            <button id="addToGooglePay" type="button" disabled={saveLoading || !payloadBody} value='gpay' name='action' onClick={addToGooglePay}
+                                    className="focus:outline-none bg-green-600 py-2 px-3 text-white font-semibold rounded-md disabled:bg-gray-400">
+                                {t('index:addToGooglePay')}
+                            </button>
+
+                            &nbsp;&nbsp;
                             <button id="saveAsPhoto" type="button" disabled={saveLoading || !payloadBody} value='photo' name='action' onClick={saveAsPhoto}
                                     className="focus:outline-none bg-green-600 py-2 px-3 text-white font-semibold rounded-md disabled:bg-gray-400">
                                 {t('index:saveAsPhoto')}
