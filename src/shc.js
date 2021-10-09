@@ -28,7 +28,7 @@ function getScannedJWS(shcString) {
 function verifyJWS(jws, iss) {
   const issuer = issuers.find(el => el.iss === iss);
   if (!issuer) {
-    error = new Error("Unknown issuer " + iss);
+    error = new Error(`Unknown issuer ${iss}`);
     error.customMessage = true;
     return Promise.reject(error);
   }

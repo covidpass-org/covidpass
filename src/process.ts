@@ -2,13 +2,11 @@ import {PayloadBody, Receipt, HashTable} from "./payload";
 import * as PdfJS from 'pdfjs-dist/legacy/build/pdf'
 import jsQR, {QRCode} from "jsqr";
 import  { getCertificatesInfoFromPDF } from "@ninja-labs/verify-pdf";  // ES6 
-import {COLORS} from "./colors";
 import * as Sentry from '@sentry/react';
 import * as Decode from './decode';
 import {getScannedJWS, verifyJWS, decodeJWS} from "./shc";
-import { PNG } from 'pngjs/browser';
 
-import { PDFPageProxy, TextContent, TextItem } from 'pdfjs-dist/types/src/display/api';
+import { PDFPageProxy, TextItem } from 'pdfjs-dist/types/src/display/api';
 
 // import {PNG} from 'pngjs'
 // import {decodeData} from "./decode";
@@ -19,85 +17,63 @@ PdfJS.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pd
 export async function getPayloadBodyFromFile(file: File): Promise<PayloadBody> {
     // Read file
     const fileBuffer = await file.arrayBuffer();
-    let receipts: HashTable<Receipt>;
-    let rawData = ''; // unused at the moment, the original use was to store the QR code from issuer
+    let imageData: ImageData[];
 
     switch (file.type) {
         case 'application/pdf':
             const receiptType = await detectReceiptType(fileBuffer);
             console.log(`receiptType = ${receiptType}`);
+            // receipt type is needed to decide if digital signature checking is needed
             if (receiptType == 'ON') {
-                receipts = await loadPDF(fileBuffer)                   // receipt type is needed to decide if digital signature checking is needed
+                // Bail out immediately, special case
+                const receipts = await loadPDF(fileBuffer);
+                return {receipts, rawData: ''};
             } else {
-                const shcData = await processSHC(fileBuffer);
-                receipts = shcData.receipts;
-                rawData = shcData.rawData;
+                imageData = await getImageDataFromPdf(fileBuffer);
             }
-            break
+            break;
+        case 'image/png':
+        case 'image/jpeg':
+        case 'image/webp':
+        case 'image/gif':
+            console.log(`image ${file.type}`);
+            imageData = [await getImageDataFromImage(file)];
+            break;
         default:
             throw Error('invalidFileType')
     }
 
+    const shcData = await processSHC(imageData);
+
     return {
-        receipts: receipts,
-        rawData: rawData
-    }
-
-
+        receipts: shcData.receipts,
+        rawData: shcData.rawData
+    };
 }
 
 async function detectReceiptType(fileBuffer : ArrayBuffer): Promise<string> {
-
-    // Ontario has 'COVID-19 vaccination receipt'
-    // BC has BC Vaccine Card
 
         console.log('detectPDFTypeAndProcess');
 
         const typedArray = new Uint8Array(fileBuffer);
         let loadingTask = PdfJS.getDocument(typedArray);
         const pdfDocument = await loadingTask.promise;
-        const pdfPage = await pdfDocument.getPage(1);  //first page
-        const content = await pdfPage.getTextContent();
         const docMetadata = await pdfDocument.getMetadata();
-        const numItems = content.items.length;
-        if (numItems == 0) {                    // QC has no text items
-            console.log('detected QC');
-            Sentry.setContext("QC-pdf-metadata", {
-                numPages: pdfDocument.numPages,
-                docMetadata: JSON.stringify(docMetadata)
-            });
-            Sentry.captureMessage('QC PDF Metadata for structure analysis');
-            console.log(`PDF details: numPages=${pdfDocument.numPages}`);
 
-            return Promise.resolve('SHC');
+        // Explicitly try to detect an ON PDF based on the headers in the PDF
+        console.log(`PDF details: metadata=${JSON.stringify(docMetadata)}`);
+
+        // The Ontario proof-of-vaccination receipts have several fixed unchanging pieces of metadata that we use for detection
+        if (docMetadata.info['IsSignaturesPresent'] &&
+            (docMetadata.info['Producer'] == 'PDFKit') &&
+            (docMetadata.info['PDFFormatVersion'] == '1.7') &&
+            (docMetadata.info['Title'] == 'COVID-19 vaccination receipt / Récépissé de vaccination contre la COVID-19')
+        ) {
+            return Promise.resolve('ON');
         } else {
-            for (let i = 0; i < numItems; i++) {
-                let item = content.items[i] as TextItem;
-                const value = item.str;
-                // console.log(value);
-                if (value.includes('BC Vaccine Card')) {
-                    console.log('detected BC');
-
-                    Sentry.setContext("BC-pdf-metadata", {
-                        numPages: pdfDocument.numPages,
-                        docMetadata: JSON.stringify(docMetadata)
-                    });
-                    Sentry.captureMessage('BC PDF Metadata for structure analysis');
-
-                    return Promise.resolve('SHC');
-                } else if (value.includes('Proof of Vaccination') || value.includes('User Information')) {
-				  // possible missed QC PDF?
-	              Sentry.setContext("Possible-missed-QC-pdf-metadata", {
-	                  numPages: pdfDocument.numPages,
-	                  docMetadata: JSON.stringify(docMetadata),
-                      matchedValue: value
-	              });
-	              Sentry.captureMessage('Possible missed QC PDF Metadata for structure analysis');
-                }
-            }
+            // If it's not an exact match to an ON proof-of-vaccination PDF, it will never pass validation anyways so treat it as an SHC PDF
+            return Promise.resolve('SHC');
         }
-        return Promise.resolve('ON');
-
 }
 
 async function loadPDF(fileBuffer : ArrayBuffer): Promise<HashTable<Receipt>> {
@@ -157,9 +133,7 @@ async function loadPDF(fileBuffer : ArrayBuffer): Promise<HashTable<Receipt>> {
         //console.log(issuedpemCertificate);
         //console.log(`PDF is signed by ${result.issuedBy.organizationName}, issued to ${result.issuedTo.commonName}`);
 
-        // const bypass = window.location.href.includes('grassroots2');
-
-        if (( issuedpemCertificate )) {
+        if (issuedpemCertificate) {
             //console.log('getting receipt details inside PDF');
             const receipt = await getPdfDetails(fileBuffer);
             // console.log(JSON.stringify(receipt, null, 2));
@@ -203,10 +177,9 @@ async function getPdfDetails(fileBuffer: ArrayBuffer): Promise<HashTable<Receipt
 
         const pdfDocument = await loadingTask.promise;
         // Load all dose numbers
-        const { numPages } = pdfDocument;
         const receiptObj = {};
 
-        for (let pages = 1; pages <= numPages; pages++){
+        for (let pages = 1; pages <= pdfDocument.numPages; pages++){
             const pdfPage = await pdfDocument.getPage(pages);
             const content = await pdfPage.getTextContent();
             const numItems = content.items.length;
@@ -244,7 +217,7 @@ async function getPdfDetails(fileBuffer: ArrayBuffer): Promise<HashTable<Receipt
     }
 }
 
-async function getImageDataFromPdf(pdfPage: PDFPageProxy): Promise<ImageData> {
+async function getImageDataFromPdfPage(pdfPage: PDFPageProxy): Promise<ImageData> {
 
     const pdfScale = 2;
 
@@ -265,54 +238,121 @@ async function getImageDataFromPdf(pdfPage: PDFPageProxy): Promise<ImageData> {
     await renderTask.promise;
 
     // Return PDF Image Data
-    return canvasContext.getImageData(0, 0, canvas.width, canvas.height)
+    return canvasContext.getImageData(0, 0, canvas.width, canvas.height);
 
 }
 
-async function processSHC(fileBuffer : ArrayBuffer) : Promise<any> {
+function getImageDataFromImage(file: File): Promise<ImageData> {
+    return new Promise((resolve, reject) => {
+        const canvas = <HTMLCanvasElement>document.getElementById('canvas');
+        const canvasContext = canvas.getContext('2d');
+
+        // create Image object
+        const img = new Image();
+
+        img.onload = () => {
+            // constrain image to 2 Mpx
+            const maxPx = 2000000;
+            let width: number;
+            let height: number;
+            if (img.naturalWidth * img.naturalHeight > maxPx) {
+                const ratio = img.naturalHeight / img.naturalWidth;
+                width = Math.sqrt(maxPx / ratio);
+                height = Math.floor(width * ratio);
+                width = Math.floor(width);
+            } else {
+                width = img.naturalWidth;
+                height = img.naturalHeight;
+            }
+
+            // Set correct canvas width / height
+            canvas.width = width;
+            canvas.height = height;
+
+            // draw image into canvas
+            canvasContext.clearRect(0, 0, width, height);
+            canvasContext.drawImage(img, 0, 0, width, height);
+
+            // Obtain image data
+            resolve(canvasContext.getImageData(0, 0, width, height));
+        };
+
+        img.onerror = (e) => {
+            reject(e);
+        };
+
+        // start loading image from file
+        img.src = URL.createObjectURL(file);
+    });
+}
+
+async function getImageDataFromPdf(fileBuffer: ArrayBuffer): Promise<ImageData[]> {
+
+    const typedArray = new Uint8Array(fileBuffer);
+    const loadingTask = PdfJS.getDocument(typedArray);
+
+    const pdfDocument = await loadingTask.promise;
+    console.log('SHC PDF loaded');
+    const retArray = [];
+
+    // Load and return every page in our PDF
+    for (let i = 1; i <= pdfDocument.numPages; i++) {
+        console.log(`Processing PDF page ${i}`);
+        const pdfPage = await pdfDocument.getPage(i);
+        const imageData = await getImageDataFromPdfPage(pdfPage);
+        retArray.push(imageData);
+    }
+
+    return Promise.resolve(retArray);
+}
+
+async function processSHC(allImageData : ImageData[]) : Promise<any> {
 
     console.log('processSHC');
 
     try {
-        const typedArray = new Uint8Array(fileBuffer);
-        const loadingTask = PdfJS.getDocument(typedArray);
+        if (allImageData) {
+            for (let i = 0; i < allImageData.length; i++) {
 
-        const pdfDocument = await loadingTask.promise;
-        console.log('SHC PDF loaded');
-        // Load all dose numbers
-        const pdfPage = await pdfDocument.getPage(1);
-        console.log('SHC PDF Page 1 loaded');
-        const imageData = await getImageDataFromPdf(pdfPage);
-        console.log('SHC PDF Page 1 image data loaded');
-        const code : QRCode = await Decode.getQRFromImage(imageData);
-        console.log('SHC code detected:');
-        console.log(code);
+                const imageData = allImageData[i];
+                const code : QRCode = await Decode.getQRFromImage(imageData);
+                console.log(`SHC code result from page ${i}:`);
+                console.log(code);
 
-		if (!code) {
-			return Promise.reject(new Error('No valid ON proof-of-vaccination digital signature found! Please make sure you download the PDF directly from covid19.ontariohealth.ca, Save as Files on your iPhone, and do NOT save/print it as a PDF!'));
-		}
+        		if (code) {
+                    try {
+                        // We found a QR code of some kind - start analyzing now
+                        const rawData = code.data;
+                        const jws = getScannedJWS(rawData);
+                        const decoded = await decodeJWS(jws);
 
-        const rawData = code.data;
-        const jws = getScannedJWS(rawData);
+                        console.log(decoded);
 
-        const decoded = await decodeJWS(jws);
-        
-        // console.log(decoded);
+                        const verified = verifyJWS(jws, decoded.iss);
 
-        const verified = verifyJWS(jws, decoded.iss);
-
-        if (verified) {
-            const receipts = Decode.decodedStringToReceipt(decoded);
-            //console.log(receipts);
-            return Promise.resolve({receipts: receipts, rawData: rawData});
-
-        } else {
-            return Promise.reject(`Issuer ${decoded.iss} cannot be verified.`);
+                        if (verified) {
+                            const receipts = Decode.decodedStringToReceipt(decoded);
+                            console.log(receipts);
+                            return Promise.resolve({receipts: receipts, rawData: rawData});            
+                        } else {
+                            // If we got here, we found an SHC which was not verifiable. Consider it fatal and stop processing.
+                            return Promise.reject(`Issuer ${decoded.iss} cannot be verified.`);
+                        }                    
+                    } catch (e) {
+                        // We blew up during processing - log it and move on to the next page
+                        console.log(e);
+                    }
+        		}    
+            }
         }
+
+        // If we got here, no SHC was detected and successfully decoded.
+        // The vast majority of our processed things right now are ON proof-of-vaccination PDFs, not SHC docs, so assume anything
+        // that blew up here was a malformed ON proof-of-vaccination and create an appropriate error message for that
+        return Promise.reject(new Error('No valid ON proof-of-vaccination digital signature found! Please make sure you download the PDF directly from covid19.ontariohealth.ca, Save as Files on your iPhone, and do NOT save/print it as a PDF!'));
 
     } catch (e) {
         Sentry.captureException(e);
         return Promise.reject(e);
     }
-
 }

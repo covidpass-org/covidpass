@@ -102,7 +102,7 @@ function Page(props: PageProps): JSX.Element {
                 <br/>
                 <br/>
             </div>
-            <canvas id="canvas" />
+            <canvas id="canvas" style={{display: 'none'}}/>
         </div>
     )
 }

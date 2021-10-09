@@ -448,7 +448,7 @@ function Form(): JSX.Element {
 
                         <input type='file'
                                id='file'
-                               accept="application/pdf"
+                               accept="application/pdf,.png,.jpg,.jpeg,.gif,.webp"
                                ref={inputFile}
                                style={{display: 'none'}}
                         />

@@ -21,8 +21,8 @@ yarn dev
 ### Run the Docker container
 
 ```sh
-docker build . -t covidpass
-docker run -t -i -p 3000:3000 covidpass
+docker build . -t covidpass -t gcr.io/broadcast2patients/covidpass
+docker run --rm -t -i -p 3000:3000 covidpass
 ```
 
 ### Integration with other repos required
@@ -33,7 +33,7 @@ Docs being developed/tested on Sep 26. Should be done tomorrow.
 
 #### I do not want to trust a third party with my vaccination data, does this tool respect my privacy?
 
-Processing of your data happens entirely in your browser and only a hashed representation is sent to the server for the signing step.
+Processing of your data happens entirely in your browser and only a hashed representation is sent to the server for the signing step. For more details of this, please see https://toronto.ctvnews.ca/video?clipId=2294461
 
 #### How do I make sure that nobody can access my vaccination pass from the lock screen (iOS)?
 

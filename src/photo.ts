@@ -1,11 +1,8 @@
 import {Constants} from "./constants";
-import {Payload, PayloadBody} from "./payload";
-import {v4 as uuid4} from 'uuid';
-import {BrowserQRCodeSvgWriter} from "@zxing/browser";
-import { toPng, toJpeg, toBlob, toPixelData, toSvg } from 'html-to-image';
-import * as Sentry from '@sentry/react';
-import {QrCode,Encoding,PackageResult,QrFormat,PassPhotoCommon} from './passphoto-common';
-import { EncodeHintType } from "@zxing/library";
+import {PayloadBody} from "./payload";
+import { toBlob } from 'html-to-image';
+import {QrCode,PassPhotoCommon} from './passphoto-common';
+import { Encoder, QRByte, QRNumeric, ErrorCorrectionLevel } from '@nuintun/qrcode';
 
 export class Photo {
 
@@ -28,13 +25,7 @@ export class Photo {
             
             const payload = results.payload;
             const qrCode = results.qrCode;
-
-            let receipt;
-            if (results.payload.rawData.length == 0) {
-                receipt = results.payload.receipts[numDose];
-            } else {
-                receipt = results.payload.receipts[numDose];
-            }
+            let receipt = results.payload.receipts[numDose];
 
             const body = document.getElementById('pass-image');
             body.hidden = false;
@@ -75,25 +66,34 @@ export class Photo {
                 }
             }
 
-            const codeWriter = new BrowserQRCodeSvgWriter();
-            const hints : Map<EncodeHintType,any> = new Map().set(EncodeHintType.ERROR_CORRECTION,'L');
-            const svg = codeWriter.write(qrCode.message,200,200, hints);
-            svg.setAttribute('style','background-color: white');
-            document.getElementById('qrcode').appendChild(svg);
+            const qrcode = new Encoder();
+            
+            qrcode.setEncodingHint(true);
+            qrcode.setErrorCorrectionLevel(ErrorCorrectionLevel.L);
 
-            const blobPromise = toBlob(body);
-            return blobPromise;
+            if (qrCode.message.includes('shc:/')) {
+                // Write an SHC code in 2 chunks otherwise it won't render right
+                qrcode.write(new QRByte('shc:/'));
+                qrcode.write(new QRNumeric(qrCode.message.substring(5)));
+            } else {
+                // If this isn't an SHC code, just write it out as a string
+                qrcode.write(qrCode.message);
+            }
+
+            qrcode.make();
+            const qrImage = new Image(220, 220);
+            qrImage.src = qrcode.toDataURL(2, 15);
+            document.getElementById('qrcode').appendChild(qrImage);
+
+            return toBlob(body);
 
         }   catch (e) {
             return Promise.reject(e);
         }
     }
 
-    private constructor(payload: Payload, qrCode: QrCode) {
+    private constructor() {
 
         // make a png in buffer using the payload
     }
-
-
-
 }
