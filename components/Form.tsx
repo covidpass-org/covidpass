@@ -1,6 +1,6 @@
 import {saveAs} from 'file-saver';
 import React, {FormEvent, useEffect, useRef, useState} from "react";
-import {BrowserQRCodeReader} from "@zxing/browser";
+import {BrowserQRCodeReader, IScannerControls} from "@zxing/browser";
 import {Result} from "@zxing/library";
 import {useTranslation} from 'next-i18next';
 import Link from 'next/link';
@@ -11,15 +11,20 @@ import Check from './Check';
 import {PayloadBody} from "../src/payload";
 import {getPayloadBodyFromFile, getPayloadBodyFromQR} from "../src/process";
 import {PassData} from "../src/pass";
+import {COLORS} from "../src/colors";
+import Colors from './Colors';
 
 function Form(): JSX.Element {
-    const { t } = useTranslation(['index', 'errors', 'common']);
+    const {t} = useTranslation(['index', 'errors', 'common']);
 
     // Whether camera is open or not
     const [isCameraOpen, setIsCameraOpen] = useState<boolean>(false);
 
+    // Currently selected color
+    const [selectedColor, setSelectedColor] = useState<COLORS>(COLORS.WHITE);
+
     // Global camera controls
-    const [globalControls, setGlobalControls] = useState(undefined);
+    const [globalControls, setGlobalControls] = useState<IScannerControls>(undefined);
 
     // Currently selected QR Code / File. Only one of them is set.
     const [qrCode, setQrCode] = useState<Result>(undefined);
@@ -82,7 +87,7 @@ function Form(): JSX.Element {
             setErrorMessage('noCameraAccess');
             return;
         }
-        
+
         // Check if camera device is present
         if (deviceList.length == 0) {
             setErrorMessage("noCameraFound");
@@ -123,7 +128,7 @@ function Form(): JSX.Element {
         event.preventDefault();
         setLoading(true);
 
-        if(navigator.userAgent.match('CriOS')) {
+        if (navigator.userAgent.match('CriOS')) {
             setErrorMessage('safariSupportOnly');
             setLoading(false);
             return;
@@ -135,7 +140,7 @@ function Form(): JSX.Element {
             return;
         }
 
-        const color = (document.getElementById('color') as HTMLSelectElement).value;
+        const color = selectedColor;
         let payloadBody: PayloadBody;
 
         try {
@@ -208,24 +213,7 @@ function Form(): JSX.Element {
                     <div className="space-y-5">
                         <p>{t('index:pickColorDescription')}</p>
                         <div className="relative inline-block w-full">
-                            <select name="color" id="color"
-                                    className="bg-gray-200 dark:bg-gray-900 focus:outline-none w-full h-10 pl-3 pr-6 text-base rounded-md appearance-none cursor-pointer">
-                                <option value="white">{t('index:colorWhite')}</option>
-                                <option value="black">{t('index:colorBlack')}</option>
-                                <option value="grey">{t('index:colorGrey')}</option>
-                                <option value="green">{t('index:colorGreen')}</option>
-                                <option value="indigo">{t('index:colorIndigo')}</option>
-                                <option value="blue">{t('index:colorBlue')}</option>
-                                <option value="purple">{t('index:colorPurple')}</option>
-                                <option value="teal">{t('index:colorTeal')}</option>
-                            </select>
-                            <div className="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
-                                <svg className="w-5 h-5 fill-current" viewBox="0 0 20 20">
-                                    <path
-                                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                        clipRule="evenodd" fillRule="evenodd"/>
-                                </svg>
-                            </div>
+                            <Colors onChange={setSelectedColor} initialValue={selectedColor}/>
                         </div>
                     </div>
                 }/>
@@ -241,13 +229,13 @@ function Form(): JSX.Element {
                         </p>
                         <div>
                             <ul className="list-none">
-                                <Check text={t('createdOnDevice')}></Check>
-                                <Check text={t('openSourceTransparent')}></Check>
-                                <Check text={t('hostedInEU')}></Check>
+                                <Check text={t('createdOnDevice')}/>
+                                <Check text={t('openSourceTransparent')}/>
+                                <Check text={t('hostedInEU')}/>
                             </ul>
                         </div>
-                        <label htmlFor="privacy" className="flex flex-row space-x-4 items-center">
-                            <input type="checkbox" id="privacy" value="privacy" required className="h-4 w-4"/>
+                        <label htmlFor="privacy" className="flex flex-row space-x-4 items-center pb-2">
+                            <input type="checkbox" id="privacy" value="privacy" required className="h-5 w-5 outline-none"/>
                             <p>
                                 {t('index:iAcceptThe')}&nbsp;
                                 <Link href="/privacy">
@@ -263,7 +251,7 @@ function Form(): JSX.Element {
                                 {t('index:addToWallet')}
                             </button>
                             <div id="spin" className={loading ? undefined : "hidden"}>
-                                <svg className="animate-spin h-5 w-5 ml-3" viewBox="0 0 24 24">
+                                <svg className="animate-spin h-5 w-5 ml-4" viewBox="0 0 24 24">
                                     <circle className="opacity-0" cx="12" cy="12" r="10" stroke="currentColor"
                                             strokeWidth="4"/>
                                     <path className="opacity-75" fill="currentColor"
