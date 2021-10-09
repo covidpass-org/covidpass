@@ -27,7 +27,7 @@ docker run -t -i -p 3000:3000 covidpass
 
 ### Integration with other repos required
 
-Docs being developed/tested on Sep 26. Should be done tomorrow.
+[setup.md](setup.md) has the details on how to bring the components together.
 
 # FAQ
 
