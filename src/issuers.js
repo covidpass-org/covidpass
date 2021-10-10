@@ -1,4 +1,4 @@
-const issuers = [
+export const issuers = [
   {
     id: "ca.qc",
     iss: "https://covid19.quebec.ca/PreuveVaccinaleApi/issuer",
@@ -79,6 +79,12 @@ const issuers = [
   }
 ];
 
-module.exports = {
-  issuers,
-};
+export function getVerifiedIssuer(requestIssuer) {
+    for (let curIssuer of issuers) {
+        if (curIssuer.iss === requestIssuer) {
+            return curIssuer;
+        }
+    }
+
+    return null;
+}

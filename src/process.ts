@@ -1,6 +1,6 @@
 import {PayloadBody, Receipt, HashTable} from "./payload";
 import * as PdfJS from 'pdfjs-dist/legacy/build/pdf'
-import jsQR, {QRCode} from "jsqr";
+import {QRCode} from "jsqr";
 import  { getCertificatesInfoFromPDF } from "@ninja-labs/verify-pdf";  // ES6 
 import * as Sentry from '@sentry/react';
 import * as Decode from './decode';
