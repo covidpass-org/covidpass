@@ -13,7 +13,7 @@ downloadReceipt: Download official receipt from Ontario Ministry of Health
 visit: Visit
 ontarioHealth: Ontario Ministry of Health
 gotoOntarioHealth: Go to Ontario Ministry of Health
-downloadSignedPDF: and enter your information to display your official vaccination receipt. Press the Share Icon at the bottom, "Save As Files" to store it onto your iPhone. 
+downloadSignedPDF: and enter your information to display your official vaccination receipt. Press the Share Icon at the bottom, "Save As Files" to store it onto your phone. 
 reminderNotToRepeat: If you have completed this step before, simply proceed to Step 2.
 formatChange: After the recent vaccination receipt formatting change, both doses are included in the same file. Please select which dose you want to save. 
 saveMultiple: To save multiple receipts, please select the first one you want to save and click the Wallet or Photo button below, then change which dose is selected here and push the button again to generate another Wallet or Photo for another dose.
@@ -29,7 +29,7 @@ colorPurple: purple
 colorTeal: teal
 addToWallet: Add to Apple Wallet
 addToGooglePay: Add to Google Pay
-addToWalletHeader: Add to Apple Wallet / Save as Photo
+addToWalletHeader: Add to Wallet / Save as Photo
 saveAsPhoto: Save as Photo
 dataPrivacyDescription: |
   Press the "Add to Wallet" below to import data into Wallet.

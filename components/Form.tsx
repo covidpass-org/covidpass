@@ -15,7 +15,7 @@ import {Photo} from "../src/photo";
 import {COLORS} from "../src/colors";
 import Colors from './Colors';
 import GooglePayButton from '@google-pay/button-react';
-import {isChrome, isIOS, isIPad13, isMacOs, isSafari, deviceDetect, osName, osVersion} from 'react-device-detect';
+import {isChrome, isIOS, isIPad13, isMacOs, isSafari, deviceDetect, osName, osVersion, isAndroid} from 'react-device-detect';
 import * as Sentry from '@sentry/react';
 import { counterReset } from 'html2canvas/dist/types/css/property-descriptors/counter-reset';
 import { color } from 'html2canvas/dist/types/css/types/color';
@@ -50,6 +50,8 @@ function Form(): JSX.Element {
     const [generated, setGenerated] = useState<boolean>(false);         // this flag represents the file has been used to generate a pass
 
     const [isDisabledAppleWallet, setIsDisabledAppleWallet] = useState<boolean>(false);
+    const [isDisabledGooglePay, setIsDisabledGooglePay] = useState<boolean>(false);
+
     const [addErrorMessages, _setAddErrorMessages] = useState<Array<string>>([]);
     const [fileErrorMessages, _setFileErrorMessages] = useState<Array<string>>([]);
 
@@ -315,7 +317,7 @@ function Form(): JSX.Element {
     }
 
     // Add Pass to Google Pay
-    async function addToGooglePay(event: FormEvent<HTMLFormElement>) {
+    async function addToGooglePay() {
         
         event.preventDefault();
         setSaveLoading(true);
@@ -458,6 +460,20 @@ function Form(): JSX.Element {
             setIsDisabledAppleWallet(true);
             console.log('not safari')
         }
+
+        if (isAndroid) {
+            if (Number(osVersion) > 8) {
+                setAddErrorMessage("Hi, Android users, check out our new Add to Google Pay button...")
+                setIsDisabledGooglePay(false);
+            } else {
+                setAddErrorMessage("Sorry, Add to Google Pay is only available to Android 8.1+.")
+                setIsDisabledGooglePay(true);
+            }
+        } else {
+            if (window.location.hostname !== 'localhost') {
+                setIsDisabledGooglePay(true);
+            }
+        }
         // } else if (!isIOS) {
         //     setWarningMessage('Only Safari on iOS is officially supported for Wallet import at the moment - ' +
         //         'for other platforms, please ensure you have an application which can open Apple Wallet .pkpass files');
@@ -589,7 +605,7 @@ function Form(): JSX.Element {
 
                             &nbsp;&nbsp;
 
-                            <button id="addToGooglePay" type="button" disabled={saveLoading || !payloadBody} value='gpay' name='action' onClick={addToGooglePay}
+                            <button id="addToGooglePay" type="button" disabled={isDisabledGooglePay || saveLoading || !payloadBody} value='gpay' name='action' onClick={addToGooglePay}
                                     className="focus:outline-none bg-green-600 py-2 px-3 text-white font-semibold rounded-md disabled:bg-gray-400">
                                 {t('index:addToGooglePay')}
                             </button>

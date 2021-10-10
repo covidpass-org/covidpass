@@ -7,7 +7,7 @@ import Card from '../components/Card';
 import Page from '../components/Page';
 import Alert from '../components/Alert';
 import React, { useEffect, useState } from 'react';
-import { isIOS, isSafari, isAndroid} from 'react-device-detect';
+import { isIOS, isSafari, isAndroid, osVersion, isMacOs} from 'react-device-detect';
 import usePassCount from "../src/hooks/use_pass_count";
 import Link from 'next/link'
 
@@ -28,18 +28,23 @@ function Index(): JSX.Element {
     const deleteWarningMessage = (message: string) => _setWarningMessages(warningMessages.filter(item => item !== message));
 
     useEffect(() => {
-        if (isIOS && !isSafari) setWarningMessage("iPhone users, only Safari is supported at the moment. Please switch to Safari to prevent any unexpected errors.")
-        else if (!isIOS) {
-                setWarningMessage('Only Safari on iOS is officially supported for Apple Wallet import at the moment - ' +
-                    'for other platforms, please ensure you have an application which can open Apple Wallet .pkpass files');
+        if ((isIOS && !isMacOs) && !isSafari) setWarningMessage("iPhone users, only Safari is supported at the moment. Please switch to Safari to prevent any unexpected errors.")
+        else {
+            if (isAndroid) {
+                if (Number(osVersion) > 8) {
+                    setWarningMessage("Hi, Android users, check out our new Add to Google Pay button...")
+                } else {
+                    setWarningMessage("Sorry, Add to Google Pay is only available to Android 8.1+.")
+                }
+            } 
         }
     }, []);
     
 
     // If you previously created a vaccination receipt before Sept. 23rd and need to add your date of birth on your vaccination receipt, please reimport your Ministry of Health official vaccination receipt again below and the date of birth will now be visible on the created receipt
 
-    const title = 'Grassroots - Ontario vaccination receipt to your Apple wallet';
-    const description = 'Stores it on iPhone with a QR code for others to validate in a privacy respecting way.';
+    const title = 'Grassroots - Import vaccination receipt to your mobile wallet (iPhone/Android)';
+    const description = 'A non-commercial tool, built by volunteers to make it easier to show your vaccination records';
 
     return (
         <>
