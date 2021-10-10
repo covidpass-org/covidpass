@@ -21,6 +21,8 @@ export async function getPayloadBodyFromFile(file: File): Promise<PayloadBody> {
 
     switch (file.type) {
         case 'application/pdf':
+        
+            ///////// DELETE THE FOLLOWING CODE ON OCT 22ND //////////////////////
             const receiptType = await detectReceiptType(fileBuffer);
             console.log(`receiptType = ${receiptType}`);
             // receipt type is needed to decide if digital signature checking is needed
@@ -29,6 +31,7 @@ export async function getPayloadBodyFromFile(file: File): Promise<PayloadBody> {
                 const receipts = await loadPDF(fileBuffer);
                 return {receipts, rawData: ''};
             } else {
+            ///////// END OCT 22ND DELETE BLOCK //////////////////////
                 imageData = await getImageDataFromPdf(fileBuffer);
             }
             break;
