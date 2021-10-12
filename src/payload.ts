@@ -1,6 +1,5 @@
 import {Constants} from "./constants";
 import {COLORS} from "./colors";
-import { TEXT_ALIGN } from "html2canvas/dist/types/css/property-descriptors/text-align";
 
 export class Receipt {
   constructor(public name: string, public vaccinationDate: string, public vaccineName: string, public dateOfBirth: string, public numDoses: number, public organization: string) {};
@@ -30,7 +29,6 @@ export interface PassDictionary {
 }
 
 export interface PayloadBody {
-    // color: COLORS;
     rawData: string;
     receipts: HashTable<Receipt>;
 }
@@ -58,10 +56,10 @@ export class Payload {
             backFields: []
         }
         this.backgroundColor = COLORS.YELLOW;
-        this.labelColor = COLORS.WHITE
-        this.foregroundColor = COLORS.WHITE
-        this.img1x = Constants.img1xWhite
-        this.img2x = Constants.img2xWhite
+        this.labelColor = COLORS.WHITE;
+        this.foregroundColor = COLORS.WHITE;
+        this.img1x = Constants.img1xWhite;
+        this.img2x = Constants.img2xWhite;
 
         let fullyVaccinated = false;
         var keys = Object.keys(body.receipts).reverse();
