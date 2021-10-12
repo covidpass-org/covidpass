@@ -1,11 +1,8 @@
 import {toBuffer as createZip} from 'do-not-zip';
-import {v4 as uuid4} from 'uuid';
 
 import {Constants} from "./constants";
 import {Payload, PayloadBody, PassDictionary} from "./payload";
-import * as Sentry from '@sentry/react';
-import { QRCodeMatrixUtil } from '@zxing/library';
-import {QrCode,Encoding,PackageResult,QrFormat,PassPhotoCommon} from './passphoto-common';
+import {QrCode,PassPhotoCommon} from './passphoto-common';
 
 const crypto = require('crypto')
 
@@ -139,7 +136,6 @@ export class PassData {
         this.barcodes = [qrCode];
         this.barcode = qrCode;
         this.generic = payload.generic;
-        this.sharingProhibited = true;
         this.expirationDate = payload.expirationDate;
     }
 }

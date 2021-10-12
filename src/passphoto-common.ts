@@ -1,10 +1,6 @@
-import {toBuffer as createZip} from 'do-not-zip';
 import {v4 as uuid4} from 'uuid';
 
-import {Constants} from "./constants";
-import {Payload, PayloadBody, PassDictionary} from "./payload";
-import * as Sentry from '@sentry/react';
-import { QRCodeMatrixUtil } from '@zxing/library';
+import {Payload, PayloadBody} from "./payload";
     
 export enum QrFormat {
     PKBarcodeFormatQR = 'PKBarcodeFormatQR',
@@ -39,7 +35,7 @@ export class PassPhotoCommon {
         const payload: Payload = new Payload(payloadBody, numDose);
 
         payload.serialNumber = uuid4();
-        let qrCodeMessage;
+        let qrCodeMessage = '';
 
         if (payloadBody.rawData.startsWith('shc:/')) {
             
@@ -89,8 +85,7 @@ export class PassPhotoCommon {
             }
 
             const encodedUri = `serialNumber=${encodeURIComponent(payload.serialNumber)}&vaccineName=${encodeURIComponent(payloadBody.receipts[numDose].vaccineName)}&vaccinationDate=${encodeURIComponent(payloadBody.receipts[numDose].vaccinationDate)}&organization=${encodeURIComponent(payloadBody.receipts[numDose].organization)}&dose=${encodeURIComponent(payloadBody.receipts[numDose].numDoses)}`;
-            const qrCodeUrl = `${verifierHost}/verify?${encodedUri}`;
-            qrCodeMessage = qrCodeUrl;
+            qrCodeMessage = `${verifierHost}/verify?${encodedUri}`;
             // console.log(qrCodeUrl);
         }
 

@@ -1,6 +1,7 @@
 export const issuers = [
   {
     id: "ca.qc",
+    display: "Québec",
     iss: "https://covid19.quebec.ca/PreuveVaccinaleApi/issuer",
     keys: [
       { kid: "qFdl0tDZK9JAWP6g9_cAv57c3KWxMKwvxCrRVSzcxvM",
@@ -11,6 +12,7 @@ export const issuers = [
   },
   {
     id: "us.ca",
+    display: "California, USA",
     iss: "https://myvaccinerecord.cdph.ca.gov/creds",
     keys: [
       { kid: "7JvktUpf1_9NPwdM-70FJT3YdyTiSe2IvmVxxgDSRb0",
@@ -21,6 +23,7 @@ export const issuers = [
   },
   {
     id: "us.ny",
+    display: "New York, USA",
     iss: "https://ekeys.ny.gov/epass/doh/dvc/2021",
     keys: [
       { kid: "9ENs36Gsu-GmkWIyIH9XCozU9BFhLeaXvwrT3B97Wok",
@@ -31,6 +34,7 @@ export const issuers = [
   },
   {
     id: "us.la",
+    display: "Louisiana, USA",
     iss: "https://healthcardcert.lawallet.com",
     keys: [
       { kid: "UOvXbgzZj4zL-lt1uJVS_98NHQrQz48FTdqQyNEdaNE",
@@ -41,6 +45,7 @@ export const issuers = [
   },
   {
     id: "ca.yt",
+    display: "Yukon",
     iss: "https://pvc.service.yukon.ca/issuer",
     keys: [
       { kid: "UnHGY-iyCIr__dzyqcxUiApMwU9lfeXnzT2i5Eo7TvE",
@@ -51,6 +56,7 @@ export const issuers = [
   },
   {
     id: "ca.bc",
+    display: "British Columbia",
     iss: "https://smarthealthcard.phsa.ca/v1/issuer",
     keys: [
       { kid: "XCqxdhhS7SWlPqihaUXovM_FjU65WeoBFGc_ppent0Q",
@@ -61,6 +67,7 @@ export const issuers = [
   },
   {
     id: "ca.sk",
+    display: "Saskatchewan",
     iss: "https://skphr.prd.telushealthspace.com",
     keys: [
       { kid: "xOqUO82bEz8APn_5wohZZvSK4Ui6pqWdSAv5BEhkes0",
@@ -71,12 +78,24 @@ export const issuers = [
   },
   {
 	id: "ca.ab",
+    display: "Alberta",
 	iss: "https://covidrecords.alberta.ca/smarthealth/issuer",
 	keys: [
       { kid: "JoO-sJHpheZboXdsUK4NtfulfvpiN1GlTdNnXN3XAnM",
         alg: "ES256", kty: "EC", crv: "P-256", use: "sig",
         x: "GsriV0gunQpl2X9KgrDZ4EDCtIdfOmdzhdlosWrMqKk",
         y: "S99mZMCcJRsn662RaAmk_elvGiUs8IvSA7qBh04kaw0" },
+    ]
+  },
+  {
+    id: "ca.ns",
+    display: "Nova Scotia",
+    iss: "https://pvc.novascotia.ca/issuer",
+    keys: [
+      { kid: "UJrT9jU8vOCUl4xsI1RZjOPP8hFUv7n9mhVtolqH9qw",
+        alg: "ES256", kty: "EC", crv: "P-256", use: "sig",
+        x: "kIaIeOhhxpiN13sDs6RKVzCpvxxObI9adKF5YEmKngM",
+        y: "AZPQ7CHd3UHp0i4a4ua1FhIq8SJ__BuHgDESuK3A_zQ" },
     ]
   }
 ];
