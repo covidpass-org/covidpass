@@ -1,0 +1,125 @@
+{
+    "iss": "https://pvc.novascotia.ca/issuer",
+    "nbf": 1633170858.747,
+    "vc": {
+        "type": [
+            "https://smarthealth.cards#health-card",
+            "https://smarthealth.cards#immunization",
+            "https://smarthealth.cards#covid19"
+        ],
+        "credentialSubject": {
+            "fhirVersion": "4.0.1",
+            "fhirBundle": {
+                "resourceType": "Bundle",
+                "type": "collection",
+                "entry": [
+                    {
+                        "fullUrl": "resource:0",
+                        "resource": {
+                            "resourceType": "Patient",
+                            "name": [
+                                {
+                                    "family": "LASTNAME",
+                                    "given": [
+                                        "FIRSTNAME"
+                                    ]
+                                }
+                            ],
+                            "birthDate": "YYYY-MM-DD"
+                        }
+                    },
+                    {
+                        "fullUrl": "resource:1",
+                        "resource": {
+                            "resourceType": "Immunization",
+                            "meta": {
+                                "security": [
+                                    {
+                                        "system": "https://smarthealth.cards/ial",
+                                        "code": "IAL1.4"
+                                    }
+                                ]
+                            },
+                            "status": "completed",
+                            "vaccineCode": {
+                                "coding": [
+                                    {
+                                        "system": "http://hl7.org/fhir/sid/cvx",
+                                        "code": "208"
+                                    },
+                                    {
+                                        "system": "http://snomed.info/sct",
+                                        "code": "28581000087106"
+                                    }
+                                ]
+                            },
+                            "patient": {
+                                "reference": "resource:0"
+                            },
+                            "occurrenceDateTime": "YYYY-MM-DD",
+                            "performer": [
+                                {
+                                    "actor": {
+                                        "display": "NS, Canada"
+                                    }
+                                }
+                            ],
+                            "lotNumber": "SOME_STRING",
+                            "manufacturer": {
+                                "identifier": {
+                                    "system": "http://hl7.org/fhir/sid/mvx",
+                                    "value": "PFR"
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "fullUrl": "resource:2",
+                        "resource": {
+                            "resourceType": "Immunization",
+                            "meta": {
+                                "security": [
+                                    {
+                                        "system": "https://smarthealth.cards/ial",
+                                        "code": "IAL1.4"
+                                    }
+                                ]
+                            },
+                            "status": "completed",
+                            "vaccineCode": {
+                                "coding": [
+                                    {
+                                        "system": "http://hl7.org/fhir/sid/cvx",
+                                        "code": "208"
+                                    },
+                                    {
+                                        "system": "http://snomed.info/sct",
+                                        "code": "28581000087106"
+                                    }
+                                ]
+                            },
+                            "patient": {
+                                "reference": "resource:0"
+                            },
+                            "occurrenceDateTime": "YYYY-MM-DD",
+                            "performer": [
+                                {
+                                    "actor": {
+                                        "display": "NS, Canada"
+                                    }
+                                }
+                            ],
+                            "lotNumber": "SOME_STRING",
+                            "manufacturer": {
+                                "identifier": {
+                                    "system": "http://hl7.org/fhir/sid/mvx",
+                                    "value": "PFR"
+                                }
+                            }
+                        }
+                    }
+                ]
+            }
+        }
+    }
+}
