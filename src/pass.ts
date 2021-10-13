@@ -137,5 +137,13 @@ export class PassData {
         this.barcode = qrCode;
         this.generic = payload.generic;
         this.expirationDate = payload.expirationDate;
+        
+        // Update our pass name if this is an SHC pass
+        if (payload.rawData.length > 0) {
+            const newPassTitle = `${Constants.NAME}, ${payload.shcReceipt.cardOrigin}`;
+            this.logoText = newPassTitle;
+            this.organizationName = newPassTitle;
+            this.description = newPassTitle;
+        }
     }
 }

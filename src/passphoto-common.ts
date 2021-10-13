@@ -26,7 +26,7 @@ export interface PackageResult {
 
 export class PassPhotoCommon {
 
-    static async preparePayload(payloadBody: PayloadBody, numDose: number) : Promise<PackageResult> {
+    static async preparePayload(payloadBody: PayloadBody, numDose: number = 0) : Promise<PackageResult> {
 
         console.log('preparePayload');
         
@@ -52,7 +52,7 @@ export class PassPhotoCommon {
             clonedReceipt["type"] = 'applewallet';
 
             let requestOptions = {
-                method: 'POST', // *GET, POST, PUT, DELETE, etc.
+                method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },

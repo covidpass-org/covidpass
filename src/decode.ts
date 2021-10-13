@@ -1,7 +1,7 @@
 // adapted from https://github.com/fproulx/shc-covid19-decoder/blob/main/src/shc.js
 
 const jsQR = require("jsqr");
-import {Receipt, HashTable} from "./payload";
+import {SHCReceipt, SHCVaccinationRecord} from "./payload";
 import {getVerifiedIssuer} from "./issuers";
 
 export function getQRFromImage(imageData: ImageData) {
@@ -43,7 +43,7 @@ function getOrganizationForResource(immunizationResource: any) : string {
     return null;
 }
 
-export function decodedStringToReceipt(decoded: object) : HashTable<Receipt> {
+export function decodedStringToReceipt(decoded: object) : SHCReceipt {
 
     const cvxCodeToVaccineName = {                   // https://www2a.cdc.gov/vaccines/iis/iisstandards/vaccines.asp?rpt=cvx
         '208': 'PFIZER',
@@ -85,8 +85,7 @@ export function decodedStringToReceipt(decoded: object) : HashTable<Receipt> {
     const shcResources = cardData.credentialSubject.fhirBundle.entry;
     let name = '';
     let dateOfBirth = '';
-    let receipts : HashTable<Receipt> = {};
-    let doseNumber = 1; // FIXME this needs to go away entirely, we shortly won't care about dose number
+    const vaxRecords: SHCVaccinationRecord[] = [];
 
     const numResources = shcResources.length;
     for (let i = 0; i < numResources; i++) {
@@ -98,7 +97,8 @@ export function decodedStringToReceipt(decoded: object) : HashTable<Receipt> {
                 const nameObj = resource.name[0];
                 name = `${nameObj.given.join(' ')} ${nameObj.family}`;
                 dateOfBirth = resource.birthDate;
-            
+                console.log('Detected Patient resource, added name and birthdate');
+
                 break;
                 
             case 'Immunization':
@@ -107,10 +107,10 @@ export function decodedStringToReceipt(decoded: object) : HashTable<Receipt> {
                 const vaccineName = cvxCodeToVaccineName[vaccineCode];
                 const organizationName = getOrganizationForResource(resource);
                 const vaccinationDate = resource.occurrenceDateTime;
-                
-                const receipt = new Receipt(name, vaccinationDate, vaccineName, dateOfBirth, doseNumber, organizationName);
-                // console.log(receipt);
-                receipts[doseNumber++] = receipt;
+
+                // Add this to our set of records
+                vaxRecords.push(new SHCVaccinationRecord(vaccineName, vaccinationDate, organizationName));
+                console.log(`Detected Immunization resource, added vaccination record (current count: ${vaxRecords.length})`);
 
                 break;
                 
@@ -120,5 +120,13 @@ export function decodedStringToReceipt(decoded: object) : HashTable<Receipt> {
         }
     }
 
-    return receipts;
+    if (name.length === 0 || dateOfBirth.length === 0) {
+        // Bail out now - we are missing basic info
+        console.error(`No name or birthdate was found! Cannot create card`);
+        return null;        
+    }
+    const retReceipt = new SHCReceipt(name, dateOfBirth, verifiedIssuer.display, vaxRecords);
+    console.log(`Creating receipt for region [${retReceipt.cardOrigin}] with vaccination records [${JSON.stringify(retReceipt.vaccinations)}]`);
+
+    return retReceipt;
 }

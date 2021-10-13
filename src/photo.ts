@@ -92,6 +92,44 @@ export class Photo {
         }
     }
 
+    static async generateSHCPass(payloadBody: PayloadBody): Promise<Blob> {
+        // Create Payload
+        try {
+            console.log('generateSHCPass');
+            const results = await PassPhotoCommon.preparePayload(payloadBody);
+            const qrCode = results.qrCode;
+            const body = document.getElementById('shc-pass-image');
+            body.hidden = false;
+
+            document.getElementById('shc-card-name').innerText = results.payload.shcReceipt.name;
+            document.getElementById('shc-card-origin').innerText = results.payload.shcReceipt.cardOrigin;
+
+            const qrcode = new Encoder();
+            
+            qrcode.setEncodingHint(true);
+            qrcode.setErrorCorrectionLevel(ErrorCorrectionLevel.L);
+
+            if (qrCode.message.includes('shc:/')) {
+                // Write an SHC code in 2 chunks otherwise it won't render right
+                qrcode.write(new QRByte('shc:/'));
+                qrcode.write(new QRNumeric(qrCode.message.substring(5)));
+            } else {
+                // If this isn't an SHC code, just write it out as a string
+                qrcode.write(qrCode.message);
+            }
+
+            qrcode.make();
+            const qrImage = new Image(220, 220);
+            qrImage.src = qrcode.toDataURL(2, 15);
+            document.getElementById('shc-qrcode').appendChild(qrImage);
+
+            return toBlob(body);
+
+        }   catch (e) {
+            return Promise.reject(e);
+        }
+    }
+
     private constructor() {
 
         // make a png in buffer using the payload

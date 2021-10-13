@@ -263,28 +263,26 @@ function Form(): JSX.Element {
             if (payloadBody) {
                 
                 let selectedReceipt;
-                if (payloadBody.rawData.length > 0) {                   // shc stuff
-                    const sortedKeys = Object.keys(payloadBody.receipts).sort();             // pickup the last key in the receipt table
-                    const lastKey = sortedKeys[sortedKeys.length - 1];
-                    selectedReceipt = payloadBody.receipts[lastKey];
+                let filenameDetails = '';
+                if (payloadBody.rawData.length > 0) {
+                    // This is an SHC receipt, so do our SHC thing
+                    selectedReceipt = payloadBody.shcReceipt;
+                    filenameDetails = selectedReceipt.cardOrigin.replace(' ', '-');
                 } else {
                     selectedReceipt = payloadBody.receipts[selectedDose];
+                    const vaxName = selectedReceipt.vaccineName.replace(' ', '-');
+                    const passDose = selectedReceipt.numDoses;
+                    filenameDetails = `${vaxName}-${passDose}`;
                 }
                 const passName = selectedReceipt.name.replace(' ', '-');
-                const vaxName = selectedReceipt.vaccineName.replace(' ', '-');
-                const passDose = selectedReceipt.numDoses;
-                const covidPassFilename = `grassroots-receipt-${passName}-${vaxName}-${passDose}.pkpass`;
+                const covidPassFilename = `grassroots-receipt-${passName}-${filenameDetails}.pkpass`;
 
-                console.log('> increment count');
                 await incrementCount();
 
-                console.log('> generatePass');
                 const pass = await PassData.generatePass(payloadBody, selectedDose);
 
-                console.log('> create blob');
                 const passBlob = new Blob([pass], {type: "application/vnd.apple.pkpass"});
 
-                console.log(`> save blob as ${covidPassFilename}`);
                 saveAs(passBlob, covidPassFilename);
                 setSaveLoading(false);
             } 
@@ -325,30 +323,40 @@ function Form(): JSX.Element {
         try {
 
             let selectedReceipt;
-            if (payloadBody.rawData.length > 0) {                   // shc stuff
-                const sortedKeys = Object.keys(payloadBody.receipts).sort();             // pickup the last key in the receipt table
-                const lastKey = sortedKeys[sortedKeys.length - 1];
-                selectedReceipt = payloadBody.receipts[lastKey];
-                setSelectedDose(Number(lastKey));
+            let photoBlob: Blob;
+            let filenameDetails = '';
+            if (payloadBody.rawData.length > 0) {    
+                // This is an SHC receipt, so do our SHC thing
+                selectedReceipt = payloadBody.shcReceipt;
+                photoBlob = await Photo.generateSHCPass(payloadBody);
+                filenameDetails = selectedReceipt.cardOrigin.replace(' ', '-');
             } else {
+                // This is an old-style ON custom QR code Receipt
                 selectedReceipt = payloadBody.receipts[selectedDose];
+                const vaxName = selectedReceipt.vaccineName.replace(' ', '-');
+                const passDose = selectedReceipt.numDoses;
+                photoBlob = await Photo.generatePass(payloadBody, passDose);
+                filenameDetails = `${vaxName}-${passDose}`;
             }
             const passName = selectedReceipt.name.replace(' ', '-');
-            const vaxName = selectedReceipt.vaccineName.replace(' ', '-');
-            const passDose = selectedReceipt.numDoses;
-            const covidPassFilename = `grassroots-receipt-${passName}-${vaxName}-${passDose}.png`;
+            const covidPassFilename = `grassroots-receipt-${passName}-${filenameDetails}.png`;
 
             await incrementCount();
             
-            let photoBlob = await Photo.generatePass(payloadBody, passDose);
             saveAs(photoBlob, covidPassFilename);
 
             // need to clean up
-            const qrcodeElement = document.getElementById('qrcode');
-            const svg = qrcodeElement.firstChild;
-            qrcodeElement.removeChild(svg);
-            const body = document.getElementById('pass-image');
-            body.hidden = true;
+            if (document.getElementById('qrcode').hasChildNodes()) {
+                document.getElementById('qrcode').firstChild.remove();
+            }
+
+            if (document.getElementById('shc-qrcode').hasChildNodes()) {
+                document.getElementById('shc-qrcode').firstChild.remove();
+            }
+
+            // Hide both our possible passes
+            document.getElementById('pass-image').hidden = true;
+            document.getElementById('shc-pass-image').hidden = true;
 
             setSaveLoading(false);
         } catch (e) {

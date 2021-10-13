@@ -29,7 +29,7 @@ export async function getPayloadBodyFromFile(file: File): Promise<PayloadBody> {
             if (receiptType == 'ON') {
                 // Bail out immediately, special case
                 const receipts = await loadPDF(fileBuffer);
-                return {receipts, rawData: ''};
+                return {receipts, rawData: '', shcReceipt: null};
             } else {
             ///////// END OCT 22ND DELETE BLOCK //////////////////////
                 imageData = await getImageDataFromPdf(fileBuffer);
@@ -46,12 +46,8 @@ export async function getPayloadBodyFromFile(file: File): Promise<PayloadBody> {
             throw Error('invalidFileType')
     }
 
-    const shcData = await processSHC(imageData);
-
-    return {
-        receipts: shcData.receipts,
-        rawData: shcData.rawData
-    };
+    // Send back our SHC payload now
+    return processSHC(imageData);
 }
 
 async function detectReceiptType(fileBuffer : ArrayBuffer): Promise<string> {
@@ -309,7 +305,7 @@ async function getImageDataFromPdf(fileBuffer: ArrayBuffer): Promise<ImageData[]
     return Promise.resolve(retArray);
 }
 
-async function processSHC(allImageData : ImageData[]) : Promise<any> {
+async function processSHC(allImageData : ImageData[]) : Promise<PayloadBody> {
 
     console.log('processSHC');
 
@@ -334,9 +330,9 @@ async function processSHC(allImageData : ImageData[]) : Promise<any> {
                         const verified = verifyJWS(jws, decoded.iss);
 
                         if (verified) {
-                            const receipts = Decode.decodedStringToReceipt(decoded);
-                            console.log(receipts);
-                            return Promise.resolve({receipts: receipts, rawData: rawData});            
+                            const shcReceipt = Decode.decodedStringToReceipt(decoded);
+                            //console.log(shcReceipt);
+                            return Promise.resolve({receipts: null, shcReceipt, rawData});            
                         } else {
                             // If we got here, we found an SHC which was not verifiable. Consider it fatal and stop processing.
                             return Promise.reject(`Issuer ${decoded.iss} cannot be verified.`);
