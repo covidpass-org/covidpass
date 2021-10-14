@@ -97,6 +97,17 @@ export const issuers = [
         x: "kIaIeOhhxpiN13sDs6RKVzCpvxxObI9adKF5YEmKngM",
         y: "AZPQ7CHd3UHp0i4a4ua1FhIq8SJ__BuHgDESuK3A_zQ" },
     ]
+  },
+  {
+    id: "ca.on",
+    display: "Ontario",
+    iss: "https://covid19.quebec.ca/PreuveVaccinaleApi/issuer",
+    keys: [
+      { kid: "Nlgwb6GUrU_f0agdYKc77sXM9U8en1gBu94plufPUj8",
+        alg: "ES256", kty: "EC", crv: "P-256", use: "sig",
+        x: "ibapbMkHMlkR3D-AU0VTFDsiidQ49oD9Ha7VY8Gao3s",
+        y: "88-arXU5frZGOvTZpvg045rHC7y0fqVOS3dKqJbUYhW5gw" },
+    ]
   }
 ];
 
