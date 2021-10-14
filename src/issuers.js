@@ -115,7 +115,7 @@ export const issuers = [
       { kid: "Nlgwb6GUrU_f0agdYKc77sXM9U8en1gBu94plufPUj8",
         alg: "ES256", kty: "EC", crv: "P-256", use: "sig",
         x: "ibapbMkHMlkR3D-AU0VTFDsiidQ49oD9Ha7VY8Gao3s",
-        y: "88-arXU5frZGOvTZpvg045rHC7y0fqVOS3dKqJbUYhW5gw" },
+        y: "arXU5frZGOvTZpvg045rHC7y0fqVOS3dKqJbUYhW5gw" },
     ]
   }
 ];
