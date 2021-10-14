@@ -74,10 +74,6 @@ export async function registerPass(registrationPayload: any) : Promise<boolean> 
 }
 
 export function generateSHCRegisterPayload(shcReceipt: SHCReceipt) {
-    // Register an SHC pass by adding in our pertinent data fields. We only do this so we
-    // can detect changes from providers and react quickly - we don't need these for any
-    // validation since SHCs are self-validating. This entire registration process could
-    // be turned off for SHCs and there would be no harm to the card creation process 
     const retPayload = {};
     retPayload['cardOrigin'] = shcReceipt.cardOrigin;
     retPayload['issuer'] = shcReceipt.issuer;
