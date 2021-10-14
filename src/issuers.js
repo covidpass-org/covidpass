@@ -101,7 +101,7 @@ export const issuers = [
   {
     id: "ca.on",
     display: "Ontario",
-    iss: "https://covid19.quebec.ca/PreuveVaccinaleApi/issuer",
+    iss: "https://prd.pkey.dhdp.ontariohealth.ca",
     keys: [
       { kid: "Nlgwb6GUrU_f0agdYKc77sXM9U8en1gBu94plufPUj8",
         alg: "ES256", kty: "EC", crv: "P-256", use: "sig",
