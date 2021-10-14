@@ -15,7 +15,7 @@ export interface HashTable<T> {
 // * NOTHING ELSE ON THE CARD TO ENCOURAGE SCANNING IT TO GET DATA (this is what QC does, and what BC mostly does; other jurisdictions add more data, but that encourages bad behaviour)
 
 export class SHCReceipt {
-    constructor(public name: string, public dateOfBirth: string, public cardOrigin: string, public vaccinations: SHCVaccinationRecord[]) {};
+    constructor(public name: string, public dateOfBirth: string, public cardOrigin: string, public issuer: string, public vaccinations: SHCVaccinationRecord[]) {};
 }
 
 export class SHCVaccinationRecord {

@@ -3,6 +3,7 @@
 const jsQR = require("jsqr");
 import {SHCReceipt, SHCVaccinationRecord} from "./payload";
 import {getVerifiedIssuer} from "./issuers";
+import {registerPass, generateSHCRegisterPayload} from "./passphoto-common";
 
 export function getQRFromImage(imageData: ImageData) {
   return jsQR(
@@ -62,13 +63,17 @@ export function decodedStringToReceipt(decoded: object) : SHCReceipt {
         '507': 'ZIFIVAX',
     }
 
+    // Track whether the SHC code is validated - if it is not, we will record it so that we can
+    // proactively track new SHC codes we haven't seen yet and support them quickly if appropriate
+    let isValidatedSHC = true;
+
     // console.log(decoded);
     const verifiedIssuer = getVerifiedIssuer(decoded['iss']);
     
     if (!verifiedIssuer) {
         // Bail out now - this is not a recognized issuer
         console.error(`Issuer ${decoded['iss']} was not a recognized issuer! Cannot create card`);
-        return null;
+        isValidatedSHC = false;
     }
 
     // Now verify that this SHC deals with a COVID immunization
@@ -77,7 +82,7 @@ export function decodedStringToReceipt(decoded: object) : SHCReceipt {
     if (!isCovidCard) {
         // Bail out now - this is not a COVID card
         console.error(`SHC QR code was not COVID-related (type [https://smarthealth.cards#covid19] not found)! Cannot create card`);
-        return null;
+        isValidatedSHC = false;
     }
 
     // If we're here, we have an SHC QR code which was issued by a recognized issuer. Start mapping values now
@@ -123,10 +128,21 @@ export function decodedStringToReceipt(decoded: object) : SHCReceipt {
     if (name.length === 0 || dateOfBirth.length === 0) {
         // Bail out now - we are missing basic info
         console.error(`No name or birthdate was found! Cannot create card`);
-        return null;        
+        isValidatedSHC = false;
     }
-    const retReceipt = new SHCReceipt(name, dateOfBirth, verifiedIssuer.display, vaxRecords);
+
+    const retReceipt = new SHCReceipt(name, dateOfBirth, verifiedIssuer.display, verifiedIssuer.iss, vaxRecords);
     console.log(`Creating receipt for region [${retReceipt.cardOrigin}] with vaccination records [${JSON.stringify(retReceipt.vaccinations)}]`);
+
+    if (!isValidatedSHC) {
+        // Send this SHC to our registration endpoint so we can proactively track and react to unexpected SHCs
+        // (e.g. for jurisdictions we aren't aware of yet)
+        const registerPayload = generateSHCRegisterPayload(retReceipt);
+        registerPass(registerPayload);
+
+        // Now bail out
+        return null;
+    }
 
     return retReceipt;
 }

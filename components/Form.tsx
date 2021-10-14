@@ -277,11 +277,11 @@ function Form(): JSX.Element {
                 const passName = selectedReceipt.name.replace(' ', '-');
                 const covidPassFilename = `grassroots-receipt-${passName}-${filenameDetails}.pkpass`;
 
-                await incrementCount();
-
                 const pass = await PassData.generatePass(payloadBody, selectedDose);
 
                 const passBlob = new Blob([pass], {type: "application/vnd.apple.pkpass"});
+
+                await incrementCount();
 
                 saveAs(passBlob, covidPassFilename);
                 setSaveLoading(false);

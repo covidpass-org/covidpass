@@ -222,11 +222,11 @@ async function getImageDataFromPdfPage(pdfPage: PDFPageProxy): Promise<ImageData
 
     const canvas = <HTMLCanvasElement>document.getElementById('canvas');
     const canvasContext = canvas.getContext('2d');
-    const viewport = pdfPage.getViewport({scale: pdfScale})
+    const viewport = pdfPage.getViewport({scale: pdfScale});
 
     // Set correct canvas width / height
-    canvas.width = viewport.width
-    canvas.height = viewport.height
+    canvas.width = viewport.width;
+    canvas.height = viewport.height;
 
     // render PDF
     const renderTask = pdfPage.render({
