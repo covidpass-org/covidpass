@@ -60,7 +60,7 @@ async function detectReceiptType(fileBuffer : ArrayBuffer): Promise<string> {
         const docMetadata = await pdfDocument.getMetadata();
 
         // Explicitly try to detect an ON PDF based on the headers in the PDF
-        console.log(`PDF details: metadata=${JSON.stringify(docMetadata)}`);
+        //console.log(`PDF details: metadata=${JSON.stringify(docMetadata)}`);
 
         // The Ontario proof-of-vaccination receipts have several fixed unchanging pieces of metadata that we use for detection
         if (docMetadata.info['IsSignaturesPresent'] &&
@@ -125,7 +125,7 @@ async function loadPDF(fileBuffer : ArrayBuffer): Promise<HashTable<Receipt>> {
         '-----END CERTIFICATE-----';
 
         const pdfCert = result.pemCertificate.trim();
-        const pdfOrg = result.issuedBy.organizationName;
+        //const pdfOrg = result.issuedBy.organizationName;
         const issuedpemCertificate = (pdfCert == refcert.trim());
 
         //console.log(`pdf is signed by this cert ${result.pemCertificate.trim()}`);
@@ -139,6 +139,7 @@ async function loadPDF(fileBuffer : ArrayBuffer): Promise<HashTable<Receipt>> {
             return Promise.resolve(receipt);
 
         } else {
+            /* We don't need to track these anymore - this is all going away in a week anyways
             // According to the Sentry docs, this can be up to 8KB in size
             // https://develop.sentry.dev/sdk/data-handling/#variable-size
             Sentry.setContext("certificate", {
@@ -146,6 +147,7 @@ async function loadPDF(fileBuffer : ArrayBuffer): Promise<HashTable<Receipt>> {
                 pdfOrg: pdfOrg,
             });
             Sentry.captureMessage('Certificate validation failed');
+            */
             console.error('invalid certificate');
             return Promise.reject(`invalid certificate + ${JSON.stringify(result)}`);
         }
@@ -315,8 +317,8 @@ async function processSHC(allImageData : ImageData[]) : Promise<PayloadBody> {
 
                 const imageData = allImageData[i];
                 const code : QRCode = await Decode.getQRFromImage(imageData);
-                console.log(`SHC code result from page ${i}:`);
-                console.log(code);
+                //console.log(`SHC code result from page ${i}:`);
+                //console.log(code);
 
         		if (code) {
                     try {
@@ -325,7 +327,7 @@ async function processSHC(allImageData : ImageData[]) : Promise<PayloadBody> {
                         const jws = getScannedJWS(rawData);
                         const decoded = await decodeJWS(jws);
 
-                        console.log(decoded);
+                        //console.log(decoded);
 
                         const verified = verifyJWS(jws, decoded.iss);
 
