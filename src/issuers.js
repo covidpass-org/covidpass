@@ -111,6 +111,8 @@ export const issuers = [
   }
 ];
 
+// Check for updates above at https://files.ontario.ca/apps/verify/verifyRulesetON.json
+
 export function getVerifiedIssuer(requestIssuer) {
     for (let curIssuer of issuers) {
         if (curIssuer.iss === requestIssuer) {
