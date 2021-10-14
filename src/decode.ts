@@ -47,8 +47,9 @@ function getOrganizationForResource(immunizationResource: any) : string {
 export function decodedStringToReceipt(decoded: object) : SHCReceipt {
 
     const cvxCodeToVaccineName = {                   // https://www2a.cdc.gov/vaccines/iis/iisstandards/vaccines.asp?rpt=cvx
-        '208': 'PFIZER',
+        '208': 'PFIZER', // Nominally for 16+, in practice seems to be used for 12+
         // The two records below are for childrens' doses of Pfizer, they have different CVX codes.
+        '217': 'PFIZER', // 12+ dose size, unclear how this differs from 208
         '218': 'PFIZER', // 5-11 dose size
         '219': 'PFIZER', // 2-4 dose size
         '212': 'JANSSEN',
@@ -61,6 +62,15 @@ export function decodedStringToReceipt(decoded: object) : SHCReceipt {
         '505': 'SPUTNIK V',
         '506': 'CONVIDECIA',
         '507': 'ZIFIVAX',
+        // All of the vaccines below are listed as CVX codes, but we haven't seen them yet in our data - adding for completeness
+        '501': 'QAZCOVID-IN',
+        '503': 'COVIVAC',
+        '500': 'UNKNOWN',
+        '213': 'UNKNOWN',
+        '509': 'EPIVACCORONA',
+        '508': 'CHOCELL',
+        '211': 'NOVAVAX',
+        '504': 'SPUTNIK LIGHT',
     }
 
     // Track whether the SHC code is validated - if it is not, we will record it so that we can

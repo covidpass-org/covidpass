@@ -343,7 +343,7 @@ async function processSHC(allImageData : ImageData[]) : Promise<PayloadBody> {
                         // We blew up during processing - log it and move on to the next page
                         console.log(e);
                     }
-        		}    
+                }    
             }
         }
 
