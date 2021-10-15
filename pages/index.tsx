@@ -74,12 +74,11 @@ function Index(): JSX.Element {
                     <Card content={
                         <div><p>{t('common:subtitle')}</p><br /><p>{t('common:subtitle2')}</p><br />
                             <b>{displayPassCount}</b><br/><br/>
-                            Oct 3 evening update: 
+                            Oct 14 evening update: 
                             <br />
                             <br />
                             <ul className="list-decimal list-outside" style={{ marginLeft: '20px' }}>
-                                <li>Added expiration date to Apple Wallet pass so it aligns with the province's schedule.</li>
-                                <li>On Oct 22, we will update this tool as well so you can import the official QR code into your mobile wallet too.</li>
+                                <li>You can now import the new enhanced receipt from Ontario into your Apple Wallet.</li>
                             </ul><br />
                             <p>{t('common:continueSpirit')}</p>
                             <br />

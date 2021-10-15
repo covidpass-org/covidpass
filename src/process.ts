@@ -35,26 +35,6 @@ export async function getPayloadBodyFromFile(file: File): Promise<PayloadBody> {
                 imageData = await getImageDataFromPdf(fileBuffer);
             }
             break;
-=======
-import {PayloadBody} from "./payload";
-import * as PdfJS from 'pdfjs-dist'
-import jsQR, {QRCode} from "jsqr";
-import {decodeData} from "./decode";
-import {Result} from "@zxing/library";
-import {COLORS} from "./colors";
-
-PdfJS.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${PdfJS.version}/pdf.worker.js`
-
-export async function getPayloadBodyFromFile(file: File, color: COLORS): Promise<PayloadBody> {
-    let imageData: ImageData;
-
-    switch (file.type) {
-        case 'application/pdf':
-            console.log('pdf')
-            // Read file
-            const fileBuffer = await file.arrayBuffer();
-            imageData = await getImageDataFromPdf(fileBuffer)
-            break
         case 'image/png':
         case 'image/jpeg':
         case 'image/webp':
@@ -326,7 +306,6 @@ async function getImageDataFromPdf(fileBuffer: ArrayBuffer): Promise<ImageData[]
 
     return Promise.resolve(retArray);
 }
-
 
 async function processSHC(allImageData : ImageData[]) : Promise<PayloadBody> {
 
