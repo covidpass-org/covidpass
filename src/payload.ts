@@ -199,20 +199,27 @@ function processSHCReceipt(receipt: SHCReceipt, generic: PassDictionary) {
         );
     }
 
+    let fieldToPush;
+
     for (let i = 0; i < receipt.vaccinations.length; i++) {
-        generic.secondaryFields.push(
+
+        if (i <= 1)
+            fieldToPush = generic.secondaryFields;
+        else if (i <= 3)
+            fieldToPush = generic.auxiliaryFields;
+        else if (i <= 5)
+            fieldToPush = generic.backFields;
+
+        fieldToPush.push(
             {
-                    key: "vaccine",
-                    label: "Vaccine",
-                    value: receipt.vaccinations[i].vaccineName
-            },
-            {
-                key: "dov",
-                label: "Vacc. Date",
+                key: 'vaccine' + i,
+                label: receipt.vaccinations[i].vaccineName,
                 value: receipt.vaccinations[i].vaccinationDate
             }
-        );
+        )
+
     }
+
 
 
 }
