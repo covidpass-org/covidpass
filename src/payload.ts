@@ -187,15 +187,32 @@ function processReceipt(receipt: Receipt, generic: PassDictionary) : boolean {
 
 function processSHCReceipt(receipt: SHCReceipt, generic: PassDictionary) {
 
-    console.log(`processing receipt for origin ${receipt.cardOrigin}`);
+    console.log(`processing receipt for origin ${receipt}`);
 
     if (generic.primaryFields.length == 0) {
         generic.primaryFields.push(
             {
                 key: "name",
-                label: "Name",
-                value: receipt.name
+                label: "",
+                value: `${receipt.name} (${receipt.dateOfBirth})`
             }
-        )
+        );
     }
+
+    for (let i = 0; i < receipt.vaccinations.length; i++) {
+        generic.secondaryFields.push(
+            {
+                    key: "vaccine",
+                    label: "Vaccine",
+                    value: receipt.vaccinations[i].vaccineName
+            },
+            {
+                key: "dov",
+                label: "Vacc. Date",
+                value: receipt.vaccinations[i].vaccinationDate
+            }
+        );
+    }
+
+
 }
