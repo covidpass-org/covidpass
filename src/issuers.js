@@ -8,6 +8,10 @@ export const issuers = [
         alg: "ES256", kty: "EC", crv: "P-256", use: "sig",
         x: "XSxuwW_VI_s6lAw6LAlL8N7REGzQd_zXeIVDHP_j_Do",
         y: "88-aI4WAEl4YmUpew40a9vq_w5OcFvsuaKMxJRLRLL0" },
+      { kid: "2XlWk1UQMqavMtLt-aX35q_q9snFtGgdjH4-Y1gfH1M",
+        alg: "ES256", kty: "EC", crv: "P-256", use: "sig",
+        x: "XSxuwW_VI_s6lAw6LAlL8N7REGzQd_zXeIVDHP_j_Do",
+        y: "88-aI4WAEl4YmUpew40a9vq_w5OcFvsuaKMxJRLRLL0" },
     ]
   },
   {
@@ -50,6 +54,11 @@ export const issuers = [
     keys: [
       { kid: "UnHGY-iyCIr__dzyqcxUiApMwU9lfeXnzT2i5Eo7TvE",
         alg: "ES256", kty: "EC", crv: "P-256", use: "sig",
+        x5c: [
+          "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"
+        ],
         x: "wCeT9rdLYTpOK52OK0-oRbwDxbljJdNiDuxPsPt_1go",
         y: "IgFPi1OrHtJWJGwPMvlueeHmULUKEpScgpQtoHNjX-Q" },
     ]
@@ -97,8 +106,21 @@ export const issuers = [
         x: "kIaIeOhhxpiN13sDs6RKVzCpvxxObI9adKF5YEmKngM",
         y: "AZPQ7CHd3UHp0i4a4ua1FhIq8SJ__BuHgDESuK3A_zQ" },
     ]
+  },
+  {
+    id: "ca.on",
+    display: "Ontario",
+    iss: "https://prd.pkey.dhdp.ontariohealth.ca",
+    keys: [
+      { kid: "Nlgwb6GUrU_f0agdYKc77sXM9U8en1gBu94plufPUj8",
+        alg: "ES256", kty: "EC", crv: "P-256", use: "sig",
+        x: "ibapbMkHMlkR3D-AU0VTFDsiidQ49oD9Ha7VY8Gao3s",
+        y: "arXU5frZGOvTZpvg045rHC7y0fqVOS3dKqJbUYhW5gw" },
+    ]
   }
 ];
+
+// Check for updates above at https://files.ontario.ca/apps/verify/verifyRulesetON.json
 
 export function getVerifiedIssuer(requestIssuer) {
     for (let curIssuer of issuers) {
