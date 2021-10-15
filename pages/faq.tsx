@@ -16,12 +16,22 @@ function linkToJSX(link: link): JSX.Element {
 function urlParse(text: string, links: link[]): JSX.Element[] {
     const el = text.split(/(%s)/).map(s => {
         if (s.includes("%s")) {
-            return linkToJSX(links.pop());
+            return linkToJSX(links.shift());
         } else {
             return <>{s}</>
         }
     });
     return el;
+}
+
+
+const CONSTANTS = {
+    grassrootsEmail: { url: 'mailto:grassroots@vaccine-ontario.ca', text: 'grassroots@vaccine-ontario.ca' },
+    verifier: { url: 'https://verifier.vaccine-ontario.ca/', text: 'verifier.vaccine-ontario.ca' },
+    twitter: { url: 'https://twitter.com/grassroots_team', text: '@grassroots_team' },
+    booking: { url: 'https://vaccine-ontario.ca/', text: 'vaccine-ontario.ca' },
+    verifyOntarioApp: { url: 'https://covid-19.ontario.ca/verify', text: 'Verify Ontario app' },
+    vaxHunters: { url: 'https://vaccinehunters.ca/', text: 'Vaccine Hunters Canada' },
 }
 
 function Faq(): JSX.Element {
@@ -37,15 +47,15 @@ function Faq(): JSX.Element {
       {description: 'I\'m seeing an error message saying “Failed byte range verification." What do I do?', answer: 'If you see this error then please try re-downloading your receipt from the provincial proof-of-vaccination portal and trying again. We have received reports from some people that this has resolved the problem for them.'},
       {description: 'Why isn\'t the new Apple Wallet pass green/orange?', answer: 'The official verifier from Ontario will decide which one is accepted. Color coding is no longer used for our Apple Wallet tool.'},
       {description: 'How is the data on my vaccination receipt processed?', answer: 'Inside your local web browser, it checks the receipt for a digital signature from the provincial proof-of-vaccination system. If present, the receipt data is converted into Apple\'s format and then added into your iOS Wallet app.'},
-      {description: 'How can organizations validate this QR code?', answer: 'Verify Ontario app is your official tool. For devices that cannot run the official tool, you can also use our web-based tool at verifier.vaccine-ontario.ca'},
+        { description: 'How can organizations validate this QR code?', answer: urlParse('%s is your official tool. For devices that cannot run the official tool, you can also use our web-based tool at %s', [CONSTANTS.verifyOntarioApp, CONSTANTS.grassrootsEmail]) },
       {description: 'Can I use the same iPhone to store passes for my entire family?', answer: 'Yes.'},
-      {description: 'Is this free and non-commercial?', answer: 'Similar to VaxHuntersCanada, there are no commercial interests. Just volunteers trying to do our part to help the community.'},
-      {description: 'How about support for other provinces?', answer: 'We will be investigating BC and Québec support shortly. If you are interested in contributing, please email us at grassroots@vaccine-ontario.ca'},
+        { description: 'Is this free and non-commercial?', answer: urlParse('Similar to %s, there are no commercial interests. Just volunteers trying to do our part to help the community.', [CONSTANTS.vaxHunters]) },
+        { description: 'How about support for other provinces?', answer: urlParse('We will be investigating BC and Québec support shortly. If you are interested in contributing, please email us at %s', [CONSTANTS.grassrootsEmail]) },
       {description: 'How about Apple Watch?', answer: 'If you have iCloud sync enabled, you will see the pass on the watch too.'},
       {description: 'Why have we taken time to build this?', answer: 'Gives Ontarians/organizations something easy to use (volunteered-developed, unofficial) until the official provincial app comes out in October.'},
-      {description: 'Who made this?', answer: 'The same group of volunteers who created the all-in-one vaccine appointment finding tool at vaccine-ontario.ca'},
-      {description: 'How can I stay up-to-date on your progress?', answer: 'We will post regular updates on Twitter @grassroots_team'},
-      {description: 'I have more questions. Can you please help me?', answer: 'Sure. Just email us at grassroots@vaccine-ontario.ca'}
+        { description: 'Who made this?', answer: urlParse('The same group of volunteers who created the all-in-one vaccine appointment finding tool at %s', [CONSTANTS.booking]) },
+        { description: 'How can I stay up-to-date on your progress?', answer: urlParse('We will post regular updates on Twitter %s', [CONSTANTS.twitter]) },
+        { description: 'I have more questions. Can you please help me?', answer: urlParse('Sure. Just email us at %s', [CONSTANTS.grassrootsEmail]) }
     ];
 
 
