@@ -3,6 +3,7 @@ import {toBuffer as createZip} from 'do-not-zip';
 import {Constants} from "./constants";
 import {Payload, PayloadBody, PassDictionary} from "./payload";
 import {QrCode,PassPhotoCommon} from './passphoto-common';
+import {COLORS} from "./colors";
 
 const crypto = require('crypto')
 
@@ -45,7 +46,7 @@ export class PassData {
         const apiBaseUrl = (await configResponse.json()).apiBaseUrl
         // console.log(`${apiBaseUrl}/sign`);
 
-        // console.log(JSON.stringify(signData));
+        console.log(JSON.stringify(signData));
 
         const response = await fetch(`${apiBaseUrl}/sign`, {
             method: 'POST',
@@ -74,6 +75,10 @@ export class PassData {
 
             const pass: PassData = new PassData(results.payload, results.qrCode);
 
+            if (!pass.expirationDate) {
+                delete pass['expirationDate'];
+            }
+            
             // Create new zip
             const zip = [] as { path: string; data: Buffer | string }[];
 
@@ -113,10 +118,12 @@ export class PassData {
             // Create pass hash
             const passHash = PassData.getBufferHash(Buffer.from(passJson));
 
+            const useBlackVersion = (payload.backgroundColor == COLORS.WHITE);
+
             // Sign hash with server
             const manifestSignature = await PassData.signWithRemote({
                 PassJsonHash: passHash,
-                useBlackVersion: false,
+                useBlackVersion: useBlackVersion,
             });
 
             // Add signature to zip
