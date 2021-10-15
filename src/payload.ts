@@ -187,7 +187,7 @@ function processReceipt(receipt: Receipt, generic: PassDictionary) : boolean {
 
 function processSHCReceipt(receipt: SHCReceipt, generic: PassDictionary) {
 
-    console.log(`processing receipt for origin ${receipt}`);
+    console.log(`processing receipt for origin ${receipt.cardOrigin}`);
 
     if (generic.primaryFields.length == 0) {
         generic.primaryFields.push(
