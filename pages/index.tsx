@@ -7,7 +7,7 @@ import Card from '../components/Card';
 import Page from '../components/Page';
 import Alert from '../components/Alert';
 import React, { useEffect, useState } from 'react';
-import { isIOS, isSafari, isAndroid} from 'react-device-detect';
+import { isIOS, isSafari } from 'react-device-detect';
 import usePassCount from "../src/hooks/use_pass_count";
 import Link from 'next/link'
 
@@ -31,15 +31,13 @@ function Index(): JSX.Element {
         if (isIOS && !isSafari) setWarningMessage("iPhone users, only Safari is supported at the moment. Please switch to Safari to prevent any unexpected errors.")
         else if (!isIOS) {
                 setWarningMessage('Only Safari on iOS is officially supported for Apple Wallet import at the moment - ' +
-                    'for other platforms, please ensure you have an application which can open Apple Wallet .pkpass files');
+                    'for other platforms, please create a photo card or ensure you have an application which can open Apple Wallet .pkpass files');
         }
     }, []);
     
 
-    // If you previously created a vaccination receipt before Sept. 23rd and need to add your date of birth on your vaccination receipt, please reimport your Ministry of Health official vaccination receipt again below and the date of birth will now be visible on the created receipt
-
-    const title = 'Grassroots - Ontario vaccination receipt to your Apple wallet';
-    const description = 'Stores it on iPhone with a QR code for others to validate in a privacy respecting way.';
+    const title = 'Grassroots - ON/BC/QC/AB/SK/NS/YK/NY/CA/LA vaccination QR Code import for Apple and Android devices';
+    const description = 'Grassroots imports vaccination QR codes from ON/BC/QC/AB/SK/NS/YK/NY/CA/LA and stores them on Apple and Android devices in a convenient, secure, and privacy-respecting way';
 
     return (
         <>
@@ -50,14 +48,14 @@ function Index(): JSX.Element {
                     url: 'https://grassroots.vaccine-ontario.ca/',
                     title: title,
                     description: description,
-                    // images: [
-                    //     {
-                    //         url: 'https://covidpass.marvinsextro.de/thumbnail.png',
-                    //         width: 1000,
-                    //         height: 500,
-                    //         alt: description,
-                    //     }
-                    // ],
+                    images: [
+                        {
+                            url: 'https://grassroots.vaccine-ontario.ca/grassroots.jpg',
+                            width: 400,
+                            height: 400,
+                            alt: description,
+                        }
+                    ],
                     site_name: title,
                 }}
                 twitter={{
@@ -74,11 +72,14 @@ function Index(): JSX.Element {
                     <Card content={
                         <div><p>{t('common:subtitle')}</p><br /><p>{t('common:subtitle2')}</p><br />
                             <b>{displayPassCount}</b><br/><br/>
-                            Oct 14 evening update: 
+                            <b>MAJOR NEW RELEASE! </b>Oct 15 morning update: 
                             <br />
                             <br />
                             <ul className="list-decimal list-outside" style={{ marginLeft: '20px' }}>
-                                <li>You can now import the new enhanced receipt from Ontario into your Apple Wallet.</li>
+                                <li>You can now import the new enhanced receipt from Ontario onto your Apple or Android devices</li>
+                                <li>Support released for importing Ontario, British Columbia, Alberta, Saskatchewan, Nova Scotia, Québec, Yukon, California, New York, and Louisiana SHC QR codes</li>
+                                <li>Support released for importing QR codes from images as well as from PDFs</li>
+                                <li>Support for creating our previous interim QR codes has been removed - now that the official Ontario QR code is being released and the gap is filled, our QR codes are no longer needed</li>
                             </ul><br />
                             <p>{t('common:continueSpirit')}</p>
                             <br />

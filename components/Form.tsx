@@ -375,7 +375,7 @@ function Form(): JSX.Element {
             {t('verifierLink')}&nbsp;
             <Link href="https://verifier.vaccine-ontario.ca/">
                 <a className="underline">verifier.vaccine-ontario.ca </a>
-            </Link>
+            </Link>&nbsp;(NOTE: does not yet support new QR codes; will add support shortly)
         </p>
     </li>
 
