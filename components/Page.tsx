@@ -102,7 +102,28 @@ function Page(props: PageProps): JSX.Element {
                 <br/>
                 <br/>
             </div>
-            <canvas id="canvas" />
+            <div id="shc-pass-image" style={{backgroundColor: "white", color: "black", fontFamily: 'Arial', fontSize: 10, width: '350px', padding: '10px'}} hidden>
+                <table style={{verticalAlign: "middle"}}>
+                    <tbody>
+                        <tr>
+                            <td><img src='shield-black.svg' width='50' height='50' /></td>
+                            <td style={{fontSize: 20, width: 280}}>
+                                <span style={{marginLeft: '11px', whiteSpace: 'nowrap'}}><b>COVID-19 Vaccination Card</b></span><br/>
+                                <span style={{marginLeft: '11px'}}><b id='shc-card-origin'></b></span>
+                            </td>
+                        </tr>
+                    </tbody>
+                 </table>
+                <br/>
+                <br/>
+                <div id='shc-card-name' style={{fontSize:20, textAlign: 'center'}}></div>
+                <br/>
+                <br/>
+                <div id='shc-qrcode' style={{width:'63%', display:'block', marginLeft: 'auto', marginRight: 'auto'}}></div>
+                <br/>
+                <br/>
+            </div>
+            <canvas id="canvas" style={{display: 'none'}}/>
         </div>
     )
 }

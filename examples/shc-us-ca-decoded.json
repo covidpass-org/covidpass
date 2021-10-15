@@ -1,0 +1,89 @@
+{
+    "iss": "https://myvaccinerecord.cdph.ca.gov/creds",
+    "nbf": 1628831358,
+    "vc": {
+        "type": [
+            "https://smarthealth.cards#health-card",
+            "https://smarthealth.cards#immunization",
+            "https://smarthealth.cards#covid19"
+        ],
+        "credentialSubject": {
+            "fhirVersion": "4.0.1",
+            "fhirBundle": {
+                "resourceType": "Bundle",
+                "type": "collection",
+                "entry": [
+                    {
+                        "fullUrl": "resource:0",
+                        "resource": {
+                            "resourceType": "Patient",
+                            "name": [
+                                {
+                                    "family": "Lastname",
+                                    "given": [
+                                        "First Name"
+                                    ]
+                                }
+                            ],
+                            "birthDate": "YYYY-MM-DD"
+                        }
+                    },
+                    {
+                        "fullUrl": "resource:1",
+                        "resource": {
+                            "resourceType": "Immunization",
+                            "status": "completed",
+                            "vaccineCode": {
+                                "coding": [
+                                    {
+                                        "system": "http://hl7.org/fhir/sid/cvx",
+                                        "code": "208"
+                                    }
+                                ]
+                            },
+                            "patient": {
+                                "reference": "resource:0"
+                            },
+                            "occurrenceDateTime": "YYYY-MM-DD",
+                            "lotNumber": "SOME_STRING",
+                            "performer": [
+                                {
+                                    "actor": {
+                                        "display": "Pretty Location Display Name"
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "fullUrl": "resource:2",
+                        "resource": {
+                            "resourceType": "Immunization",
+                            "status": "completed",
+                            "vaccineCode": {
+                                "coding": [
+                                    {
+                                        "system": "http://hl7.org/fhir/sid/cvx",
+                                        "code": "208"
+                                    }
+                                ]
+                            },
+                            "patient": {
+                                "reference": "resource:0"
+                            },
+                            "occurrenceDateTime": "YYYY-MM-DD",
+                            "lotNumber": "SOME_STRING",
+                            "performer": [
+                                {
+                                    "actor": {
+                                        "display": "Pretty Location Display Name"
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                ]
+            }
+        }
+    }
+}
