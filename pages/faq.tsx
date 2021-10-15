@@ -4,6 +4,26 @@ import {serverSideTranslations} from 'next-i18next/serverSideTranslations';
 import Page from '../components/Page'
 import Card from '../components/Card'
 
+interface link{
+    url: string;
+    text: string;
+}
+
+function linkToJSX(link: link): JSX.Element {
+    return <div style={{ display: 'inline' }} dangerouslySetInnerHTML={{ __html: `<a href="${link.url}" target="_blank" class="underline">${link.text}</a>` }}></div>
+}
+
+function urlParse(text: string, links: link[]): JSX.Element[] {
+    const el = text.split(/(%s)/).map(s => {
+        if (s.includes("%s")) {
+            return linkToJSX(links.pop());
+        } else {
+            return <>{s}</>
+        }
+    });
+    return el;
+}
+
 function Faq(): JSX.Element {
     const { t } = useTranslation(['common', 'index', 'faq']);
     const questionList = [
