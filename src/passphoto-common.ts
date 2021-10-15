@@ -109,6 +109,7 @@ export class PassPhotoCommon {
             // validation since SHCs are self-validating. This entire registration process could
             // be turned off for SHCs and there would be no harm to the card creation process 
             registrationPayload = generateSHCRegisterPayload(payloadBody.shcReceipt);
+            registrationPayload.serialNumber = payload.serialNumber;            // serial number is needed as it's the firestore document id
 
         } else {
             
