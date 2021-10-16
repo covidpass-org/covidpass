@@ -367,18 +367,6 @@ function Form(): JSX.Element {
             setSaveLoading(false);
         }
     }
-    const verifierLink = () => <li className="flex flex-row items-center">
-        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mx-2 fill-current text-green-500" viewBox="0 0 20 20" fill="currentColor">
-            <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-        </svg>
-        <p>
-            {t('verifierLink')}&nbsp;
-            <Link href="https://verifier.vaccine-ontario.ca/">
-                <a className="underline">verifier.vaccine-ontario.ca </a>
-            </Link>&nbsp;(NOTE: does not yet support new QR codes; will add support shortly)
-        </p>
-    </li>
-
     const setDose = (e) => {
         setSelectedDose(e.target.value);
     }
@@ -509,20 +497,11 @@ function Form(): JSX.Element {
 
                 <Card step={showDoseOption ? '4' : '3'} heading={t('index:addToWalletHeader')} content={
                     <div className="space-y-5">
-                        {/* <p>
-                            {t('index:dataPrivacyDescription')}
-                            <Link href="/privacy">
-                                <a>
-                                    {t('index:privacyPolicy')}
-                                </a>
-                            </Link>.
-                        </p> */}
                         <div>
                             <ul className="list-none">
                                 <Check text={t('createdOnDevice')}/>
                                 <Check text={t('piiNotSent')}/>
                                 <Check text={t('openSourceTransparent')}/>
-                                {verifierLink()}
                             </ul>
                         </div>
 
