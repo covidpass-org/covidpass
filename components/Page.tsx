@@ -34,7 +34,7 @@ function Page(props: PageProps): JSX.Element {
                             <a href="https://github.com/billylo1/covidpass" className="underline">{t('common:gitHub')}</a>
                             <a href="https://vaccine-ontario.ca" className="underline">{t('common:returnToMainSite')}</a>
                         </nav>
-                        <div className="flex pt-4 flex-row space-x-4 justify-center text-md flex-wrap">Last updated: 2021-10-15 (v2.0.4)</div>
+                        <div className="flex pt-4 flex-row space-x-4 justify-center text-md flex-wrap">Last updated: 2021-10-16 (v2.0.5)</div>
                     </footer>
                 </main>
             </div>

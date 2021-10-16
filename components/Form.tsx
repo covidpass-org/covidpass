@@ -382,15 +382,24 @@ function Form(): JSX.Element {
         //     setAddErrorMessage('Sorry. Apple Wallet pass can be added using Safari or Chrome only.');
         //     setIsDisabledAppleWallet(true);
         // }
-        // if (isIOS && (!osVersion.includes('13') && !osVersion.includes('14') && !osVersion.includes('15'))) {
-        //     setAddErrorMessage('Sorry, iOS 13+ is needed for the Apple Wallet functionality to work')
-        //     setIsDisabledAppleWallet(true);
-        // }
+        if (isIOS && (!osVersion.startsWith('15'))) {
+            setAddErrorMessage('Sorry, iOS 15+ is needed for the Apple Wallet functionality to work with Smart Health Card')
+            setIsDisabledAppleWallet(true);
+            return;
+        } 
+
+        if (isMacOs) {
+            setAddErrorMessage('Reminder: iOS 15+ is needed for the Apple Wallet functionality to work with Smart Health Card')
+            return;
+
+        }
+
         if (isIOS && !isSafari) {
             // setAddErrorMessage('Sorry, only Safari can be used to add a Wallet Pass on iOS');
             setAddErrorMessage('Sorry, only Safari can be used to add a Wallet Pass on iOS');
             setIsDisabledAppleWallet(true);
-            console.log('not safari')
+            return;
+
         }
         // } else if (!isIOS) {
         //     setWarningMessage('Only Safari on iOS is officially supported for Wallet import at the moment - ' +
