@@ -28,10 +28,11 @@ function Index(): JSX.Element {
     const deleteWarningMessage = (message: string) => _setWarningMessages(warningMessages.filter(item => item !== message));
 
     useEffect(() => {
-        if ((isIOS && !isMacOs) && !isSafari) setWarningMessage("iPhone users, only Safari is supported at the moment. Please switch to Safari to prevent any unexpected errors.")
+        if ((isIOS && !isMacOs) && !isSafari)
+            setWarningMessage("iPhone users, only Safari is supported at the moment. Please switch to Safari to prevent any unexpected errors.")
         else {
             if (isAndroid) {
-                if (Number(osVersion) > 8) {
+                if (Number(osVersion.split('.')[0]) >= 8) {
                     setWarningMessage("Hi, Android users, check out our new Add to Google Pay button...")
                 } else {
                     setWarningMessage("Sorry, Add to Google Pay is only available to Android 8.1+.")
@@ -41,10 +42,8 @@ function Index(): JSX.Element {
     }, []);
     
 
-    // If you previously created a vaccination receipt before Sept. 23rd and need to add your date of birth on your vaccination receipt, please reimport your Ministry of Health official vaccination receipt again below and the date of birth will now be visible on the created receipt
-
-    const title = 'Grassroots - Import vaccination receipt to your mobile wallet (iPhone/Android)';
-    const description = 'A non-commercial tool, built by volunteers to make it easier to show your vaccination records';
+    const title = 'Grassroots - vaccination QR Code import for Apple and Android devices. Supports BC AB SK MB ON QC NS YK NT NY NJ CA LA VA HI UT';
+    const description = 'Grassroots imports vaccination QR codes and stores them on Apple and Android devices in a convenient, secure, and privacy-respecting way. Supports SHC QR codes from BC AB SK MB ON QC NS YK NT NY NJ CA LA VA HI UT';
 
     return (
         <>
@@ -55,14 +54,14 @@ function Index(): JSX.Element {
                     url: 'https://grassroots.vaccine-ontario.ca/',
                     title: title,
                     description: description,
-                    // images: [
-                    //     {
-                    //         url: 'https://covidpass.marvinsextro.de/thumbnail.png',
-                    //         width: 1000,
-                    //         height: 500,
-                    //         alt: description,
-                    //     }
-                    // ],
+                    images: [
+                        {
+                            url: 'https://grassroots.vaccine-ontario.ca/grassroots.jpg',
+                            width: 400,
+                            height: 400,
+                            alt: description,
+                        }
+                    ],
                     site_name: title,
                 }}
                 twitter={{
@@ -79,16 +78,21 @@ function Index(): JSX.Element {
                     <Card content={
                         <div><p>{t('common:subtitle')}</p><br /><p>{t('common:subtitle2')}</p><br />
                             <b>{displayPassCount}</b><br/><br/>
-                            Oct 10 afternoon update: 
+                            <b>MAJOR NEW RELEASE! </b>Oct 15 evening update: 
                             <br />
                             <br />
                             <ul className="list-decimal list-outside" style={{ marginLeft: '20px' }}>
-                                <li>Support for Google Pay Wallet (compatible with Android 8.1+)</li>
+                                <li>You can now import the new enhanced receipt from Ontario onto your Apple or Android devices</li>
+                                <li>Support released for importing Ontario, British Columbia, Alberta, Saskatchewan, Nova Scotia, Québec, Yukon, California, New York, and Louisiana SHC QR codes</li>
+                                <li>Support released for importing QR codes from images as well as from PDFs</li>
+                                <li>Support for creating our previous interim QR codes has been removed - now that the official Ontario QR code is being released and the gap is filled, our QR codes are no longer needed</li>
+                                <li>Support released for importing Manitoba's (new unannounced) QR codes, as well as for Northwest Territories, New Jersey, Hawaii, Virginia, and Utah SHC QR codes</li>
                             </ul><br />
                             <p>{t('common:continueSpirit')}</p>
                             <br />
                             <Link href="https://www.youtube.com/watch?v=AIrG5Qbjptg">
-                                <a className="underline" target="_blank">
+                                {/* <a className="underline" target="_blank"> */}
+                                <a className="underline">
                                     Click here for a video demo
                                 </a>
                             </Link>&nbsp;

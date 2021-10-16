@@ -143,8 +143,7 @@ function Form(): JSX.Element {
 
                 // Don't report known errors to Sentry
                 if (!e.message.includes('invalidFileType') &&
-                    !e.message.includes('not digitally signed') &&
-					!e.message.includes('No valid ON proof-of-vaccination')) {
+					!e.message.includes('No SHC QR code found')) {
                   Sentry.captureException(e);
                 }
 
@@ -168,7 +167,9 @@ function Form(): JSX.Element {
 
     async function gotoOntarioHealth(e) {
         e.preventDefault();
-        window.open('https://covid19.ontariohealth.ca','_blank');
+        // window.open('https://covid19.ontariohealth.ca','_blank');        // this created many extra steps in mobile chrome to return to the grassroots main window... if user has many windows open, they get lost (BACK button on the same window is easier for user to return)
+        window.location.href = 'https://covid19.ontariohealth.ca';
+
     }
     async function goToFAQ(e) {
         e.preventDefault();
@@ -269,28 +270,26 @@ function Form(): JSX.Element {
             if (payloadBody) {
                 
                 let selectedReceipt;
-                if (payloadBody.rawData.length > 0) {                   // shc stuff
-                    const sortedKeys = Object.keys(payloadBody.receipts).sort();             // pickup the last key in the receipt table
-                    const lastKey = sortedKeys[sortedKeys.length - 1];
-                    selectedReceipt = payloadBody.receipts[lastKey];
+                let filenameDetails = '';
+                if (payloadBody.rawData.length > 0) {
+                    // This is an SHC receipt, so do our SHC thing
+                    selectedReceipt = payloadBody.shcReceipt;
+                    filenameDetails = selectedReceipt.cardOrigin.replace(' ', '-');
                 } else {
                     selectedReceipt = payloadBody.receipts[selectedDose];
+                    const vaxName = selectedReceipt.vaccineName.replace(' ', '-');
+                    const passDose = selectedReceipt.numDoses;
+                    filenameDetails = `${vaxName}-${passDose}`;
                 }
                 const passName = selectedReceipt.name.replace(' ', '-');
-                const vaxName = selectedReceipt.vaccineName.replace(' ', '-');
-                const passDose = selectedReceipt.numDoses;
-                const covidPassFilename = `grassroots-receipt-${passName}-${vaxName}-${passDose}.pkpass`;
+                const covidPassFilename = `grassroots-receipt-${passName}-${filenameDetails}.pkpass`;
 
-                console.log('> increment count');
-                await incrementCount();
-
-                console.log('> generatePass');
                 const pass = await PassData.generatePass(payloadBody, selectedDose);
 
-                console.log('> create blob');
                 const passBlob = new Blob([pass], {type: "application/vnd.apple.pkpass"});
 
-                console.log(`> save blob as ${covidPassFilename}`);
+                await incrementCount();
+
                 saveAs(passBlob, covidPassFilename);
                 setSaveLoading(false);
             } 
@@ -390,30 +389,40 @@ function Form(): JSX.Element {
         try {
 
             let selectedReceipt;
-            if (payloadBody.rawData.length > 0) {                   // shc stuff
-                const sortedKeys = Object.keys(payloadBody.receipts).sort();             // pickup the last key in the receipt table
-                const lastKey = sortedKeys[sortedKeys.length - 1];
-                selectedReceipt = payloadBody.receipts[lastKey];
-                setSelectedDose(Number(lastKey));
+            let photoBlob: Blob;
+            let filenameDetails = '';
+            if (payloadBody.rawData.length > 0) {    
+                // This is an SHC receipt, so do our SHC thing
+                selectedReceipt = payloadBody.shcReceipt;
+                photoBlob = await Photo.generateSHCPass(payloadBody);
+                filenameDetails = selectedReceipt.cardOrigin.replace(' ', '-');
             } else {
+                // This is an old-style ON custom QR code Receipt
                 selectedReceipt = payloadBody.receipts[selectedDose];
+                const vaxName = selectedReceipt.vaccineName.replace(' ', '-');
+                const passDose = selectedReceipt.numDoses;
+                photoBlob = await Photo.generatePass(payloadBody, passDose);
+                filenameDetails = `${vaxName}-${passDose}`;
             }
             const passName = selectedReceipt.name.replace(' ', '-');
-            const vaxName = selectedReceipt.vaccineName.replace(' ', '-');
-            const passDose = selectedReceipt.numDoses;
-            const covidPassFilename = `grassroots-receipt-${passName}-${vaxName}-${passDose}.png`;
+            const covidPassFilename = `grassroots-receipt-${passName}-${filenameDetails}.png`;
 
             await incrementCount();
             
-            let photoBlob = await Photo.generatePass(payloadBody, passDose);
             saveAs(photoBlob, covidPassFilename);
 
             // need to clean up
-            const qrcodeElement = document.getElementById('qrcode');
-            const svg = qrcodeElement.firstChild;
-            qrcodeElement.removeChild(svg);
-            const body = document.getElementById('pass-image');
-            body.hidden = true;
+            if (document.getElementById('qrcode').hasChildNodes()) {
+                document.getElementById('qrcode').firstChild.remove();
+            }
+
+            if (document.getElementById('shc-qrcode').hasChildNodes()) {
+                document.getElementById('shc-qrcode').firstChild.remove();
+            }
+
+            // Hide both our possible passes
+            document.getElementById('pass-image').hidden = true;
+            document.getElementById('shc-pass-image').hidden = true;
 
             setSaveLoading(false);
         } catch (e) {
@@ -424,18 +433,6 @@ function Form(): JSX.Element {
             setSaveLoading(false);
         }
     }
-    const verifierLink = () => <li className="flex flex-row items-center">
-        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mx-2 fill-current text-green-500" viewBox="0 0 20 20" fill="currentColor">
-            <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-        </svg>
-        <p>
-            {t('verifierLink')}&nbsp;
-            <Link href="https://verifier.vaccine-ontario.ca/">
-                <a className="underline">verifier.vaccine-ontario.ca </a>
-            </Link>
-        </p>
-    </li>
-
     const setDose = (e) => {
         setSelectedDose(e.target.value);
     }
@@ -450,15 +447,24 @@ function Form(): JSX.Element {
         //     setAddErrorMessage('Sorry. Apple Wallet pass can be added using Safari or Chrome only.');
         //     setIsDisabledAppleWallet(true);
         // }
-        // if (isIOS && (!osVersion.includes('13') && !osVersion.includes('14') && !osVersion.includes('15'))) {
-        //     setAddErrorMessage('Sorry, iOS 13+ is needed for the Apple Wallet functionality to work')
-        //     setIsDisabledAppleWallet(true);
-        // }
+        if (isIOS && (!osVersion.startsWith('15'))) {
+            setAddErrorMessage('Sorry, iOS 15+ is needed for the Apple Wallet functionality to work with Smart Health Card')
+            setIsDisabledAppleWallet(true);
+            return;
+        } 
+
+        if (isMacOs) {
+            setAddErrorMessage('Reminder: iOS 15+ is needed for the Apple Wallet functionality to work with Smart Health Card')
+            return;
+
+        }
+
         if (isIOS && !isSafari) {
             // setAddErrorMessage('Sorry, only Safari can be used to add a Wallet Pass on iOS');
             setAddErrorMessage('Sorry, only Safari can be used to add a Wallet Pass on iOS');
             setIsDisabledAppleWallet(true);
-            console.log('not safari')
+            return;
+
         }
 
         if (isAndroid) {
@@ -526,7 +532,7 @@ function Form(): JSX.Element {
 
                         <input type='file'
                                id='file'
-                               accept="application/pdf"
+                               accept="application/pdf,.png,.jpg,.jpeg,.gif,.webp"
                                ref={inputFile}
                                style={{display: 'none'}}
                         />
@@ -579,20 +585,11 @@ function Form(): JSX.Element {
 
                 <Card step={showDoseOption ? '4' : '3'} heading={t('index:addToWalletHeader')} content={
                     <div className="space-y-5">
-                        {/* <p>
-                            {t('index:dataPrivacyDescription')}
-                            <Link href="/privacy">
-                                <a>
-                                    {t('index:privacyPolicy')}
-                                </a>
-                            </Link>.
-                        </p> */}
                         <div>
                             <ul className="list-none">
                                 <Check text={t('createdOnDevice')}/>
                                 <Check text={t('piiNotSent')}/>
                                 <Check text={t('openSourceTransparent')}/>
-                                {verifierLink()}
                             </ul>
                         </div>
 

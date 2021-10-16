@@ -1,10 +1,6 @@
-import {toBuffer as createZip} from 'do-not-zip';
 import {v4 as uuid4} from 'uuid';
-
-import {Constants} from "./constants";
-import {Payload, PayloadBody, PassDictionary} from "./payload";
 import * as Sentry from '@sentry/react';
-import { QRCodeMatrixUtil } from '@zxing/library';
+import {Payload, PayloadBody, SHCReceipt} from "./payload";
     
 export enum QrFormat {
     PKBarcodeFormatQR = 'PKBarcodeFormatQR',
@@ -28,70 +24,113 @@ export interface PackageResult {
     qrCode: QrCode;
 }
 
+var _configData: any;
+async function getConfigData(): Promise<any> {
+    if (!_configData) {
+        // Only call this once
+        const configResponse = await fetch('/api/config');
+        _configData = await configResponse.json();
+    }
+    
+    return _configData;
+}
+
+export async function registerPass(registrationPayload: any) : Promise<boolean> {
+    const requestOptions = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(registrationPayload) // body data type must match "Content-Type" header
+    }
+
+    const configData = await getConfigData();
+    // console.log('registering ' + JSON.stringify(registrationPayload, null, 2));
+
+    const registrationHost = configData.registrationHost;
+    const functionSuffix = configData.functionSuffix?? '';
+
+    const registerUrl = `${registrationHost}/register${functionSuffix}`;
+    // console.log(registerUrl);
+
+    try {
+        const response  = await fetch(registerUrl, requestOptions);
+        const responseJson = await response.json();
+
+        // console.log(JSON.stringify(responseJson,null,2));
+        const wasSuccess = (responseJson["result"] === 'OK');
+        if (!wasSuccess) {
+            console.error(responseJson);
+        }
+        
+        return Promise.resolve(wasSuccess);
+    } catch (e) {
+        console.error(e);
+        Sentry.captureException(e);
+
+        // Registration was unsuccessful
+        return false;
+    }
+}
+
+export function generateSHCRegisterPayload(shcReceipt: SHCReceipt) {
+    const retPayload = {};
+    retPayload['cardOrigin'] = shcReceipt.cardOrigin;
+    retPayload['issuer'] = shcReceipt.issuer;
+
+    for (let i = 0; i < shcReceipt.vaccinations.length; i++) {
+        retPayload[`vaccination_${i}`] = shcReceipt.vaccinations[i];
+    }
+    
+    return retPayload;
+}
+
 export class PassPhotoCommon {
 
-    static async preparePayload(payloadBody: PayloadBody, numDose: number) : Promise<PackageResult> {
+    static async preparePayload(payloadBody: PayloadBody, numDose: number = 0) : Promise<PackageResult> {
 
         console.log('preparePayload');
         
         // console.log(JSON.stringify(payloadBody, null, 2), numDose);
 
+        const configData = await getConfigData();
         const payload: Payload = new Payload(payloadBody, numDose);
 
         payload.serialNumber = uuid4();
-        let qrCodeMessage;
+        let qrCodeMessage = '';
+        let registrationPayload: any;
 
         if (payloadBody.rawData.startsWith('shc:/')) {
             
             qrCodeMessage = payloadBody.rawData;
 
+            // Register an SHC pass by adding in our pertinent data fields. We only do this so we
+            // can detect changes from providers and react quickly - we don't need these for any
+            // validation since SHCs are self-validating. This entire registration process could
+            // be turned off for SHCs and there would be no harm to the card creation process 
+            registrationPayload = generateSHCRegisterPayload(payloadBody.shcReceipt);
+            registrationPayload.serialNumber = payload.serialNumber;            // serial number is needed as it's the firestore document id
+
         } else {
             
-            // register record
+            // register an old-style ON pass
 
-            const clonedReceipt = Object.assign({}, payloadBody.receipts[numDose]);
-            delete clonedReceipt.name;
-            delete clonedReceipt.dateOfBirth;
-            clonedReceipt["serialNumber"] = payload.serialNumber;
-            clonedReceipt["type"] = 'applewallet';
+            registrationPayload = Object.assign({}, payloadBody.receipts[numDose]);
+            delete registrationPayload.name;
+            delete registrationPayload.dateOfBirth;
+            registrationPayload["serialNumber"] = payload.serialNumber;
+            registrationPayload["type"] = 'applewallet';
 
-            let requestOptions = {
-                method: 'POST', // *GET, POST, PUT, DELETE, etc.
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(clonedReceipt) // body data type must match "Content-Type" header
-            }
-
-            // console.log('registering ' + JSON.stringify(clonedReceipt, null, 2));
-            const configResponse = await fetch('/api/config');
-
-            const configResponseJson = await configResponse.json();
-
-            const verifierHost = configResponseJson.verifierHost;
-            const registrationHost = configResponseJson.registrationHost;
-            let functionSuffix = configResponseJson.functionSuffix;
-
-            if (functionSuffix == undefined)
-                functionSuffix = '';
-
-            const registerUrl = `${registrationHost}/register${functionSuffix}`;
-            // console.log(registerUrl);
-
-            const response  = await fetch(registerUrl, requestOptions);
-            const responseJson = await response.json();
-
-            // // console.log(JSON.stringify(responseJson,null,2));
-
-            if (responseJson["result"] != 'OK') {
-                console.error(responseJson);
-                return Promise.reject(`Error while trying to register pass!`);
-            }
-
+            const verifierHost = configData.verifierHost;
             const encodedUri = `serialNumber=${encodeURIComponent(payload.serialNumber)}&vaccineName=${encodeURIComponent(payloadBody.receipts[numDose].vaccineName)}&vaccinationDate=${encodeURIComponent(payloadBody.receipts[numDose].vaccinationDate)}&organization=${encodeURIComponent(payloadBody.receipts[numDose].organization)}&dose=${encodeURIComponent(payloadBody.receipts[numDose].numDoses)}`;
-            const qrCodeUrl = `${verifierHost}/verify?${encodedUri}`;
-            qrCodeMessage = qrCodeUrl;
+            qrCodeMessage = `${verifierHost}/verify?${encodedUri}`;
             // console.log(qrCodeUrl);
+        }
+
+
+        const wasSuccess = await registerPass(registrationPayload);
+        if (!wasSuccess) {
+            return Promise.reject(`Error while trying to register pass!`);
         }
 
         // Create QR Code Object

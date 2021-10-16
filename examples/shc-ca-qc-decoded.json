@@ -1,0 +1,79 @@
+{
+    "iss": "https://covid19.quebec.ca/PreuveVaccinaleApi/issuer",
+    "nbf": 1630525607,
+    "vc": {
+        "@context": [
+            "https://www.w3.org/2018/credentials/v1"
+        ],
+        "type": [
+            "VerifiableCredential",
+            "https://smarthealth.cards#health-card",
+            "https://smarthealth.cards#covid19",
+            "https://smarthealth.cards#immunization"
+        ],
+        "credentialSubject": {
+            "fhirVersion": "1.0.2",
+            "fhirBundle": {
+                "resourceType": "Bundle",
+                "type": "Collection",
+                "entry": [
+                    {
+                        "resource": {
+                            "resourceType": "Patient",
+                            "name": [
+                                {
+                                    "family": "LASTNAME",
+                                    "given": [
+                                        "First Name"
+                                    ]
+                                }
+                            ],
+                            "birthDate": "YYYY-MM-DD"
+                        }
+                    },
+                    {
+                        "resource": {
+                            "resourceType": "Immunization",
+                            "status": "Completed",
+                            "vaccineCode": {
+                                "coding": [
+                                    {
+                                        "system": "http://hl7.org/fhir/sid/cvx",
+                                        "code": "208"
+                                    }
+                                ]
+                            },
+                            "patient": {
+                                "reference": "resource:0"
+                            },
+                            "occurrenceDateTime": "YYYY-MM-DD",
+                            "lotNumber": "SOME_STRING",
+                            "protocolApplied": {
+                                "doseNumber": 1,
+                                "targetDisease": {
+                                    "coding": [
+                                        {
+                                            "system": "http://browser.ihtsdotools.org/?perspective=full&conceptId1=840536004",
+                                            "code": "840536004"
+                                        }
+                                    ]
+                                }
+                            },
+                            "note": [
+                                {
+                                    "text": "PB COVID-19"
+                                }
+                            ],
+                            "reported": false,
+                            "wasNotGiven": false,
+                            "location": {
+                                "reference": "resource:0",
+                                "display": "LOCATION DISPLAY NAME"
+                            }
+                        }
+                    }
+                ]
+            }
+        }
+    }
+}

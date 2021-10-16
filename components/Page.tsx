@@ -1,8 +1,6 @@
 import React from "react";
 import {useTranslation} from 'next-i18next';
 
-import usePassCount from "../src/hooks/use_pass_count";
-
 import Head from 'next/head'
 import Logo from './Logo'
 import Link from 'next/link'
@@ -36,7 +34,7 @@ function Page(props: PageProps): JSX.Element {
                             <a href="https://github.com/billylo1/covidpass" className="underline">{t('common:gitHub')}</a>
                             <a href="https://vaccine-ontario.ca" className="underline">{t('common:returnToMainSite')}</a>
                         </nav>
-                        <div className="flex pt-4 flex-row space-x-4 justify-center text-md flex-wrap">Last updated: 2021-10-06 (v1.9.23)</div>
+                        <div className="flex pt-4 flex-row space-x-4 justify-center text-md flex-wrap">Last updated: 2021-10-16 (v2.0.5)</div>
                     </footer>
                 </main>
             </div>
@@ -102,7 +100,28 @@ function Page(props: PageProps): JSX.Element {
                 <br/>
                 <br/>
             </div>
-            <canvas id="canvas" />
+            <div id="shc-pass-image" style={{backgroundColor: "white", color: "black", fontFamily: 'Arial', fontSize: 10, width: '350px', padding: '10px'}} hidden>
+                <table style={{verticalAlign: "middle"}}>
+                    <tbody>
+                        <tr>
+                            <td><img src='shield-black.svg' width='50' height='50' /></td>
+                            <td style={{fontSize: 20, width: 280}}>
+                                <span style={{marginLeft: '11px', whiteSpace: 'nowrap'}}><b>COVID-19 Vaccination Card</b></span><br/>
+                                <span style={{marginLeft: '11px'}}><b id='shc-card-origin'></b></span>
+                            </td>
+                        </tr>
+                    </tbody>
+                 </table>
+                <br/>
+                <br/>
+                <div id='shc-card-name' style={{fontSize:20, textAlign: 'center'}}></div>
+                <br/>
+                <br/>
+                <div id='shc-qrcode' style={{width:'63%', display:'block', marginLeft: 'auto', marginRight: 'auto'}}></div>
+                <br/>
+                <br/>
+            </div>
+            <canvas id="canvas" style={{display: 'none'}}/>
         </div>
     )
 }

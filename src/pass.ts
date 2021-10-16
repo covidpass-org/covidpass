@@ -1,11 +1,9 @@
 import {toBuffer as createZip} from 'do-not-zip';
-import {v4 as uuid4} from 'uuid';
 
 import {Constants} from "./constants";
 import {Payload, PayloadBody, PassDictionary} from "./payload";
-import * as Sentry from '@sentry/react';
-import { QRCodeMatrixUtil } from '@zxing/library';
-import {QrCode,Encoding,PackageResult,QrFormat,PassPhotoCommon} from './passphoto-common';
+import {QrCode,PassPhotoCommon} from './passphoto-common';
+import {COLORS} from "./colors";
 
 const crypto = require('crypto')
 
@@ -48,7 +46,7 @@ export class PassData {
         const apiBaseUrl = (await configResponse.json()).apiBaseUrl
         // console.log(`${apiBaseUrl}/sign`);
 
-        // console.log(JSON.stringify(signData));
+        console.log(JSON.stringify(signData));
 
         const response = await fetch(`${apiBaseUrl}/sign`, {
             method: 'POST',
@@ -77,6 +75,10 @@ export class PassData {
 
             const pass: PassData = new PassData(results.payload, results.qrCode);
 
+            if (!pass.expirationDate) {
+                delete pass['expirationDate'];
+            }
+            
             // Create new zip
             const zip = [] as { path: string; data: Buffer | string }[];
 
@@ -116,10 +118,12 @@ export class PassData {
             // Create pass hash
             const passHash = PassData.getBufferHash(Buffer.from(passJson));
 
+            const useBlackVersion = (payload.backgroundColor == COLORS.WHITE);
+
             // Sign hash with server
             const manifestSignature = await PassData.signWithRemote({
                 PassJsonHash: passHash,
-                useBlackVersion: false,
+                useBlackVersion: useBlackVersion,
             });
 
             // Add signature to zip
@@ -139,7 +143,16 @@ export class PassData {
         this.barcodes = [qrCode];
         this.barcode = qrCode;
         this.generic = payload.generic;
-        this.sharingProhibited = true;
         this.expirationDate = payload.expirationDate;
+        
+        // Update our pass name if this is an SHC pass
+        if (payload.rawData.length > 0) {
+            // const newPassTitle = `${Constants.NAME}, ${payload.shcReceipt.cardOrigin}`;
+            const newPassTitle = `${Constants.NAME}`; // hot patch for production for now... string too long to fit in pass
+
+            this.logoText = newPassTitle;
+            this.organizationName = newPassTitle;
+            this.description = newPassTitle;
+        }
     }
 }

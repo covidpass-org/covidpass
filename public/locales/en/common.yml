@@ -1,7 +1,7 @@
 title: Vaccination Receipt to Wallet
-subtitle: This utility (created by volunteers) converts your vaccination receipt to mobile wallet format (iPhone and Android) for easy access.
-subtitle2: It does not store personally identifiable information such as name or date of birth. Source code is available to the public for verification.
-continueSpirit: Continuing the spirit of ❤️ @VaxHuntersCanada ❤️.
+subtitle: This utility (created by volunteers) copies your proof-of-vaccination QR code into either Apple Wallet (for iOS 15+) or Google Pay Wallet (for Android 8+) and a Photo pass (for all others) for easy access.
+subtitle2: We now support importing QR codes from Ontario, British Columbia, Québec, Alberta, Nova Scotia, Saskatchewan, Yukon, Northwest Territories, California, New York, Louisiana, New Jersey, Hawaii, Virginia, and Utah!
+continueSpirit: Continuing the spirit of ❤️ @VaxHuntersCanada ❤️
 privacyPolicy: Privacy Policy
 donate: Sponsor
 gitHub: GitHub
