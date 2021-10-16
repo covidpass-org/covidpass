@@ -463,7 +463,6 @@ function Form(): JSX.Element {
 
         if (isAndroid) {
             if (Number(osVersion) > 8) {
-                setAddErrorMessage("Hi, Android users, check out our new Add to Google Pay button...")
                 setIsDisabledGooglePay(false);
             } else {
                 setAddErrorMessage("Sorry, Add to Google Pay is only available to Android 8.1+.")

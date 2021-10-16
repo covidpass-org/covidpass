@@ -78,15 +78,15 @@ export class PassPhotoCommon {
             const registerUrl = `${registrationHost}/register${functionSuffix}`;
             // console.log(registerUrl);
 
-            // const response  = await fetch(registerUrl, requestOptions);
-            // const responseJson = await response.json();
+            const response  = await fetch(registerUrl, requestOptions);
+            const responseJson = await response.json();
 
             // // console.log(JSON.stringify(responseJson,null,2));
 
-            // if (responseJson["result"] != 'OK') {
-            //     console.error(responseJson);
-            //     return Promise.reject(`Error while trying to register pass!`);
-            // }
+            if (responseJson["result"] != 'OK') {
+                console.error(responseJson);
+                return Promise.reject(`Error while trying to register pass!`);
+            }
 
             const encodedUri = `serialNumber=${encodeURIComponent(payload.serialNumber)}&vaccineName=${encodeURIComponent(payloadBody.receipts[numDose].vaccineName)}&vaccinationDate=${encodeURIComponent(payloadBody.receipts[numDose].vaccinationDate)}&organization=${encodeURIComponent(payloadBody.receipts[numDose].organization)}&dose=${encodeURIComponent(payloadBody.receipts[numDose].numDoses)}`;
             const qrCodeUrl = `${verifierHost}/verify?${encodedUri}`;
