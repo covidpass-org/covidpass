@@ -161,7 +161,9 @@ function Form(): JSX.Element {
 
     async function gotoOntarioHealth(e) {
         e.preventDefault();
-        window.open('https://covid19.ontariohealth.ca','_blank');
+        // window.open('https://covid19.ontariohealth.ca','_blank');        // this created many extra steps in mobile chrome to return to the grassroots main window... if user has many windows open, they get lost (BACK button on the same window is easier for user to return)
+        window.location.href = 'https://covid19.ontariohealth.ca';
+
     }
     async function goToFAQ(e) {
         e.preventDefault();

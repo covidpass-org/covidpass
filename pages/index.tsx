@@ -85,7 +85,8 @@ function Index(): JSX.Element {
                             <p>{t('common:continueSpirit')}</p>
                             <br />
                             <Link href="https://www.youtube.com/watch?v=AIrG5Qbjptg">
-                                <a className="underline" target="_blank">
+                                {/* <a className="underline" target="_blank"> */}
+                                <a className="underline">
                                     Click here for a video demo
                                 </a>
                             </Link>&nbsp;
