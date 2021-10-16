@@ -36,8 +36,8 @@ function Index(): JSX.Element {
     }, []);
     
 
-    const title = 'Grassroots - ON/BC/QC/AB/SK/NS/YK/NY/CA/LA vaccination QR Code import for Apple and Android devices';
-    const description = 'Grassroots imports vaccination QR codes from ON/BC/QC/AB/SK/NS/YK/NY/CA/LA and stores them on Apple and Android devices in a convenient, secure, and privacy-respecting way';
+    const title = 'Grassroots - vaccination QR Code import for Apple and Android devices. Supports BC AB SK MB ON QC NS YK NT NY NJ CA LA VA HI UT';
+    const description = 'Grassroots imports vaccination QR codes and stores them on Apple and Android devices in a convenient, secure, and privacy-respecting way. Supports SHC QR codes from BC AB SK MB ON QC NS YK NT NY NJ CA LA VA HI UT';
 
     return (
         <>
@@ -72,7 +72,7 @@ function Index(): JSX.Element {
                     <Card content={
                         <div><p>{t('common:subtitle')}</p><br /><p>{t('common:subtitle2')}</p><br />
                             <b>{displayPassCount}</b><br/><br/>
-                            <b>MAJOR NEW RELEASE! </b>Oct 15 morning update: 
+                            <b>MAJOR NEW RELEASE! </b>Oct 15 evening update: 
                             <br />
                             <br />
                             <ul className="list-decimal list-outside" style={{ marginLeft: '20px' }}>
@@ -80,6 +80,7 @@ function Index(): JSX.Element {
                                 <li>Support released for importing Ontario, British Columbia, Alberta, Saskatchewan, Nova Scotia, Québec, Yukon, California, New York, and Louisiana SHC QR codes</li>
                                 <li>Support released for importing QR codes from images as well as from PDFs</li>
                                 <li>Support for creating our previous interim QR codes has been removed - now that the official Ontario QR code is being released and the gap is filled, our QR codes are no longer needed</li>
+                                <li>Support released for importing Manitoba's (new unannounced) QR codes, as well as for Northwest Territories, New Jersey, Hawaii, Virginia, and Utah SHC QR codes</li>
                             </ul><br />
                             <p>{t('common:continueSpirit')}</p>
                             <br />

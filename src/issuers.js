@@ -117,6 +117,72 @@ export const issuers = [
         x: "ibapbMkHMlkR3D-AU0VTFDsiidQ49oD9Ha7VY8Gao3s",
         y: "arXU5frZGOvTZpvg045rHC7y0fqVOS3dKqJbUYhW5gw" },
     ]
+  },
+  {
+    id: "us.hi",
+    display: "Hawaii, USA",
+    iss: "https://travel.hawaii.gov",
+    keys: [
+      { kid: "Qxzp3u4Z6iafzbz-6oNnzobPG8HUr0Jry38M3nuV5A8",
+        alg: "ES256", kty: "EC", crv: "P-256", use: "sig",
+        x: "sxIW-vGe4g7LXU0ZpMOiMmgMznaC_8qj6HW-2JhCTkI",
+        y: "Ytmnz6q7qn9GhnsAB3GP3MFlnk9kTW3wKk7RAue9j8U" },
+    ]
+  },
+  {
+    id: "us.va",
+    display: "Virginia, USA",
+    iss: "https://apps.vdh.virginia.gov/credentials",
+    keys: [
+      { kid: "sy5Q85VbiH4jNee-IpFkQvMxlVAhZ_poLMPLHiDF_8I",
+        alg: "ES256", kty: "EC", crv: "P-256", use: "sig",
+        x: "UDYtkThsYIdMuzC9AJi0CDNwwmSGt8Z75BBl9DbLXn0",
+        y: "xWNNHxwz0RtTgTlBom3X8xFP6U5e92KYGZIBI2SYImA" },
+    ]
+  },
+  {
+    id: "ca.mb",
+    display: "Manitoba",
+    iss: "https://immunizationcard.manitoba.ca/api/national",
+    keys: [
+      { kid: "YnYeVk1pCtYvnmOytVTq09igCGdu_SyJM2Wn29AV7AQ",
+        alg: "ES256", kty: "EC", crv: "P-256", use: "sig",
+        x: "E2mScyP_Iwm0gn1nAYldT0MbWFUeapIsuh9ebqCJgkQ",
+        y: "AePVDo-_XxQDJ_25BW4txoLPzuu7CQ65C2oLJIN4DxI" },
+    ]
+  },
+  {
+    id: "ca.nt",
+    display: "Northwest Territories",
+    iss: "https://www.hss.gov.nt.ca/covax",
+    keys: [
+      { kid: "8C-9TNgyGuOqc-3FXyNRq6m5U9S1wyhCS1TvpgjzkoU",
+        alg: "ES256", kty: "EC", crv: "P-256", use: "sig",
+        x: "C-9Lltax_iU6iYdK8DdCZzv4cQN6SFVUG7ACaCT_MKM",
+        y: "_qaENBMJz6iLf1qyYMx2_D6fXxbbNoHbLcfdPF9rUI0" },
+    ]
+  },
+  {
+    id: "us.nj",
+    display: "New Jersey, USA",
+    iss: "https://docket.care/nj",
+    keys: [
+      { kid: "HvlLNClY2JAEhIhsZZ_CfRaxF5jdooWgaKAbLajhv2I",
+        alg: "ES256", kty: "EC", crv: "P-256", use: "sig",
+        x: "FssCyCxGTEuKiKqo-MwLDQlxz1vdKll4YFMkQaXVOkY",
+        y: "A3nNMWC8IEQsZqH8Mp83qVLTA_X9eYwzr46o4-3YyRE" },
+    ]
+  },
+  {
+    id: "us.ut",
+    display: "Utah, USA",
+    iss: "https://docket.care/ut",
+    keys: [
+      { kid: "sBHR4URZTz8cq2kIV_JhTXwicbqp1tHtodItRSx0O0Q",
+        alg: "ES256", kty: "EC", crv: "P-256", use: "sig",
+        x: "uyzHUWf8EVXtlFW9nssxa1Z002rpc-GUw-YrZOZtmqo",
+        y: "oFofHWIlPqfqCCU9R3fJOaUoWdzVzTcSNgmtF0Qgb6w" },
+    ]
   }
 ];
 

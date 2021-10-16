@@ -50,14 +50,13 @@ function Faq(): JSX.Element {
       {description: 'How can organizations validate this QR code?', answer: urlParse('The %s is the verification application for the new official Ontario QR codes. For our existing interim QR codes, you can use our web-based tool at %s',[CONSTANTS.verifyOntarioApp, CONSTANTS.verifier])},
       {description: 'Can I use the same iPhone to store passes for my entire family?', answer: 'Yes. You can save multiple Wallet or Photo cards on your device without issue.'},
       {description: 'Is this free and non-commercial?', answer: urlParse('Similar to %s, there are no commercial interests. Just volunteers trying to do our part to help the community.',[CONSTANTS.vaxHunters])},
-      {description: 'How about support for other provinces?', answer: urlParse('We now have support for Ontario, British Columbia, Québec, Alberta, Saskatchewan, Nova Scotia, Yukon, California, New York, and Louisiana QR codes. If you have a QR code that is not currently supported by our app, please contact us at %s', [CONSTANTS.grassrootsEmail])},
+      {description: 'How about support for other provinces or US states?', answer: urlParse('We now have support for Ontario, British Columbia, Québec, Alberta, Saskatchewan, Nova Scotia, Yukon, Northwest Territories, California, New York, New Jersey, Louisiana, Hawaii, Virginia, and Utah QR codes. If you have a QR code that is not currently supported by our app, please contact us at %s', [CONSTANTS.grassrootsEmail])},
       {description: 'How about Apple Watch?', answer: 'If you have iCloud sync enabled, you will see the pass on the watch too. Please be aware though that the new QR codes may be too large to display accurately on older Apple Watches due to their screen size.'},
       {description: 'Why have we taken time to build this?', answer: 'We wanted to give people across Canada the ability to conveniently and securely add their vaccination QR code to their mobile devices to make it easier to present them, and also wanted to create a verifier tool which requires no app install and is convenient for anyone to use from a web browser on any device with a camera.'},
       {description: 'Who made this?', answer: urlParse('The same group of volunteers who created the all-in-one vaccine appointment finding tool at %s', [CONSTANTS.booking])},
       {description: 'How can I stay up-to-date on your progress?', answer: urlParse('We will post regular updates on Twitter %s', [CONSTANTS.twitter])},
       {description: 'I have more questions. Can you please help me?', answer: urlParse('Sure. Just email us at %s', [CONSTANTS.grassrootsEmail]) }
     ];
-
 
     return (
         <Page content={
