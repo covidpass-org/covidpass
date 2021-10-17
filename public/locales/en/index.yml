@@ -1,17 +1,17 @@
 iosHint: On iOS, please use Safari
 errorClose: Close
-selectCertificate: Select vaccination receipt (PDF or image)
+selectCertificate: Select or scan vaccination receipt (PDF or image)
 selectCertificateDescription: |
-  Press "Select File", "Browse..." and select the PDF file or picture you have saved in Step 1
-#stopCamera: Stop Camera
-#startCamera: Start Camera
+  You can scan the QR code with your camera, or press "Select File", "Browse..." and select the PDF file or picture you have saved in Step 1
+stopCamera: Stop Camera
+startCamera: Start Camera
 openFile: Select File
-#foundQrCode: Found QR Code!
+foundQrCode: Found valid Smart Health Card QR Code!
 downloadReceipt: Download or take a picture of your QR code
 visit: If you are in Ontario, please visit
 ontarioHealth: Ontario Ministry of Health
 gotoOntarioHealth: Go to Ontario Ministry of Health
-downloadSignedPDF: and enter your information to display your official vaccination receipt. Press the Share Icon at the bottom, "Save As Files" to store it onto your iPhone. You can also take a picture or screenshot of your QR code with your phone (please make sure the picture is good-quality, is not blurry, and captures ALL of the QR code!) 
+downloadSignedPDF: and enter your information to display your official vaccination receipt. Press the Share Icon at the bottom, "Save As Files" to store it onto your iPhone. You can also take a picture or screenshot of your QR code with your phone (please make sure the picture is good-quality, is not blurry, and captures ALL of the QR code!), or scan it directly with your camera below in step 2 
 reminderNotToRepeat: If you have completed this step before, simply proceed to Step 2
 addToWallet: Add to Apple Wallet
 addToGooglePay: Add to Google Pay

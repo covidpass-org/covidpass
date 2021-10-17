@@ -129,6 +129,31 @@ async function getImageDataFromPdf(fileBuffer: ArrayBuffer): Promise<ImageData[]
     return Promise.resolve(retArray);
 }
 
+export async function processSHCCode(shcQrCode : string) : Promise<PayloadBody> {
+    console.log('processSHCCode');
+
+    try {
+        // We found a QR code of some kind - start analyzing now
+        const jws = getScannedJWS(shcQrCode);
+        const decoded = await decodeJWS(jws);
+
+        //console.log(decoded);
+
+        const verified = verifyJWS(jws, decoded.iss);
+
+        if (verified) {
+            const shcReceipt = Decode.decodedStringToReceipt(decoded);
+            //console.log(shcReceipt);
+            return Promise.resolve({receipts: null, shcReceipt, rawData: shcQrCode});            
+        } else {
+            // If we got here, we found an SHC which was not verifiable. Consider it fatal and stop processing.
+            return Promise.reject(`Issuer ${decoded.iss} cannot be verified.`);
+        }                    
+    } catch (e) {
+        return Promise.reject(e);
+    }
+} 
+
 async function processSHC(allImageData : ImageData[]) : Promise<PayloadBody> {
 
     console.log('processSHC');
@@ -144,23 +169,7 @@ async function processSHC(allImageData : ImageData[]) : Promise<PayloadBody> {
 
         		if (code) {
                     try {
-                        // We found a QR code of some kind - start analyzing now
-                        const rawData = code.data;
-                        const jws = getScannedJWS(rawData);
-                        const decoded = await decodeJWS(jws);
-
-                        //console.log(decoded);
-
-                        const verified = verifyJWS(jws, decoded.iss);
-
-                        if (verified) {
-                            const shcReceipt = Decode.decodedStringToReceipt(decoded);
-                            //console.log(shcReceipt);
-                            return Promise.resolve({receipts: null, shcReceipt, rawData});            
-                        } else {
-                            // If we got here, we found an SHC which was not verifiable. Consider it fatal and stop processing.
-                            return Promise.reject(`Issuer ${decoded.iss} cannot be verified.`);
-                        }                    
+                        return await processSHCCode(code.data);
                     } catch (e) {
                         // We blew up during processing - log it and move on to the next page
                         console.log(e);

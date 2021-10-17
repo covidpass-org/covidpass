@@ -9,16 +9,11 @@ import Card from "./Card";
 import Alert from "./Alert";
 import Check from './Check';
 import {PayloadBody} from "../src/payload";
-import {getPayloadBodyFromFile} from "../src/process";
+import {getPayloadBodyFromFile, processSHCCode} from "../src/process";
 import {PassData} from "../src/pass";
 import {Photo} from "../src/photo";
-import {COLORS} from "../src/colors";
-import Colors from './Colors';
-import GooglePayButton from '@google-pay/button-react';
-import {isChrome, isIOS, isIPad13, isMacOs, isSafari, deviceDetect, osName, osVersion, isAndroid} from 'react-device-detect';
+import {isIOS, isMacOs, isSafari, osVersion, getUA, browserName, browserVersion} from 'react-device-detect';
 import * as Sentry from '@sentry/react';
-import { counterReset } from 'html2canvas/dist/types/css/property-descriptors/counter-reset';
-import { color } from 'html2canvas/dist/types/css/types/color';
 import Bullet from './Bullet';
 import { GPayData } from '../src/gpay';
 import Router from 'next/router'
@@ -29,9 +24,6 @@ function Form(): JSX.Element {
 
     // Whether camera is open or not
     const [isCameraOpen, setIsCameraOpen] = useState<boolean>(false);
-
-    // Currently selected color
-    const [selectedColor, setSelectedColor] = useState<COLORS>(COLORS.WHITE);
 
     // Currently selected dose
     const [selectedDose, setSelectedDose] = useState<number>(2);
@@ -104,7 +96,7 @@ function Form(): JSX.Element {
         if (inputFile && inputFile.current) {
             inputFile.current.addEventListener('change', () => {
                 let selectedFile = inputFile.current.files[0];
-                if (selectedFile !== undefined) {
+                if (selectedFile) {
                     setFileLoading(true);
                     setQrCode(undefined);
                     setPayloadBody(undefined);
@@ -138,7 +130,7 @@ function Form(): JSX.Element {
         } catch (e) {
             setFile(file);
             setFileLoading(false);
-            if (e != undefined) {
+            if (e) {
                 console.error(e);
 
                 // Don't report known errors to Sentry
@@ -157,11 +149,15 @@ function Form(): JSX.Element {
                 setFileErrorMessage("Unexpected error. Sorry.");
             }
         }
-
     }
 
     // Show file Dialog
     async function showFileDialog() {
+        hideCameraView();
+        
+        // Clear out any currently-selected files
+        inputFile.current.value = '';
+        
         inputFile.current.click();
     }
 
@@ -178,10 +174,11 @@ function Form(): JSX.Element {
     
     // Hide camera view
     async function hideCameraView() {
-        if (globalControls !== undefined) {
+        if (globalControls) {
             globalControls.stop();
         }
         setIsCameraOpen(false);
+        _setFileErrorMessages([]);
     }
 
     // Show camera view
@@ -195,13 +192,13 @@ function Form(): JSX.Element {
         try {
             deviceList = await BrowserQRCodeReader.listVideoInputDevices();
         } catch (e) {
-            setAddErrorMessage('noCameraAccess');
+            setFileErrorMessage('noCameraAccess');
             return;
         }
 
         // Check if camera device is present
         if (deviceList.length == 0) {
-            setAddErrorMessage("noCameraFound");
+            setFileErrorMessage("noCameraFound");
             return;
         }
 
@@ -213,23 +210,45 @@ function Form(): JSX.Element {
             // Start decoding from video device
             await codeReader.decodeFromVideoDevice(undefined,
                 previewElem,
-                (result, error, controls) => {
-                    if (result !== undefined) {
-                        setQrCode(result);
-                        setFile(undefined);
+                async (result, error, controls) => {
+                    if (result) {
+                        const qrCode = result.getText();
+                        // Check if this was a valid SHC QR code - if it was not, display an error
+                        if (!qrCode.startsWith('shc:/')) {
+                            setFileErrorMessage('The scanned QR code was not a valid Smart Health Card QR code!');
+                        } else {
+                            _setFileErrorMessages([]);
+                            setQrCode(result);
+                            setFile(undefined);
+                            setPayloadBody(undefined);
+                            setShowDoseOption(false);
+                            setGenerated(false);
+                            checkBrowserType();
+                            
+                            const payloadBody = await processSHCCode(qrCode);
+                            
+                            setPayloadBody(payloadBody);
 
-                        controls.stop();
-
-                        // Reset
-                        setGlobalControls(undefined);
-                        setIsCameraOpen(false);
+                            controls.stop();
+    
+                            // Reset
+                            setGlobalControls(undefined);
+                            setIsCameraOpen(false);
+                        }
                     }
-                    if (error !== undefined) {
-                        setAddErrorMessage(error.message);
+                    if (error) {
+                        setFileErrorMessage(error.message);
                     }
                 }
             )
         );
+
+        setQrCode(undefined);
+        setPayloadBody(undefined);
+        setFile(undefined);
+        setShowDoseOption(false);
+        setGenerated(false);
+        _setFileErrorMessages([]);
 
         setIsCameraOpen(true);
     }
@@ -447,8 +466,13 @@ function Form(): JSX.Element {
         //     setAddErrorMessage('Sorry. Apple Wallet pass can be added using Safari or Chrome only.');
         //     setIsDisabledAppleWallet(true);
         // }
-        if (isIOS && (!osVersion.startsWith('15'))) {
-            setAddErrorMessage('Sorry, iOS 15+ is needed for the Apple Wallet functionality to work with Smart Health Card')
+
+        const uaIsiOS15 = getUA.includes('15_');
+        if (isIOS && ((!osVersion.startsWith('15')) && !uaIsiOS15)) {
+            const message = `Not iOS15 error: osVersion=${osVersion} UA=${getUA}`;
+            console.warn(message);
+            Sentry.captureMessage(message);
+            setAddErrorMessage(`Sorry, iOS 15+ is needed for the Apple Wallet functionality to work with Smart Health Card (detected iOS ${osVersion}, browser ${browserName} ${browserVersion})`);
             setIsDisabledAppleWallet(true);
             return;
         } 
@@ -520,6 +544,12 @@ function Form(): JSX.Element {
                                 className="focus:outline-none h-20 bg-green-600 hover:bg-gray-700 text-white font-semibold rounded-md">
                                 {t('index:openFile')}
                             </button>
+                            <button
+                                type="button"
+                                onClick={isCameraOpen ? hideCameraView : showCameraView}
+                                className="focus:outline-none h-20 bg-green-600 hover:bg-gray-700 text-white font-semibold rounded-md">
+                                {isCameraOpen ? t('index:stopCamera') : t('index:startCamera')}
+                            </button>
                             <div id="spin" className={fileLoading ? undefined : "hidden"}>
                                 <svg className="animate-spin h-5 w-5 ml-4" viewBox="0 0 24 24">
                                     <circle className="opacity-0" cx="12" cy="12" r="10" stroke="currentColor"
@@ -530,6 +560,8 @@ function Form(): JSX.Element {
                             </div>
                         </div>
 
+                        <video id="cameraPreview"
+                               className={`${isCameraOpen ? undefined : "hidden"} rounded-md w-full`}/>
                         <input type='file'
                                id='file'
                                accept="application/pdf,.png,.jpg,.jpeg,.gif,.webp"

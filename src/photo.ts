@@ -102,7 +102,22 @@ export class Photo {
             body.hidden = false;
 
             document.getElementById('shc-card-name').innerText = results.payload.shcReceipt.name;
+            document.getElementById('shc-card-dob').innerText = results.payload.shcReceipt.dateOfBirth;
+
             document.getElementById('shc-card-origin').innerText = results.payload.shcReceipt.cardOrigin;
+
+            const vaccinations = results.payload.shcReceipt.vaccinations;
+            const numDisplay = vaccinations.length <= 4 ? vaccinations.length : 4;
+
+            for (let i = 0; i < numDisplay; i++) {
+
+                document.getElementById(`shc-card-vaccine-name-${i+1}`).innerText = vaccinations[i].vaccineName;
+                document.getElementById(`shc-card-vaccine-date-${i+1}`).innerText = vaccinations[i].vaccinationDate;
+                if (i > 1) {
+                    document.getElementById(`shc-card-vaccine-name-${i+1}`).parentElement.hidden = false;
+                }
+
+            }
 
             const qrcode = new Encoder();
             
