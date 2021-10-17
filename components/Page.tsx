@@ -34,7 +34,7 @@ function Page(props: PageProps): JSX.Element {
                             <a href="https://github.com/billylo1/covidpass" className="underline">{t('common:gitHub')}</a>
                             <a href="https://vaccine-ontario.ca" className="underline">{t('common:returnToMainSite')}</a>
                         </nav>
-                        <div className="flex pt-4 flex-row space-x-4 justify-center text-md flex-wrap">Last updated: 2021-10-17 (v2.1.0)</div>
+                        <div className="flex pt-4 flex-row space-x-4 justify-center text-md flex-wrap">Last updated: 2021-10-17 (v2.1.1)</div>
                     </footer>
                 </main>
             </div>
@@ -114,10 +114,31 @@ function Page(props: PageProps): JSX.Element {
                  </table>
                 <br/>
                 <br/>
-                <div id='shc-card-name' style={{fontSize:20, textAlign: 'center'}}></div>
+                <div style={{fontSize:14, textAlign: 'center'}}>
+                    <span id='shc-card-name' ></span>&nbsp;&nbsp;&nbsp;&nbsp;(<span id='shc-card-dob'></span>)
+                </div>
                 <br/>
                 <br/>
+                <table style={{textAlign: "center", width: "100%"}}>
+                    <tbody>
+                        <tr>
+                            <td id='shc-card-vaccine-name-1'></td>&nbsp;&nbsp;<td id='shc-card-vaccine-name-2'></td>
+                        </tr>
+                        <tr>
+                            <td id='shc-card-vaccine-date-1'></td>&nbsp;&nbsp;<td id='shc-card-vaccine-date-2'></td>
+                        </tr>
+                        <tr id='extraRow1' hidden>
+                            <td id='shc-card-vaccine-name-3'></td>&nbsp;&nbsp;<td id='shc-card-vaccine-name-4'></td>
+                        </tr>
+                        <tr id='extraRow2' hidden>
+                            <td id='shc-card-vaccine-date-3'></td>&nbsp;&nbsp;<td id='shc-card-vaccine-date-4'></td>
+                        </tr>
+                    </tbody>
+                 </table>       
+                <div id='shc-card-vaccine' style={{width:'63%', display:'block', marginLeft: 'auto', marginRight: 'auto'}}></div>
+
                 <div id='shc-qrcode' style={{width:'63%', display:'block', marginLeft: 'auto', marginRight: 'auto'}}></div>
+         
                 <br/>
                 <br/>
             </div>

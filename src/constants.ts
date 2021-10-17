@@ -1,5 +1,5 @@
 export class Constants {
-    public static NAME = 'Vaccination Receipt'
+    public static NAME = 'Vaccination'
     public static PASS_IDENTIFIER = 'pass.ca.vaccineontario.receipt'
     public static TEAM_IDENTIFIER = 'F6X27PB5BH'
 
