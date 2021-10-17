@@ -385,7 +385,9 @@ function Form(): JSX.Element {
 
         const uaIsiOS15 = getUA.includes('iPhone OS 15');
         if (isIOS && ((!osVersion.startsWith('15')) && !uaIsiOS15)) {
-            console.warn(`Not iOS15 error: isIOS=${isIOS} osVersion=${osVersion}  UA=${getUA}` );
+            const message = `Not iOS15 error: isIOS=${isIOS} osVersion=${osVersion}  UA=${getUA}`
+            console.warn(message);
+            Sentry.captureMessage(message);
             setAddErrorMessage('Sorry, iOS 15+ is needed for the Apple Wallet functionality to work with Smart Health Card')
             setIsDisabledAppleWallet(true);
             return;
