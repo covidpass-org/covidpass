@@ -14,7 +14,7 @@ import {PassData} from "../src/pass";
 import {Photo} from "../src/photo";
 import {COLORS} from "../src/colors";
 import Colors from './Colors';
-import {isChrome, isIOS, isIPad13, isMacOs, isSafari, deviceDetect, osName, osVersion} from 'react-device-detect';
+import {isChrome, isIOS, isIPad13, isMacOs, isSafari, deviceDetect, osName, osVersion, getUA} from 'react-device-detect';
 import * as Sentry from '@sentry/react';
 import { counterReset } from 'html2canvas/dist/types/css/property-descriptors/counter-reset';
 import { color } from 'html2canvas/dist/types/css/types/color';
@@ -382,7 +382,10 @@ function Form(): JSX.Element {
         //     setAddErrorMessage('Sorry. Apple Wallet pass can be added using Safari or Chrome only.');
         //     setIsDisabledAppleWallet(true);
         // }
-        if (isIOS && (!osVersion.startsWith('15'))) {
+
+        const uaIsiOS15 = getUA.includes('iPhone OS 15');
+        if (isIOS && ((!osVersion.startsWith('15')) && !uaIsiOS15)) {
+            console.warn(`Not iOS15 error: isIOS=${isIOS} osVersion=${osVersion}  UA=${getUA}` );
             setAddErrorMessage('Sorry, iOS 15+ is needed for the Apple Wallet functionality to work with Smart Health Card')
             setIsDisabledAppleWallet(true);
             return;
