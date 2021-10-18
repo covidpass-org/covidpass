@@ -16,7 +16,7 @@ export interface QrCode {
     message: string;
     format: QrFormat;
     messageEncoding: Encoding;
-    // altText: string;
+    altText: string;
 }
 
 export interface PackageResult {
@@ -138,7 +138,7 @@ export class PassPhotoCommon {
             message: qrCodeMessage,
             format: QrFormat.PKBarcodeFormatQR,
             messageEncoding: Encoding.iso88591,
-            // altText : payload.rawData
+            altText : 'Source: ' + payloadBody.shcReceipt.cardOrigin
 
         }
 

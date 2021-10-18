@@ -1,6 +1,6 @@
 {
   "name": "grassroots_covidpass",
-  "version": "2.1.1",
+  "version": "2.1.2",
   "author": "Billy Lo <billy@vaccine-ontario.ca>",
   "license": "MIT",
   "private": false,
@@ -49,6 +49,7 @@
     "react": "^17.0.2",
     "react-device-detect": "^1.17.0",
     "react-dom": "^17.0.2",
+    "react-select": "^5.1.0",
     "string.prototype.startswith": "^1.0.0",
     "tls": "^0.0.1",
     "uuid": "^8.3.2",
