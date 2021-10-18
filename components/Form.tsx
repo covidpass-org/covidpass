@@ -363,11 +363,23 @@ function Form(): JSX.Element {
             let filenameDetails = '';
             if (payloadBody.rawData.length > 0) {    
                 // This is an SHC receipt, so do our SHC thing
+
+                // need to clean up first
+                if (document.getElementById('shc-qrcode').hasChildNodes()) {
+                    document.getElementById('shc-qrcode').firstChild.remove();
+                }
+
                 selectedReceipt = payloadBody.shcReceipt;
                 photoBlob = await Photo.generateSHCPass(payloadBody);
                 filenameDetails = selectedReceipt.cardOrigin.replace(' ', '-');
             } else {
                 // This is an old-style ON custom QR code Receipt
+
+                // need to clean up first
+                if (document.getElementById('qrcode').hasChildNodes()) {
+                    document.getElementById('qrcode').firstChild.remove();
+                }
+
                 selectedReceipt = payloadBody.receipts[selectedDose];
                 const vaxName = selectedReceipt.vaccineName.replace(' ', '-');
                 const passDose = selectedReceipt.numDoses;
@@ -381,20 +393,11 @@ function Form(): JSX.Element {
             
             saveAs(photoBlob, covidPassFilename);
 
-            // need to clean up
-            if (document.getElementById('qrcode').hasChildNodes()) {
-                document.getElementById('qrcode').firstChild.remove();
-            }
-
-            if (document.getElementById('shc-qrcode').hasChildNodes()) {
-                document.getElementById('shc-qrcode').firstChild.remove();
-            }
+            setSaveLoading(false);
 
             // Hide both our possible passes
             document.getElementById('pass-image').hidden = true;
             document.getElementById('shc-pass-image').hidden = true;
-
-            setSaveLoading(false);
         } catch (e) {
 
             Sentry.captureException(e);
