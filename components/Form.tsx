@@ -1,9 +1,8 @@
 import {saveAs} from 'file-saver';
-import React, {FormEvent, useEffect, useRef, useState, Component} from "react";
+import React, {FormEvent, useEffect, useRef, useState} from "react";
 import {BrowserQRCodeReader, IScannerControls} from "@zxing/browser";
 import {Result} from "@zxing/library";
 import {useTranslation} from 'next-i18next';
-import Link from 'next/link';
 
 import Card from "./Card";
 import Alert from "./Alert";
@@ -25,8 +24,7 @@ const options = [
     { label: 'Nova Scotia', value: 'https://novascotia.flow.canimmunize.ca/en/portal'},
     { label: 'Québec', value: 'https://covid19.quebec.ca/PreuveVaccinale'},
     { label: 'Saskatchewan', value: 'https://services.saskatchewan.ca/#/login'},
-    { label: 'Yukon', value: 'https://service.yukon.ca/forms/en/get-covid19-proof-of-vaccination'}
-
+    { label: 'Yukon', value: 'https://service.yukon.ca/forms/en/get-covid19-proof-of-vaccination'},
 ]
 
 function Form(): JSX.Element {
@@ -63,7 +61,6 @@ function Form(): JSX.Element {
     // const [warningMessages, _setWarningMessages] = useState<Array<string>>([]);
     const hitcountHost = 'https://stats.vaccine-ontario.ca';
 
-
     // Check if there is a translation and replace message accordingly
     const setAddErrorMessage = (message: string) => {
         if (!message) {
@@ -83,20 +80,8 @@ function Form(): JSX.Element {
         _setFileErrorMessages(Array.from(new Set([...addErrorMessages, translation !== message ? translation : message])));
     };
 
-    // const setWarningMessage = (message: string) => {
-    //     if (!message) {
-    //         return;
-    //     }
-
-    //     const translation = t('errors:'.concat(message));
-    //     _setWarningMessages(Array.from(new Set([...warningMessages, translation !== message ? translation : message])));
-    // }
-
     const deleteAddErrorMessage = (message: string) =>{
         _setAddErrorMessages(addErrorMessages.filter(item => item !== message))
-    }
-    const deleteFileErrorMessage = (message: string) =>{
-        _setFileErrorMessages(addErrorMessages.filter(item => item !== message))
     }
 
     // File Input ref
@@ -171,16 +156,13 @@ function Form(): JSX.Element {
         
         // Clear out any currently-selected files
         inputFile.current.value = '';
-        
+
+        // Hide our existing pass image
+        document.getElementById('shc-pass-image').hidden = true;
+
         inputFile.current.click();
     }
 
-    async function gotoOntarioHealth(e) {
-        e.preventDefault();
-        // window.open('https://covid19.ontariohealth.ca','_blank');        // this created many extra steps in mobile chrome to return to the grassroots main window... if user has many windows open, they get lost (BACK button on the same window is easier for user to return)
-        window.location.href = 'https://covid19.ontariohealth.ca';
-
-    }
     async function goToFAQ(e) {
         e.preventDefault();
         window.location.href = '/faq';
@@ -258,6 +240,9 @@ function Form(): JSX.Element {
                 }
             )
         );
+
+        // Hide our existing pass image
+        document.getElementById('shc-pass-image').hidden = true;
 
         setQrCode(undefined);
         setPayloadBody(undefined);
@@ -407,7 +392,6 @@ function Form(): JSX.Element {
 
             setSaveLoading(false);
         } catch (e) {
-
             Sentry.captureException(e);
 
             setAddErrorMessage(e.message);
@@ -442,7 +426,6 @@ function Form(): JSX.Element {
         if (isMacOs) {
             setAddErrorMessage('Reminder: iOS 15+ is needed for the Apple Wallet functionality to work with Smart Health Card')
             return;
-
         }
 
         if (isIOS && !isSafari) {
@@ -450,7 +433,6 @@ function Form(): JSX.Element {
             setAddErrorMessage('Sorry, only Safari can be used to add a Wallet Pass on iOS');
             setIsDisabledAppleWallet(true);
             return;
-
         }
         // } else if (!isIOS) {
         //     setWarningMessage('Only Safari on iOS is officially supported for Wallet import at the moment - ' +
@@ -461,10 +443,6 @@ function Form(): JSX.Element {
 
     function gotoLink(option) {
         window.location.href = option.value;
-    }
-
-    function promptTextCreator(value) {
-        return 'Select province...';
     }
 
     return (
@@ -598,9 +576,48 @@ function Form(): JSX.Element {
                         {addErrorMessages.map((message, i) =>
                             <Alert message={message} key={'error-' + i} type="error" />
                         )}
-                        {/* {warningMessages.map((message, i) =>
-                            <Alert message={message} key={'warning-' + i} type="warning" />
-                        )} */}
+                        <br/>
+            <div id="shc-pass-image" style={{backgroundColor: "white", color: "black", fontFamily: 'Arial', fontSize: 10, width: '350px', padding: '10px', border: '1px solid', margin: '0px'}} hidden>
+                <table style={{verticalAlign: "middle"}}>
+                    <tbody>
+                        <tr>
+                            <td><img src='shield-black.svg' width='50' height='50' /></td>
+                            <td style={{fontSize: 20, width: 280}}>
+                                <span style={{marginLeft: '11px', whiteSpace: 'nowrap'}}><b>COVID-19 Vaccination Card</b></span><br/>
+                                <span style={{marginLeft: '11px'}}><b id='shc-card-origin'></b></span>
+                            </td>
+                        </tr>
+                    </tbody>
+                 </table>
+                <br/>
+                <br/>
+                <div style={{fontSize:14, textAlign: 'center'}}>
+                    <span id='shc-card-name' ></span>&nbsp;&nbsp;&nbsp;&nbsp;(<span id='shc-card-dob'></span>)
+                </div>
+                <br/>
+                <br/>
+                <table style={{textAlign: "center", width: "100%"}}>
+                    <tbody>
+                        <tr>
+                            <td id='shc-card-vaccine-name-1'></td>&nbsp;&nbsp;<td id='shc-card-vaccine-name-2'></td>
+                        </tr>
+                        <tr>
+                            <td id='shc-card-vaccine-date-1'></td>&nbsp;&nbsp;<td id='shc-card-vaccine-date-2'></td>
+                        </tr>
+                        <tr id='extraRow1' hidden>
+                            <td id='shc-card-vaccine-name-3'></td>&nbsp;&nbsp;<td id='shc-card-vaccine-name-4'></td>
+                        </tr>
+                        <tr id='extraRow2' hidden>
+                            <td id='shc-card-vaccine-date-3'></td>&nbsp;&nbsp;<td id='shc-card-vaccine-date-4'></td>
+                        </tr>
+                    </tbody>
+                 </table>       
+                <div id='shc-card-vaccine' style={{width:'63%', display:'block', marginLeft: 'auto', marginRight: 'auto'}}></div>
+
+                <div id='shc-qrcode' style={{width:'63%', display:'block', marginLeft: 'auto', marginRight: 'auto'}}></div>
+         
+                <br/>
+            </div>
                     </div>
                 }/>
 
@@ -627,7 +644,6 @@ function Form(): JSX.Element {
                     </div>
                 }/>
             </form>
-            <canvas id="canvas" style={{ display: "none" }} />
         </div>
     )
 }
