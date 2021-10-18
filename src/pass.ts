@@ -147,9 +147,7 @@ export class PassData {
         
         // Update our pass name if this is an SHC pass
         if (payload.rawData.length > 0) {
-            // const newPassTitle = `${Constants.NAME}, ${payload.shcReceipt.cardOrigin}`;
-            const newPassTitle = `${Constants.NAME}`; // hot patch for production for now... string too long to fit in pass
-
+            const newPassTitle = `${Constants.NAME}, ${payload.shcReceipt.cardOrigin}`;
             this.logoText = newPassTitle;
             this.organizationName = newPassTitle;
             this.description = newPassTitle;
