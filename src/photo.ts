@@ -85,7 +85,7 @@ export class Photo {
             qrImage.src = qrcode.toDataURL(2, 15);
             document.getElementById('qrcode').appendChild(qrImage);
 
-            return toBlob(body);
+            return await toBlob(body);
 
         }   catch (e) {
             return Promise.reject(e);
@@ -123,7 +123,7 @@ export class Photo {
             qrImage.src = qrcode.toDataURL(2, 15);
             document.getElementById('shc-qrcode').appendChild(qrImage);
 
-            return toBlob(body);
+            return await toBlob(body);
 
         }   catch (e) {
             return Promise.reject(e);
