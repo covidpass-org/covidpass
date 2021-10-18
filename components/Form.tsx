@@ -465,28 +465,28 @@ function Form(): JSX.Element {
                 <Card step="1" heading={t('index:downloadReceipt')} content={
                     <div className="space-y-5">
                         <p>
-                            <Select
+                            {/* <Select
                                 className="dark"
                                 defaultValue={selectedOption}
                                 onChange={e => { setSelectedOption; gotoLink(e)}}
                                 options={options}
-                            />
+                            /> */}
 
-                            {/* {t('index:visit')}&nbsp;
+                            {t('index:visit')}&nbsp;
                                 <Link href="https://covid19.ontariohealth.ca">
                                     <a className="underline" target="_blank">
                                         {t('index:ontarioHealth')}
                                     </a>
                                 </Link>&nbsp;
                                 {t('index:downloadSignedPDF')}<br/><br/>
-                                {t('index:reminderNotToRepeat')} */}
+                                {t('index:reminderNotToRepeat')}
 
                         </p>
-                        {/* <button id="ontariohealth" onClick={gotoOntarioHealth}
+                        <button id="ontariohealth" onClick={gotoOntarioHealth}
         
                                     className="focus:outline-none bg-green-600 py-2 px-3 text-white font-semibold rounded-md disabled:bg-gray-400">
                                 {t('index:gotoOntarioHealth')}
-                        </button> */}
+                        </button>
                     </div>
                 }/>
 
