@@ -3,7 +3,7 @@ import { Integrations } from '@sentry/tracing';
 
 export const initSentry = () => {
     SentryModule.init({
-        release: 'grassroots_covidpass@2.1.2', // App version. Needs to be manually updated as we go unless we make the build smarter
+        release: 'grassroots_covidpass@2.1.3', // App version. Needs to be manually updated as we go unless we make the build smarter
         dsn: 'https://7120dcf8548c4c5cb148cdde2ed6a778@o1015766.ingest.sentry.io/5981424',
         integrations: [
             new Integrations.BrowserTracing(),

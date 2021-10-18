@@ -1,5 +1,5 @@
 import {saveAs} from 'file-saver';
-import React, {FormEvent, useEffect, useRef, useState} from "react";
+import React, {FormEvent, useEffect, useRef, useState, Component} from "react";
 import {BrowserQRCodeReader, IScannerControls} from "@zxing/browser";
 import {Result} from "@zxing/library";
 import {useTranslation} from 'next-i18next';
@@ -15,7 +15,19 @@ import {Photo} from "../src/photo";
 import {isIOS, isMacOs, isSafari, osVersion, getUA, browserName, browserVersion} from 'react-device-detect';
 import * as Sentry from '@sentry/react';
 import Bullet from './Bullet';
+import Select from 'react-select'
 
+const options = [
+    { label: 'Alberta', value: 'https://covidrecords.alberta.ca/form'},
+    { label: 'British Columbia', value: 'https://www.healthgateway.gov.bc.ca/vaccinecard'},
+    { label: 'Ontario', value: 'https://covid19.ontariohealth.ca'},
+    { label: 'Northern Territories', value: 'https://www.gov.nt.ca/covid-19/en/request/proof-vaccination'},
+    { label: 'Nova Scotia', value: 'https://novascotia.flow.canimmunize.ca/en/portal'},
+    { label: 'Québec', value: 'https://covid19.quebec.ca/PreuveVaccinale'},
+    { label: 'Saskatchewan', value: 'https://services.saskatchewan.ca/#/login'},
+    { label: 'Yukon', value: 'https://service.yukon.ca/forms/en/get-covid19-proof-of-vaccination'}
+
+]
 
 function Form(): JSX.Element {
     const {t} = useTranslation(['index', 'errors', 'common']);
@@ -45,6 +57,9 @@ function Form(): JSX.Element {
     const [fileErrorMessages, _setFileErrorMessages] = useState<Array<string>>([]);
 
     const [showDoseOption, setShowDoseOption] = useState<boolean>(false);
+
+    const [selectedOption, setSelectedOption] = useState(null);
+
     // const [warningMessages, _setWarningMessages] = useState<Array<string>>([]);
     const hitcountHost = 'https://stats.vaccine-ontario.ca';
 
@@ -444,27 +459,42 @@ function Form(): JSX.Element {
         // }
     }
 
+    function gotoLink(option) {
+        window.location.href = option.value;
+    }
+
+    function promptTextCreator(value) {
+        return 'Select province...';
+    }
+
     return (
         <div>
             <form className="space-y-5" id="form" onSubmit={addToWallet}>
                 <Card step="1" heading={t('index:downloadReceipt')} content={
                     <div className="space-y-5">
                         <p>
-                            {t('index:visit')}&nbsp;
+                            <Select
+                                className="dark"
+                                defaultValue={selectedOption}
+                                onChange={e => { setSelectedOption; gotoLink(e)}}
+                                options={options}
+                            />
+
+                            {/* {t('index:visit')}&nbsp;
                                 <Link href="https://covid19.ontariohealth.ca">
                                     <a className="underline" target="_blank">
                                         {t('index:ontarioHealth')}
                                     </a>
                                 </Link>&nbsp;
                                 {t('index:downloadSignedPDF')}<br/><br/>
-                                {t('index:reminderNotToRepeat')}
+                                {t('index:reminderNotToRepeat')} */}
 
                         </p>
-                        <button id="ontariohealth" onClick={gotoOntarioHealth}
+                        {/* <button id="ontariohealth" onClick={gotoOntarioHealth}
         
                                     className="focus:outline-none bg-green-600 py-2 px-3 text-white font-semibold rounded-md disabled:bg-gray-400">
                                 {t('index:gotoOntarioHealth')}
-                        </button>
+                        </button> */}
                     </div>
                 }/>
 

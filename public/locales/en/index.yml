@@ -7,7 +7,7 @@ stopCamera: Stop Camera
 startCamera: Start Camera
 openFile: Select File
 foundQrCode: Found valid Smart Health Card QR Code!
-downloadReceipt: Download or take a picture of your QR code
+downloadReceipt: Download official receipt or take a picture of your QR code
 visit: If you are in Ontario, please visit
 ontarioHealth: Ontario Ministry of Health
 gotoOntarioHealth: Go to Ontario Ministry of Health

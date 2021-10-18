@@ -116,7 +116,6 @@ export class PassPhotoCommon {
             message: payloadBody.rawData,
             format: QrFormat.PKBarcodeFormatQR,
             messageEncoding: Encoding.iso88591,
-            // altText : payload.rawData
         }
 
         return {payload: payload, qrCode: qrCode}
