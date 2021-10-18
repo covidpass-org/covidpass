@@ -116,7 +116,6 @@ export class Photo {
                 if (i > 1) {
                     document.getElementById(`shc-card-vaccine-name-${i+1}`).parentElement.hidden = false;
                 }
-
             }
 
             const qrcode = new Encoder();

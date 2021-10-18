@@ -45,6 +45,7 @@ function Form(): JSX.Element {
     const [qrCode, setQrCode] = useState<Result>(undefined);
     const [file, setFile] = useState<File>(undefined);
     const [payloadBody, setPayloadBody] = useState<PayloadBody>(undefined);
+    const [photoBlob, setPhotoBlob] = useState<Blob>(undefined);
 
     const [saveLoading, setSaveLoading] = useState<boolean>(false);
     const [fileLoading, setFileLoading] = useState<boolean>(false);
@@ -104,7 +105,7 @@ function Form(): JSX.Element {
     // Add event listener to listen for file change events
     useEffect(() => {
         if (inputFile && inputFile.current) {
-            inputFile.current.addEventListener('change', () => {
+            inputFile.current.addEventListener('change', async () => {
                 let selectedFile = inputFile.current.files[0];
                 if (selectedFile) {
                     setFileLoading(true);
@@ -116,14 +117,15 @@ function Form(): JSX.Element {
                     deleteAddErrorMessage(t('errors:'.concat('noFileOrQrCode')));
                     _setFileErrorMessages([]);
                     checkBrowserType();
-                    getPayload(selectedFile);
+                    const payloadBody = await getPayload(selectedFile);
+                    await renderPhoto(payloadBody);
                 }
             });
         }
         checkBrowserType();
     }, [inputFile])
 
-    async function getPayload(file){
+    async function getPayload(file) : Promise<PayloadBody> {
         try {
             const payload = await getPayloadBodyFromFile(file);
             setPayloadBody(payload);
@@ -136,7 +138,9 @@ function Form(): JSX.Element {
                 } else {
                     setShowDoseOption(true);
                 }
-            } 
+            }
+            
+            return Promise.resolve(payload);
         } catch (e) {
             setFile(file);
             setFileLoading(false);
@@ -244,6 +248,8 @@ function Form(): JSX.Element {
                             // Reset
                             setGlobalControls(undefined);
                             setIsCameraOpen(false);
+            
+                            await renderPhoto(payloadBody); 
                         }
                     }
                     if (error) {
@@ -322,8 +328,6 @@ function Form(): JSX.Element {
                 saveAs(passBlob, covidPassFilename);
                 setSaveLoading(false);
             } 
-
-
         } catch (e) {
 
             if (e) {
@@ -346,8 +350,42 @@ function Form(): JSX.Element {
 
     //TODO: merge with addToWallet for common flow
 
+    async function renderPhoto(payloadBody : PayloadBody) {
+        console.log('renderPhoto');
+        if (!payloadBody) {
+            console.log('no payload body');
+            setAddErrorMessage('noFileOrQrCode');
+            return;
+        }
+
+        try {
+            console.log('beginning render');
+            if (payloadBody.rawData.length > 0) {    
+                // This is an SHC receipt, so do our SHC thing
+
+                // need to clean up first
+                if (document.getElementById('shc-qrcode').hasChildNodes()) {
+                    document.getElementById('shc-qrcode').firstChild.remove();
+                }
+
+                document.getElementById('shc-pass-image').hidden = false;
+                console.log('made canvas visible');
+
+                const newPhotoBlob = await Photo.generateSHCPass(payloadBody);
+                console.log('generated blob');
+                setPhotoBlob(newPhotoBlob);
+            }
+            console.log('done photo render');
+        } catch (e) {
+            Sentry.captureException(e);
+
+            setPhotoBlob(undefined);
+            setAddErrorMessage(e.message);
+        }        
+    }
+
     async function saveAsPhoto() {
-        
+
         setSaveLoading(true);
 
         if (!file && !qrCode) {
@@ -357,35 +395,9 @@ function Form(): JSX.Element {
         }
 
         try {
-
-            let selectedReceipt;
-            let photoBlob: Blob;
-            let filenameDetails = '';
-            if (payloadBody.rawData.length > 0) {    
-                // This is an SHC receipt, so do our SHC thing
-
-                // need to clean up first
-                if (document.getElementById('shc-qrcode').hasChildNodes()) {
-                    document.getElementById('shc-qrcode').firstChild.remove();
-                }
-
-                selectedReceipt = payloadBody.shcReceipt;
-                photoBlob = await Photo.generateSHCPass(payloadBody);
-                filenameDetails = selectedReceipt.cardOrigin.replace(' ', '-');
-            } else {
-                // This is an old-style ON custom QR code Receipt
-
-                // need to clean up first
-                if (document.getElementById('qrcode').hasChildNodes()) {
-                    document.getElementById('qrcode').firstChild.remove();
-                }
-
-                selectedReceipt = payloadBody.receipts[selectedDose];
-                const vaxName = selectedReceipt.vaccineName.replace(' ', '-');
-                const passDose = selectedReceipt.numDoses;
-                photoBlob = await Photo.generatePass(payloadBody, passDose);
-                filenameDetails = `${vaxName}-${passDose}`;
-            }
+            // This is an SHC receipt, so do our SHC thing
+            const selectedReceipt = payloadBody.shcReceipt;
+            const filenameDetails = selectedReceipt.cardOrigin.replace(' ', '-');
             const passName = selectedReceipt.name.replace(' ', '-');
             const covidPassFilename = `grassroots-receipt-${passName}-${filenameDetails}.png`;
 
@@ -394,10 +406,6 @@ function Form(): JSX.Element {
             saveAs(photoBlob, covidPassFilename);
 
             setSaveLoading(false);
-
-            // Hide both our possible passes
-            document.getElementById('pass-image').hidden = true;
-            document.getElementById('shc-pass-image').hidden = true;
         } catch (e) {
 
             Sentry.captureException(e);

@@ -35,7 +35,10 @@ async function getConfigData(): Promise<any> {
     return _configData;
 }
 
-export async function registerPass(registrationPayload: any) : Promise<boolean> {
+export async function registerPass(payload : Payload) : Promise<boolean> {
+    
+    const registrationPayload = generateSHCRegisterPayload(payload);
+    
     const requestOptions = {
         method: 'POST',
         headers: {
@@ -73,13 +76,21 @@ export async function registerPass(registrationPayload: any) : Promise<boolean> 
     }
 }
 
-export function generateSHCRegisterPayload(shcReceipt: SHCReceipt) {
+function generateSHCRegisterPayload(payload : Payload) : any {
+
+    // Register an SHC pass by adding in our pertinent data fields. We only do this so we
+    // can detect changes from providers and react quickly - we don't need these for any
+    // validation since SHCs are self-validating. This entire registration process could
+    // be turned off for SHCs and there would be no harm to the card creation process 
     const retPayload = {};
+    const shcReceipt = payload.shcReceipt;
     retPayload['cardOrigin'] = shcReceipt.cardOrigin;
     retPayload['issuer'] = shcReceipt.issuer;
+    retPayload['serialNumber'] = payload.serialNumber;
 
     for (let i = 0; i < shcReceipt.vaccinations.length; i++) {
-        retPayload[`vaccination_${i}`] = shcReceipt.vaccinations[i];
+        retPayload[`vaccination_${i}_name`] = shcReceipt.vaccinations[i].vaccineName;
+        retPayload[`vaccination_${i}_organization`] = shcReceipt.vaccinations[i].organization;
     }
     
     return retPayload;
@@ -93,56 +104,20 @@ export class PassPhotoCommon {
         
         // console.log(JSON.stringify(payloadBody, null, 2), numDose);
 
-        const configData = await getConfigData();
         const payload: Payload = new Payload(payloadBody, numDose);
-
         payload.serialNumber = uuid4();
-        let qrCodeMessage = '';
-        let registrationPayload: any;
-
-        if (payloadBody.rawData.startsWith('shc:/')) {
-            
-            qrCodeMessage = payloadBody.rawData;
-
-            // Register an SHC pass by adding in our pertinent data fields. We only do this so we
-            // can detect changes from providers and react quickly - we don't need these for any
-            // validation since SHCs are self-validating. This entire registration process could
-            // be turned off for SHCs and there would be no harm to the card creation process 
-            registrationPayload = generateSHCRegisterPayload(payloadBody.shcReceipt);
-            registrationPayload.serialNumber = payload.serialNumber;            // serial number is needed as it's the firestore document id
-
-        } else {
-            
-            // register an old-style ON pass
-
-            registrationPayload = Object.assign({}, payloadBody.receipts[numDose]);
-            delete registrationPayload.name;
-            delete registrationPayload.dateOfBirth;
-            registrationPayload["serialNumber"] = payload.serialNumber;
-            registrationPayload["type"] = 'applewallet';
-
-            const verifierHost = configData.verifierHost;
-            const encodedUri = `serialNumber=${encodeURIComponent(payload.serialNumber)}&vaccineName=${encodeURIComponent(payloadBody.receipts[numDose].vaccineName)}&vaccinationDate=${encodeURIComponent(payloadBody.receipts[numDose].vaccinationDate)}&organization=${encodeURIComponent(payloadBody.receipts[numDose].organization)}&dose=${encodeURIComponent(payloadBody.receipts[numDose].numDoses)}`;
-            qrCodeMessage = `${verifierHost}/verify?${encodedUri}`;
-            // console.log(qrCodeUrl);
-        }
-
-
-        const wasSuccess = await registerPass(registrationPayload);
+        const wasSuccess = await registerPass(payload);
         if (!wasSuccess) {
             return Promise.reject(`Error while trying to register pass!`);
         }
 
         // Create QR Code Object
         const qrCode: QrCode = {
-            message: qrCodeMessage,
+            message: payloadBody.rawData,
             format: QrFormat.PKBarcodeFormatQR,
             messageEncoding: Encoding.iso88591,
-            // altText : 'Source: ' + payloadBody.shcReceipt.cardOrigin
-
         }
 
         return {payload: payload, qrCode: qrCode}
-
     }
 }

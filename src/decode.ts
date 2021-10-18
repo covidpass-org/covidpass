@@ -3,7 +3,9 @@
 const jsQR = require("jsqr");
 import {SHCReceipt, SHCVaccinationRecord} from "./payload";
 import {getVerifiedIssuer} from "./issuers";
-import {registerPass, generateSHCRegisterPayload} from "./passphoto-common";
+import {registerPass} from "./passphoto-common";
+import {v4 as uuid4} from 'uuid';
+import {Payload} from "./payload";
 
 export function getQRFromImage(imageData: ImageData) {
   return jsQR(
@@ -44,7 +46,7 @@ function getOrganizationForResource(immunizationResource: any) : string {
     return null;
 }
 
-export function decodedStringToReceipt(decoded: object) : SHCReceipt {
+export async function decodedStringToReceipt(decoded: object) : Promise<SHCReceipt> {
 
     const cvxCodeToVaccineName = {                   // https://www2a.cdc.gov/vaccines/iis/iisstandards/vaccines.asp?rpt=cvx
         '208': 'PFIZER', // Nominally for 16+, in practice seems to be used for 12+
@@ -147,8 +149,7 @@ export function decodedStringToReceipt(decoded: object) : SHCReceipt {
     if (!isValidatedSHC) {
         // Send this SHC to our registration endpoint so we can proactively track and react to unexpected SHCs
         // (e.g. for jurisdictions we aren't aware of yet)
-        const registerPayload = generateSHCRegisterPayload(retReceipt);
-        registerPass(registerPayload);
+        await registerPass({shcReceipt: retReceipt, serialNumber: uuid4()} as Payload);
 
         // Now bail out
         return null;
