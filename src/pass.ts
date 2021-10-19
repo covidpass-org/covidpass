@@ -69,7 +69,7 @@ export class PassData {
         // Create Payload
         try {
             
-            const results = await PassPhotoCommon.preparePayload(payloadBody, numDose);
+            const results = await PassPhotoCommon.preparePayload(payloadBody, true, numDose);
             const payload = results.payload;
             // Create pass data
 

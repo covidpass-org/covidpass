@@ -337,7 +337,7 @@ function Form(): JSX.Element {
 
     //TODO: merge with addToWallet for common flow
 
-    async function renderPhoto(payloadBody : PayloadBody) {
+    async function renderPhoto(payloadBody : PayloadBody, shouldRegister = true) {
         console.log('renderPhoto');
         if (!payloadBody) {
             console.log('no payload body');
@@ -359,7 +359,7 @@ function Form(): JSX.Element {
                 document.getElementById('shc-image-header').hidden = false;
                 console.log('made canvas visible');
 
-                const newPhotoBlob = await Photo.generateSHCPass(payloadBody);
+                const newPhotoBlob = await Photo.generateSHCPass(payloadBody, shouldRegister);
                 console.log('generated blob');
                 setPhotoBlob(newPhotoBlob);
             }
@@ -370,6 +370,10 @@ function Form(): JSX.Element {
             setPhotoBlob(undefined);
             setAddErrorMessage(e.message);
         }        
+    }
+
+    async function refreshPhoto() {
+        await renderPhoto(payloadBody, false);
     }
 
     async function saveAsPhoto() {
@@ -579,7 +583,12 @@ function Form(): JSX.Element {
                         {addErrorMessages.map((message, i) =>
                             <Alert message={message} key={'error-' + i} type="error" />
                         )}
-                        <div id="shc-image-header"><b>To Save your Vaccination Card as a photo, please click on or save the image below:</b></div>
+                        <div id="shc-image-header" hidden><b>To Save your Vaccination Card as a photo, please click on or save the image below:</b><br/>If the image below does not look correct and you are trying to save the photo, please click the Refresh button below - on some older devices, the image does not appear to draw correctly the first time, but refreshing once or twice should fix it. Sorry for the inconvenience.
+                        <button id="renderPhoto" type="button" disabled={saveLoading || !payloadBody} value='renderPhoto' name='action' onClick={refreshPhoto}
+                                    className="focus:outline-none bg-green-600 py-2 px-3 text-white font-semibold rounded-md disabled:bg-gray-400">
+                                Refresh Photo Card
+                            </button>
+                        </div>
                         <br/>
             <div id="shc-pass-image" style={{backgroundColor: "white", color: "black", fontFamily: 'Arial', fontSize: 10, width: '350px', padding: '10px', border: '1px solid', margin: '0px'}} hidden>
                 <table style={{verticalAlign: "middle"}}>

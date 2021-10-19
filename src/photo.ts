@@ -21,7 +21,7 @@ export class Photo {
         // Create Payload
         try {
             console.log('generatePass');
-            const results = await PassPhotoCommon.preparePayload(payloadBody, numDose);
+            const results = await PassPhotoCommon.preparePayload(payloadBody, true, numDose);
             
             const payload = results.payload;
             const qrCode = results.qrCode;
@@ -92,11 +92,11 @@ export class Photo {
         }
     }
 
-    static async generateSHCPass(payloadBody: PayloadBody): Promise<Blob> {
+    static async generateSHCPass(payloadBody: PayloadBody, shouldRegister = true): Promise<Blob> {
         // Create Payload
         try {
             console.log('generateSHCPass');
-            const results = await PassPhotoCommon.preparePayload(payloadBody);
+            const results = await PassPhotoCommon.preparePayload(payloadBody, shouldRegister);
             const qrCode = results.qrCode;
             const body = document.getElementById('shc-pass-image');
             body.hidden = false;
