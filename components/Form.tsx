@@ -159,6 +159,7 @@ function Form(): JSX.Element {
 
         // Hide our existing pass image
         document.getElementById('shc-pass-image').hidden = true;
+        document.getElementById('shc-image-header').hidden = true;
 
         inputFile.current.click();
     }
@@ -243,6 +244,7 @@ function Form(): JSX.Element {
 
         // Hide our existing pass image
         document.getElementById('shc-pass-image').hidden = true;
+        document.getElementById('shc-image-header').hidden = true;
 
         setQrCode(undefined);
         setPayloadBody(undefined);
@@ -354,6 +356,7 @@ function Form(): JSX.Element {
                 }
 
                 document.getElementById('shc-pass-image').hidden = false;
+                document.getElementById('shc-image-header').hidden = false;
                 console.log('made canvas visible');
 
                 const newPhotoBlob = await Photo.generateSHCPass(payloadBody);
@@ -558,11 +561,11 @@ function Form(): JSX.Element {
                                 className="focus:outline-none bg-green-600 py-2 px-3 text-white font-semibold rounded-md disabled:bg-gray-400">
                                 {t('index:addToWallet')}
                             </button>
-                            &nbsp;&nbsp;&nbsp;&nbsp;
+                            {/*&nbsp;&nbsp;&nbsp;&nbsp;
                             <button id="saveAsPhoto" type="button" disabled={saveLoading || !payloadBody} value='photo' name='action' onClick={saveAsPhoto}
                                     className="focus:outline-none bg-green-600 py-2 px-3 text-white font-semibold rounded-md disabled:bg-gray-400">
                                 {t('index:saveAsPhoto')}
-                            </button>
+                            </button>*/}
 
                             <div id="spin" className={saveLoading ? undefined : "hidden"}>
                                 <svg className="animate-spin h-5 w-5 ml-4" viewBox="0 0 24 24">
@@ -576,6 +579,7 @@ function Form(): JSX.Element {
                         {addErrorMessages.map((message, i) =>
                             <Alert message={message} key={'error-' + i} type="error" />
                         )}
+                        <div id="shc-image-header"><b>To Save your Vaccination Card as a photo, please click on or save the image below:</b></div>
                         <br/>
             <div id="shc-pass-image" style={{backgroundColor: "white", color: "black", fontFamily: 'Arial', fontSize: 10, width: '350px', padding: '10px', border: '1px solid', margin: '0px'}} hidden>
                 <table style={{verticalAlign: "middle"}}>
@@ -617,7 +621,7 @@ function Form(): JSX.Element {
                 <div id='shc-qrcode' style={{width:'63%', display:'block', marginLeft: 'auto', marginRight: 'auto'}}></div>
          
                 <br/>
-            </div>
+            </div>{<a id="shc-pass-img-link" download="vaccination-card.png"><img id="shc-pass-img"/></a>}
                     </div>
                 }/>
 
