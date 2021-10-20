@@ -15,10 +15,10 @@ downloadSignedPDF: and enter your information to display your official vaccinati
 reminderNotToRepeat: If you have completed this step before, simply proceed to Step 2
 addToWallet: Add to Apple Wallet
 addToGooglePay: Add to Google Pay
-addToWalletHeader: Add to Wallet / Save as Photo
+addToWalletHeader: Add to Apple Wallet / Google Pay / Save as Photo
 saveAsPhoto: Save as Photo Card
 createdOnDevice: Your receipt is processed on your device only
-piiNotSent: No personally-identifiable information is sent to servers
+piiNotSent: No personally-identifiable information is stored on servers
 openSourceTransparent: Source code is open for re-use/contributions on GitHub
 verifierLink: QR code verifier available at 
 numPasses: receipts processed since Sept 2, 2021

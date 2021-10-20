@@ -78,16 +78,13 @@ function Index(): JSX.Element {
                     <Card content={
                         <div><p>{t('common:subtitle')}</p><br /><p>{t('common:subtitle2')}</p><br />
                             <b>{displayPassCount}</b><br/><br/>
-                            <b>MAJOR NEW RELEASE! </b>Oct 17 afternoon update: 
+                            <b>MAJOR NEW RELEASE!</b> Oct 20th update: 
                             <br />
                             <br />
                             <ul className="list-decimal list-outside" style={{ marginLeft: '20px' }}>
-                                <li>You can now import the new enhanced receipt from Ontario onto your Apple or Android devices</li>
+                                <li>(Often-requested) support added for importing proof-of-vaccination into Google Pay on Android 8.1+</li>
                                 <li>You can now scan QR codes directly off of paper or a screen with your camera, eliminating the need to upload PDFs or pictures</li>
-                                <li>Support released for importing Ontario, British Columbia, Alberta, Saskatchewan, Nova Scotia, Québec, Yukon, California, New York, and Louisiana SHC QR codes</li>
-                                <li>Support released for importing QR codes from images as well as from PDFs</li>
-                                <li>Support for creating our previous interim QR codes has been removed - now that the official Ontario QR code is being released and the gap is filled, our QR codes are no longer needed</li>
-                                <li>Support released for importing Manitoba's (new unannounced) QR codes, as well as for Northwest Territories, New Jersey, Hawaii, Virginia, and Utah SHC QR codes</li>
+                                <li>Support added for importing QR codes from images as well as from PDFs</li>
                             </ul><br />
                             <p>{t('common:continueSpirit')}</p>
                             <br />

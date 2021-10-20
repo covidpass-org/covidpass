@@ -720,8 +720,6 @@ function Form(): JSX.Element {
                                 <Bullet text="You would like to understand how your data is handled?"/> 
                                 <Bullet text="You don't have a health card?"/>
                                 <Bullet text="You have a Red/White OHIP card?"/>
-                                <Bullet text='You have an iPhone 6 or older?'/>
-                                <Bullet text='You have an Android?'/>
                             </ul>
                         </div>
 
