@@ -52,9 +52,11 @@ export class GPayData {
             // Create pass data
 
             const configResponse = await fetch('/api/config')
-            const apiBaseUrl = (await configResponse.json()).gpayBaseUrl
+            const configJson = (await configResponse.json())
+            const apiBaseUrl = configJson.gpayBaseUrl
+            const gpayPassType = configJson.gpayPassType
 
-            const result = await fetch(`${apiBaseUrl}/api/loyalty/create`, {
+            const result = await fetch(`${apiBaseUrl}/api/${gpayPassType}/create`, {
                 method: 'POST',
                 headers: {
                 'Content-Type': 'application/json',

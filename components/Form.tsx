@@ -12,7 +12,7 @@ import {PayloadBody} from "../src/payload";
 import {getPayloadBodyFromFile, processSHCCode} from "../src/process";
 import {PassData} from "../src/pass";
 import {Photo} from "../src/photo";
-import {isIOS, isMacOs, isSafari, osVersion, getUA, browserName, browserVersion} from 'react-device-detect';
+import {isIOS, isMacOs, isAndroid, isSafari, osVersion, getUA, browserName, browserVersion} from 'react-device-detect';
 import * as Sentry from '@sentry/react';
 import Bullet from './Bullet';
 import { GPayData } from '../src/gpay';
@@ -351,9 +351,9 @@ function Form(): JSX.Element {
                 
                 let selectedReceipt;
                 if (payloadBody.rawData.length > 0) {                   // shc stuff
-                    const sortedKeys = Object.keys(payloadBody.receipts).sort();             // pickup the last key in the receipt table
+                    const sortedKeys = Object.keys(payloadBody.shcReceipt.vaccinations).sort();             // pickup the last key in the receipt table
                     const lastKey = sortedKeys[sortedKeys.length - 1];
-                    selectedReceipt = payloadBody.receipts[lastKey];
+                    selectedReceipt = payloadBody.shcReceipt.vaccinations[lastKey];
                 } else {
                     selectedReceipt = payloadBody.receipts[selectedDose];
                 }
