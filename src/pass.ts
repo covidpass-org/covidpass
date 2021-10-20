@@ -42,8 +42,8 @@ export class PassData {
 
         // console.log('signWithRemote');
 
-        const configResponse = await getConfigData();
-        const apiBaseUrl = (await configResponse.json()).apiBaseUrl;
+        const config = await getConfigData();
+        const apiBaseUrl = config.apiBaseUrl;
         // console.log(`${apiBaseUrl}/sign`);
 
         console.log(JSON.stringify(signData));

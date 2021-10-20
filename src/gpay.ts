@@ -31,9 +31,8 @@ export class GPayData {
             const payload = results.payload;
             // Create pass data
 
-            const configResponse = await getConfigData();
-            const configJson = await configResponse.json();
-            const gpayBaseUrl = configJson.gpayBaseUrl;
+            const config = await getConfigData();
+            const gpayBaseUrl = config.gpayBaseUrl;
 
             const result = await fetch(gpayBaseUrl, {
                 method: 'POST',
