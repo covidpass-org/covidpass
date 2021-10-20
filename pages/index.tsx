@@ -78,11 +78,12 @@ function Index(): JSX.Element {
                     <Card content={
                         <div><p>{t('common:subtitle')}</p><br /><p>{t('common:subtitle2')}</p><br />
                             <b>{displayPassCount}</b><br/><br/>
-                            <b>MAJOR NEW RELEASE!</b> Oct 20th update: 
+                            <b>Native support for Android - COVID card in your Google Pay wallet</b> - Oct 20th update: 
                             <br />
                             <br />
                             <ul className="list-decimal list-outside" style={{ marginLeft: '20px' }}>
                                 <li>(Often-requested) support added for importing proof-of-vaccination into Google Pay on Android 8.1+</li>
+                                <li>Android users can also add a shortcut to your home screen to access your COVID card with a single tap</li>
                                 <li>You can now scan QR codes directly off of paper or a screen with your camera, eliminating the need to upload PDFs or pictures</li>
                                 <li>Support added for importing QR codes from images as well as from PDFs</li>
                             </ul><br />
