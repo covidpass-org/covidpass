@@ -219,7 +219,4 @@ function processSHCReceipt(receipt: SHCReceipt, generic: PassDictionary) {
         )
 
     }
-
-
-
 }

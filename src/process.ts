@@ -142,7 +142,7 @@ export async function processSHCCode(shcQrCode : string) : Promise<PayloadBody> 
         const verified = verifyJWS(jws, decoded.iss);
 
         if (verified) {
-            const shcReceipt = Decode.decodedStringToReceipt(decoded);
+            const shcReceipt = await Decode.decodedStringToReceipt(decoded);
             //console.log(shcReceipt);
             return Promise.resolve({receipts: null, shcReceipt, rawData: shcQrCode});            
         } else {

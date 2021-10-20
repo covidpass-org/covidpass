@@ -34,114 +34,13 @@ function Page(props: PageProps): JSX.Element {
                             <a href="https://github.com/billylo1/covidpass" className="underline">{t('common:gitHub')}</a>
                             <a href="https://vaccine-ontario.ca" className="underline">{t('common:returnToMainSite')}</a>
                         </nav>
-                        <div className="flex pt-4 flex-row space-x-4 justify-center text-md flex-wrap">Last updated: 2021-10-17 (v2.1.1)</div>
+                        <div className="flex pt-4 flex-row space-x-4 justify-center text-md flex-wrap">Last updated: 2021-10-19 (v2.1.7)</div>
                     </footer>
                 </main>
             </div>
             <br/>
             <br/>
             <br/>
-            <div id="pass-image" style={{backgroundColor: "orangered", color: "white", fontFamily: 'Arial', fontSize: 10, width: '350px', padding: '10px'}} hidden>
-                <table style={{verticalAlign: "middle"}}>
-                    <tbody>
-                        <tr>
-                            <td><img src='shield4.svg' width='50' height='50' /></td>
-                            <td style={{fontSize: 20, width: 280}}><span style={{marginLeft: '11px'}}><b>Vaccination Receipt</b></span></td>
-                        </tr>
-                    </tbody>
-                 </table>
-                <br/>
-                <br/>
-                <div style={{height:12}}><b>VACCINE</b></div>
-                <div id='vaccineName' style={{fontSize:28}}></div>
-                <br/>
-                <br/>
-                <table style={{fontSize:12, border: 0 }}>
-                    <tbody>
-                        <tr>
-                            <td style={{width: 220}}><b>AUTHORIZED ORGANIZATION</b></td>
-                            <td><b>VACC. DATE</b></td>
-                        </tr>
-                        <tr>
-                            <td id='organization' style={{width: 220}}></td>
-                            <td id='vaccinationDate' style={{width:120}}></td>
-                        </tr>
-                        <tr id='extraRow2' hidden>
-                            <td id='organization2' style={{width: 220}}></td>
-                            <td id='vaccinationDate2' style={{width:120}}></td>
-                        </tr>
-                        <tr id='extraRow1' hidden>
-                            <td id='organization1' style={{width: 220}}></td>
-                            <td id='vaccinationDate1' style={{width:120}}></td>
-                        </tr>
-                        <tr style={{height: 20}}></tr>
-                        <tr>
-                            <td><b>NAME</b></td>
-                            <td><b>DATE OF BIRTH</b></td>
-                        </tr>
-                        <tr>
-                            <td id='name' style={{fontSize: 12}}></td>
-                            <td id='dob' style={{fontSize: 12}}></td>
-                        </tr>
-                        <tr style={{height: 20}}></tr>
-                        <tr>
-                            <td><b></b></td>
-                            <td><b>QR CODE EXPIRY</b></td>
-                        </tr>
-                        <tr>
-                            <td id='null' style={{fontSize: 12}}></td>
-                            <td id='expiry' style={{fontSize: 12}}>2021-10-22</td>
-                        </tr>
-                    </tbody>
-                </table>
-                <br/>
-                <br/>
-                <div id='qrcode' style={{width:'63%', display:'block', marginLeft: 'auto', marginRight: 'auto'}}></div>
-                <br/>
-                <br/>
-            </div>
-            <div id="shc-pass-image" style={{backgroundColor: "white", color: "black", fontFamily: 'Arial', fontSize: 10, width: '350px', padding: '10px'}} hidden>
-                <table style={{verticalAlign: "middle"}}>
-                    <tbody>
-                        <tr>
-                            <td><img src='shield-black.svg' width='50' height='50' /></td>
-                            <td style={{fontSize: 20, width: 280}}>
-                                <span style={{marginLeft: '11px', whiteSpace: 'nowrap'}}><b>COVID-19 Vaccination Card</b></span><br/>
-                                <span style={{marginLeft: '11px'}}><b id='shc-card-origin'></b></span>
-                            </td>
-                        </tr>
-                    </tbody>
-                 </table>
-                <br/>
-                <br/>
-                <div style={{fontSize:14, textAlign: 'center'}}>
-                    <span id='shc-card-name' ></span>&nbsp;&nbsp;&nbsp;&nbsp;(<span id='shc-card-dob'></span>)
-                </div>
-                <br/>
-                <br/>
-                <table style={{textAlign: "center", width: "100%"}}>
-                    <tbody>
-                        <tr>
-                            <td id='shc-card-vaccine-name-1'></td>&nbsp;&nbsp;<td id='shc-card-vaccine-name-2'></td>
-                        </tr>
-                        <tr>
-                            <td id='shc-card-vaccine-date-1'></td>&nbsp;&nbsp;<td id='shc-card-vaccine-date-2'></td>
-                        </tr>
-                        <tr id='extraRow1' hidden>
-                            <td id='shc-card-vaccine-name-3'></td>&nbsp;&nbsp;<td id='shc-card-vaccine-name-4'></td>
-                        </tr>
-                        <tr id='extraRow2' hidden>
-                            <td id='shc-card-vaccine-date-3'></td>&nbsp;&nbsp;<td id='shc-card-vaccine-date-4'></td>
-                        </tr>
-                    </tbody>
-                 </table>       
-                <div id='shc-card-vaccine' style={{width:'63%', display:'block', marginLeft: 'auto', marginRight: 'auto'}}></div>
-
-                <div id='shc-qrcode' style={{width:'63%', display:'block', marginLeft: 'auto', marginRight: 'auto'}}></div>
-         
-                <br/>
-                <br/>
-            </div>
             <canvas id="canvas" style={{display: 'none'}}/>
         </div>
     )
