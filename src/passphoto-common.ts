@@ -1,6 +1,6 @@
 import {v4 as uuid4} from 'uuid';
 import * as Sentry from '@sentry/react';
-import {Payload, PayloadBody, SHCReceipt} from "./payload";
+import {Payload, PayloadBody} from "./payload";
     
 export enum QrFormat {
     PKBarcodeFormatQR = 'PKBarcodeFormatQR',
@@ -25,7 +25,7 @@ export interface PackageResult {
 }
 
 var _configData: any;
-async function getConfigData(): Promise<any> {
+export async function getConfigData(): Promise<any> {
     if (!_configData) {
         // Only call this once
         const configResponse = await fetch('/api/config');

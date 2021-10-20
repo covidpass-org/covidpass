@@ -11,9 +11,11 @@ import {PayloadBody} from "../src/payload";
 import {getPayloadBodyFromFile, processSHCCode} from "../src/process";
 import {PassData} from "../src/pass";
 import {Photo} from "../src/photo";
-import {isIOS, isMacOs, isSafari, osVersion, getUA, browserName, browserVersion} from 'react-device-detect';
+import {isIOS, isMacOs, isAndroid, isSafari, osVersion, getUA, browserName, browserVersion} from 'react-device-detect';
 import * as Sentry from '@sentry/react';
 import Bullet from './Bullet';
+import { GPayData } from '../src/gpay';
+
 import Select from 'react-select'
 
 const options = [
@@ -51,6 +53,7 @@ function Form(): JSX.Element {
     const [generated, setGenerated] = useState<boolean>(false);         // this flag represents the file has been used to generate a pass
 
     const [isDisabledAppleWallet, setIsDisabledAppleWallet] = useState<boolean>(false);
+    const [isDisabledGooglePay, setIsDisabledGooglePay] = useState<boolean>(false);
     const [addErrorMessages, _setAddErrorMessages] = useState<Array<string>>([]);
     const [fileErrorMessages, _setFileErrorMessages] = useState<Array<string>>([]);
 
@@ -335,7 +338,61 @@ function Form(): JSX.Element {
         }
     }
 
-    //TODO: merge with addToWallet for common flow
+    // Add Pass to Google Pay
+    async function addToGooglePay() {
+        
+        event.preventDefault();
+        setSaveLoading(true);
+
+        if (!file && !qrCode) {
+            setAddErrorMessage('noFileOrQrCode')
+            setSaveLoading(false);
+            return;
+        }
+
+        try {
+            if (payloadBody) {
+                
+                let selectedReceipt;
+                if (payloadBody.rawData.length > 0) {                   // shc stuff
+                    const sortedKeys = Object.keys(payloadBody.shcReceipt.vaccinations).sort();             // pickup the last key in the receipt table
+                    const lastKey = sortedKeys[sortedKeys.length - 1];
+                    selectedReceipt = payloadBody.shcReceipt.vaccinations[lastKey];
+                } else {
+                    selectedReceipt = payloadBody.receipts[selectedDose];
+                }
+
+                console.log('> increment count');
+                await incrementCount();
+
+                console.log('> generatePass');
+                const jwt = await GPayData.generatePass(payloadBody, selectedDose);
+
+                const newUrl = `https://pay.google.com/gp/v/save/${jwt}`;
+                console.log('> redirect to save Google Pass');
+
+                // saveAs(passBlob, covidPassFilename);
+                setSaveLoading(false);
+                window.location.href = newUrl;
+            }
+        } catch (e) {
+
+            if (e) {
+                console.error(e);
+                Sentry.captureException(e);
+
+                if (e.message) {
+                    setAddErrorMessage(e.message);
+                } else {
+                    setAddErrorMessage("Unable to continue.");
+                }
+            } else {
+                setAddErrorMessage("Unexpected error. Sorry.");
+            }
+
+            setSaveLoading(false);
+        }
+    }
 
     async function renderPhoto(payloadBody : PayloadBody, shouldRegister = true) {
         console.log('renderPhoto');
@@ -440,6 +497,19 @@ function Form(): JSX.Element {
             setAddErrorMessage('Sorry, only Safari can be used to add a Wallet Pass on iOS');
             setIsDisabledAppleWallet(true);
             return;
+        }
+
+        if (isAndroid) {
+            if (Number(osVersion) > 8) {
+                setIsDisabledGooglePay(false);
+            } else {
+                setAddErrorMessage("Sorry, Add to Google Pay is only available to Android 8.1+.")
+                setIsDisabledGooglePay(true);
+            }
+        } else {
+            if (window.location.hostname !== 'localhost') {
+                setIsDisabledGooglePay(true);
+            }
         }
         // } else if (!isIOS) {
         //     setWarningMessage('Only Safari on iOS is officially supported for Wallet import at the moment - ' +
@@ -565,6 +635,14 @@ function Form(): JSX.Element {
                                 className="focus:outline-none bg-green-600 py-2 px-3 text-white font-semibold rounded-md disabled:bg-gray-400">
                                 {t('index:addToWallet')}
                             </button>
+
+                            &nbsp;&nbsp;
+
+                            <button id="addToGooglePay" type="button" disabled={isDisabledGooglePay || saveLoading || !payloadBody} value='gpay' name='action' onClick={addToGooglePay}
+                                    className="focus:outline-none bg-green-600 py-2 px-3 text-white font-semibold rounded-md disabled:bg-gray-400">
+                                {t('index:addToGooglePay')}
+                            </button>
+
                             {/*&nbsp;&nbsp;&nbsp;&nbsp;
                             <button id="saveAsPhoto" type="button" disabled={saveLoading || !payloadBody} value='photo' name='action' onClick={saveAsPhoto}
                                     className="focus:outline-none bg-green-600 py-2 px-3 text-white font-semibold rounded-md disabled:bg-gray-400">
@@ -642,8 +720,6 @@ function Form(): JSX.Element {
                                 <Bullet text="You would like to understand how your data is handled?"/> 
                                 <Bullet text="You don't have a health card?"/>
                                 <Bullet text="You have a Red/White OHIP card?"/>
-                                <Bullet text='You have an iPhone 6 or older?'/>
-                                <Bullet text='You have an Android?'/>
                             </ul>
                         </div>
 

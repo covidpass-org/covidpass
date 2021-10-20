@@ -14,10 +14,11 @@ gotoOntarioHealth: Go to Ontario Ministry of Health
 downloadSignedPDF: and enter your information to display your official vaccination receipt. Press the Share Icon at the bottom, "Save As Files" to store it onto your iPhone. You can also take a picture or screenshot of your QR code with your phone (please make sure the picture is good-quality, is not blurry, and captures ALL of the QR code!), or scan it directly with your camera below in step 2 
 reminderNotToRepeat: If you have completed this step before, simply proceed to Step 2
 addToWallet: Add to Apple Wallet
-addToWalletHeader: Add to Apple Wallet / Save as Photo
-saveAsPhoto: Save as Photo
+addToGooglePay: Add to Google Pay
+addToWalletHeader: Add to Apple Wallet / Google Pay / Save as Photo
+saveAsPhoto: Save as Photo Card
 createdOnDevice: Your receipt is processed on your device only
-piiNotSent: No personally-identifiable information is sent to servers
+piiNotSent: No personally-identifiable information is stored on servers
 openSourceTransparent: Source code is open for re-use/contributions on GitHub
 verifierLink: QR code verifier available at 
 numPasses: receipts processed since Sept 2, 2021

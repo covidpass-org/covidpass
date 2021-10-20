@@ -7,7 +7,7 @@ import Card from '../components/Card';
 import Page from '../components/Page';
 import Alert from '../components/Alert';
 import React, { useEffect, useState } from 'react';
-import { isIOS, isSafari } from 'react-device-detect';
+import { isIOS, isSafari, isAndroid, osVersion, isMacOs} from 'react-device-detect';
 import usePassCount from "../src/hooks/use_pass_count";
 import Link from 'next/link'
 
@@ -28,10 +28,16 @@ function Index(): JSX.Element {
     const deleteWarningMessage = (message: string) => _setWarningMessages(warningMessages.filter(item => item !== message));
 
     useEffect(() => {
-        if (isIOS && !isSafari) setWarningMessage("iPhone users, only Safari is supported at the moment. Please switch to Safari to prevent any unexpected errors.")
-        else if (!isIOS) {
-                setWarningMessage('Only Safari on iOS is officially supported for Apple Wallet import at the moment - ' +
-                    'for other platforms, please create a photo card or ensure you have an application which can open Apple Wallet .pkpass files');
+        if ((isIOS && !isMacOs) && !isSafari) {
+            setWarningMessage("iPhone users, only Safari is supported at the moment. Please switch to Safari to prevent any unexpected errors.");
+        } else {
+            if (isAndroid) {
+                if (Number(osVersion.split('.')[0]) >= 8) {
+                    setWarningMessage("Hi Android user! Check out our new Add to Google Pay button!");
+                } else {
+                    setWarningMessage("Sorry, Add to Google Pay is only available to Android 8.1+");
+                }
+            } 
         }
     }, []);
     
@@ -72,16 +78,14 @@ function Index(): JSX.Element {
                     <Card content={
                         <div><p>{t('common:subtitle')}</p><br /><p>{t('common:subtitle2')}</p><br />
                             <b>{displayPassCount}</b><br/><br/>
-                            <b>MAJOR NEW RELEASE! </b>Oct 17 afternoon update: 
+                            <b>Native support for Android - COVID card in your Google Pay wallet</b> - Oct 20th update: 
                             <br />
                             <br />
                             <ul className="list-decimal list-outside" style={{ marginLeft: '20px' }}>
-                                <li>You can now import the new enhanced receipt from Ontario onto your Apple or Android devices</li>
+                                <li>(Often-requested) support added for importing proof-of-vaccination into Google Pay on Android 8.1+</li>
+                                <li>Android users can also add a shortcut to your home screen to access your COVID card with a single tap</li>
                                 <li>You can now scan QR codes directly off of paper or a screen with your camera, eliminating the need to upload PDFs or pictures</li>
-                                <li>Support released for importing Ontario, British Columbia, Alberta, Saskatchewan, Nova Scotia, Québec, Yukon, California, New York, and Louisiana SHC QR codes</li>
-                                <li>Support released for importing QR codes from images as well as from PDFs</li>
-                                <li>Support for creating our previous interim QR codes has been removed - now that the official Ontario QR code is being released and the gap is filled, our QR codes are no longer needed</li>
-                                <li>Support released for importing Manitoba's (new unannounced) QR codes, as well as for Northwest Territories, New Jersey, Hawaii, Virginia, and Utah SHC QR codes</li>
+                                <li>Support added for importing QR codes from images as well as from PDFs</li>
                             </ul><br />
                             <p>{t('common:continueSpirit')}</p>
                             <br />
