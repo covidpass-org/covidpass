@@ -98,7 +98,7 @@ function generateSHCRegisterPayload(payload : Payload) : any {
 
 export class PassPhotoCommon {
 
-    static async preparePayload(payloadBody: PayloadBody, numDose: number = 0) : Promise<PackageResult> {
+    static async preparePayload(payloadBody: PayloadBody, shouldRegister = true, numDose: number = 0) : Promise<PackageResult> {
 
         console.log('preparePayload');
         
@@ -106,9 +106,11 @@ export class PassPhotoCommon {
 
         const payload: Payload = new Payload(payloadBody, numDose);
         payload.serialNumber = uuid4();
-        const wasSuccess = await registerPass(payload);
-        if (!wasSuccess) {
-            return Promise.reject(`Error while trying to register pass!`);
+        if (shouldRegister) {
+            const wasSuccess = await registerPass(payload);
+            if (!wasSuccess) {
+                return Promise.reject(`Error while trying to register pass!`);
+            }
         }
 
         // Create QR Code Object

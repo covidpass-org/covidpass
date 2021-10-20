@@ -1,6 +1,6 @@
 import {Constants} from "./constants";
 import {PayloadBody} from "./payload";
-import { toBlob } from 'html-to-image';
+import { toBlob, toPng } from 'html-to-image';
 import {QrCode,PassPhotoCommon} from './passphoto-common';
 import { Encoder, QRByte, QRNumeric, ErrorCorrectionLevel } from '@nuintun/qrcode';
 
@@ -21,7 +21,7 @@ export class Photo {
         // Create Payload
         try {
             console.log('generatePass');
-            const results = await PassPhotoCommon.preparePayload(payloadBody, numDose);
+            const results = await PassPhotoCommon.preparePayload(payloadBody, true, numDose);
             
             const payload = results.payload;
             const qrCode = results.qrCode;
@@ -92,11 +92,11 @@ export class Photo {
         }
     }
 
-    static async generateSHCPass(payloadBody: PayloadBody): Promise<Blob> {
+    static async generateSHCPass(payloadBody: PayloadBody, shouldRegister = true): Promise<Blob> {
         // Create Payload
         try {
             console.log('generateSHCPass');
-            const results = await PassPhotoCommon.preparePayload(payloadBody);
+            const results = await PassPhotoCommon.preparePayload(payloadBody, shouldRegister);
             const qrCode = results.qrCode;
             const body = document.getElementById('shc-pass-image');
             body.hidden = false;
@@ -137,7 +137,22 @@ export class Photo {
             qrImage.src = qrcode.toDataURL(2, 15);
             document.getElementById('shc-qrcode').appendChild(qrImage);
 
-            return await toBlob(body);
+            // Fix for Safari photo rendering issue?
+            const pngData =  await toPng(body);
+            document.getElementById('shc-pass-img')['src'] = pngData;
+            const imgLink = document.getElementById('shc-pass-img-link');
+            imgLink['href'] = pngData;
+
+            const selectedReceipt = payloadBody.shcReceipt;
+            const filenameDetails = selectedReceipt.cardOrigin.replace(' ', '-');
+            const passName = selectedReceipt.name.replace(' ', '-');
+            imgLink['download'] = `grassroots-receipt-${passName}-${filenameDetails}.png`;
+
+            const retBlob = await toBlob(body);
+            
+            body.hidden = true;
+            
+            return retBlob;
 
         }   catch (e) {
             return Promise.reject(e);

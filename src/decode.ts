@@ -112,7 +112,8 @@ export async function decodedStringToReceipt(decoded: object) : Promise<SHCRecei
             case 'Patient':
                 // Assume there is only one name on the card.
                 const nameObj = resource.name[0];
-                name = `${nameObj.given.join(' ')} ${nameObj.family}`;
+                const givenName = (nameObj.given ? nameObj.given.join(' ') : '');
+                name = `${givenName} ${nameObj.family}`;
                 dateOfBirth = resource.birthDate;
                 console.log('Detected Patient resource, added name and birthdate');
 

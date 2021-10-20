@@ -8,7 +8,7 @@ startCamera: Start Camera
 openFile: Select File
 foundQrCode: Found valid Smart Health Card QR Code!
 downloadReceipt: Download official receipt or take a picture of your QR code
-visit: If you are in Ontario, please visit
+visit: If you need to download your proof-of-vaccination, please select your province in the drop-down to be redirected to your provincial proof-of-vaccination portal. IF YOU HAVE YOUR PROOF-OF-VACCINATION, SKIP THIS STEP AND PROCEED DIRECTLY TO STEP 2
 ontarioHealth: Ontario Ministry of Health
 gotoOntarioHealth: Go to Ontario Ministry of Health
 downloadSignedPDF: and enter your information to display your official vaccination receipt. Press the Share Icon at the bottom, "Save As Files" to store it onto your iPhone. You can also take a picture or screenshot of your QR code with your phone (please make sure the picture is good-quality, is not blurry, and captures ALL of the QR code!), or scan it directly with your camera below in step 2 
