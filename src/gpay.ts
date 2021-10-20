@@ -47,16 +47,15 @@ export class GPayData {
             
             console.log('> GPayData::generatePass');
 
-            const results = await PassPhotoCommon.preparePayload(payloadBody, numDose);
+            const results = await PassPhotoCommon.preparePayload(payloadBody, true, numDose);
             const payload = results.payload;
             // Create pass data
 
             const configResponse = await fetch('/api/config')
             const configJson = (await configResponse.json())
-            const apiBaseUrl = configJson.gpayBaseUrl
-            const gpayPassType = configJson.gpayPassType
+            const gpayBaseUrl = configJson.gpayBaseUrl
 
-            const result = await fetch(`${apiBaseUrl}/api/${gpayPassType}/create`, {
+            const result = await fetch(gpayBaseUrl, {
                 method: 'POST',
                 headers: {
                 'Content-Type': 'application/json',

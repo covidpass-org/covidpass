@@ -653,11 +653,10 @@ function Form(): JSX.Element {
                             </button>
 
                             &nbsp;&nbsp;
-                            {/*&nbsp;&nbsp;&nbsp;&nbsp;
                             <button id="saveAsPhoto" type="button" disabled={saveLoading || !payloadBody} value='photo' name='action' onClick={saveAsPhoto}
                                     className="focus:outline-none bg-green-600 py-2 px-3 text-white font-semibold rounded-md disabled:bg-gray-400">
                                 {t('index:saveAsPhoto')}
-                            </button>*/}
+                            </button>
 
                             <div id="spin" className={saveLoading ? undefined : "hidden"}>
                                 <svg className="animate-spin h-5 w-5 ml-4" viewBox="0 0 24 24">
