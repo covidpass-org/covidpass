@@ -65,8 +65,6 @@ function Form(): JSX.Element {
     // const [warningMessages, _setWarningMessages] = useState<Array<string>>([]);
     const hitcountHost = 'https://stats.vaccine-ontario.ca';
     
-    const [jwt, setJwt] = useState<string>('');               // for google pay
-
     // Check if there is a translation and replace message accordingly
     const setAddErrorMessage = (message: string) => {
         if (!message) {
@@ -371,10 +369,8 @@ function Form(): JSX.Element {
                 console.log('> generatePass');
                 const jwt = await GPayData.generatePass(payloadBody, selectedDose);
 
-                setJwt(jwt);
-
                 const newUrl = `https://pay.google.com/gp/v/save/${jwt}`;
-                console.log(`redirect to ${newUrl}`);
+                console.log('> redirect to save Google Pass');
 
                 // saveAs(passBlob, covidPassFilename);
                 setSaveLoading(false);
@@ -651,11 +647,11 @@ function Form(): JSX.Element {
                                 {t('index:addToGooglePay')}
                             </button>
 
-                            &nbsp;&nbsp;
+                            {/*&nbsp;&nbsp;&nbsp;&nbsp;
                             <button id="saveAsPhoto" type="button" disabled={saveLoading || !payloadBody} value='photo' name='action' onClick={saveAsPhoto}
                                     className="focus:outline-none bg-green-600 py-2 px-3 text-white font-semibold rounded-md disabled:bg-gray-400">
                                 {t('index:saveAsPhoto')}
-                            </button>
+                            </button>*/}
 
                             <div id="spin" className={saveLoading ? undefined : "hidden"}>
                                 <svg className="animate-spin h-5 w-5 ml-4" viewBox="0 0 24 24">
