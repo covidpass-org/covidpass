@@ -28,14 +28,14 @@ function Index(): JSX.Element {
     const deleteWarningMessage = (message: string) => _setWarningMessages(warningMessages.filter(item => item !== message));
 
     useEffect(() => {
-        if ((isIOS && !isMacOs) && !isSafari)
-            setWarningMessage("iPhone users, only Safari is supported at the moment. Please switch to Safari to prevent any unexpected errors.")
-        else {
+        if ((isIOS && !isMacOs) && !isSafari) {
+            setWarningMessage("iPhone users, only Safari is supported at the moment. Please switch to Safari to prevent any unexpected errors.");
+        } else {
             if (isAndroid) {
                 if (Number(osVersion.split('.')[0]) >= 8) {
-                    setWarningMessage("Hi, Android users, check out our new Add to Google Pay button...")
+                    setWarningMessage("Hi Android user! Check out our new Add to Google Pay button!");
                 } else {
-                    setWarningMessage("Sorry, Add to Google Pay is only available to Android 8.1+.")
+                    setWarningMessage("Sorry, Add to Google Pay is only available to Android 8.1+");
                 }
             } 
         }

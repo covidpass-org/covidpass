@@ -1,18 +1,6 @@
-import {toBuffer as createZip} from 'do-not-zip';
-import {v4 as uuid4} from 'uuid';
-
 import {Constants} from "./constants";
 import {Payload, PayloadBody, PassDictionary} from "./payload";
-import * as Sentry from '@sentry/react';
-import { QRCodeMatrixUtil } from '@zxing/library';
-import {QrCode,Encoding,PackageResult,QrFormat,PassPhotoCommon} from './passphoto-common';
-
-const crypto = require('crypto')
-
-interface SignData {
-    PassJsonHash: string;
-    useBlackVersion: boolean;
-}
+import {QrCode, PassPhotoCommon, getConfigData} from './passphoto-common';
 
 export class GPayData {
     passTypeIdentifier: string = Constants.PASS_IDENTIFIER;
@@ -32,14 +20,6 @@ export class GPayData {
     generic: PassDictionary;
     expirationDate: string;
 
-    // Generates a sha1 hash from a given buffer
-    private static getBufferHash(buffer: Buffer | string): string {
-        const sha = crypto.createHash('sha1');
-        sha.update(buffer);
-        return sha.digest('hex');
-    }
-
-
     static async generatePass(payloadBody: PayloadBody, numDose: number): Promise<string> {
 
         // Create Payload
@@ -51,9 +31,9 @@ export class GPayData {
             const payload = results.payload;
             // Create pass data
 
-            const configResponse = await fetch('/api/config')
-            const configJson = (await configResponse.json())
-            const gpayBaseUrl = configJson.gpayBaseUrl
+            const configResponse = await getConfigData();
+            const configJson = await configResponse.json();
+            const gpayBaseUrl = configJson.gpayBaseUrl;
 
             const result = await fetch(gpayBaseUrl, {
                 method: 'POST',

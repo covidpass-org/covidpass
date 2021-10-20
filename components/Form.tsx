@@ -54,7 +54,6 @@ function Form(): JSX.Element {
 
     const [isDisabledAppleWallet, setIsDisabledAppleWallet] = useState<boolean>(false);
     const [isDisabledGooglePay, setIsDisabledGooglePay] = useState<boolean>(false);
-
     const [addErrorMessages, _setAddErrorMessages] = useState<Array<string>>([]);
     const [fileErrorMessages, _setFileErrorMessages] = useState<Array<string>>([]);
 
@@ -64,7 +63,7 @@ function Form(): JSX.Element {
 
     // const [warningMessages, _setWarningMessages] = useState<Array<string>>([]);
     const hitcountHost = 'https://stats.vaccine-ontario.ca';
-    
+
     // Check if there is a translation and replace message accordingly
     const setAddErrorMessage = (message: string) => {
         if (!message) {
@@ -375,9 +374,7 @@ function Form(): JSX.Element {
                 // saveAs(passBlob, covidPassFilename);
                 setSaveLoading(false);
                 window.location.href = newUrl;
-            } 
-
-
+            }
         } catch (e) {
 
             if (e) {
@@ -389,7 +386,6 @@ function Form(): JSX.Element {
                 } else {
                     setAddErrorMessage("Unable to continue.");
                 }
-
             } else {
                 setAddErrorMessage("Unexpected error. Sorry.");
             }

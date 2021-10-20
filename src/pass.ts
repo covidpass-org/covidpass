@@ -2,10 +2,10 @@ import {toBuffer as createZip} from 'do-not-zip';
 
 import {Constants} from "./constants";
 import {Payload, PayloadBody, PassDictionary} from "./payload";
-import {QrCode,PassPhotoCommon} from './passphoto-common';
+import {QrCode, PassPhotoCommon, getConfigData} from './passphoto-common';
 import {COLORS} from "./colors";
 
-const crypto = require('crypto')
+const crypto = require('crypto');
 
 interface SignData {
     PassJsonHash: string;
@@ -42,8 +42,8 @@ export class PassData {
 
         // console.log('signWithRemote');
 
-        const configResponse = await fetch('/api/config')
-        const apiBaseUrl = (await configResponse.json()).apiBaseUrl
+        const configResponse = await getConfigData();
+        const apiBaseUrl = (await configResponse.json()).apiBaseUrl;
         // console.log(`${apiBaseUrl}/sign`);
 
         console.log(JSON.stringify(signData));
