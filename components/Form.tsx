@@ -15,7 +15,6 @@ import {isIOS, isMacOs, isAndroid, isSafari, osVersion, getUA, browserName, brow
 import * as Sentry from '@sentry/react';
 import Bullet from './Bullet';
 import { GPayData } from '../src/gpay';
-import Router from 'next/router'
 
 import Select from 'react-select'
 
@@ -379,7 +378,7 @@ function Form(): JSX.Element {
 
                 // saveAs(passBlob, covidPassFilename);
                 setSaveLoading(false);
-                Router.push(newUrl);
+                window.location.href = newUrl;
             } 
 
 
