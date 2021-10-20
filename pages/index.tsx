@@ -88,13 +88,19 @@ function Index(): JSX.Element {
                                 <li>Support added for importing QR codes from images as well as from PDFs</li>
                             </ul><br />
                             <p>{t('common:continueSpirit')}</p>
-                            <br />
+                            <br />  
+                            <Link href="https://youtu.be/O9jtIjj9BnY">
+                                {/* <a className="underline" target="_blank"> */}
+                                <a className="underline">
+                                    Walkthrough video for Android users
+                                </a>
+                            </Link>&nbsp;&nbsp;&nbsp;
                             <Link href="https://www.youtube.com/watch?v=AIrG5Qbjptg">
                                 {/* <a className="underline" target="_blank"> */}
                                 <a className="underline">
-                                    Click here for a video demo
+                                    Walkthrough video for iPhone users
                                 </a>
-                            </Link>&nbsp;
+                            </Link>
                             </div>
                     }/>
                     <Form/>
