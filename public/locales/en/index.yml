@@ -1,4 +1,3 @@
-iosHint: On iOS, please use Safari
 errorClose: Close
 selectCertificate: Select or scan vaccination receipt (PDF or image)
 selectCertificateDescription: |
@@ -8,11 +7,8 @@ startCamera: Start Camera
 openFile: Select File
 foundQrCode: Found valid Smart Health Card QR Code!
 downloadReceipt: Download official receipt or take a picture of your QR code
-visit: If you need to download your proof-of-vaccination, please select your province in the drop-down to be redirected to your provincial proof-of-vaccination portal. IF YOU HAVE YOUR PROOF-OF-VACCINATION, SKIP THIS STEP AND PROCEED DIRECTLY TO STEP 2
-ontarioHealth: Ontario Ministry of Health
-gotoOntarioHealth: Go to Ontario Ministry of Health
-downloadSignedPDF: and enter your information to display your official vaccination receipt. Press the Share Icon at the bottom, "Save As Files" to store it onto your iPhone. You can also take a picture or screenshot of your QR code with your phone (please make sure the picture is good-quality, is not blurry, and captures ALL of the QR code!), or scan it directly with your camera below in step 2 
-reminderNotToRepeat: If you have completed this step before, simply proceed to Step 2
+visit: If you need to download your proof-of-vaccination, please select your province in the drop-down to be redirected to your provincial proof-of-vaccination portal.
+reminderNotToRepeat: IF YOU HAVE ALREADY DOWNLOADED YOUR PROOF-OF-VACCINATION, SKIP THIS STEP AND PROCEED DIRECTLY TO STEP 2
 addToWallet: Add to Apple Wallet
 addToGooglePay: Add to Google Pay
 addToWalletHeader: Add to Apple Wallet / Google Pay / Save as Photo
@@ -22,6 +18,15 @@ piiNotSent: No personally-identifiable information is stored on servers
 openSourceTransparent: Source code is open for re-use/contributions on GitHub
 verifierLink: QR code verifier available at 
 numPasses: receipts processed since Sept 2, 2021
-demo: Video Demo
+iosDemo: Walkthrough video for iPhone users
+androidDemo: Walkthrough video for Android users
 whatsnew: What's New
 questions: Have Questions?
+saveVaccineCard: To Save your Vaccination Card as a photo, please click on or save the image below
+refreshNote: If the image below does not look correct and you are trying to save the photo, please click the Refresh button below - on some older devices, the image does not appear to draw correctly the first time, but refreshing once or twice should fix it. Sorry for the inconvenience.
+refreshButton: Refresh Photo Card
+questionsNote: Do you want to use this tool but...
+question1: You would like to understand how your data is handled?
+question2: You don't have a health card?
+question3: You have a Red/White OHIP card?
+visitFAQ: Visit our FAQ section for the answers!

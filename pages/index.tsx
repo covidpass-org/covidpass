@@ -92,13 +92,13 @@ function Index(): JSX.Element {
                             <Link href="https://youtu.be/O9jtIjj9BnY">
                                 {/* <a className="underline" target="_blank"> */}
                                 <a className="underline">
-                                    Walkthrough video for Android users
+                                    {t('index:androidDemo')}
                                 </a>
                             </Link>&nbsp;&nbsp;&nbsp;
                             <Link href="https://www.youtube.com/watch?v=AIrG5Qbjptg">
                                 {/* <a className="underline" target="_blank"> */}
                                 <a className="underline">
-                                    Walkthrough video for iPhone users
+                                    {t('index:iosDemo')}
                                 </a>
                             </Link>
                             </div>
