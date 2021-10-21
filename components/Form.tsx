@@ -664,9 +664,10 @@ function Form(): JSX.Element {
                         {addErrorMessages.map((message, i) =>
                             <Alert message={message} key={'error-' + i} type="error" />
                         )}
-                        <div id="shc-image-header" hidden><b>To Save your Vaccination Card as a photo, please click on or save the image below:</b><br/>If the image below does not look correct and you are trying to save the photo, please click the Refresh button below - on some older devices, the image does not appear to draw correctly the first time, but refreshing once or twice should fix it. Sorry for the inconvenience.
-                        <button id="renderPhoto" type="button" disabled={saveLoading || !payloadBody} value='renderPhoto' name='action' onClick={refreshPhoto}
-                                    className="focus:outline-none bg-green-600 py-2 px-3 text-white font-semibold rounded-md disabled:bg-gray-400">
+                        <div id="shc-image-header" hidden><b>To Save your Vaccination Card as a photo, please click on or save the image below:</b><br />If the image below does not look correct and you are trying to save the photo, please click the Refresh button below - on some older devices, the image does not appear to draw correctly the first time, but refreshing once or twice should fix it. Sorry for the inconvenience.
+                            <br />
+                            <button id="renderPhoto" type="button" disabled={saveLoading || !payloadBody} value='renderPhoto' name='action' onClick={refreshPhoto}
+                                className="focus:outline-none bg-green-600 py-2 px-3 text-white font-semibold rounded-md disabled:bg-gray-400">
                                 Refresh Photo Card
                             </button>
                         </div>
