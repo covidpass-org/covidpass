@@ -554,13 +554,13 @@ function Form(): JSX.Element {
                             <button
                                 type="button"
                                 onClick={showFileDialog}
-                                className="focus:outline-none h-20 bg-green-600 hover:bg-gray-700 text-white font-semibold rounded-md">
+                                className="h-20 bg-green-600 hover:bg-gray-700 text-white font-semibold rounded-md">
                                 {t('index:openFile')}
                             </button>
                             <button
                                 type="button"
                                 onClick={isCameraOpen ? hideCameraView : showCameraView}
-                                className="focus:outline-none h-20 bg-green-600 hover:bg-gray-700 text-white font-semibold rounded-md">
+                                className="h-20 bg-green-600 hover:bg-gray-700 text-white font-semibold rounded-md">
                                 {isCameraOpen ? t('index:stopCamera') : t('index:startCamera')}
                             </button>
                             <div id="spin" className={fileLoading ? undefined : "hidden"}>
@@ -639,14 +639,14 @@ function Form(): JSX.Element {
                         </div>
 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-5 items-center justify-items-stretch">
-                            <button disabled={saveLoading} className="focus:outline-none bg-black outline-apple rounded-md" id="download" type="submit" value='applewallet' name='action'>
+                            <button disabled={saveLoading} className=" bg-black outline-apple rounded-md" id="download" type="submit" value='applewallet' name='action'>
                                 <div className="flex justify-center">
                                     <img src="apple_wallet.svg" />
                                 </div>
                             </button>
 
                             <button id="addToGooglePay" type="button" disabled={saveLoading} value='gpay' name='action' onClick={addToGooglePay}
-                                className="focus:outline-none bg-black rounded-md">
+                                className=" bg-black rounded-md">
                                     <div className="flex justify-center">
                                 <img src="gpay_light.svg" />
                                 </div>
@@ -667,7 +667,7 @@ function Form(): JSX.Element {
                         <div id="shc-image-header" hidden><b>To Save your Vaccination Card as a photo, please click on or save the image below:</b><br />If the image below does not look correct and you are trying to save the photo, please click the Refresh button below - on some older devices, the image does not appear to draw correctly the first time, but refreshing once or twice should fix it. Sorry for the inconvenience.
                             <br />
                             <button id="renderPhoto" type="button" disabled={saveLoading || !payloadBody} value='renderPhoto' name='action' onClick={refreshPhoto}
-                                className="focus:outline-none bg-green-600 py-2 px-3 text-white font-semibold rounded-md disabled:bg-gray-400">
+                                className=" bg-green-600 py-2 px-3 text-white font-semibold rounded-md disabled:bg-gray-400">
                                 Refresh Photo Card
                             </button>
                         </div>
@@ -728,7 +728,7 @@ function Form(): JSX.Element {
 
                         <div className="flex flex-row items-center justify-start">
                             <button id="faq-redirect" onClick={goToFAQ}
-                                className="focus:outline-none bg-green-600 py-2 px-3 text-white font-semibold rounded-md disabled:bg-gray-400">
+                                className=" bg-green-600 py-2 px-3 text-white font-semibold rounded-md disabled:bg-gray-400">
                                 Visit our FAQ section for the answers!
                             </button>
                             &nbsp;&nbsp;&nbsp;&nbsp;
