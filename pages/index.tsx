@@ -42,8 +42,8 @@ function Index(): JSX.Element {
     }, []);
     
 
-    const title = 'Grassroots - vaccination QR Code import for Apple and Android devices. Supports BC AB SK MB ON QC NS YK NT NY NJ CA LA VA HI UT';
-    const description = 'Grassroots imports vaccination QR codes and stores them on Apple and Android devices in a convenient, secure, and privacy-respecting way. Supports SHC QR codes from BC AB SK MB ON QC NS YK NT NY NJ CA LA VA HI UT';
+    const title = 'Grassroots - vaccination QR Code import for Apple and Android devices. Supports BC AB SK MB ON QC NS YK NT NY NJ CA LA VA HI UT DE';
+    const description = 'Grassroots imports vaccination QR codes and stores them on Apple and Android devices in a convenient, secure, and privacy-respecting way. Supports SHC QR codes from BC AB SK MB ON QC NS YK NT NY NJ CA LA VA HI UT DE';
 
     return (
         <>

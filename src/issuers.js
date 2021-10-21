@@ -183,6 +183,17 @@ export const issuers = [
         x: "uyzHUWf8EVXtlFW9nssxa1Z002rpc-GUw-YrZOZtmqo",
         y: "oFofHWIlPqfqCCU9R3fJOaUoWdzVzTcSNgmtF0Qgb6w" },
     ]
+  },
+  {
+    id: "us.de",
+    display: "Delaware, USA",
+    iss: "https://smarthealthcard.iisregistry.net/delaware/issuer",
+    keys: [
+      { kid: "vYkxPjrksrvOfK8S02wkQ6LYcY5JLuDpnyERBklL-V8",
+        alg: "ES256", kty: "EC", crv: "P-256", use: "sig",
+        x: "alTrUEv7wMrOf9Sge9GeSAwz8cGz56JsJaZKzOlRQG4",
+        y: "N1eSU9XhVdtb7l3rYj6_mXxHDVHj5ZDN_oB-sq6vVH8" },
+    ]
   }
 ];
 
