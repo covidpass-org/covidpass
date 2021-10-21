@@ -109,7 +109,8 @@ export class PassPhotoCommon {
         if (shouldRegister) {
             const wasSuccess = await registerPass(payload);
             if (!wasSuccess) {
-                return Promise.reject(`Error while trying to register pass!`);
+                //return Promise.reject(`Error while trying to register pass!`);
+                console.warn('Error while trying to register pass - continuing regardless...');
             }
         }
 
