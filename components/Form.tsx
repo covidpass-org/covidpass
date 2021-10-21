@@ -163,11 +163,11 @@ function Form(): JSX.Element {
                 if (e.message != undefined) {
                     setFileErrorMessage(e.message);
                 } else {
-                    setFileErrorMessage("Unable to continue.");
+                    setFileErrorMessage('unableToContinue');
                 }
 
             } else {
-                setFileErrorMessage("Unexpected error. Sorry.");
+                setFileErrorMessage('unexpected');
             }
         }
     }
@@ -234,7 +234,7 @@ function Form(): JSX.Element {
                         const qrCode = result.getText();
                         // Check if this was a valid SHC QR code - if it was not, display an error
                         if (!qrCode.startsWith('shc:/')) {
-                            setFileErrorMessage('The scanned QR code was not a valid Smart Health Card QR code!');
+                            setFileErrorMessage(t('invalidSHC'));
                         } else {
                             _setFileErrorMessages([]);
                             setQrCode(result);
@@ -346,11 +346,11 @@ function Form(): JSX.Element {
                 if (e.message) {
                     setAddErrorMessage(e.message);
                 } else {
-                    setAddErrorMessage("Unable to continue.");
+                    setAddErrorMessage('unableToContinue');
                 }
 
             } else {
-                setAddErrorMessage("Unexpected error. Sorry.");
+                setAddErrorMessage('unexpected');
             }
 
             setSaveLoading(false);
@@ -507,13 +507,12 @@ function Form(): JSX.Element {
         } 
 
         if (isMacOs) {
-            setAddErrorMessage('Reminder: iOS 15+ is needed for the Apple Wallet functionality to work with Smart Health Card')
+            setAddErrorMessage('iOSReminder')
             return;
         }
 
         if (isIOS && !isSafari) {
-            // setAddErrorMessage('Sorry, only Safari can be used to add a Wallet Pass on iOS');
-            setAddErrorMessage('Sorry, only Safari can be used to add a Wallet Pass on iOS');
+            setAddErrorMessage('safariSupportOnly');
             setIsDisabledAppleWallet(true);
             return;
         }
@@ -522,7 +521,7 @@ function Form(): JSX.Element {
             if (Number(osVersion) > 8) {
                 setIsDisabledGooglePay(false);
             } else {
-                setAddErrorMessage("Sorry, Add to Google Pay is only available to Android 8.1+.")
+                setAddErrorMessage('androidVersionError')
                 setIsDisabledGooglePay(true);
             }
         } else {
@@ -530,11 +529,6 @@ function Form(): JSX.Element {
                 setIsDisabledGooglePay(true);
             }
         }
-        // } else if (!isIOS) {
-        //     setWarningMessage('Only Safari on iOS is officially supported for Wallet import at the moment - ' +
-        //         'for other platforms, please ensure you have an application which can open Apple Wallet .pkpass files');
-        //     setIsDisabledAppleWallet(false);
-        // }
     }
 
     return (
@@ -542,7 +536,8 @@ function Form(): JSX.Element {
             <form className="space-y-5" id="form" onSubmit={addToWallet}>
                 <Card step="1" heading={t('index:downloadReceipt')} content={
                     <div className="space-y-5">
-                        <div>If you need to download your proof-of-vaccination, please select your province in the drop-down to be redirected to your provincial proof-of-vaccination portal.<br /> <b>IF YOU HAVE YOUR PROOF-OF-VACCINATION, SKIP THIS STEP AND PROCEED DIRECTLY TO STEP 2</b></div>
+                        <p>{t('index:visit')}</p>
+                        <p><b>{t('index:reminderNotToRepeat')}</b></p>
                         <Dropdown label="Select Your Province" options={options} />
                     </div>
                 }/>
@@ -641,14 +636,14 @@ function Form(): JSX.Element {
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-5 items-center justify-items-stretch">
                             <button disabled={saveLoading} className=" bg-black outline-apple rounded-md" id="download" type="submit" value='applewallet' name='action'>
                                 <div className="flex justify-center">
-                                    <img src="apple_wallet.svg" />
+                                    <img src="apple_wallet.svg" alt={t('index:addToWallet')}/>
                                 </div>
                             </button>
 
                             <button id="addToGooglePay" type="button" disabled={saveLoading} value='gpay' name='action' onClick={addToGooglePay}
                                 className=" bg-black rounded-md">
                                     <div className="flex justify-center">
-                                <img src="gpay_light.svg" />
+                                <img src="gpay_light.svg" alt={t('index:addToGooglePay')}/>
                                 </div>
                             </button>
 
@@ -664,11 +659,13 @@ function Form(): JSX.Element {
                         {addErrorMessages.map((message, i) =>
                             <Alert message={message} key={'error-' + i} type="error" />
                         )}
-                        <div id="shc-image-header" hidden><b>To Save your Vaccination Card as a photo, please click on or save the image below:</b><br />If the image below does not look correct and you are trying to save the photo, please click the Refresh button below - on some older devices, the image does not appear to draw correctly the first time, but refreshing once or twice should fix it. Sorry for the inconvenience.
+                        <div id="shc-image-header" hidden>
+                            <p><b>{t('index:saveVaccineCard')}</b></p>
+                            <p>{t('index:refreshNote')}</p>
                             <br />
                             <button id="renderPhoto" type="button" disabled={saveLoading || !payloadBody} value='renderPhoto' name='action' onClick={refreshPhoto}
                                 className=" bg-green-600 py-2 px-3 text-white font-semibold rounded-md disabled:bg-gray-400">
-                                Refresh Photo Card
+                                {t('index:refreshButton')}
                             </button>
                         </div>
             <div id="shc-pass-image" style={{backgroundColor: "white", color: "black", fontFamily: 'Arial', fontSize: 10, width: '350px', padding: '10px', border: '1px solid', margin: '0px'}} hidden>
@@ -717,19 +714,19 @@ function Form(): JSX.Element {
 
                 <Card step="?" heading={t('index:questions')} content={
                     <div className="space-y-5">
-                        <p>Do you want to use this tool but...</p>
+                        <p>{t('index:questionsNote')}</p>
                         <div>
                             <ul>
-                                <Bullet text="You would like to understand how your data is handled?"/> 
-                                <Bullet text="You don't have a health card?"/>
-                                <Bullet text="You have a Red/White OHIP card?"/>
+                                <Bullet text={t('index:question1')}/> 
+                                <Bullet text={t('index:question2')}/>
+                                <Bullet text={t('index:question3')}/>
                             </ul>
                         </div>
 
                         <div className="flex flex-row items-center justify-start">
                             <button id="faq-redirect" onClick={goToFAQ}
                                 className=" bg-green-600 py-2 px-3 text-white font-semibold rounded-md disabled:bg-gray-400">
-                                Visit our FAQ section for the answers!
+                                {t('index:visitFAQ')}
                             </button>
                             &nbsp;&nbsp;&nbsp;&nbsp;
                         </div>
