@@ -21,7 +21,7 @@ const options = [
     { label: 'Alberta', value: 'https://covidrecords.alberta.ca/form'},
     { label: 'British Columbia', value: 'https://www.healthgateway.gov.bc.ca/vaccinecard'},
     { label: 'Ontario', value: 'https://covid19.ontariohealth.ca'},
-    { label: 'Northern Territories', value: 'https://www.gov.nt.ca/covid-19/en/request/proof-vaccination'},
+    { label: 'Northwest Territories', value: 'https://www.gov.nt.ca/covid-19/en/request/proof-vaccination'},
     { label: 'Nova Scotia', value: 'https://novascotia.flow.canimmunize.ca/en/portal'},
     { label: 'Québec', value: 'https://covid19.quebec.ca/PreuveVaccinale'},
     { label: 'Saskatchewan', value: 'https://services.saskatchewan.ca/#/login'},
