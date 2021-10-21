@@ -17,6 +17,28 @@ import Bullet from './Bullet';
 import { GPayData } from '../src/gpay';
 import Dropdown from './Dropdown';
 
+const getTheme = () => {
+    if (typeof window !== 'undefined' && 
+        window.localStorage) {
+  
+      const storedPrefs = 
+        window.localStorage.getItem('color-theme')
+      if (typeof storedPrefs === 'string') {
+        return storedPrefs
+      }
+  
+      const userMedia = 
+        window.matchMedia('(prefers-color-scheme: dark)')
+      if (userMedia.matches) {
+        return 'dark'
+      }
+    }
+  
+    // If you want to use light theme as the default, 
+    // return "light" instead
+    return 'light'
+  }
+
 const options = [
     { label: 'Alberta', value: 'https://covidrecords.alberta.ca/form'},
     { label: 'British Columbia', value: 'https://www.healthgateway.gov.bc.ca/vaccinecard'},
@@ -616,11 +638,19 @@ function Form(): JSX.Element {
                             </ul>
                         </div>
 
-                        <div className="flex flex-row items-center justify-start">
-                            <button disabled={saveLoading} className="focus:outline-none" id="download" type="submit" value='applewallet' name='action'>
-                                <img style={{ minHeight: "44px" }} src="Add_to_Apple_Wallet_rgb_US-UK.svg" />
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-5 items-center justify-items-stretch">
+                            <button disabled={saveLoading} className="focus:outline-none bg-black outline-apple rounded-md" id="download" type="submit" value='applewallet' name='action'>
+                                <div className="flex justify-center">
+                                    <img src="apple_wallet.svg" />
+                                </div>
                             </button>
-                            &nbsp;&nbsp;&nbsp;&nbsp;
+
+                            <button id="addToGooglePay" type="button" disabled={saveLoading} value='gpay' name='action' onClick={addToGooglePay}
+                                className="focus:outline-none bg-black rounded-md">
+                                    <div className="flex justify-center">
+                                <img src="gpay_light.svg" />
+                                </div>
+                            </button>
 
                             <div id="spin" className={saveLoading ? undefined : "hidden"}>
                                 <svg className="animate-spin h-5 w-5 ml-4" viewBox="0 0 24 24">
@@ -640,7 +670,6 @@ function Form(): JSX.Element {
                                 Refresh Photo Card
                             </button>
                         </div>
-                        <br/>
             <div id="shc-pass-image" style={{backgroundColor: "white", color: "black", fontFamily: 'Arial', fontSize: 10, width: '350px', padding: '10px', border: '1px solid', margin: '0px'}} hidden>
                 <table style={{verticalAlign: "middle"}}>
                     <tbody>
