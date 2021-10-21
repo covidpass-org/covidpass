@@ -15,8 +15,7 @@ import {isIOS, isMacOs, isAndroid, isSafari, osVersion, getUA, browserName, brow
 import * as Sentry from '@sentry/react';
 import Bullet from './Bullet';
 import { GPayData } from '../src/gpay';
-
-import Select from 'react-select'
+import Dropdown from './Dropdown';
 
 const options = [
     { label: 'Alberta', value: 'https://covidrecords.alberta.ca/form'},
@@ -58,8 +57,6 @@ function Form(): JSX.Element {
     const [fileErrorMessages, _setFileErrorMessages] = useState<Array<string>>([]);
 
     const [showDoseOption, setShowDoseOption] = useState<boolean>(false);
-
-    const [selectedOption, setSelectedOption] = useState(null);
 
     // const [warningMessages, _setWarningMessages] = useState<Array<string>>([]);
     const hitcountHost = 'https://stats.vaccine-ontario.ca';
@@ -518,24 +515,12 @@ function Form(): JSX.Element {
         // }
     }
 
-    function gotoLink(option) {
-        window.location.href = option.value;
-    }
-
     return (
         <div>
             <form className="space-y-5" id="form" onSubmit={addToWallet}>
                 <Card step="1" heading={t('index:downloadReceipt')} content={
                     <div className="space-y-5">
-                        <p>
-                            <div>If you need to download your proof-of-vaccination, please select your province in the drop-down to be redirected to your provincial proof-of-vaccination portal.<br/> <b>IF YOU HAVE YOUR PROOF-OF-VACCINATION, SKIP THIS STEP AND PROCEED DIRECTLY TO STEP 2</b></div>
-                            <Select
-                                className="dark"
-                                defaultValue={selectedOption}
-                                onChange={e => { setSelectedOption; gotoLink(e)}}
-                                options={options}
-                            />
-                        </p>
+                        <Dropdown label="Select Your Province" options={options} />
                     </div>
                 }/>
 
