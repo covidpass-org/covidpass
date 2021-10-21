@@ -520,6 +520,7 @@ function Form(): JSX.Element {
             <form className="space-y-5" id="form" onSubmit={addToWallet}>
                 <Card step="1" heading={t('index:downloadReceipt')} content={
                     <div className="space-y-5">
+                        <div>If you need to download your proof-of-vaccination, please select your province in the drop-down to be redirected to your provincial proof-of-vaccination portal.<br /> <b>IF YOU HAVE YOUR PROOF-OF-VACCINATION, SKIP THIS STEP AND PROCEED DIRECTLY TO STEP 2</b></div>
                         <Dropdown label="Select Your Province" options={options} />
                     </div>
                 }/>
