@@ -1,20 +1,11 @@
 noFileOrQrCode: Please select your vaccination receipt PDF file
 signatureFailed: Error while signing pass on server
-decodingFailed: Failed to decode QR code payload
-invalidColor: Invalid color
-certificateData: Failed to read certificate data
-nameMissing: Failed to read name
-dobMissing: Failed to read date of birth
-invalidMedicalProduct: Invalid medical product
-invalidCountryCode: Invalid country code
-invalidManufacturer: Invalid manufacturer
 invalidFileType: Invalid file type
-couldNotDecode: Could not decode QR code from file
-couldNotFindQrCode: Could not find QR Code in provided file
-invalidQrCode: Invalid QR code
-certificateType: No valid certificate type found
-invalidTestResult: Invalid test result
-invalidTestType: Invalid test type
 noCameraAccess: Could not access camera. Check permissions under Settings > Safari > Camera.
 noCameraFound: Could not find camera.
-safariSupportOnly: On iOS, please use the Safari Browser.
+safariSupportOnly: Sorry, only Safari can be used to add a Wallet Pass on iOS.
+iOSReminder: iOS 15+ is needed for the Apple Wallet functionality to work with Smart Health Card
+unableToContinue: Unable to continue.
+unexpected: Unexpected error. Sorry.
+invalidSHC: The scanned QR code was not a valid Smart Health Card QR code!
+androidVersionError: Sorry, Add to Google Pay is only available to Android 8.1+.
