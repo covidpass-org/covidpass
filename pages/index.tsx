@@ -95,7 +95,7 @@ function Index(): JSX.Element {
                                     {t('index:androidDemo')}
                                 </a>
                             </Link>&nbsp;&nbsp;&nbsp;
-                            <Link href="https://www.youtube.com/watch?v=AIrG5Qbjptg">
+                            <Link href="https://www.youtube.com/watch?v=XAg8IoIdlsU">
                                 {/* <a className="underline" target="_blank"> */}
                                 <a className="underline">
                                     {t('index:iosDemo')}

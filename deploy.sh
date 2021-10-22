@@ -4,4 +4,4 @@ gcloud config set project broadcast2patients
 gcloud config set run/region us-east1
 gcloud run services update-traffic covidpass --to-latest
 gcloud run deploy covidpass --image gcr.io/broadcast2patients/covidpass:latest --platform managed
-docker image prune
+docker image prune -f
