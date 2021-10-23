@@ -1,0 +1,105 @@
+{
+  "iss": "https://covidrecords.alberta.ca/smarthealth/issuer",
+  "nbf": 1633132472,
+  "vc": {
+    "type": [
+      "https://smarthealth.cards#health-card",
+      "https://smarthealth.cards#covid19",
+      "https://smarthealth.cards#immunization"
+    ],
+    "credentialSubject": {
+      "fhirVersion": "4.0.1",
+      "fhirBundle": {
+        "resourceType": "Bundle",
+        "type": "collection",
+        "entry": [
+          {
+            "fullUrl": "resource:0",
+            "resource": {
+              "resourceType": "Patient",
+              "name": [
+                {
+                  "family": "LASTNAME",
+                  "given": [
+                    "FIRSTNAME"
+                  ]
+                }
+              ],
+              "birthDate": "YYYY-MM-DD"
+            }
+          },
+          {
+            "fullUrl": "resource:1",
+            "resource": {
+              "resourceType": "Immunization",
+              "meta": {
+                "security": [
+                  {
+                    "system": "https://smarthealth.cards/ial",
+                    "code": "IAL1.2"
+                  }
+                ]
+              },
+              "status": "completed",
+              "vaccineCode": {
+                "coding": [
+                  {
+                    "system": "http://hl7.org/fhir/sid/cvx",
+                    "code": "208"
+                  }
+                ]
+              },
+              "patient": {
+                "reference": "Patient/resource:0"
+              },
+              "occurrenceDateTime": "YYYY-MM-DD",
+              "performer": [
+                {
+                  "actor": {
+                    "display": "Government of Alberta - Provincial Immunization Repository"
+                  }
+                }
+              ],
+              "lotNumber": "SOME_STRING"
+            }
+          },
+          {
+            "fullUrl": "resource:2",
+            "resource": {
+              "resourceType": "Immunization",
+              "meta": {
+                "security": [
+                  {
+                    "system": "https://smarthealth.cards/ial",
+                    "code": "IAL1.2"
+                  }
+                ]
+              },
+              "status": "completed",
+              "vaccineCode": {
+                "coding": [
+                  {
+                    "system": "http://hl7.org/fhir/sid/cvx",
+                    "code": "207"
+                  }
+                ]
+              },
+              "patient": {
+                "reference": "Patient/resource:0"
+              },
+              "occurrenceDateTime": "YYYY-MM-DD",
+              "performer": [
+                {
+                  "actor": {
+                    "display": "Government of Alberta - Provincial Immunization Repository"
+                  }
+                }
+              ],
+              "lotNumber": "SOME_STRING"
+            }
+          }
+        ]
+      }
+    }
+  }
+}

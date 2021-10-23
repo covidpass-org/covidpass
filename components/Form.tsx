@@ -636,14 +636,14 @@ function Form(): JSX.Element {
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-5 items-center justify-items-stretch">
                             <button disabled={saveLoading} className=" bg-black outline-apple rounded-md" id="download" type="submit" value='applewallet' name='action'>
                                 <div className="flex justify-center">
-                                    <img src="apple_wallet.svg" alt={t('index:addToWallet')}/>
+                                    <img style={{height: 40}} src="apple_wallet.svg" alt={t('index:addToWallet')}/>
                                 </div>
                             </button>
 
                             <button id="addToGooglePay" type="button" disabled={saveLoading} value='gpay' name='action' onClick={addToGooglePay}
                                 className=" bg-black rounded-md">
                                     <div className="flex justify-center">
-                                <img src="gpay_light.svg" alt={t('index:addToGooglePay')}/>
+                                <img style={{height: 40}} src="gpay_light.svg" alt={t('index:addToGooglePay')}/>
                                 </div>
                             </button>
 
