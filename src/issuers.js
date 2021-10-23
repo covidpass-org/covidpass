@@ -242,12 +242,27 @@ export const issuers = [
   {
     id: "us.ok",
     display: "Oklahoma, USA",
-    iss: "https://smarthealthcard.iisregistry.net/newmexico/issuer",
+    iss: "https://smarthealthcard.iisregistry.net/oklahoma/issuer",
     keys: [
       { kid: "mdc6xSqYJBj5wAfdO75tFY96MP1sRwv8o1vRKcJvWe4",
         alg: "ES256", kty: "EC", crv: "P-256", use: "sig",
         x: "_0Ykdew25aOEAoEqgiKOwsuQHaSBo8m4cxp7JrpnFoE",
         y: "SWDMBC-y-YMiso_hSQB6bl3MvYOii-rpYtgQJISt84Y" },
+    ]
+  },
+  {
+    id: "us.ky",
+    display: "Kentucky, USA",
+    iss: "https://smarthealthcard.iisregistry.net/kentucky/issuer",
+    keys: [
+      { kid: "xjDAI01aAqqKVfTby1HgI5mGmaNov_iNAe7YU42-GYI",
+        alg: "ES256", kty: "EC", crv: "P-256", use: "sig",
+        x: "XGD2eTGy-Ty264jBz6__6yVih4HIShgGzWdJBAeLJOU",
+        y: "KvM4EauttKWSVjF5unr7MUWz1QSwsEW46A4aGWsFY4I" },
+      { kid: "COtZJhsWjnta-bYXwlRkWlldA95Ai7S6YGZE4MPB-tk",
+        alg: "ES256", kty: "EC", crv: "P-256", use: "sig",
+        x: "X2Erdh2dszBgm0y5RF0C6tcA2fwGdDU_ZsOeJLjjcQk",
+        y: "haxiYhRJifQY_qU3Dv_qqk1aBzY4IrcegLqu6rvikMQ" },
     ]
   },
   {
