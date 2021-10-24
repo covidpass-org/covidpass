@@ -36,9 +36,6 @@ function Page(props: PageProps): JSX.Element {
                     </footer>
                 </main>
             </div>
-            <br/>
-            <br/>
-            <br/>
             <canvas id="canvas" style={{display: 'none'}}/>
         </div>
     )
