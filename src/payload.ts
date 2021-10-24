@@ -118,7 +118,7 @@ function processSHCReceipt(receipt: SHCReceipt, generic: PassDictionary) {
 
     generic.secondaryFields.push({
         key: "details",
-        label: "For details",
+        label: "For details or to remove this pass",
         value: "Touch the circle with ... on the top right"
     });
 
