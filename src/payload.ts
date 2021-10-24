@@ -103,20 +103,20 @@ function processSHCReceipt(receipt: SHCReceipt, generic: PassDictionary) {
     console.log(`processing receipt for origin ${receipt.cardOrigin}`);
 
     if (generic.primaryFields.length == 0) {
-        const lastReceiptIndex = receipt.vaccinations.length - 1
-        const mostRecentReceipt = receipt.vaccinations[lastReceiptIndex];
-        const vaccineName = mostRecentReceipt.vaccineName.substring(0,1).toUpperCase() + mostRecentReceipt.vaccineName.substring(1).toLowerCase();
-        const value = `#${lastReceiptIndex + 1} - ${vaccineName}`;
+        // const lastReceiptIndex = receipt.vaccinations.length - 1
+        // const mostRecentReceipt = receipt.vaccinations[lastReceiptIndex];
+        // const vaccineName = mostRecentReceipt.vaccineName.substring(0,1).toUpperCase() + mostRecentReceipt.vaccineName.substring(1).toLowerCase();
+        // const value = `#${lastReceiptIndex + 1} - ${vaccineName}`;
         generic.primaryFields.push(
             {
                 key: "name",
-                label: `${receipt.name} (Last vaccinated: ${mostRecentReceipt.vaccinationDate})`,
-                value: value
+                label: 'Name',
+                value: receipt.name
             }
         );
     }
 
-    generic.secondaryFields.push({
+    generic.auxiliaryFields.push({
         key: "details",
         label: "For details or to remove this pass",
         value: "Touch the circle with ... on the top right"
@@ -130,11 +130,18 @@ function processSHCReceipt(receipt: SHCReceipt, generic: PassDictionary) {
 
     for (let i = 0; i < receipt.vaccinations.length; i++) {
 
+        generic.secondaryFields.push(
+            {
+                key: 'vaccine' + (i+1),
+                label: `#${i+1} ${receipt.vaccinations[i].vaccineName}`,
+                value: receipt.vaccinations[i].vaccinationDate
+            }
+        );
         generic.backFields.push(
             {
-                key: 'vaccine' + i,
-                label: receipt.vaccinations[i].vaccineName,
-                value: receipt.vaccinations[i].vaccinationDate
+                key: 'vaccine' + (i+1),
+                label: `#${i+1} ${receipt.vaccinations[i].vaccineName}`,
+                value: `{receipt.vaccinations[i].vaccinationDate} in ${receipt.vaccinations[i].organization}`
             }
         )
 
