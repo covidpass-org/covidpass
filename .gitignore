@@ -32,3 +32,5 @@ yarn-error.log*
 
 # Idea files
 .idea
+*.local
+*.local
