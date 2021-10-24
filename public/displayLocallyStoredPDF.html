@@ -1,0 +1,49 @@
+<html>
+
+<head>
+    <style>
+        .center {
+            margin: 0;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            -ms-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+        }
+
+        .big-text {
+            font-size: 40;
+        }
+    </style>
+</head>
+
+<body>
+    <a class='center big-text' id="mylink">Open locally stored PDF</a>
+
+    <script>
+        console.log('start');
+
+        let dataUrl = localStorage.getItem('pdfDataUrl');
+
+        let script = `function showData(base64URL){
+            var win = window.open();
+            win.document.write('<iframe src="' + base64URL  + '" frameborder="0" style="border:0; top:0px; left:0px; bottom:0px; right:0px; width:100%; height:100%;" allowfullscreen></iframe>');
+        }
+        showData('${dataUrl}');
+    `;
+
+        let hrefValue = `javascript:${script};`
+        const myLinkElement = document.getElementById('mylink');
+
+        if (dataUrl) {
+            console.log('ready');
+            myLinkElement.setAttribute('href', hrefValue);
+            // myLinkElement.click();
+        } else {
+            myLinkElement.textContent = 'PDF receipt not saved locally.';
+        }
+    </script>
+
+</body>
+
+</html>

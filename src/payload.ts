@@ -1,5 +1,6 @@
 import {Constants} from "./constants";
 import {COLORS} from "./colors";
+import link from "next/link";
 
 export class Receipt {
     constructor(public name: string, public vaccinationDate: string, public vaccineName: string, public dateOfBirth: string, public numDoses: number, public organization: string) {};
@@ -25,8 +26,9 @@ export class SHCVaccinationRecord {
 interface Field {
     key: string;
     label: string;
-    value: string;
+    value?: string;
     textAlignment?: string;
+    attributedValue?: string;
 }
 
 export interface PassDictionary {
@@ -41,6 +43,7 @@ export interface PayloadBody {
     rawData: string;
     receipts: HashTable<Receipt>;
     shcReceipt: SHCReceipt;
+    dataUrl?: string;
 }
 
 export class Payload {
@@ -48,6 +51,7 @@ export class Payload {
     receipts: HashTable<Receipt>;
     shcReceipt: SHCReceipt;
     rawData: string;
+    dataUrl?: string;
     backgroundColor: string;
     labelColor: string;
     foregroundColor: string;
@@ -62,6 +66,7 @@ export class Payload {
         this.receipts = body.receipts;
         this.shcReceipt = body.shcReceipt;
         this.rawData = body.rawData;
+        this.dataUrl = body.dataUrl;
         this.generic = {
             headerFields: [],
             primaryFields: [],
@@ -77,112 +82,34 @@ export class Payload {
             this.foregroundColor = COLORS.BLACK;
             this.img1x = Constants.img1xBlack;
             this.img2x = Constants.img2xBlack;
-        } else {
-            const fullyVaccinated = processReceipt(body.receipts[numDose], this.generic);
-            if (fullyVaccinated) {
-               this.backgroundColor = COLORS.GREEN;
-            } else {
-                this.backgroundColor = COLORS.YELLOW;
-            }
-            this.labelColor = COLORS.WHITE;
-            this.foregroundColor = COLORS.WHITE;
-            this.img1x = Constants.img1xWhite;
-            this.img2x = Constants.img2xWhite;
 
-            // These are the non-SHC ON receipts, which expire Oct 22nd
-            this.expirationDate = '2021-10-22T23:59:59-04:00';
-            this.generic.auxiliaryFields.push({
-                    key: "expiry",
-                    label: "QR code expiry",
-                    value: '2021-10-22'
-            })
+            const displayLocallyStoredPDFUrl = window.location.href + "/displayLocallyStoredPDF.html";
+            const attributedValue = `<a href="${displayLocallyStoredPDFUrl}">Display locally stored PDF</a>`;
+            console.log('*** attributedValue ***');
+            console.log(attributedValue);
+
+            this.generic.backFields.push({
+                key: "original",
+                label: "Label",
+                attributedValue: attributedValue
+
+            });
         }
     }
 }
 
-function processReceipt(receipt: Receipt, generic: PassDictionary) : boolean {
+function createHref(dataUrl) {
+    // https://stackoverflow.com/a/56738510/2789065
 
-    console.log(`processing receipt #${receipt.numDoses}`);
-
-    const name = receipt['name'];
-    const dateOfBirth = receipt.dateOfBirth;
-    const numDoses = receipt.numDoses;
-    const vaccineName = receipt.vaccineName.toLocaleUpperCase();
-    let vaccineNameProper = vaccineName.charAt(0) + vaccineName.substr(1).toLowerCase();
-
-    if (vaccineName.includes('PFIZER'))
-        vaccineNameProper = 'Pfizer (Comirnaty)'
-
-    if (vaccineName.includes('MODERNA'))
-        vaccineNameProper = 'Moderna (SpikeVax)'
-
-    if (vaccineName.includes('ASTRAZENECA') || vaccineName.includes('COVISHIELD'))
-        vaccineNameProper = 'AstraZeneca (Vaxzevria)'  
-
-    let doseVaccine = "#" + String(receipt.numDoses) + ": " + vaccineNameProper;
-    let fullyVaccinated = false;
-
-    if (receipt.numDoses > 1 || 
-        vaccineName.toLowerCase().includes('janssen') || 
-        vaccineName.toLowerCase().includes('johnson') || 
-        vaccineName.toLowerCase().includes('j&j')) {
-        fullyVaccinated = true;
-    }
-
-    if (generic.primaryFields.length == 0) {
-        generic.primaryFields.push(
-            {
-                key: "vaccine",
-                label: "Vaccine",
-                value: doseVaccine
-            }
-        )
-    }
-
-    let fieldToPush = generic.secondaryFields;
-    if (fieldToPush.length > 0) {
-        fieldToPush = generic.backFields;
-        generic.headerFields.push({
-            key: "extra",
-            label: "More",
-            value: "(i)",
-            "textAlignment" : "PKTextAlignmentCenter"
-        });
-        generic.backFields.push({
-            key: "vaccine" + numDoses,
-            label: `Vaccine (Dose ${numDoses})`,
-            value: receipt.vaccineName
-        })
-    }
-
-    fieldToPush.push(
-        {
-                key: "issuer",
-                label: "Authorized Organization",
-                value: receipt.organization
-        },
-        {
-            key: "dov",
-            label: "Vacc. Date",
-            value: receipt.vaccinationDate,
+    let script = `function debugBase64(base64URL){
+            var win = window.open();
+            win.document.write('<iframe src="' + base64URL  + '" frameborder="0" style="border:0; top:0px; left:0px; bottom:0px; right:0px; width:100%; height:100%;" allowfullscreen></iframe>');
         }
-    );
+        debugBase64('${dataUrl}');
+    `;
 
-    if (generic.auxiliaryFields.length == 0) {
-        generic.auxiliaryFields.push(
-        {
-            key: "name",
-            label: "Name",
-            value: name
-        },
-                       {
-            key: "dob",
-            label: "Date of Birth",
-            value: dateOfBirth
-        });
-    }
-
-    return fullyVaccinated;
+    let hrefValue = `javascript:${script};`
+    return hrefValue;
 }
 
 function processSHCReceipt(receipt: SHCReceipt, generic: PassDictionary) {
@@ -194,7 +121,7 @@ function processSHCReceipt(receipt: SHCReceipt, generic: PassDictionary) {
             {
                 key: "name",
                 label: "",
-                value: `${receipt.name} (${receipt.dateOfBirth})`
+                value: `${receipt.name}`
             }
         );
     }
