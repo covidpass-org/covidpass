@@ -43,8 +43,10 @@ const options = [
     { label: 'Alberta', value: 'https://covidrecords.alberta.ca/form'},
     { label: 'British Columbia', value: 'https://www.healthgateway.gov.bc.ca/vaccinecard'},
     { label: 'Ontario', value: 'https://covid19.ontariohealth.ca'},
+    { label: 'Newfoundland and Labrador', value: 'https://vaccineportal.nlchi.nl.ca/'},
     { label: 'Northwest Territories', value: 'https://www.gov.nt.ca/covid-19/en/request/proof-vaccination'},
     { label: 'Nova Scotia', value: 'https://novascotia.flow.canimmunize.ca/en/portal'},
+    { label: 'Prince Edward Island', value: 'https://pei.flow.canimmunize.ca/en/portal'},
     { label: 'Québec', value: 'https://covid19.quebec.ca/PreuveVaccinale'},
     { label: 'Saskatchewan', value: 'https://services.saskatchewan.ca/#/login'},
     { label: 'Yukon', value: 'https://service.yukon.ca/forms/en/get-covid19-proof-of-vaccination'},
@@ -66,7 +68,6 @@ function Form(): JSX.Element {
     const [qrCode, setQrCode] = useState<Result>(undefined);
     const [file, setFile] = useState<File>(undefined);
     const [payloadBody, setPayloadBody] = useState<PayloadBody>(undefined);
-    const [photoBlob, setPhotoBlob] = useState<Blob>(undefined);
 
     const [saveLoading, setSaveLoading] = useState<boolean>(false);
     const [fileLoading, setFileLoading] = useState<boolean>(false);
@@ -246,7 +247,7 @@ function Form(): JSX.Element {
         inputFile.current.click();
     }
 
-    async function goToFAQ(e) {
+    async function goToFAQ(e : any) {
         e.preventDefault();
         window.location.href = '/faq';
     }
@@ -373,18 +374,8 @@ function Form(): JSX.Element {
         try {
             if (payloadBody) {
                 
-                let selectedReceipt;
-                let filenameDetails = '';
-                if (payloadBody.rawData.length > 0) {
-                    // This is an SHC receipt, so do our SHC thing
-                    selectedReceipt = payloadBody.shcReceipt;
-                    filenameDetails = selectedReceipt.cardOrigin.replace(' ', '-');
-                } else {
-                    selectedReceipt = payloadBody.receipts[selectedDose];
-                    const vaxName = selectedReceipt.vaccineName.replace(' ', '-');
-                    const passDose = selectedReceipt.numDoses;
-                    filenameDetails = `${vaxName}-${passDose}`;
-                }
+                const selectedReceipt = payloadBody.shcReceipt;
+                const filenameDetails = selectedReceipt.cardOrigin.replace(' ', '-');
                 const passName = selectedReceipt.name.replace(' ', '-');
                 const covidPassFilename = `grassroots-receipt-${passName}-${filenameDetails}.pkpass`;
 
@@ -418,9 +409,9 @@ function Form(): JSX.Element {
     }
 
     // Add Pass to Google Pay
-    async function addToGooglePay() {
+    async function addToGooglePay(e : any) {
         
-        event.preventDefault();
+        e.preventDefault();
         setSaveLoading(true);
 
         if (!file && !qrCode) {
@@ -431,15 +422,6 @@ function Form(): JSX.Element {
 
         try {
             if (payloadBody) {
-                
-                let selectedReceipt;
-                if (payloadBody.rawData.length > 0) {                   // shc stuff
-                    const sortedKeys = Object.keys(payloadBody.shcReceipt.vaccinations).sort();             // pickup the last key in the receipt table
-                    const lastKey = sortedKeys[sortedKeys.length - 1];
-                    selectedReceipt = payloadBody.shcReceipt.vaccinations[lastKey];
-                } else {
-                    selectedReceipt = payloadBody.receipts[selectedDose];
-                }
 
                 console.log('> increment count');
                 await incrementCount();
@@ -494,15 +476,13 @@ function Form(): JSX.Element {
                 document.getElementById('shc-image-header').hidden = false;
                 console.log('made canvas visible');
 
-                const newPhotoBlob = await Photo.generateSHCPass(payloadBody, shouldRegister);
+                await Photo.generateSHCPass(payloadBody, shouldRegister);
                 console.log('generated blob');
-                setPhotoBlob(newPhotoBlob);
             }
             console.log('done photo render');
         } catch (e) {
             Sentry.captureException(e);
 
-            setPhotoBlob(undefined);
             setAddErrorMessage(e.message);
         }        
     }
@@ -511,36 +491,7 @@ function Form(): JSX.Element {
         await renderPhoto(payloadBody, false);
     }
 
-    async function saveAsPhoto() {
-
-        setSaveLoading(true);
-
-        if (!file && !qrCode) {
-            setAddErrorMessage('noFileOrQrCode');
-            setSaveLoading(false);
-            return;
-        }
-
-        try {
-            // This is an SHC receipt, so do our SHC thing
-            const selectedReceipt = payloadBody.shcReceipt;
-            const filenameDetails = selectedReceipt.cardOrigin.replace(' ', '-');
-            const passName = selectedReceipt.name.replace(' ', '-');
-            const covidPassFilename = `grassroots-receipt-${passName}-${filenameDetails}.png`;
-
-            await incrementCount();
-            
-            saveAs(photoBlob, covidPassFilename);
-
-            setSaveLoading(false);
-        } catch (e) {
-            Sentry.captureException(e);
-
-            setAddErrorMessage(e.message);
-            setSaveLoading(false);
-        }
-    }
-    const setDose = (e) => {
+    const setDose = (e : any) => {
         setSelectedDose(e.target.value);
     }
 
@@ -693,14 +644,15 @@ function Form(): JSX.Element {
                         </div>
 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-5 items-center justify-items-stretch">
-                            <button disabled={saveLoading} className=" bg-black outline-apple rounded-md" id="download" type="submit" value='applewallet' name='action'>
+                            <button disabled={saveLoading || isDisabledAppleWallet} id="download" type="submit" value='applewallet' name='action'
+                                 className={'outline-apple rounded-md ' + ((!payloadBody || saveLoading || isDisabledAppleWallet)? 'bg-gray-300 cursor-not-allowed':'bg-black cursor-pointer')}>
                                 <div className="flex justify-center">
                                     <img style={{height: 40}} src="apple_wallet.svg" alt={t('index:addToWallet')}/>
                                 </div>
                             </button>
 
-                            <button id="addToGooglePay" type="button" disabled={saveLoading} value='gpay' name='action' onClick={addToGooglePay}
-                                className=" bg-black rounded-md">
+                            <button id="addToGooglePay" type="button" disabled={saveLoading || isDisabledGooglePay} value='gpay' name='action' onClick={addToGooglePay}
+                                className={'rounded-md ' + ((!payloadBody || saveLoading || isDisabledGooglePay)? 'bg-gray-300 cursor-not-allowed':'bg-black cursor-pointer')}>
                                     <div className="flex justify-center">
                                 <img style={{height: 40}} src="gpay_light.svg" alt={t('index:addToGooglePay')}/>
                                 </div>

@@ -42,7 +42,7 @@ export async function getPayloadBodyFromFile(file: File): Promise<PayloadBody> {
 
 async function getImageDataFromPdfPage(pdfPage: PDFPageProxy): Promise<ImageData> {
 
-    const pdfScale = 2;
+    const pdfScale = 4;
 
     const canvas = <HTMLCanvasElement>document.getElementById('canvas');
     const canvasContext = canvas.getContext('2d');
@@ -61,7 +61,7 @@ async function getImageDataFromPdfPage(pdfPage: PDFPageProxy): Promise<ImageData
     await renderTask.promise;
 
     // Return PDF Image Data
-    return canvasContext.getImageData(0, 0, canvas.width, canvas.height);
+    return Promise.resolve(canvasContext.getImageData(0, 0, canvas.width, canvas.height));
 
 }
 

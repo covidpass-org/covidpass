@@ -1,0 +1,125 @@
+{
+  "iss": "https://pvcprod.gov.pe.ca", 
+  "vc": {
+    "credentialSubject": {
+      "fhirBundle": {
+        "resourceType": "Bundle", 
+        "entry": [
+          {
+            "resource": {
+              "resourceType": "Patient", 
+              "name": [
+                {
+                  "given": [
+                    "FIRSTNAME"
+                  ], 
+                  "family": "LASTNAME"
+                }
+              ], 
+              "birthDate": "YYYY-MM-DD"
+            }, 
+            "fullUrl": "resource:0"
+          }, 
+          {
+            "resource": {
+              "status": "completed", 
+              "performer": [
+                {
+                  "actor": {
+                    "display": "PE, Canada"
+                  }
+                }
+              ], 
+              "patient": {
+                "reference": "resource:0"
+              }, 
+              "resourceType": "Immunization", 
+              "lotNumber": "SOME_STRING", 
+              "vaccineCode": {
+                "coding": [
+                  {
+                    "code": "208", 
+                    "system": "http://hl7.org/fhir/sid/cvx"
+                  }, 
+                  {
+                    "code": "28581000087106", 
+                    "system": "http://snomed.info/sct"
+                  }
+                ]
+              }, 
+              "meta": {
+                "security": [
+                  {
+                    "code": "IAL1.4", 
+                    "system": "https://smarthealth.cards/ial"
+                  }
+                ]
+              }, 
+              "occurrenceDateTime": "YYYY-MM-DD", 
+              "manufacturer": {
+                "identifier": {
+                  "system": "http://hl7.org/fhir/sid/mvx", 
+                  "value": "PFR"
+                }
+              }
+            }, 
+            "fullUrl": "resource:1"
+          }, 
+          {
+            "resource": {
+              "status": "completed", 
+              "performer": [
+                {
+                  "actor": {
+                    "display": "PE, Canada"
+                  }
+                }
+              ], 
+              "patient": {
+                "reference": "resource:0"
+              }, 
+              "resourceType": "Immunization", 
+              "lotNumber": "SOME_STRING", 
+              "vaccineCode": {
+                "coding": [
+                  {
+                    "code": "207", 
+                    "system": "http://hl7.org/fhir/sid/cvx"
+                  }, 
+                  {
+                    "code": "28571000087109", 
+                    "system": "http://snomed.info/sct"
+                  }
+                ]
+              }, 
+              "meta": {
+                "security": [
+                  {
+                    "code": "IAL1.4", 
+                    "system": "https://smarthealth.cards/ial"
+                  }
+                ]
+              }, 
+              "occurrenceDateTime": "YYYY-MM-DD", 
+              "manufacturer": {
+                "identifier": {
+                  "system": "http://hl7.org/fhir/sid/mvx", 
+                  "value": "MOD"
+                }
+              }
+            }, 
+            "fullUrl": "resource:2"
+          }
+        ], 
+        "type": "collection"
+      }, 
+      "fhirVersion": "4.0.1"
+    }, 
+    "type": [
+      "https://smarthealth.cards#health-card", 
+      "https://smarthealth.cards#immunization", 
+      "https://smarthealth.cards#covid19"
+    ]
+  }, 
+  "nbf": 1634941882.075
+}
