@@ -9,7 +9,7 @@ import Alert from '../components/Alert';
 import React, { useEffect, useState } from 'react';
 import { isIOS, isSafari, isAndroid, osVersion, isMacOs} from 'react-device-detect';
 import usePassCount from "../src/hooks/use_pass_count";
-import Link from 'next/link'
+import Link from 'next/link';
 
 function Index(): JSX.Element {
     const { t } = useTranslation(['common', 'index', 'errors']);
@@ -42,8 +42,8 @@ function Index(): JSX.Element {
     }, []);
     
 
-    const title = 'Grassroots - vaccination QR Code import for Apple and Android devices. Supports BC AB SK MB ON QC NS PE NL YK NT NY NJ CA LA VA HI UT KY OK NV NM DE';
-    const description = 'Grassroots imports vaccination QR codes and stores them on Apple and Android devices in a convenient, secure, and privacy-respecting way. Supports SHC QR codes from BC AB SK MB ON QC NS PE NL YK NT NY NJ CA LA VA HI UT KY OK NV NM DE';
+    const title = 'Grassroots - vaccination QR Code import for Apple and Android devices. Supports most Canadian provinces/territories and many US states';
+    const description = 'Grassroots imports vaccination QR codes and stores them on Apple and Android devices in a convenient, secure, and privacy-respecting way. Supports SHC QR codes from most Canadian provinces/territories and many US states';
 
     return (
         <>
@@ -76,7 +76,34 @@ function Index(): JSX.Element {
                         <Alert message={message} key={'error-' + i} type="warning" onClose={() => deleteWarningMessage(message)} />
                     )}
                     <Card content={
-                        <div><p>{t('common:subtitle')}</p><br /><p>{t('common:subtitle2')}</p><br />
+                        <div><p>{t('common:subtitle')}</p><br /><p>{t('common:subtitle2')}</p>
+                            <div className="region-section">
+                                <div className="region-card">Alberta</div>
+                                <div className="region-card">British Columbia</div>
+                                <div className="region-card">Ontario</div>
+                                <div className="region-card">Newfoundland and Labrador</div>
+                                <div className="region-card">Northwest Territories</div>
+                                <div className="region-card">Nova Scotia</div>
+                                <div className="region-card">Prince Edward Island</div>
+                                <div className="region-card">Québec</div>
+                                <div className="region-card">Saskatchewan</div>
+                                <div className="region-card">Yukon</div>
+                            </div>
+                            <div className="region-section">
+                                <div className="region-card">California</div>
+                                <div className="region-card">Connecticut</div>
+                                <div className="region-card">Delaware</div>
+                                <div className="region-card">Hawaii</div>
+                                <div className="region-card">Kentucky</div>
+                                <div className="region-card">Louisiana</div>
+                                <div className="region-card">Nevada</div>
+                                <div className="region-card">New Mexico</div>
+                                <div className="region-card">New Jersey</div>
+                                <div className="region-card">New York</div>
+                                <div className="region-card">Oklahoma</div>
+                                <div className="region-card">Utah</div>
+                                <div className="region-card">Virginia</div>
+                            </div>
                             <b>{displayPassCount}</b><br/><br/>
                             <b>Native support for Android - COVID card in your Google Pay wallet</b> - Oct 20th update: 
                             <br />
@@ -94,7 +121,7 @@ function Index(): JSX.Element {
                                 <a className="underline">
                                     {t('index:androidDemo')}
                                 </a>
-                            </Link>&nbsp;&nbsp;&nbsp;
+                            </Link><br/>
                             <Link href="https://www.youtube.com/watch?v=XAg8IoIdlsU">
                                 {/* <a className="underline" target="_blank"> */}
                                 <a className="underline">

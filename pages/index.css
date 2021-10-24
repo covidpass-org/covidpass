@@ -1,0 +1,14 @@
+.region-card {
+	white-space: nowrap;
+    padding: 0.3rem;
+    margin: 0.5rem;
+    border-radius: 0.7rem;
+    background-color: #dddddd;
+    text-align: center;
+}
+
+.region-section {
+	display: flex;
+    flex-wrap: wrap;
+    padding-bottom: 20px;
+}

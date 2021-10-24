@@ -1,14 +1,14 @@
 errorClose: Close
 selectCertificate: Select or scan vaccination receipt (PDF or image)
 selectCertificateDescription: |
-  You can scan the QR code with your camera, or press "Select File", "Browse..." and select the PDF file or picture you have saved in Step 1
+  Scan the QR code with your camera, or press "Select File", "Browse..." and select the PDF or picture you saved in Step 1
 stopCamera: Stop Camera
 startCamera: Start Camera
 openFile: Select File
 foundQrCode: Found valid Smart Health Card QR Code!
 downloadReceipt: Download official receipt or take a picture of your QR code
-visit: If you need to download your proof-of-vaccination, please select your province in the drop-down to be redirected to your provincial proof-of-vaccination portal.
-reminderNotToRepeat: IF YOU HAVE ALREADY DOWNLOADED YOUR PROOF-OF-VACCINATION, SKIP THIS STEP AND PROCEED DIRECTLY TO STEP 2
+visit: If you need to download your proof-of-vaccination, please select your province below to be redirected to your provincial website.
+reminderNotToRepeat: ALREADY DOWNLOADED YOUR PROOF-OF-VACCINATION? SKIP THIS STEP AND PROCEED DIRECTLY TO STEP 2
 addToWallet: Add to Apple Wallet
 addToGooglePay: Add to Google Pay
 addToWalletHeader: Add to Apple Wallet / Google Pay / Save as Photo
@@ -20,7 +20,7 @@ verifierLink: QR code verifier available at
 numPasses: receipts processed since Sept 2, 2021
 iosDemo: Walkthrough video for iPhone users
 androidDemo: Walkthrough video for Android users
-whatsnew: What's New
+whatsnew: Twitter
 questions: Have Questions?
 saveVaccineCard: To Save your Vaccination Card as a photo, please click on or save the image below
 refreshNote: If the image below does not look correct and you are trying to save the photo, please click the Refresh button below - on some older devices, the image does not appear to draw correctly the first time, but refreshing once or twice should fix it. Sorry for the inconvenience.
