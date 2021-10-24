@@ -83,33 +83,19 @@ export class Payload {
             this.img1x = Constants.img1xBlack;
             this.img2x = Constants.img2xBlack;
 
-            const displayLocallyStoredPDFUrl = window.location.href + "/displayLocallyStoredPDF.html";
-            const attributedValue = `<a href="${displayLocallyStoredPDFUrl}">Display locally stored PDF</a>`;
+            let displayLocallyStoredPDFUrl = window.location.href + "displayLocallyStoredPDF.html";  
+            console.log(displayLocallyStoredPDFUrl)
+            const attributedValue = `<a href="${displayLocallyStoredPDFUrl}">View</a>`;
             console.log('*** attributedValue ***');
             console.log(attributedValue);
 
             this.generic.backFields.push({
                 key: "original",
-                label: "Label",
+                label: "Original receipt (saved locally in Safari)",
                 attributedValue: attributedValue
-
             });
         }
     }
-}
-
-function createHref(dataUrl) {
-    // https://stackoverflow.com/a/56738510/2789065
-
-    let script = `function debugBase64(base64URL){
-            var win = window.open();
-            win.document.write('<iframe src="' + base64URL  + '" frameborder="0" style="border:0; top:0px; left:0px; bottom:0px; right:0px; width:100%; height:100%;" allowfullscreen></iframe>');
-        }
-        debugBase64('${dataUrl}');
-    `;
-
-    let hrefValue = `javascript:${script};`
-    return hrefValue;
 }
 
 function processSHCReceipt(receipt: SHCReceipt, generic: PassDictionary) {
@@ -117,27 +103,34 @@ function processSHCReceipt(receipt: SHCReceipt, generic: PassDictionary) {
     console.log(`processing receipt for origin ${receipt.cardOrigin}`);
 
     if (generic.primaryFields.length == 0) {
+        const lastReceiptIndex = receipt.vaccinations.length - 1
+        const mostRecentReceipt = receipt.vaccinations[lastReceiptIndex];
+        const vaccineName = mostRecentReceipt.vaccineName.substring(0,1).toUpperCase() + mostRecentReceipt.vaccineName.substring(1).toLowerCase();
+        const value = `#${lastReceiptIndex + 1} - ${vaccineName}`;
         generic.primaryFields.push(
             {
                 key: "name",
-                label: "",
-                value: `${receipt.name}`
+                label: `${receipt.name} (Last vaccinated: ${mostRecentReceipt.vaccinationDate})`,
+                value: value
             }
         );
     }
 
-    let fieldToPush;
+    generic.secondaryFields.push({
+        key: "details",
+        label: "For details",
+        value: "Touch the circle with ... on the top right"
+    });
+
+    generic.backFields.push({
+        key: "date-of-birth",
+        label: "Date of Birth",
+        value: receipt.dateOfBirth    
+    });
 
     for (let i = 0; i < receipt.vaccinations.length; i++) {
 
-        if (i <= 1)
-            fieldToPush = generic.secondaryFields;
-        else if (i <= 3)
-            fieldToPush = generic.auxiliaryFields;
-        else if (i <= 5)
-            fieldToPush = generic.backFields;
-
-        fieldToPush.push(
+        generic.backFields.push(
             {
                 key: 'vaccine' + i,
                 label: receipt.vaccinations[i].vaccineName,
