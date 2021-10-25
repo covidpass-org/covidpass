@@ -82,8 +82,9 @@ function Index(): JSX.Element {
                                 <div className="region-card">British Columbia</div>
                                 <div className="region-card">Ontario</div>
                                 <div className="region-card">Newfoundland and Labrador</div>
-                                <div className="region-card">Northwest Territories</div>
+                                <div className="region-card">Northwest Territories</div>                                
                                 <div className="region-card">Nova Scotia</div>
+                                <div className="region-card">Nunavut</div>
                                 <div className="region-card">Prince Edward Island</div>
                                 <div className="region-card">Québec</div>
                                 <div className="region-card">Saskatchewan</div>
@@ -105,12 +106,12 @@ function Index(): JSX.Element {
                                 <div className="region-card">Virginia</div>
                             </div> */}
                             <b>{displayPassCount}</b><br/><br/>
-                            <b>Native support for Android - COVID card in your Google Pay wallet</b> - Oct 20th update: 
+                            <b>Nunavut support added</b> - Oct 25th update: 
                             <br />
                             <br />
                             <ul className="list-decimal list-outside" style={{ marginLeft: '20px' }}>
+                                <li>Thank you very much to the Government of Nunavut for proactively reaching out to us to allow us to add support for Nunavummiut!</li>
                                 <li>(Often-requested) support added for importing proof-of-vaccination into Google Pay on Android 8.1+</li>
-                                <li>Android users can also add a shortcut to your home screen to access your COVID card with a single tap</li>
                                 <li>You can now scan QR codes directly off of paper or a screen with your camera, eliminating the need to upload PDFs or pictures</li>
                                 <li>Support added for importing QR codes from images as well as from PDFs</li>
                             </ul><br />

@@ -45,6 +45,7 @@ const options = [
     { label: 'Ontario', value: 'https://covid19.ontariohealth.ca'},
     { label: 'Newfoundland and Labrador', value: 'https://vaccineportal.nlchi.nl.ca/'},
     { label: 'Northwest Territories', value: 'https://www.gov.nt.ca/covid-19/en/request/proof-vaccination'},
+    { label: 'Nunavut', value: 'https://gov.nu.ca/sites/default/files/covid_proof_of_vaccination_qa_for_nunavut_october_14_2021.pdf'},
     { label: 'Nova Scotia', value: 'https://novascotia.flow.canimmunize.ca/en/portal'},
     { label: 'Prince Edward Island', value: 'https://pei.flow.canimmunize.ca/en/portal'},
     { label: 'Québec', value: 'https://covid19.quebec.ca/PreuveVaccinale'},
