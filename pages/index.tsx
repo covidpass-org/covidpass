@@ -42,8 +42,8 @@ function Index(): JSX.Element {
     }, []);
     
 
-    const title = 'Grassroots - vaccination QR Code import for Apple and Android devices. Supports most Canadian provinces/territories and many US states';
-    const description = 'Grassroots imports vaccination QR codes and stores them on Apple and Android devices in a convenient, secure, and privacy-respecting way. Supports SHC QR codes from most Canadian provinces/territories and many US states';
+    const title = 'Grassroots - vaccination QR Code import for Apple and Android devices. Supports most Canadian provinces and territories';
+    const description = 'Grassroots imports vaccination QR codes and stores them on Apple and Android devices in a convenient, secure, and privacy-respecting way. Supports SHC QR codes from most Canadian provinces and territories';
 
     return (
         <>
@@ -91,7 +91,7 @@ function Index(): JSX.Element {
                                 <div className="region-card">Saskatchewan</div>
                                 <div className="region-card">Yukon</div>
                             </div>
-                            <div className="region-section">
+                            {/* <div className="region-section">
                                 <div className="region-card">California</div>
                                 <div className="region-card">Connecticut</div>
                                 <div className="region-card">Delaware</div>
@@ -105,7 +105,7 @@ function Index(): JSX.Element {
                                 <div className="region-card">Oklahoma</div>
                                 <div className="region-card">Utah</div>
                                 <div className="region-card">Virginia</div>
-                            </div>
+                            </div> */}
                             <b>{displayPassCount}</b><br/><br/>
                             <b>Nunavut and Manitoba support added</b> - Oct 25th update: 
                             <br />
