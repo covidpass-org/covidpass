@@ -89,11 +89,13 @@ export class Payload {
             console.log('*** attributedValue ***');
             console.log(attributedValue);
 
-            this.generic.backFields.push({
-                key: "original",
-                label: "Original receipt (saved locally in Safari)",
-                attributedValue: attributedValue
-            });
+            //TODO: feature flagging
+            
+            // this.generic.backFields.push({
+            //     key: "original",
+            //     label: "Original receipt (saved locally in Safari)",
+            //     attributedValue: attributedValue
+            // });
         }
     }
 }
@@ -141,7 +143,7 @@ function processSHCReceipt(receipt: SHCReceipt, generic: PassDictionary) {
             {
                 key: 'vaccine' + (i+1),
                 label: `#${i+1} ${receipt.vaccinations[i].vaccineName}`,
-                value: `{receipt.vaccinations[i].vaccinationDate} in ${receipt.vaccinations[i].organization}`
+                value: `${receipt.vaccinations[i].vaccinationDate} in ${receipt.vaccinations[i].organization}`
             }
         )
 

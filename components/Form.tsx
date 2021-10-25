@@ -127,7 +127,10 @@ function Form(): JSX.Element {
                     _setFileErrorMessages([]);
                     checkBrowserType();
                     const payloadBody = await getPayload(selectedFile);
-                    await createDataUrlForDisplay(selectedFile);
+
+                    //TODO: feature flagging
+
+                    // await createDataUrlForDisplay(selectedFile);
                     await renderPhoto(payloadBody);
                 }
             });
@@ -144,32 +147,7 @@ function Form(): JSX.Element {
             const buffer = Buffer.from(await new Response(file).arrayBuffer());
             let dataUrl = `data:${file.type};base64,${buffer.toString("base64")}`;
             localStorage.setItem('pdfDataUrl', dataUrl);
-            // dataUrl = 'https://apple.com';
 
-
-
-            // let script = `function debugBase64(base64URL){
-            //         var win = window.open();
-            //         win.document.write('<iframe src="' + base64URL  + '" frameborder="0" style="border:0; top:0px; left:0px; bottom:0px; right:0px; width:100%; height:100%;" allowfullscreen></iframe>');
-            //     }
-            //     debugBase64('${dataUrl}');
-            // `;
-
-            // let hrefValue = `javascript:${script};`
-
-            // let aElement = document.createElement('a')
-            // let textNode = document.createTextNode('Click me');
-            // aElement.appendChild(textNode);
-            // aElement.title = 'Click me';
-            // aElement.setAttribute('id', 'mylink');
-            // aElement.setAttribute('href', hrefValue)
-            // // aElement.setAttribute('download', file.name)
-            // // aElement.setAttribute('target', '_blank')
-
-            // document.getElementById('wrapper').appendChild(aElement);
-
-            // console.log('*** outerHTML ***');
-            // console.log(document.getElementById('wrapper').outerHTML)
         }
     }
 
