@@ -143,7 +143,7 @@ function processSHCReceipt(receipt: SHCReceipt, generic: PassDictionary) {
             {
                 key: 'vaccine' + (i+1),
                 label: `#${i+1} ${receipt.vaccinations[i].vaccineName}`,
-                value: `{receipt.vaccinations[i].vaccinationDate} in ${receipt.vaccinations[i].organization}`
+                value: `${receipt.vaccinations[i].vaccinationDate} in ${receipt.vaccinations[i].organization}`
             }
         )
 
