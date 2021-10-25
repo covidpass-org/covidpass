@@ -336,6 +336,17 @@ export const issuers = [
       y: "RWUlC2s1aEdminnoqyMxtyU4fVlsDLJt36feT0qsJmU", 
       date: 1634299350636 }
     ]
+  },
+  {
+    id: "ca.nu",
+    display: "Nunavut",
+    iss: "https://pvc.gov.nu.ca/pvc",
+    keys: [
+      { kid: "MXH6EAfEDZ0JH46r3j5axkCTo-QdreVtEXE-dbvydUU",
+        alg: "ES256", kty: "EC", crv: "P-256", use: "sig",
+        x: "TW2mjeWs2JRBDblltiq2W00M_Q3gXnCl5FlLKIKV3oQ",
+        y: "sbraf7XcT2iH7uLUtH_grf5eVF7LltpVb9z8E31WGj4" },
+    ]
   }
 ];
 

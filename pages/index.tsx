@@ -82,8 +82,9 @@ function Index(): JSX.Element {
                                 <div className="region-card">British Columbia</div>
                                 <div className="region-card">Ontario</div>
                                 <div className="region-card">Newfoundland and Labrador</div>
-                                <div className="region-card">Northwest Territories</div>
+                                <div className="region-card">Northwest Territories</div>                                
                                 <div className="region-card">Nova Scotia</div>
+                                <div className="region-card">Nunavut</div>
                                 <div className="region-card">Prince Edward Island</div>
                                 <div className="region-card">Québec</div>
                                 <div className="region-card">Saskatchewan</div>
