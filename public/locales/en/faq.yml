@@ -18,17 +18,17 @@ redWhiteA: Yes you can! Just call the Provincial Vaccine Contact Centre at 1-833
 noOhipQ: I do not have a health card. Can I still use this tool?
 noOhipA: First contact your local public health unit to verify your identity and receive a COVIDcovid ID/Personal Access Code. You can then call the Provincial Vaccine Contact Centre at 1-833-943-3900 to get an email copy of your receipt.
 colourQ: Why isn't the new Apple Wallet pass green/orange?
-colourA: Because we now allow importing of QR codes from many provinces and states, and those provinces and states have different eligibility rules, we can no longer reliably determine who is or is not fully vaccinated at receipt import time.
+colourA: Because we now allow importing of QR codes from many provinces, and those provinces have different eligibility rules, we can no longer reliably determine who is or is not fully vaccinated at receipt import time.
 dataQ: How is the data on my vaccination receipt processed?
 dataA: Inside your local web browser, it checks the uploaded PDF or image for a valid QR code. If present, the QR code is converted and added to Apple Wallet, Google Pay, or saved as a photo depending upon the option you choose.
 verifyQ: How can organizations validate this QR code?
-verifyA: The %s is the verification application for the new official Ontario QR codes. For other provinces and states, the official validation systems they offer are the ones to use.
+verifyA: The %s is the verification application for the new official Ontario QR codes. For other provinces, the official validation systems they offer are the ones to use.
 familyQ: Can I use the same mobile wallet to store passes for my entire family?
 familyA: Yes. You can save multiple Apple Wallet, Google Pay, or Photo cards on your device without issues.
 freeQ: Is this free and non-commercial?
 freeA: Similar to %s, there are no commercial interests. Just volunteers trying to do our part to help the community.
-otherProvincesQ: How about support for other provinces or US states?
-otherProvincesA: We now have support for Ontario, British Columbia, Québec, Alberta, Saskatchewan, Nova Scotia, Yukon, Northwest Territories, Nunavut, Newfoundland and Labrador, Prince Edward Island, California, New York, New Jersey, Louisiana, Hawaii, Virginia, Utah, Kentucky, Oklahoma, New Mexico, Nevada, Connecticut, and Delaware QR codes. If you have a QR code that is not currently supported by our app, please contact us at %s
+otherProvincesQ: How about support for other provinces?
+otherProvincesA: We now have support for Ontario, British Columbia, Québec, Alberta, Saskatchewan, Nova Scotia, Yukon, Northwest Territories, Nunavut, Newfoundland and Labrador, Prince Edward Island QR codes. If you have a QR code that is not currently supported by our app, please contact us at %s
 appleWatchQ: How about Apple Watch?
 appleWatchA: If you have iCloud sync enabled, you will see the pass on the watch too. Please be aware though that the new QR codes may be too large to display accurately on older Apple Watches due to their screen size.
 whyQ: Why have we taken time to build this?
