@@ -28,7 +28,7 @@ familyA: Yes. You can save multiple Apple Wallet, Google Pay, or Photo cards on 
 freeQ: Is this free and non-commercial?
 freeA: Similar to %s, there are no commercial interests. Just volunteers trying to do our part to help the community.
 otherProvincesQ: How about support for other provinces or US states?
-otherProvincesA: We now have support for Ontario, British Columbia, Québec, Alberta, Saskatchewan, Nova Scotia, Yukon, Northwest Territories, Nunavut, Newfoundland and Labrador, Prince Edward Island, California, New York, New Jersey, Louisiana, Hawaii, Virginia, Utah, Kentucky, Oklahoma, New Mexico, Nevada, Connecticut, and Delaware QR codes. If you have a QR code that is not currently supported by our app, please contact us at %s
+otherProvincesA: We now have support for Ontario, British Columbia, Québec, Alberta, Saskatchewan, Manitoba (new QR codes only), Nova Scotia, Yukon, Northwest Territories, Nunavut, Newfoundland and Labrador, Prince Edward Island, California, New York, New Jersey, Louisiana, Hawaii, Virginia, Utah, Kentucky, Oklahoma, New Mexico, Nevada, Connecticut, and Delaware QR codes. If you have a QR code that is not currently supported by our app, please contact us at %s
 appleWatchQ: How about Apple Watch?
 appleWatchA: If you have iCloud sync enabled, you will see the pass on the watch too. Please be aware though that the new QR codes may be too large to display accurately on older Apple Watches due to their screen size.
 whyQ: Why have we taken time to build this?

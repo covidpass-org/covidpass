@@ -15,7 +15,7 @@ interface DropdownProps {
 export default function Dropdown(props: DropdownProps) {
     const { label, options } = props;
     return (
-        <Menu as="div" className="relative inline-block text-left w-full">
+        <Menu as="div" className="relative inline-block text-left w-full z-20">
             <Menu.Button className="inline-flex justify-center w-full  bg-green-600 py-2 px-3 text-white font-semibold rounded-md disabled:bg-gray-400">
                 {label}
                 <svg className=" h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 10" fill="currentColor" aria-hidden="true">

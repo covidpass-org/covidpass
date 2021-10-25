@@ -80,11 +80,12 @@ function Index(): JSX.Element {
                             <div className="region-section">
                                 <div className="region-card">Alberta</div>
                                 <div className="region-card">British Columbia</div>
-                                <div className="region-card">Ontario</div>
+                                <div className="region-card">Manitoba (NEW QR CODES ONLY)</div>
                                 <div className="region-card">Newfoundland and Labrador</div>
                                 <div className="region-card">Northwest Territories</div>                                
                                 <div className="region-card">Nova Scotia</div>
                                 <div className="region-card">Nunavut</div>
+                                <div className="region-card">Ontario</div>
                                 <div className="region-card">Prince Edward Island</div>
                                 <div className="region-card">Québec</div>
                                 <div className="region-card">Saskatchewan</div>
@@ -106,11 +107,12 @@ function Index(): JSX.Element {
                                 <div className="region-card">Virginia</div>
                             </div>
                             <b>{displayPassCount}</b><br/><br/>
-                            <b>Nunavut support added</b> - Oct 25th update: 
+                            <b>Nunavut and Manitoba support added</b> - Oct 25th update: 
                             <br />
                             <br />
                             <ul className="list-decimal list-outside" style={{ marginLeft: '20px' }}>
                                 <li>Thank you very much to the Government of Nunavut for proactively reaching out to us to allow us to add support for Nunavummiut!</li>
+                                <li>Support for newly-released Manitoba federal-standard QR codes</li>
                                 <li>(Often-requested) support added for importing proof-of-vaccination into Google Pay on Android 8.1+</li>
                                 <li>You can now scan QR codes directly off of paper or a screen with your camera, eliminating the need to upload PDFs or pictures</li>
                                 <li>Support added for importing QR codes from images as well as from PDFs</li>
