@@ -89,7 +89,7 @@ function Index(): JSX.Element {
                                 <div className="region-card">Saskatchewan</div>
                                 <div className="region-card">Yukon</div>
                             </div>
-                            <div className="region-section">
+                            {/* <div className="region-section">
                                 <div className="region-card">California</div>
                                 <div className="region-card">Connecticut</div>
                                 <div className="region-card">Delaware</div>
@@ -103,7 +103,7 @@ function Index(): JSX.Element {
                                 <div className="region-card">Oklahoma</div>
                                 <div className="region-card">Utah</div>
                                 <div className="region-card">Virginia</div>
-                            </div>
+                            </div> */}
                             <b>{displayPassCount}</b><br/><br/>
                             <b>Native support for Android - COVID card in your Google Pay wallet</b> - Oct 20th update: 
                             <br />

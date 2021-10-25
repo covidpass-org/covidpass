@@ -91,11 +91,11 @@ export class Payload {
 
             //TODO: feature flagging
             
-            // this.generic.backFields.push({
-            //     key: "original",
-            //     label: "Original receipt (saved locally in Safari)",
-            //     attributedValue: attributedValue
-            // });
+            this.generic.backFields.push({
+                key: "original",
+                label: "Original receipt (saved locally in Safari)",
+                attributedValue: attributedValue
+            });
         }
     }
 }
