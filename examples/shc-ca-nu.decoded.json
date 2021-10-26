@@ -1,0 +1,158 @@
+﻿{
+  "iss": "https://pvc.gov.nu.ca/pvc", 
+  "vc": {
+    "credentialSubject": {
+      "fhirBundle": {
+        "resourceType": "Bundle", 
+        "entry": [
+          {
+            "resource": {
+              "resourceType": "Patient", 
+              "name": [
+                {
+                  "given": [
+                    "FIRSTNAME"
+                  ], 
+                  "family": "LASTNAME"
+                }
+              ], 
+              "birthDate": "YYYY-MM-DD"
+            }, 
+            "fullUrl": "resource:0"
+          }, 
+          {
+            "resource": {
+              "status": "completed", 
+              "performer": [
+                {
+                  "actor": {
+                    "display": "NU, Canada"
+                  }
+                }
+              ], 
+              "patient": {
+                "reference": "resource:0"
+              }, 
+              "resourceType": "Immunization", 
+              "lotNumber": "SOME_STRING", 
+              "vaccineCode": {
+                "coding": [
+                  {
+                    "code": "207", 
+                    "system": "http://hl7.org/fhir/sid/cvx"
+                  }
+                ]
+              }, 
+              "meta": {
+                "security": [
+                  {
+                    "code": "IAL1.4", 
+                    "system": "https://smarthealth.cards/ial"
+                  }
+                ]
+              }, 
+              "occurrenceDateTime": "YYYY-MM-DD", 
+              "manufacturer": {
+                "identifier": {
+                  "system": "http://hl7.org/fhir/sid/mvx", 
+                  "value": "MOD"
+                }
+              }
+            }, 
+            "fullUrl": "resource:1"
+          }, 
+          {
+            "resource": {
+              "status": "completed", 
+              "performer": [
+                {
+                  "actor": {
+                    "display": "NU, Canada"
+                  }
+                }
+              ], 
+              "patient": {
+                "reference": "resource:0"
+              }, 
+              "resourceType": "Immunization", 
+              "lotNumber": "SOME_STRING", 
+              "vaccineCode": {
+                "coding": [
+                  {
+                    "code": "207", 
+                    "system": "http://hl7.org/fhir/sid/cvx"
+                  }
+                ]
+              }, 
+              "meta": {
+                "security": [
+                  {
+                    "code": "IAL1.4", 
+                    "system": "https://smarthealth.cards/ial"
+                  }
+                ]
+              }, 
+              "occurrenceDateTime": "YYYY-MM-DD", 
+              "manufacturer": {
+                "identifier": {
+                  "system": "http://hl7.org/fhir/sid/mvx", 
+                  "value": "MOD"
+                }
+              }
+            }, 
+            "fullUrl": "resource:2"
+          }, 
+          {
+            "resource": {
+              "status": "completed", 
+              "performer": [
+                {
+                  "actor": {
+                    "display": "NU, Canada"
+                  }
+                }
+              ], 
+              "patient": {
+                "reference": "resource:0"
+              }, 
+              "resourceType": "Immunization", 
+              "lotNumber": "SOME_STRING", 
+              "vaccineCode": {
+                "coding": [
+                  {
+                    "code": "208", 
+                    "system": "http://hl7.org/fhir/sid/cvx"
+                  }
+                ]
+              }, 
+              "meta": {
+                "security": [
+                  {
+                    "code": "IAL1.4", 
+                    "system": "https://smarthealth.cards/ial"
+                  }
+                ]
+              }, 
+              "occurrenceDateTime": "YYYY-MM-DD", 
+              "manufacturer": {
+                "identifier": {
+                  "system": "http://hl7.org/fhir/sid/mvx", 
+                  "value": "PFR"
+                }
+              }
+            }, 
+            "fullUrl": "resource:3"
+          }
+        ], 
+        "type": "collection"
+      }, 
+      "fhirVersion": "4.0.1"
+    }, 
+    "type": [
+      "https://smarthealth.cards#health-card", 
+      "https://smarthealth.cards#covid19", 
+      "https://smarthealth.cards#immunization"
+    ]
+  }, 
+  "nbf": 1635194428.0
+}
