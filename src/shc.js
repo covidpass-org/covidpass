@@ -60,7 +60,7 @@ function decodeJWSPayload(decodedPayload) {
         try {
           //console.log(decompressedResult);
           scannedResult = decompressedResult.toString("utf8");
-          resolve(JSON.parse(scannedResult));
+          resolve(JSON.parse(scannedResult.trim()));
         } catch (e) {
           reject(e);
         }
