@@ -171,10 +171,12 @@ function Form(): JSX.Element {
         try {
             const payload = await getPayloadBodyFromFile(file);
 
-            const buffer = Buffer.from(await new Response(file).arrayBuffer());
-            let dataUrl = `data:${file.type};base64,${buffer.toString("base64")}`;
+            //TODO: feature flagging
+            
+            // const buffer = Buffer.from(await new Response(file).arrayBuffer());
+            // let dataUrl = `data:${file.type};base64,${buffer.toString("base64")}`;
 
-            payload.dataUrl = dataUrl;
+            // payload.dataUrl = dataUrl;
 
             setPayloadBody(payload);
             setFileLoading(false);
