@@ -131,7 +131,7 @@ function Form(): JSX.Element {
 
                     //TODO: feature flagging
 
-                    // await createDataUrlForDisplay(selectedFile);
+                    await createDataUrlForDisplay(selectedFile);
                     await renderPhoto(payloadBody);
                 }
             });
