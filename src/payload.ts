@@ -44,6 +44,7 @@ export interface PayloadBody {
     receipts: HashTable<Receipt>;
     shcReceipt: SHCReceipt;
     dataUrl?: string;
+    extraUrl?: string;
 }
 
 export class Payload {
@@ -52,6 +53,7 @@ export class Payload {
     shcReceipt: SHCReceipt;
     rawData: string;
     dataUrl?: string;
+    extraUrl?: string;
     backgroundColor: string;
     labelColor: string;
     foregroundColor: string;
@@ -67,6 +69,8 @@ export class Payload {
         this.shcReceipt = body.shcReceipt;
         this.rawData = body.rawData;
         this.dataUrl = body.dataUrl;
+        this.extraUrl = body.extraUrl;
+
         this.generic = {
             headerFields: [],
             primaryFields: [],
@@ -83,19 +87,27 @@ export class Payload {
             this.img1x = Constants.img1xBlack;
             this.img2x = Constants.img2xBlack;
 
-            let displayLocallyStoredPDFUrl = window.location.href + "displayLocallyStoredPDF.html";  
-            console.log(displayLocallyStoredPDFUrl)
-            const attributedValue = `<a href="${displayLocallyStoredPDFUrl}">View</a>`;
-            console.log('*** attributedValue ***');
-            console.log(attributedValue);
+            if (this.dataUrl) {
+                let displayLocallyStoredPDFUrl = window.location.href + "displayLocallyStoredItem.html?item=receipt" ;  
+                const attributedValue = `<a href="${displayLocallyStoredPDFUrl}">View Receipt</a>`;
+                
+                this.generic.backFields.push({
+                    key: "original",
+                    label: "Original receipt (saved locally in Safari)",
+                    attributedValue: attributedValue
+                });
+            }
 
-            //TODO: feature flagging
-            
-            this.generic.backFields.push({
-                key: "original",
-                label: "Original receipt (saved locally in Safari)",
-                attributedValue: attributedValue
-            });
+            if (this.extraUrl) {
+                let extraUrl = window.location.href + "displayLocallyStoredItem.html?item=extra" ;  
+                const attributedValue = `<a href="${extraUrl}">View Extra Info</a>`;
+                this.generic.backFields.push({
+                    key: "extra",
+                    label: "Extra image",
+                    attributedValue: attributedValue
+                });
+            }
+
         }
     }
 }

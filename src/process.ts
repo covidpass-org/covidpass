@@ -6,12 +6,15 @@ import * as Decode from './decode';
 import {getScannedJWS, verifyJWS, decodeJWS} from "./shc";
 
 import { PDFPageProxy } from 'pdfjs-dist/types/src/display/api';
+import pdfjsWorker from "pdfjs-dist/build/pdf.worker.entry";
 
 // import {PNG} from 'pngjs'
 // import {decodeData} from "./decode";
 // import {Result} from "@zxing/library";
 
-PdfJS.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${PdfJS.version}/pdf.worker.js`
+PdfJS.GlobalWorkerOptions.workerSrc = pdfjsWorker;
+
+// PdfJS.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${PdfJS.version}/pdf.worker.js`
 
 export async function getPayloadBodyFromFile(file: File): Promise<PayloadBody> {
     // Read file

@@ -1,0 +1,64 @@
+<html>
+
+<head>
+    <script>
+        function loadItem() {
+
+            if (navigator.userAgent.indexOf('Safari') < 0) {
+                document.getElementById('msg').textContent = 'Sorry. For fastlink to work, your iPhone needs to be using Safari as default browser. To change it, you can go to Settings - Chrome/Firefox';
+                return;
+            }
+
+            const itemKey = location.href.split('=')[1];
+            console.log(itemKey);
+            let dataUrl = localStorage.getItem(itemKey);
+            if (dataUrl) {
+                const imageElement = document.getElementById('image');
+                imageElement.setAttribute('src', dataUrl);
+                document.getElementById('clearButton').hidden = false;
+            } else {
+                document.getElementById('msg').innerHTML = `Sorry, ${itemKey} not found in local storage.<p />Creating your wallet pass again would likely fix this issue.`;
+            }
+        }
+
+        function clearLocalStorage() {
+            localStorage.clear();
+            document.getElementById('msg').innerHTML = 'Local storage cleared.';
+            document.getElementById('clearButton').hidden = true;
+        }
+        
+    </script>
+    <style>
+        
+        body {
+            font-family: sans-serif;
+        }
+
+        .center {
+            margin: 0;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            -ms-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+        }
+    
+        .big-text {
+            font-size: 48;
+        }
+    </style>
+
+</head>
+
+<body>
+    <img id='image' width="100%" />
+    <br />
+    <input id='clearButton' type="button" hidden value='Clear Local Storage' onclick="clearLocalStorage()"></input>
+    <div id='msg' class='center big-text' width="100%" />
+
+    <script>
+        loadItem();
+    </script>
+</body>
+
+</html>
