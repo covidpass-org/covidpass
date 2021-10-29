@@ -88,7 +88,7 @@ export class Payload {
             this.img2x = Constants.img2xBlack;
 
             if (this.dataUrl) {
-                let displayLocallyStoredPDFUrl = window.location.href + "displayLocallyStoredItem.html?item=receipt" ;  
+                let displayLocallyStoredPDFUrl = window.location.href + "displayLocallySavedItem.html?item=receipt" ;  
                 const attributedValue = `<a href="${displayLocallyStoredPDFUrl}">View Receipt</a>`;
                 
                 this.generic.backFields.push({
@@ -99,7 +99,7 @@ export class Payload {
             }
 
             if (this.extraUrl) {
-                let extraUrl = window.location.href + "displayLocallyStoredItem.html?item=extra" ;  
+                let extraUrl = window.location.href + "displayLocallySavedItem.html?item=extra" ;  
                 const attributedValue = `<a href="${extraUrl}">View Extra Info</a>`;
                 this.generic.backFields.push({
                     key: "extra",
