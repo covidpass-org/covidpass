@@ -81,6 +81,8 @@ function Form(): JSX.Element {
 
     const [isDisabledAppleWallet, setIsDisabledAppleWallet] = useState<boolean>(false);
     const [isDisabledGooglePay, setIsDisabledGooglePay] = useState<boolean>(false);
+    const [isDisabledFastLink, setIsDisabledFastLink] = useState<boolean>(true);
+
     const [addErrorMessages, _setAddErrorMessages] = useState<Array<string>>([]);
     const [fileErrorMessages, _setFileErrorMessages] = useState<Array<string>>([]);
 
@@ -506,6 +508,10 @@ function Form(): JSX.Element {
             return;
         } 
 
+        if (isIOS || isMacOs) {
+            setIsDisabledFastLink(false);
+        }
+
         if (isMacOs) {
             setAddErrorMessage('iOSReminder')
             return;
@@ -600,9 +606,9 @@ function Form(): JSX.Element {
                     </div>
                 }/>
 
-                <Card step="3" heading='(Optional) Link a picture to your wallet pass for fast access' content={
+                {!isDisabledFastLink && <Card step="3" heading='(Optional) Link a photo to your wallet pass' content={
                     <div className="space-y-5">
-                        <p>The picture will be saved in your browser (in local storage, private). You can view it as extra info on your Wallet Pass' details pane.</p>
+                        <p>The photo will be saved in your browser (as local & private storage). Your wallet pass will have a link to it for quick showing.</p>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-5 items-center justify-start">
                             <button
                                 type="button"
@@ -610,7 +616,7 @@ function Form(): JSX.Element {
                                 className="h-20 bg-green-600 hover:bg-gray-700 text-white font-semibold rounded-md">
                                 {t('index:openFile')}
                             </button>
-                            <div id="spin2" className={fileLoading ? undefined : "hidden"}>
+                            <div id="spin2" className={file2Loading ? undefined : "hidden"}>
                                 <svg className="animate-spin h-5 w-5 ml-4" viewBox="0 0 24 24">
                                     <circle className="opacity-0" cx="12" cy="12" r="10" stroke="currentColor"
                                             strokeWidth="4"/>
@@ -645,8 +651,9 @@ function Form(): JSX.Element {
                         )}
                     </div>
                 }/>
+                }
 
-                {showDoseOption && <Card step="3" heading={'Choose dose number'} content={
+                {showDoseOption && <Card step={isDisabledFastLink ? '4': '3'} heading={'Choose dose number'} content={
                     <div className="space-y-5">
                         <p>
                             {t('index:formatChange')}
@@ -669,7 +676,7 @@ function Form(): JSX.Element {
                     </div>
                 } />}
 
-                <Card step={showDoseOption ? '5' : '4'} heading={t('index:addToWalletHeader')} content={
+                <Card step={showDoseOption ? (!isDisabledFastLink ? '5' : '4') : (!isDisabledFastLink ? '4': '3')} heading={t('index:addToWalletHeader')} content={
                     <div className="space-y-5">
                         <div>
                             <ul className="list-none">
