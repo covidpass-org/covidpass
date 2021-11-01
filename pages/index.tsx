@@ -107,13 +107,14 @@ function Index(): JSX.Element {
                                 <div className="region-card">Virginia</div>
                             </div> */}
                             <b>{displayPassCount}</b><br/><br/>
-                            <b>Nunavut and Manitoba support added</b> - Oct 25th update: 
+                            Nov 1 morning update: 
                             <br />
                             <br />
                             <ul className="list-decimal list-outside" style={{ marginLeft: '20px' }}>
+                                <li><b>New for iPhone users: You can now quickly access the original PDF receipt from your wallet pass</b> (by tapping ... on the top right to see details). If you have already imported your pass, just delete the old one and re-import to get this convenience feature.</li>
                                 <li>Thank you very much to the Government of Nunavut for proactively reaching out to us to allow us to add support for Nunavummiut!</li>
                                 <li>Support for newly-released Manitoba federal-standard QR codes</li>
-                                <li>(Often-requested) support added for importing proof-of-vaccination into Google Pay on Android 8.1+</li>
+                                <li>(Often-requested) support added for importing proof-of-vaccination into <b>Google Pay</b> on Android 8.1+</li>
                                 <li>You can now scan QR codes directly off of paper or a screen with your camera, eliminating the need to upload PDFs or pictures</li>
                                 <li>Support added for importing QR codes from images as well as from PDFs</li>
                             </ul><br />
