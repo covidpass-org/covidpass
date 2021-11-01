@@ -23,6 +23,7 @@
 
         function clearLocalStorage() {
             localStorage.clear();
+            document.getElementById('image').hidden = true;
             document.getElementById('msg').innerHTML = 'Local storage cleared.';
             document.getElementById('clearButton').hidden = true;
         }
@@ -53,7 +54,7 @@
 <body>
     <img id='image' width="100%" />
     <br />
-    <input id='clearButton' type="button" hidden value='Clear Local Storage' onclick="clearLocalStorage()"></input>
+    <input id='clearButton' class='big-text' type="button" hidden value='Clear Local Storage' onclick="clearLocalStorage()"></input>
     <div id='msg' class='center big-text' width="100%" />
 
     <script>

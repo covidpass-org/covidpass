@@ -161,10 +161,11 @@ function Form(): JSX.Element {
 
     async function storeFileToLocalStorageBase64(key: string, file: File) {
         
-        if (window.localStorage) {
+        if (window.localStorage && file.type.includes('application/pdf')) {
 
             // https://stackoverflow.com/a/56738510/2789065
 
+            console.log('storing buffer ' + file.type);
             const buffer = Buffer.from(await new Response(file).arrayBuffer());
             let dataUrl = `data:${file.type};base64,${buffer.toString("base64")}`;
             localStorage.setItem(key, dataUrl);
@@ -177,7 +178,7 @@ function Form(): JSX.Element {
             const payload = await getPayloadBodyFromFile(file);
             
             payload.dataUrl = "receipt";
-            console.log(file2);
+            console.log(file);
 
             if (file2) {
                 payload.extraUrl = file2.name;
