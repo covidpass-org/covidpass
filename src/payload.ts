@@ -103,7 +103,7 @@ export class Payload {
                 const attributedValue = `<a href="${extraUrl}">View Extra Info</a>`;
                 this.generic.backFields.push({
                     key: "extra",
-                    label: "Extra image",
+                    label: "Extra info (saved locally in Safari)",
                     attributedValue: attributedValue
                 });
             }

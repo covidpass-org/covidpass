@@ -508,9 +508,11 @@ function Form(): JSX.Element {
             return;
         } 
 
-        if (isIOS || isMacOs) {
-            setIsDisabledFastLink(false);
-        }
+        //TODO: feature flagging
+
+        // if (isIOS || isMacOs) {
+        //     setIsDisabledFastLink(false);
+        // }
 
         if (isMacOs) {
             setAddErrorMessage('iOSReminder')
