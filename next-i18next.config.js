@@ -9,7 +9,9 @@ module.exports = {
       'fi', 'fi-FI',
       'el', 'el-GR', 'el-CY',
       'it', 'it-IT', 'it-CH',
-      'es', 'es-ES'
+      'es', 'es-ES',
+      'no', 'no-NO',
+      'nb', 'nb-NO'
     ],
     localeExtension: 'yml',
   },
