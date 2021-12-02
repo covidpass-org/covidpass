@@ -62,7 +62,7 @@ function Form(): JSX.Element {
     }, [inputFile])
     
     // Whether Safari is used or not
-    let [isSafari, setIsSafari] = useState<boolean>(false);
+    let [isSafari, setIsSafari] = useState<boolean>(true);
 
     // Check if Safari is used
     useEffect(() => {
@@ -95,7 +95,7 @@ function Form(): JSX.Element {
         try {
             await window.navigator.share(shareData);
         } catch(error) {
-            setErrorMessage(error);
+            console.log(error);
         }
     }
 
@@ -295,12 +295,12 @@ function Form(): JSX.Element {
                 }
                 <Card content={
                     <div className={`${isShareDialogAvailable ? "md:grid-cols-2": ""} grid-cols-1 grid gap-5`}>
-                        <Button icon="kofi.png" text={t('common:donate')} onClick={() => {
-                            window.open('https://ko-fi.com/marvinsxtr', '_blank');
-                        }} />
                         {
                             isShareDialogAvailable && <Button text={t('common:share')} onClick={showShareDialog} />
                         }
+                        <Button icon="kofi.png" text={t('common:donate')} onClick={() => {
+                            window.open('https://ko-fi.com/marvinsxtr', '_blank');
+                        }} />
                     </div>
                 }/>
             </form>
