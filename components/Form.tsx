@@ -296,7 +296,7 @@ function Form(): JSX.Element {
                 <Card content={
                     <div className={`${isShareDialogAvailable ? "md:grid-cols-2": ""} grid-cols-1 grid gap-5`}>
                         {
-                            isShareDialogAvailable && <Button text={t('common:share')} onClick={showShareDialog} />
+                            isShareDialogAvailable && <Button text={t('index:share')} onClick={showShareDialog} />
                         }
                         <Button icon="kofi.png" text={t('common:donate')} onClick={() => {
                             window.open('https://ko-fi.com/marvinsxtr', '_blank');
