@@ -1,9 +1,7 @@
 iosHint: En iOS, Por favor use el navegador Safari.
 errorClose: Cerrar
 selectCertificate: Seleccione Certificado
-selectCertificateDescription: |
-  Escanee el código QR de su certificado, o seleccione una captura de pantalla o un PDF que contenga el código QR.
-  Tenga en cuenta que no se admite la selección de un archivo directamente desde la cámara.
+selectCertificateDescription: Escanee el código QR de su certificado, o seleccione una captura de pantalla o un PDF que contenga el código QR.
 stopCamera: Detener Cámara
 startCamera: Iniciar Cámara
 openFile: Seleccione archivo

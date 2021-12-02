@@ -1,9 +1,7 @@
 iosHint: Sur iOS, veuillez utiliser le navigateur Safari.
 errorClose: Fermez
 selectCertificate: Sélectionner le certificat
-selectCertificateDescription: |
-  Veuillez scanner le QR Code de votre certificat ou sélectionner une capture d'écran ou une page PDF avec le QR Code. 
-  Notez que la sélection d'un fichier directement à partir de l'appareil photo n'est pas prise en charge.
+selectCertificateDescription: Veuillez scanner le QR Code de votre certificat ou sélectionner une capture d'écran ou une page PDF avec le QR Code.
 stopCamera: Arrêter l'appareil photo
 startCamera: Démarrer l'appareil photo
 openFile: Sélectionner un fichier

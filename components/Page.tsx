@@ -24,7 +24,7 @@ function Page(props: PageProps): JSX.Element {
                     {props.content}
 
                     <footer>
-                        <nav className="nav flex pt-4 flex-row space-x-4 justify-center text-md font-bold flex-wrap">
+                        <nav className="nav flex flex-row space-x-4 justify-center text-md font-bold flex-wrap">
                             <a href="https://ko-fi.com/marvinsxtr" className="hover:underline">{t('common:donate')}</a>
                             <a href="https://github.com/marvinsxtr/covidpass" className="hover:underline">{t('common:gitHub')}</a>
                             <Link href="/privacy"><a className="hover:underline">{t('common:privacyPolicy')}</a></Link>

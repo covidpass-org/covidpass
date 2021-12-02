@@ -1,9 +1,7 @@
 iosHint: Käytä iOS:ssä Safari-selainta.
 errorClose: Sulje
 selectCertificate: Valitse todistus
-selectCertificateDescription: |
-  Skannaa todistuksessa oleva QR-koodi tai valitse kuvakaappaus tai PDF-sivu, jossa on QR-koodi. 
-  Huomaa, että tiedoston valitsemista suoraan kamerasta ei tueta.
+selectCertificateDescription: Skannaa todistuksessa oleva QR-koodi tai valitse kuvakaappaus tai PDF-sivu, jossa on QR-koodi. 
 stopCamera: Lopeta Kamera
 startCamera: Käynnistä Kamera
 openFile: Valitse Tiedosto

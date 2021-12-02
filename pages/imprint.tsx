@@ -12,14 +12,10 @@ function Imprint(): JSX.Element {
             <Card step="§" heading={t('common:imprint')} content={
                 <div className="space-y-3">
                     <p className="font-bold">{t('imprint:heading')}</p>
-                    <p>
-                        Marvin Sextro<br />
-                        Wilhelm-Busch-Str. 8A<br />
-                        30167 Hannover<br />
-                    </p>
+                    <p>Marvin Sextro</p>
                     <p className="font-bold">{t('imprint:contact')}</p>
                     <p>
-                        <a href="mailto:marvin.sextro@gmail.com" className="underline">marvin.sextro@gmail.com</a>
+                        <a href="mailto:covidpass@marvinsextro.de" className="underline">covidpass@marvinsextro.de</a>
                     </p>
                     <p className="font-bold">{t('imprint:euDisputeResolution')}</p>
                     <p>{t('imprint:euDisputeResolutionParagraph')}</p>
