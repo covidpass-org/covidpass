@@ -1,0 +1,29 @@
+iosHint: På iOS, vänligen använd Safari som webbläsare.
+errorClose: Stäng
+selectCertificate: Välj certifikat
+selectCertificateDescription: |
+  Vänligen skanna QR-koden på ditt certifikat eller välj en skärmdump eller PDF-fil som innehåller QR-koden.
+  Observera att det saknas stöd för att välja en fil direkt från kameran.
+stopCamera: Stäng kamera
+startCamera: Öppna kamera
+openFile: Välj fil
+foundQrCode: QR-kod hittad!
+pickColor: Välj en färg
+pickColorDescription: Välj en bakgrundsfärg till ditt pass.
+colorWhite: vit
+colorBlack: svart
+colorGrey: grå
+colorGreen: grön
+colorIndigo: indigo
+colorBlue: blå
+colorPurple: lila
+colorTeal: turkos
+addToWallet: Lägg till i Plånbok
+dataPrivacyDescription: |
+  Datasekretess är av särskild vikt vid bearbetning av hälsorelaterad data. 
+  För att du ska kunna fatta ett välgrundat beslut, vänligen läs
+iAcceptThe: Jag godtar
+privacyPolicy: integritetspolicyn
+createdOnDevice: Skapad på din enhet
+openSourceTransparent: Öppen källkod och transparent
+hostedInEU: Drivs från EU

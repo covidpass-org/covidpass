@@ -1,0 +1,20 @@
+noFileOrQrCode: Vänligen skanna en QR-kod eller välj en fil
+signatureFailed: Fel vid pass-signering på server
+decodingFailed: Misslyckades att avkoda QR-kodens nyttolast
+invalidColor: Ogiltig färg
+certificateData: Misslyckades att läsa in certifikatdata
+nameMissing: Inläsning av namn misslyckades
+dobMissing: Inläsning av födelsedatum misslyckades
+invalidMedicalProduct: Ogiltig medicinsk produkt
+invalidCountryCode: Ogiltig landskod
+invalidManufacturer: Ogiltig tillverkare
+invalidFileType: Ogiltig filtyp
+couldNotDecode: Kunde inte avkoda QR-kod från fil
+couldNotFindQrCode: Kunde inte hitta QR-kod i försedd fil
+invalidQrCode: Ogiltig QR-kod
+certificateType: Ingen giltig certifikatstyp hittades
+invalidTestResult: Ogiltigt testreultat
+invalidTestType: Ogiltig testtyp
+noCameraAccess: Nekades tillgång till kamera. Kontrollera behörigheter under Inställningar > Safari > Kamera.
+noCameraFound: Kunde inte hitta kamera.
+safariSupportOnly: På iOS, vänligen använd Safari som webbläsare.
