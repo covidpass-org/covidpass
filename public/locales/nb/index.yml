@@ -1,9 +1,7 @@
 iosHint: På iOS, vennligst bruk Safari nettleseren.
 errorClose: Lukk
 selectCertificate: Velg Sertifikat
-selectCertificateDescription: |
-  Skann QR-koden på sertifikatet ditt, eller velg et skjermbilde eller en PDF med QR-koden.
-  Vær oppmerksom på at det ikke støttes å velge en fil direkte fra kameraet.
+selectCertificateDescription: Skann QR-koden på sertifikatet ditt, eller velg et skjermbilde eller en PDF med QR-koden.
 stopCamera: Stopp Kamera
 startCamera: Start Kamera
 openFile: Velg Fil
@@ -27,3 +25,4 @@ privacyPolicy: Personvernerklæring
 createdOnDevice: Laget på enheten din
 openSourceTransparent: Åpen kildekode og gjennomsiktig
 hostedInEU: Driftet i EU
+share: Anbefale

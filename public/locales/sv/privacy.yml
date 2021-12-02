@@ -1,0 +1,56 @@
+gdprNotice: |
+Vår integritetspolicy är baserad på de villkår som används av den europeiska lagstiftaren för verkställandet av den allmänna dataskyddsförordningen (GDPR).
+generalInfo: Allmän information
+generalInfoProcess: |
+  Hela den process som genererar passfilen sker lokalt i din webbläsare.
+  Under signeringen skickas endast en kondenserad motsvarighet av din data till servern.
+generalInfoStoring: Din data sparas inte utanför den aktiva webbläsar­sessionen och sidan använder sig inte av cookies.
+generalInfoThirdParties: Ingen data skickas till tredjeparter.
+generalInfoHttps: Vi överför din data säkert över HTTPS.
+generalInfoLocation: Vår server är baserad i Nürnberg, Tyskland.
+generalInfoGitHub: Källkoden till denna sida finns tillgänglig på 
+generalInfoLockScreen: Som standrad är kuponger i Apple Plånbok tillgängliga från låsskärmen. Detta kan ändras i
+settings: Inställningar
+generalInfoProvider: |
+  Tjänsteleverantören processerar data som sedan används av sidan.
+  För att bättre förstå vilka åtgärder de vidtar för att skydda din data, vänligen läs deras
+privacyPolicy: integritetspolicy
+andThe: samt deras
+dataPrivacyFaq: FAQ om datasekretess
+contact: Kontakt
+email: E-post
+website: Hemsida
+process: Förenklad förklaring av processen
+processFirst: Först genomförs följande steg lokalt i din webbläsare 
+processSecond: Sedan genomförs följande steg på vår server
+processThird: Slutligen genomförs följande steg lokalt i din webbläsare
+processRecognizing: Datan från QR-koden i ditt valda certifikat identifieras och extraheras
+processDecoding: Din personliga hälsorelaterade data från QR-kodens nyttolast avkodas
+processAssembling: En ofullständig passfil sätts ihop genom din data
+processGenerating: En fil med kondenseringar av den data som finns lagrad i passfilen genereras
+processSending: Endast den fil som innehåller kondenseringarna skickas till vår server
+processReceiving: De kondenseringar som genererades lokalt tas emot och kontrolleras
+processSigning: Filen som innehåller kondenseringarna signeras
+processSendingBack: Signaturen skickas tillbaka
+processCompleting: En signerad passfil sätts ihop genom signaturen samt den ofullständiga, lokalt genererade filen
+processSaving: Filen sparas på din enhet
+locallyProcessedData: Lokalt behandlad data
+the: 
+schema: Digital Covid Certificate Schema
+specification: innehåller en detaljerad specifikation av den data som finns i QR-koden och som kommer att bearbetas i din webbläsare.
+serverProvider: Serverleverantör
+serverProviderIs: Vår serverleverantör är
+logFiles: Följande data kan komma att samlas in och sparas i serverns loggfiler.
+logFilesBrowser: Webbläsartyper och versioner
+logFilesOs: Operativsystemet som används av den klient som begär tillgång
+logFilesReferrer: Den webbsida från vilken den klient som begärt tillgång har nått vår webbsida (så kallade hänvisare)
+logFilesTime: Datum och tid för tillgång
+logFilesIpAddress: Den pseudonymiserade IP-adressen
+rights: Dina rättigheter
+rightsGranted: I enlighet med GDPR har du följande rättigheter
+rightsAccess: Rätt till åtkomst av din data; Du har rätt att få veta vilken data som som har samlats in om dig samt hur den har bearbetats.
+rightsErasure:  Rätten att bli bortglömd; Du har rätt till att få din personliga data raderad.
+rightsRectification: Rätt att göra invändningar; Du har rätt till att korrigera felaktiga data.
+rightsPortability:  Rätt till dataportabilitet; Du har rätt till överförning av din data från ett bearbetningssystem till ett annat.
+thirdParties: Länkar till tredjeparter
+appleSync: Apple kan komma att synkronisera dina pass via iCloud
