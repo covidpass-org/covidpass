@@ -13,6 +13,7 @@ import {getPayloadBodyFromFile, getPayloadBodyFromQR} from "../src/process";
 import {PassData} from "../src/pass";
 import {COLORS} from "../src/colors";
 import Colors from './Colors';
+import Button from './Button';
 
 function Form(): JSX.Element {
     const {t} = useTranslation(['index', 'errors', 'common']);
@@ -74,6 +75,29 @@ function Form(): JSX.Element {
             navigator.userAgent.indexOf('FxiOS') == -1
         )
     }, []);
+
+    // Whether Safari is used or not
+    let [isShareDialogAvailable, setIsShareDialogAvailable] = useState<boolean>(false);
+
+    // Check if share dialog is available
+    useEffect(() => {
+        setIsShareDialogAvailable(window.navigator && window.navigator.share !== undefined);
+    }, []);
+
+    // Open share dialog
+    async function showShareDialog() {
+        const shareData = {
+            title: document.title,
+            text: t('common:title') + ' – ' + t('common:subtitle'),
+            url: window.location.protocol + "//" + window.location.host,
+        };
+
+        try {
+            await window.navigator.share(shareData);
+        } catch(error) {
+            setErrorMessage(error);
+        }
+    }
 
     // Show file Dialog
     async function showFileDialog() {
@@ -183,18 +207,8 @@ function Form(): JSX.Element {
                     <div className="space-y-5">
                         <p>{t('index:selectCertificateDescription')}</p>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                            <button
-                                type="button"
-                                onClick={isCameraOpen ? hideCameraView : showCameraView}
-                                className="focus:outline-none h-20 bg-gray-400 dark:bg-gray-600 hover:bg-gray-500 text-white font-semibold rounded-md">
-                                {isCameraOpen ? t('index:stopCamera') : t('index:startCamera')}
-                            </button>
-                            <button
-                                type="button"
-                                onClick={showFileDialog}
-                                className="focus:outline-none h-20 bg-gray-400 dark:bg-gray-600 hover:bg-gray-500 text-white font-semibold rounded-md">
-                                {t('index:openFile')}
-                            </button>
+                            <Button text={isCameraOpen ? t('index:stopCamera') : t('index:startCamera')} onClick={isCameraOpen ? hideCameraView : showCameraView} />
+                            <Button text={t('index:openFile')} onClick={showFileDialog} />
                         </div>
 
                         <video id="cameraPreview"
@@ -276,11 +290,21 @@ function Form(): JSX.Element {
                         </div>
                     </div>
                 }/>
+                {
+                    errorMessage && <Alert isWarning={false} message={errorMessage} onClose={() => setErrorMessage(undefined)}/>
+                }
+                <Card content={
+                    <div className={`${isShareDialogAvailable ? "md:grid-cols-2": ""} grid-cols-1 grid gap-5`}>
+                        <Button icon="kofi.png" text={t('common:donate')} onClick={() => {
+                            window.open('https://ko-fi.com/marvinsxtr', '_blank');
+                        }} />
+                        {
+                            isShareDialogAvailable && <Button text={t('common:share')} onClick={showShareDialog} />
+                        }
+                    </div>
+                }/>
             </form>
             <canvas id="canvas" style={{display: "none"}}/>
-            {
-                errorMessage && <Alert isWarning={false} message={errorMessage} onClose={() => setErrorMessage(undefined)}/>
-            }
         </div>
     )
 }
