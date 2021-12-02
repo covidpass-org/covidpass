@@ -1,9 +1,7 @@
 iosHint: På iOS, vänligen använd Safari som webbläsare.
 errorClose: Stäng
 selectCertificate: Välj certifikat
-selectCertificateDescription: |
-  Vänligen skanna QR-koden på ditt certifikat eller välj en skärmdump eller PDF-fil som innehåller QR-koden.
-  Observera att det saknas stöd för att välja en fil direkt från kameran.
+selectCertificateDescription: Vänligen skanna QR-koden på ditt certifikat eller välj en skärmdump eller PDF-fil som innehåller QR-koden.
 stopCamera: Stäng kamera
 startCamera: Öppna kamera
 openFile: Välj fil
