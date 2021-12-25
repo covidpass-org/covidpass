@@ -339,6 +339,14 @@ export class Payload {
                 throw new Error('certificateType');
         }
 
+        data.backFields.push(...[
+            {
+                key: "credits",
+                label: "",
+                value: "Created with <a href='https://covidpass.marvinsextro.de'>CovidPass</a>"
+            }
+        ]);
+
         return data;
     }
 }
