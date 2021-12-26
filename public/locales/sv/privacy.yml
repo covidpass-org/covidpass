@@ -1,10 +1,10 @@
 gdprNotice: |
-Vår integritetspolicy är baserad på de villkår som används av den europeiska lagstiftaren för verkställandet av den allmänna dataskyddsförordningen (GDPR).
+  Vår integritetspolicy är baserad på de villkår som används av den europeiska lagstiftaren för verkställandet av den allmänna dataskyddsförordningen (GDPR).
 generalInfo: Allmän information
 generalInfoProcess: |
   Hela den process som genererar passfilen sker lokalt i din webbläsare.
   Under signeringen skickas endast en kondenserad motsvarighet av din data till servern.
-generalInfoStoring: Din data sparas inte utanför den aktiva webbläsar­sessionen och sidan använder sig inte av cookies.
+generalInfoStoring: Din data sparas inte utanför den aktiva webbläsar sessionen och sidan använder sig inte av cookies.
 generalInfoThirdParties: Ingen data skickas till tredjeparter.
 generalInfoHttps: Vi överför din data säkert över HTTPS.
 generalInfoLocation: Vår server är baserad i Nürnberg, Tyskland.

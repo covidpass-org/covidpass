@@ -12,7 +12,7 @@ function Page(props: PageProps): JSX.Element {
     const { t } = useTranslation('common');
 
     return (
-        <div className="md:w-2/3 xl:w-2/5 md:mx-auto flex flex-col min-h-screen justify-center px-5 py-12">
+        <div className="md:w-2/3 xl:w-2/5 md:mx-auto flex flex-col min-h-screen justify-center px-5 pt-12 pb-16">
             <Head>
                 <title>{t('common:title')}</title>
                 <link rel="icon" href="/favicon.ico"/>

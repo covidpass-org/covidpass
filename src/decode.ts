@@ -20,6 +20,10 @@ export function typedArrayToBuffer(array: Uint8Array): ArrayBuffer {
 }
 
 export function decodeData(data: string): Object {
+    if (data.startsWith('https://')) {
+        var url = new URL(data);
+        data = decodeURIComponent(url.hash.substring(1));
+    }
 
     if (data.startsWith('HC1')) {
         data = data.substring(3);

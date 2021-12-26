@@ -235,7 +235,17 @@ export class Payload {
                     throw new Error('invalidTestType')
                 }
 
-                const testResult = valueSets.testResults[testResultKey].display;
+                let testResult = valueSets.testResults[testResultKey].display;
+
+                switch (testResult) {
+                    case 'Not detected':
+                        testResult = 'Negative';
+                        break;
+                    case 'Detected':
+                        testResult = 'Positive';
+                        break;
+                }
+
                 const testType = valueSets.testTypes[testTypeKey].display;
 
                 const testTime = testDateTimeString.replace(/.*T/, '').replace('Z', ' ') + 'UTC';
@@ -338,6 +348,14 @@ export class Payload {
             default:
                 throw new Error('certificateType');
         }
+
+        data.backFields.push(...[
+            {
+                key: "credits",
+                label: "",
+                value: "Created with <a href='https://covidpass.marvinsextro.de'>CovidPass</a>"
+            }
+        ]);
 
         return data;
     }
