@@ -74,7 +74,7 @@ function Form(): JSX.Element {
             navigator.userAgent.indexOf('CriOS') == -1 && 
             navigator.userAgent.indexOf('FxiOS') == -1
         )
-    }, []);
+    }, [isSafari]);
 
     // Whether Safari is used or not
     let [isShareDialogAvailable, setIsShareDialogAvailable] = useState<boolean>(false);
@@ -82,7 +82,7 @@ function Form(): JSX.Element {
     // Check if share dialog is available
     useEffect(() => {
         setIsShareDialogAvailable(window.navigator && window.navigator.share !== undefined);
-    }, []);
+    }, [isShareDialogAvailable]);
 
     // Open share dialog
     async function showShareDialog() {
