@@ -11,6 +11,11 @@ export enum ButtonType {
     button = 'button',
 }
 
+Button.defaultProps = {
+    loading: false,
+    type: ButtonType.button,
+}
+
 function Button(props: ButtonProps): JSX.Element {
     return (
         <button

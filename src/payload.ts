@@ -116,6 +116,11 @@ export class Payload {
 
         const country = valueSets.countryCodes[countryCode].display;
 
+        // Encode raw data and get url
+        const encodedData = Buffer.from(body.rawData).toString('base64');
+        const url = window.location.protocol + "//" + window.location.host;
+
+
         const generic: PassDictionary = {
             headerFields: [
                 {
@@ -134,6 +139,11 @@ export class Payload {
             secondaryFields: [],
             auxiliaryFields: [],
             backFields: [
+                {
+                    key: "enlarge",
+                    label: "Enlarging the QR Code",
+                    value: `Inside the Wallet app on iOS, press and hold or open the link below. This does not work when accessing the Wallet by double-clicking the side button.\n<a href='${url}/pass#${encodedData}'>Enlarge QR Code</a>`
+                },
                 {
                     key: "uvci",
                     label: "Unique Certificate Identifier (UVCI)",
@@ -157,10 +167,27 @@ export class Payload {
         this.img2x = dark ? Constants.img2xWhite : Constants.img2xBlack
         this.dark = dark;
 
-        this.generic = Payload.fillPassData(this.certificateType, generic, properties, valueSets, country, dateOfBirth);
+        this.generic = Payload.fillPassData(
+            this.certificateType, 
+            generic, 
+            properties, 
+            valueSets, 
+            country, 
+            dateOfBirth, 
+            url
+        );
     }
 
-    static fillPassData(type: CertificateType, data: PassDictionary, properties: Object, valueSets: ValueSets, country: string, dateOfBirth: string): PassDictionary {
+    static fillPassData(
+        type: CertificateType, 
+        data: PassDictionary, 
+        properties: Object, 
+        valueSets: ValueSets, 
+        country: string, 
+        dateOfBirth: string,
+        url: string
+    ): PassDictionary {
+
         switch (type) {
             case CertificateType.Vaccination:
                 const dose = `${properties['dn']}/${properties['sd']}`;
@@ -353,7 +380,7 @@ export class Payload {
             {
                 key: "credits",
                 label: "",
-                value: "Created with <a href='https://covidpass.marvinsextro.de'>CovidPass</a>"
+                value: `Created with <a href='${url}'>CovidPass</a>`
             }
         ]);
 
