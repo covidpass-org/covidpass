@@ -191,6 +191,9 @@ function Form(): JSX.Element {
             const passBlob = new Blob([pass], {type: "application/vnd.apple.pkpass"});
             saveAs(passBlob, 'covid.pkpass');
             setLoading(false);
+            
+            var scrollingElement = (document.scrollingElement || document.body);
+            scrollingElement.scrollTop = scrollingElement.scrollHeight;
         } catch (e) {
             setErrorMessage(e.message);
             setLoading(false);
