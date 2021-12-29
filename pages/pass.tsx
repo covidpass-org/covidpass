@@ -11,19 +11,13 @@ function Pass(): JSX.Element {
 
     function closeViewer() {
         setFragment(undefined);
-        window.location.href = '/';
+        window.location.replace('/');
     }
 
     useEffect(() => {
         const rawFragment = window.location.hash.substring(1);
         const decodedFragment = Buffer.from(rawFragment, 'base64').toString();
         setFragment(decodedFragment);
-
-        window.location.replace('#');
-        if (typeof window.history.replaceState == 'function') {
-            const href = window.location.href;
-            history.replaceState({}, '', href.slice(0, href.lastIndexOf('/')));
-        }
 
         document.addEventListener('visibilitychange', () => {
             if (document.hidden) {
@@ -32,6 +26,8 @@ function Pass(): JSX.Element {
         });
 
         window.addEventListener('blur', closeViewer);
+        window.addEventListener('beforeunload', closeViewer);
+        window.addEventListener('pagehide', closeViewer);
     }, []);
 
     return (

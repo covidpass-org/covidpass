@@ -3,9 +3,9 @@ import {Constants} from "./constants";
 import {COLORS} from "./colors";
 
 enum CertificateType {
-    Vaccination = 'Vaccination Card',
-    Test = 'Test Certificate',
-    Recovery = 'Recovery Certificate',
+    Vaccination = 'Vaccination Pass',
+    Test = 'Test Pass',
+    Recovery = 'Recovery Pass',
 }
 
 enum TextAlignment {
