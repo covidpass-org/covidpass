@@ -152,7 +152,7 @@ function Privacy(): JSX.Element {
                             <li>
                                 {t('privacy:appleSync')}:
                                 &nbsp;
-                                <a href="https://www.apple.com/legal/privacy/en-ww/privacy.tsx" className="underline">
+                                <a href="https://www.apple.com/legal/privacy/en-ww/" className="underline">
                                     {t('common:privacyPolicy')}
                                 </a>
                             </li>
