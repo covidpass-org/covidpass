@@ -1,9 +1,7 @@
 iosHint: Gebruik op iOS de Safari-browser.
 errorClose: Sluiten
 selectCertificate: Selecteer Certificaat
-selectCertificateDescription: |
-  Scan de QR-code op uw certificaat of selecteer een screenshot of pdf-pagina met de QR-code.
-  Merk op dat het rechtstreeks vanaf de camera selecteren van een bestand niet wordt ondersteund.
+selectCertificateDescription: Scan de QR-code op uw certificaat of selecteer een screenshot of pdf-pagina met de QR-code.
 stopCamera: Stop Camera
 startCamera: Start Camera
 openFile: Selecteer Bestand
@@ -27,3 +25,4 @@ privacyPolicy: Privacybeleid
 createdOnDevice: Aangemaakt op uw apparaat
 openSourceTransparent: Open source en transparant
 hostedInEU: Gehost in de EU
+share: Aanbevelen

@@ -40,9 +40,8 @@ function Index(): JSX.Element {
             <Page content={
                 <div className="space-y-5">
                     <Card content={
-                        <p>{t('common:subtitle')}&nbsp;{t('index:iosHint')}</p>
+                        <p>{t('common:subtitle')}</p>
                     }/>
-
                     <Form/>
                 </div>
             }/>

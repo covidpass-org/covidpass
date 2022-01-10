@@ -1,0 +1,20 @@
+noFileOrQrCode: Te rog scaneaza un cod QR, sau alege un fisier
+signatureFailed: Eroare in timpul semnarii certificatului pe server
+decodingFailed: Imposibil de decodat continutul codului QR
+invalidColor: Culoare Invalida
+certificateData: Eroare in citirea datelor certificatului
+nameMissing: Eroare in citirea numelui
+dobMissing: Eroare in citirea datei de nastere
+invalidMedicalProduct: Produs medical (Vaccin) invalid
+invalidCountryCode: Codul tarii este invalid
+invalidManufacturer: Fabricant invalid
+invalidFileType: Tipul fisierului invalid
+couldNotDecode: Eroare in decodarea codului QR din fisier
+couldNotFindQrCode: Nu s-a gasit niciun cod QR valid in fisierul selectat
+invalidQrCode: Cod QR invalid
+certificateType: Tipul certificatului este invalid
+invalidTestResult: Rezultatul testului este invalid
+invalidTestType: Tipul testului este invalid
+noCameraAccess: Nu s-a putut accesa camera. Schimbati permisiunile in Setari > Safari > Camera.
+noCameraFound: Nu s-a putut accesa camera.
+safariSupportOnly: in iOS, va rog sa folositi doar browser-ul safari.

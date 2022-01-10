@@ -12,7 +12,6 @@ export async function getPayloadBodyFromFile(file: File, color: COLORS): Promise
 
     switch (file.type) {
         case 'application/pdf':
-            console.log('pdf')
             // Read file
             const fileBuffer = await file.arrayBuffer();
             imageData = await getImageDataFromPdf(fileBuffer)
@@ -21,7 +20,6 @@ export async function getPayloadBodyFromFile(file: File, color: COLORS): Promise
         case 'image/jpeg':
         case 'image/webp':
         case 'image/gif':
-            console.log(`image ${file.type}`)
             imageData = await getImageDataFromImage(file)
             break
         default:

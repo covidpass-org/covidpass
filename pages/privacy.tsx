@@ -49,12 +49,20 @@ function Privacy(): JSX.Element {
                     </div>
                     <p className="font-bold">{t('privacy:contact')}</p>
                     <p>
+<<<<<<< HEAD
                         Jantso Porali<br/>
                         Rakentajanpolku 3H<br/>
                         96960 Rovaniemi<br/>
                         {t('privacy:email')}:
                         &nbsp;
                         <a href="mailto:jantso.porali@gmail.com">jantso.porali@gmail.com</a>
+=======
+                        Marvin Sextro
+                        <br/>
+                        {t('privacy:email')}:
+                        &nbsp;
+                        <a href="mailto:covidpass@marvinsextro.de" className="underline">covidpass@marvinsextro.de</a>
+>>>>>>> 68387b1eaef1fe256d04b3c888afb61967115ccf
                         <br/>
                     </p>
                     <p className="font-bold">{t('privacy:process')}</p>
@@ -132,6 +140,16 @@ function Privacy(): JSX.Element {
                                 </a>
                             </li>
                             <li>
+<<<<<<< HEAD
+=======
+                                Ko-fi:
+                                &nbsp;
+                                <a href="https://more.ko-fi.com/privacy" className="underline">
+                                    {t('common:privacyPolicy')}
+                                </a>
+                            </li>
+                            <li>
+>>>>>>> 68387b1eaef1fe256d04b3c888afb61967115ccf
                                 Gmail/Google:
                                 &nbsp;
                                 <a href="https://policies.google.com/privacy?hl=fi-FI" className="underline">
@@ -141,7 +159,11 @@ function Privacy(): JSX.Element {
                             <li>
                                 {t('privacy:appleSync')}:
                                 &nbsp;
+<<<<<<< HEAD
                                 <a href="https://www.apple.com/fi/legal/privacy/fi/" className="underline">
+=======
+                                <a href="https://www.apple.com/legal/privacy/en-ww/" className="underline">
+>>>>>>> 68387b1eaef1fe256d04b3c888afb61967115ccf
                                     {t('common:privacyPolicy')}
                                 </a>
                             </li>

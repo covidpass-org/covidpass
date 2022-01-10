@@ -19,6 +19,7 @@ interface QrCode {
     message: string;
     format: QrFormat;
     messageEncoding: Encoding;
+    altText: string;
 }
 
 interface SignData {
@@ -83,6 +84,7 @@ export class PassData {
             message: payload.rawData,
             format: QrFormat.PKBarcodeFormatQR,
             messageEncoding: Encoding.utf8,
+            altText: 'SCAN TO VERIFY',
         }
 
         // Create pass data

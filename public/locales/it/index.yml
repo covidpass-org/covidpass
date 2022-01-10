@@ -1,9 +1,7 @@
 iosHint: Su iOS, si prega di utilizzare il browser Safari.
 errorClose: Chiudi
 selectCertificate: Seleziona il certificato
-selectCertificateDescription: |
-  Scannerizza il codice QR sul tuo certificato o seleziona uno screenshot o una pagina PDF con il codice QR.
-  Nota che la selezione di un file direttamente dalla fotocamera non è supportata.
+selectCertificateDescription: Scannerizza il codice QR sul tuo certificato o seleziona uno screenshot o una pagina PDF con il codice QR.
 stopCamera: Blocca Fotocamera
 startCamera: Avvia Fotocamera
 openFile: Seleziona un File
@@ -27,3 +25,4 @@ privacyPolicy: Privacy Policy
 createdOnDevice: Creato sul tuo dispositivo
 openSourceTransparent: Open source e trasparente
 hostedInEU: Server nell'UE
+share: Raccomandare

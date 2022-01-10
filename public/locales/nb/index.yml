@@ -1,0 +1,28 @@
+iosHint: På iOS, vennligst bruk Safari nettleseren.
+errorClose: Lukk
+selectCertificate: Velg Sertifikat
+selectCertificateDescription: Skann QR-koden på sertifikatet ditt, eller velg et skjermbilde eller en PDF med QR-koden.
+stopCamera: Stopp Kamera
+startCamera: Start Kamera
+openFile: Velg Fil
+foundQrCode: Fant QR-kode!
+pickColor: Velg en farge
+pickColorDescription: Velg en bakgrunnsfarge for passet ditt.
+colorWhite: hvit
+colorBlack: svart
+colorGrey: grå
+colorGreen: grønn
+colorIndigo: mørkeblå
+colorBlue: blå
+colorPurple: lilla
+colorTeal: blågrønn
+addToWallet: Legg til i Lommebok
+dataPrivacyDescription: |
+  Personvern er av spesiell betydning ved behandling av helserelaterte data.
+  For å ta en informert beslutning, vennligst les
+iAcceptThe: Jeg godtar
+privacyPolicy: Personvernerklæring
+createdOnDevice: Laget på enheten din
+openSourceTransparent: Åpen kildekode og gjennomsiktig
+hostedInEU: Driftet i EU
+share: Anbefale

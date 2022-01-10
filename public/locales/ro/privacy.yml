@@ -1,0 +1,57 @@
+gdprNotice: |
+  Politica noastră de confidențialitate se bazează pe termenii folosiți de legiuitorul european
+  pentru adoptarea Regulamentului general privind protecția datelor (GDPR).
+generalInfo: Informații Generale
+generalInfoProcess: |
+  Întregul proces de generare a fișierului de Wallet are loc local în browserul dvs.
+  Pentru pasul de semnare (certificare), doar o reprezentare hashed (codata ireversibil) a datelor dvs. este trimisă către server.
+generalInfoStoring: Datele dumneavoastră nu sunt stocate dincolo de sesiunea activă a browserului, iar site-ul nu utilizează cookie-uri.
+generalInfoThirdParties: Nu sunt trimise date catre părți terțe.
+generalInfoHttps: Datele sunt transmise în mod securizat prin https.
+generalInfoLocation: Serverele noastre sunt găzduite in Nuremberg, Germania.
+generalInfoGitHub: Codul sursă al acestui site este accesibil pe 
+generalInfoLockScreen: În mod normal, cardurile din Apple Wallet sunt accesibile de pe lock screen. Puteți schimba acest lucru in
+settings: setări
+generalInfoProvider: |
+  Furnizorul de server prelucrează date pentru a furniza acest site.
+  Pentru a înțelege mai bine ce măsuri iau aceștia pentru a vă proteja datele, vă rugăm să citiți și pe partea lor
+privacyPolicy: Politica de Confidențialitate
+andThe: și
+dataPrivacyFaq: Întrebari puse des despre confidențialitate
+contact: Contact
+email: Email
+website: Website
+process: Explicație simplificata a procesului
+processFirst: În primul rând, următorii pași au loc local în browserul dvs 
+processSecond: În al doilea rând, următorii pași au loc pe serverul nostru
+processThird: În cele din urmă, următorii pași au loc local în browserul dvs
+processRecognizing: Recunoașterea și extragerea datelor codului QR din certificatul selectat
+processDecoding: Decodificarea datelor dvs. personale și medicale din încărcarea codului QR
+processAssembling: Asamblarea unui fișier de Wallet incomplet din datele dvs
+processGenerating: Generarea unui fișier care conține hash-uri ale datelor stocate în fișierul wallet
+processSending: Trimiterea doar fișierul care conține hash-urile către serverul nostru
+processReceiving: Primirea și verificarea hashurilor care au fost generate local
+processSigning: Semnarea fișierului care conține hashurile
+processSendingBack: Trimiterea semnăturii înapoi
+processCompleting: Asamblarea fișierului wallet semnat din fișierul incomplet generat local și semnătura
+processSaving: Salvarea fisierului pe dispozitiv
+locallyProcessedData: Date procesate local
+the:
+schema: Schema Certificatului Digital Covid
+specification: contine o schema complete cu datele care sunt continute de codul QR al certificatului covid si care vor fi procesate in browser.
+serverProvider: Furnizorul de Servere
+serverProviderIs: Furnizorul nostru de servere este
+logFiles: Următoarele date pot fi colectate și stocate în fișierele jurnal ale serverului
+logFilesBrowser: Tipurile și versiunile de browser utilizate
+logFilesOs: Sistemul de operare utilizat de sistemul de accesare
+logFilesReferrer: Site-ul web de pe care un sistem de accesare ajunge pe site-ul nostru web (așa-numiții recomandanți)
+logFilesTime: Data și ora accesului
+logFilesIpAddress: Adresele IP pseudonimizate
+rights: Drepturile tale
+rightsGranted: În conformitate cu GDPR, aveți următoarele drepturi
+rightsAccess: Dreptul de acces la datele dumneavoastră; Ai dreptul să știi ce date au fost colectate despre tine și cum au fost prelucrate.
+rightsErasure:  Dreptul de a fi uitat; Ștergerea datelor dumneavoastră personale.
+rightsRectification: Dreptul de rectificare; Aveți dreptul de a corecta datele eronate.
+rightsPortability:  Dreptul la portabilitatea datelor; Aveți dreptul să vă transferați datele dintr-un sistem de procesare în altul.
+thirdParties: Părți terțe
+appleSync: Este posibil ca Apple să vă sincronizeze cardurile wallet prin iCloud

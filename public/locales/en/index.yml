@@ -1,9 +1,7 @@
 iosHint: On iOS, please use the Safari Browser.
 errorClose: Close
 selectCertificate: Select Certificate
-selectCertificateDescription: |
-  Please scan the QR code on your certificate or select a screenshot or PDF page with the QR code. 
-  Note that selecting a file directly from camera is not supported.
+selectCertificateDescription: Please scan the QR code on your certificate or select a screenshot or PDF page with the QR code. 
 stopCamera: Stop Camera
 startCamera: Start Camera
 openFile: Select File
@@ -27,3 +25,5 @@ privacyPolicy: Privacy Policy
 createdOnDevice: Created on your device
 openSourceTransparent: Open source and transparent
 hostedInEU: Hosted in the EU
+share: Share
+viewerNote: Please press and hold the link on the back of the pass in order to enlarge the QR code on iOS.

@@ -1,9 +1,7 @@
 iosHint: Bitte verwende unter iOS den Safari Browser.
 errorClose: Schließen
 selectCertificate: Zertifikat auswählen
-selectCertificateDescription: |
-  Scanne den QR-Code auf Deinem Zertifikat oder wähle einen Screenshot oder eine PDF-Datei mit dem QR-Code. 
-  Bitte beachte, dass die Auswahl einer Datei direkt von der Kamera nicht unterstützt wird. 
+selectCertificateDescription: Scanne den QR-Code auf Deinem Zertifikat oder wähle einen Screenshot oder eine PDF-Datei mit dem QR-Code. 
 stopCamera: Kamera stoppen
 startCamera: Kamera starten
 openFile: Datei auswählen
@@ -27,3 +25,5 @@ privacyPolicy: Datenschutzerklärung
 createdOnDevice: Auf Deinem Gerät erstellt
 openSourceTransparent: Open Source und transparent
 hostedInEU: In der EU gehostet
+share: Weiterempfehlen
+viewerNote: Bitte drücke und halte den Link auf der Rückseite des Passes, um den QR Code unter iOS vergrößert anzuzeigen.
