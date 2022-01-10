@@ -1,0 +1,28 @@
+iosHint: In iOS, te rog foloseste browser-ul Safari.
+errorClose: Inchide
+selectCertificate: Alege certificatul
+selectCertificateDescription: Te rog scaneaza codul QR de pe certificatul tau sau alege un screenshot/PDF cu codul QR
+stopCamera: Opreste Camera
+startCamera: Porneste Camera
+openFile: Selecteaza fisierul
+foundQrCode: Cod QR detectat!
+pickColor: Alege o culoare
+pickColorDescription: Alege o culoare de fundal pentru certificatul tau.
+colorWhite: alb
+colorBlack: negru
+colorGrey: gri
+colorGreen: verde
+colorIndigo: indigo
+colorBlue: albastru
+colorPurple: mov
+colorTeal: teal
+addToWallet: Adauga in Wallet
+dataPrivacyDescription: |
+  Confidentialitatea datelor este de o importanta speciala cand vine vorba de date medicale. 
+  Pentru a face o alegere informata, va rugam cititi 
+iAcceptThe: Sunt de acord cu
+privacyPolicy: Politica de Confidentialitate
+createdOnDevice: Creat pe dispozitivul tau
+openSourceTransparent: Open source si transparent
+hostedInEU: Gazduit in UE
+share: Distribuie
