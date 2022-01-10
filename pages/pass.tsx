@@ -13,7 +13,6 @@ function Pass(): JSX.Element {
 
     const [fragment, setFragment] = useState<string>(undefined);
     const [view, setView] = useState<boolean>(true);
-    const [resized, setResized] = useState<boolean>(false);
 
     useEffect(() => {
         const rawFragment = window.location.hash.substring(1);
@@ -23,13 +22,12 @@ function Pass(): JSX.Element {
         }
         
         const resizeTimeout = window.setTimeout(() => {
-            if (!resized && rawFragment) {
+            if (rawFragment) {
                 window.location.replace('/pass/note');
             }
-        }, 100);
+        }, 200);
 
         window.addEventListener('resize', () => {
-            setResized(true);
             clearTimeout(resizeTimeout);
             const decodedFragment = Buffer.from(rawFragment, 'base64').toString();
             setFragment(decodedFragment);
