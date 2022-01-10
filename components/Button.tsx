@@ -20,7 +20,8 @@ function Button(props: ButtonProps): JSX.Element {
     return (
         <button
             type={props.type}
-            onClick={props.onClick}
+            onMouseUp={props.onClick}
+            onTouchEnd={props.onClick}
             className={`${props.type == ButtonType.submit ? "bg-green-600 hover:bg-green-700" : "bg-gray-400 dark:bg-gray-600 hover:bg-gray-500"} relative focus:outline-none h-20 text-white font-semibold rounded-md items-center flex justify-center`}>
             {
                 props.icon && <img src={props.icon} className="w-12 h-12 mr-2 -ml-4" />
