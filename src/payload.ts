@@ -142,7 +142,7 @@ export class Payload {
                 {
                     key: "enlarge",
                     label: "Enlarging the QR Code",
-                    value: `Inside the Wallet app on iOS, press and hold or open the link below. This does not work when accessing the Wallet by double-clicking the side button.\n<a href='${url}/pass#${encodedData}'>Enlarge QR Code</a>`
+                    value: `Inside the Wallet app on iOS, press and hold the link below. This does not work when accessing the Wallet by double-clicking the side button.\n<a href='${url}/pass#${encodedData}'>Enlarge QR Code</a>`
                 },
                 {
                     key: "uvci",

@@ -1,46 +1,54 @@
+import {useTranslation} from 'next-i18next';
 import {serverSideTranslations} from 'next-i18next/serverSideTranslations';
 
 import React, {useEffect, useState} from "react";
 import QRCode from "react-qr-code";
 
+import Alert from '../components/Alert';
 import Card from '../components/Card';
 import Logo from "../components/Logo";
 
 function Pass(): JSX.Element {
-    const [fragment, setFragment] = useState<string>(undefined);
+    const { t } = useTranslation(['common', 'index']);
 
-    function closeViewer() {
-        setFragment(undefined);
-        window.location.replace('/');
-    }
+    const [fragment, setFragment] = useState<string>(undefined);
+    const [view, setView] = useState<boolean>(true);
 
     useEffect(() => {
         const rawFragment = window.location.hash.substring(1);
-        const decodedFragment = Buffer.from(rawFragment, 'base64').toString();
-        setFragment(decodedFragment);
 
-        document.addEventListener('visibilitychange', () => {
-            if (document.hidden) {
-                closeViewer();
+        if (!rawFragment) {
+            setView(false);
+        }
+        
+        const resizeTimeout = window.setTimeout(() => {
+            if (rawFragment) {
+                window.location.replace('/pass/note');
             }
-        });
+        }, 200);
 
-        window.addEventListener('blur', closeViewer);
-        window.addEventListener('beforeunload', closeViewer);
-        window.addEventListener('pagehide', closeViewer);
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimeout);
+            const decodedFragment = Buffer.from(rawFragment, 'base64').toString();
+            setFragment(decodedFragment);
+        });
     }, []);
 
     return (
-        <div className="py-6 flex flex-col space-y-5 items-center">
+        <div className="py-5 flex flex-col space-y-5 md:w-2/3 xl:w-2/5 md:mx-auto items-center justify-center px-5">
             <Logo/>
             <div className="flex flex-row items-center">
                 {
                     fragment && 
                     <Card content={
                         <div className="p-2 bg-white rounded-md">
-                        <QRCode value={fragment} size={280} level="L" />
+                            <QRCode value={fragment} size={280} level="L" />
                         </div>
                     } />
+                }
+                {
+                    !view && 
+                    <Alert isWarning={true} message={t('index:viewerNote')} onClose={undefined} />
                 }
             </div>
         </div>
@@ -50,7 +58,7 @@ function Pass(): JSX.Element {
 export async function getStaticProps({ locale }) {
     return {
         props: {
-            ...(await serverSideTranslations(locale, ['common'])),
+            ...(await serverSideTranslations(locale, ['index', 'common'])),
         },
     };
 }
