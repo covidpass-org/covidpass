@@ -14,12 +14,12 @@ function Imprint(): JSX.Element {
                     <p className="font-bold">{t('imprint:heading')}</p>
                     <p>
                         Marvin Sextro<br />
-                        Wilhelm-Busch-Str. 8A<br />
-                        30167 Hannover<br />
+                        Kopenhagener Straße 45<br />
+                        10437 Berlin
                     </p>
                     <p className="font-bold">{t('imprint:contact')}</p>
                     <p>
-                        <a href="mailto:marvin.sextro@gmail.com" className="underline">marvin.sextro@gmail.com</a>
+                        <a href="mailto:covidpass@marvinsextro.de" className="underline">covidpass@marvinsextro.de</a>
                     </p>
                     <p className="font-bold">{t('imprint:euDisputeResolution')}</p>
                     <p>{t('imprint:euDisputeResolutionParagraph')}</p>

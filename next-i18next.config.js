@@ -12,7 +12,8 @@ module.exports = {
       'es', 'es-ES',
       'no', 'no-NO',
       'nb', 'nb-NO',
-      'sv', 'sv-SE', 'sv-FI'
+      'sv', 'sv-SE', 'sv-FI',
+      'ro', 'ro-RO', 'ro-MD'
     ],
     localeExtension: 'yml',
   },

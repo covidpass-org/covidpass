@@ -13,6 +13,7 @@ import {getPayloadBodyFromFile, getPayloadBodyFromQR} from "../src/process";
 import {PassData} from "../src/pass";
 import {COLORS} from "../src/colors";
 import Colors from './Colors';
+import Button from './Button';
 
 function Form(): JSX.Element {
     const {t} = useTranslation(['index', 'errors', 'common']);
@@ -59,6 +60,44 @@ function Form(): JSX.Element {
             });
         }
     }, [inputFile])
+    
+    // Whether Safari is used or not
+    let [isSafari, setIsSafari] = useState<boolean>(true);
+
+    // Check if Safari is used
+    useEffect(() => {
+        const navigator = window.navigator;
+        setIsSafari(
+            navigator.vendor && 
+            navigator.vendor.indexOf('Apple') > -1 && 
+            navigator.userAgent && 
+            navigator.userAgent.indexOf('CriOS') == -1 && 
+            navigator.userAgent.indexOf('FxiOS') == -1
+        )
+    }, [isSafari]);
+
+    // Whether Safari is used or not
+    let [isShareDialogAvailable, setIsShareDialogAvailable] = useState<boolean>(false);
+
+    // Check if share dialog is available
+    useEffect(() => {
+        setIsShareDialogAvailable(window.navigator && window.navigator.share !== undefined);
+    }, [isShareDialogAvailable]);
+
+    // Open share dialog
+    async function showShareDialog() {
+        const shareData = {
+            title: document.title,
+            text: t('common:title') + ' – ' + t('common:subtitle'),
+            url: window.location.protocol + "//" + window.location.host,
+        };
+
+        try {
+            await window.navigator.share(shareData);
+        } catch(error) {
+            console.log(error);
+        }
+    }
 
     // Show file Dialog
     async function showFileDialog() {
@@ -102,7 +141,7 @@ function Form(): JSX.Element {
             // Start decoding from video device
             await codeReader.decodeFromVideoDevice(undefined,
                 previewElem,
-                (result, error, controls) => {
+                (result, _error, controls) => {
                     if (result !== undefined) {
                         setQrCode(result);
                         setFile(undefined);
@@ -112,9 +151,6 @@ function Form(): JSX.Element {
                         // Reset
                         setGlobalControls(undefined);
                         setIsCameraOpen(false);
-                    }
-                    if (error !== undefined) {
-                        setErrorMessage(error.message);
                     }
                 }
             )
@@ -155,6 +191,9 @@ function Form(): JSX.Element {
             const passBlob = new Blob([pass], {type: "application/vnd.apple.pkpass"});
             saveAs(passBlob, 'covid.pkpass');
             setLoading(false);
+            
+            var scrollingElement = (document.scrollingElement || document.body);
+            scrollingElement.scrollTop = scrollingElement.scrollHeight;
         } catch (e) {
             setErrorMessage(e.message);
             setLoading(false);
@@ -164,29 +203,22 @@ function Form(): JSX.Element {
     return (
         <div>
             <form className="space-y-5" id="form" onSubmit={addToWallet}>
+                {
+                    !isSafari && <Alert isWarning={true} message={t('iosHint')} onClose={() => {}}/>
+                }
                 <Card step="1" heading={t('index:selectCertificate')} content={
                     <div className="space-y-5">
                         <p>{t('index:selectCertificateDescription')}</p>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                            <button
-                                type="button"
-                                onClick={isCameraOpen ? hideCameraView : showCameraView}
-                                className="focus:outline-none h-20 bg-gray-500 hover:bg-gray-700 text-white font-semibold rounded-md">
-                                {isCameraOpen ? t('index:stopCamera') : t('index:startCamera')}
-                            </button>
-                            <button
-                                type="button"
-                                onClick={showFileDialog}
-                                className="focus:outline-none h-20 bg-gray-500 hover:bg-gray-700 text-white font-semibold rounded-md">
-                                {t('index:openFile')}
-                            </button>
+                            <Button text={isCameraOpen ? t('index:stopCamera') : t('index:startCamera')} onClick={isCameraOpen ? hideCameraView : showCameraView} />
+                            <Button text={t('index:openFile')} onClick={showFileDialog} />
                         </div>
 
                         <video id="cameraPreview"
                                className={`${isCameraOpen ? undefined : "hidden"} rounded-md w-full`}/>
                         <input type='file'
                                id='file'
-                               accept="application/pdf,image/png"
+                               accept="application/pdf,image/png,image/jpeg,image/webp,image/gif"
                                ref={inputFile}
                                style={{display: 'none'}}
                         />
@@ -195,7 +227,7 @@ function Form(): JSX.Element {
                         <div className="flex items-center space-x-1">
                             <svg className="h-4 w-4 text-green-600" fill="none" viewBox="0 0 24 24"
                                  stroke="currentColor">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"/>
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M9 5l7 7-7 7"/>
                             </svg>
                             <span className="w-full truncate">
                                 {
@@ -245,27 +277,38 @@ function Form(): JSX.Element {
                                 </Link>.
                             </p>
                         </label>
-                        <div className="flex flex-row items-center justify-start">
-                            <button id="download" type="submit"
-                                    className="focus:outline-none bg-green-600 py-2 px-3 text-white font-semibold rounded-md disabled:bg-gray-400">
+                        <div className="grid grid-cols-1">
+                            <button 
+                                type="submit"
+                                className="bg-green-600 hover:bg-green-700 relative focus:outline-none h-20 text-white font-semibold rounded-md items-center flex justify-center">
+                                <div id="spin" className={`${loading ? undefined : "hidden"} absolute left-2`}>
+                                    <svg className="animate-spin h-5 w-5 ml-4" viewBox="0 0 24 24">
+                                        <circle className="opacity-0" cx="12" cy="12" r="10" stroke="currentColor"
+                                                strokeWidth="4"/>
+                                        <path className="opacity-80" fill="currentColor"
+                                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"/>
+                                    </svg>
+                                </div>
                                 {t('index:addToWallet')}
                             </button>
-                            <div id="spin" className={loading ? undefined : "hidden"}>
-                                <svg className="animate-spin h-5 w-5 ml-4" viewBox="0 0 24 24">
-                                    <circle className="opacity-0" cx="12" cy="12" r="10" stroke="currentColor"
-                                            strokeWidth="4"/>
-                                    <path className="opacity-75" fill="currentColor"
-                                          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"/>
-                                </svg>
-                            </div>
                         </div>
+                    </div>
+                }/>
+                {
+                    errorMessage && <Alert isWarning={false} message={errorMessage} onClose={() => setErrorMessage(undefined)}/>
+                }
+                <Card content={
+                    <div className={`${isShareDialogAvailable ? "md:grid-cols-2": ""} grid-cols-1 grid gap-5`}>
+                        {
+                            isShareDialogAvailable && <Button text={t('index:share')} onClick={showShareDialog} />
+                        }
+                        <Button icon="kofi.png" text={t('common:donate')} onClick={() => {
+                            window.open('https://ko-fi.com/marvinsxtr', '_blank');
+                        }} />
                     </div>
                 }/>
             </form>
             <canvas id="canvas" style={{display: "none"}}/>
-            {
-                errorMessage && <Alert errorMessage={errorMessage} onClose={() => setErrorMessage(undefined)}/>
-            }
         </div>
     )
 }

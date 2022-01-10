@@ -49,12 +49,11 @@ function Privacy(): JSX.Element {
                     </div>
                     <p className="font-bold">{t('privacy:contact')}</p>
                     <p>
-                        Marvin Sextro<br/>
-                        Wilhelm-Busch-Str. 8A<br/>
-                        30167 Hannover<br/>
+                        Marvin Sextro
+                        <br/>
                         {t('privacy:email')}:
                         &nbsp;
-                        <a href="mailto:marvin.sextro@gmail.com">marvin.sextro@gmail.com</a>
+                        <a href="mailto:covidpass@marvinsextro.de" className="underline">covidpass@marvinsextro.de</a>
                         <br/>
                         {t('privacy:website')}:
                         &nbsp;
@@ -137,9 +136,9 @@ function Privacy(): JSX.Element {
                                 </a>
                             </li>
                             <li>
-                                PayPal:
+                                Ko-fi:
                                 &nbsp;
-                                <a href="https://www.paypal.com/de/webapps/mpp/ua/privacy-full?locale.x=en_EN" className="underline">
+                                <a href="https://more.ko-fi.com/privacy" className="underline">
                                     {t('common:privacyPolicy')}
                                 </a>
                             </li>
@@ -153,7 +152,7 @@ function Privacy(): JSX.Element {
                             <li>
                                 {t('privacy:appleSync')}:
                                 &nbsp;
-                                <a href="https://www.apple.com/legal/privacy/en-ww/privacy.tsx" className="underline">
+                                <a href="https://www.apple.com/legal/privacy/en-ww/" className="underline">
                                     {t('common:privacyPolicy')}
                                 </a>
                             </li>
